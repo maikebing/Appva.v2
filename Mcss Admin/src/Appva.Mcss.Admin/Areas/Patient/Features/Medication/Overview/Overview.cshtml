@@ -1,0 +1,53 @@
+﻿@model Appva.Mcss.Admin.Models.MedicationOverviewModel
+@using Appva.Mcss.Admin.Application.Common;
+<div>
+	<div class="heading cf">
+        <h2>Läkemedelslistan</h2>
+    </div>
+	<div class="panel-c">
+		@if (Model.Patients.Count == 0) {
+            <div class="no-data">
+                <h3>Inga uppdaterade läkemdelslistor</h3>
+            </div>
+        } else {
+            <table>
+		    	<thead>
+		    		<tr>
+		    			<th scope="col">Boende</th>
+		    			<th scope="col">Adress</th>
+                        <th scope="col">Uppdaterad</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+                    @foreach (var patient in Model.Patients) {
+		    		<tr class="alarm">
+		    			<td>
+                            @if (Html.HasPermissionFor(Permissions.Medication.Read))
+                            {
+                                @Html.ActionLink(patient.FullName, "List", "Medication", new { id = patient.Id }, null)
+                            }
+                            else
+                            {
+                                @patient.FullName
+                            }
+                        </td>
+		    			<td>@patient.Address</td>
+		    			<td>2017-09-23</td>
+		    		</tr>
+                    }
+		    	</tbody>
+		    </table>
+        }
+	</div>
+    <script>
+        $('div.heading p.filter a').click(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var elem = $(this);
+            elem.parent().find('.sel').removeClass('sel');
+            elem.addClass("sel");
+            elem.parent().parent().parent().find('.panel-c').append('<div class="loading"><img src="@Url.Image("ajax-load.gif")" alt="Laddar" /></div>');
+            elem.parent().parent().parent().find('.panel-c').load(elem.attr('href') + " .panel-c table");
+        });
+    </script>
+</div>

@@ -115,6 +115,7 @@ namespace Appva.Mcss.Admin.Application.Common
                     this.patient = new List<IMenuItem>()
                     {
                          MenuItem.CreateNew("Signeringslistor", "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
+                         MenuItem.CreateNew("Läkemedelslista", "List", "Medication", "Patient", null, null, Permissions.Medication.Read, this.Medication),
                          MenuItem.CreateNew("Signerade händelser", "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
@@ -184,6 +185,34 @@ namespace Appva.Mcss.Admin.Application.Common
                     };
                 }
                 return this.schedule;
+            }
+        }
+
+
+        #endregion
+
+        #region Medication
+
+        /// <summary>
+        /// The menu for schedules (Dummy) field
+        /// </summary>
+        private IList<IMenuItem> medication;
+
+        /// <summary>
+        /// The schedule-menu getter
+        /// </summary>
+        private IList<IMenuItem> Medication
+        {
+            get
+            {
+                if (this.medication == null)
+                {
+                    this.medication = new List<IMenuItem>()
+                    {
+                        MenuItem.CreateNew("Detaljer läkemedel (Dummy)", "Details", "Medication", "Patient", null, null, Permissions.Medication.Read, null)
+                    };
+                }
+                return this.medication;
             }
         }
 

@@ -1,0 +1,142 @@
+﻿@model Appva.Mcss.Admin.Domain.Entities.Medication
+<div class="e-panel col-2">
+    <h3>Ordination</h3>
+    <div class="info cf">
+        <h4>Allmänt</h4>
+        <div class="param-box">
+            <label for="start">Insättning</label>
+            <p name="start">@(Model.OrdinationStartsAt.HasValue ? Model.OrdinationStartsAt.Value.ToString("yyyy-MM-dd") : "Inget datum")</p>
+        </div>
+        <div class="param-box">
+            <label for="created">Ordinationstidpunkt</label>
+            <p name="created">@Model.OrdinationCreatedAt.ToString("yyyy-MM-dd")</p>
+        </div>
+        @if (Model.OrdinationValidUntil.HasValue && !Model.DiscontinuedAt.HasValue && !Model.CanceledAt.HasValue)
+        {
+        <div class="param-box">
+            <label for="valid">Giltig t.o.m</label>
+            <p name="valid">@Model.OrdinationValidUntil.GetValueOrDefault().ToString("yyyy-MM-dd")</p>
+        </div>
+        }
+        @if (Model.DiscontinuedAt.HasValue)
+        {
+            <div class="param-box">
+                <label for="end">Utsatt</label>
+                <p name="origin-start">@Model.DiscontinuedAt.Value.ToString("yyyy-MM-dd")</p>
+            </div>
+        }
+        @if (Model.DiscontinuedComment.IsNotEmpty())
+        {
+            <div class="param-box">
+                <label for="end">Utsatt kommentar</label>
+                <p name="origin-start">@Model.DiscontinuedComment</p>
+            </div>
+        }
+    </div>
+    @if (Model.CanceledAt.HasValue)
+    {
+        <div class="info cf">
+            <div class="param-box">
+                <label for="text">Mackulerad</label>
+                <p name="text">@Model.CanceledAt.Value.ToString("yyyy-MM-dd")</p>
+            </div>
+            @if (Model.CancellationReason.IsNotEmpty())
+            {
+                <div class="param-box">
+                    <label for="text">Mackuleringsorsak</label>
+                    <p name="text">@Model.CancellationReason</p>
+                </div>
+            }
+            @if (Model.CancellationComment.IsNotEmpty())
+            {
+                <div class="param-box">
+                    <label for="text">Mackulering kommentar</label>
+                    <p name="text">@Model.CancellationComment</p>
+                </div>
+            }
+
+        </div>
+    }
+    <div class="info cf">
+        <div class="param-box">
+            <label for="text">Text till patienten</label>
+            <p name="text">@Model.DosageText</p>
+        </div>
+        <div class="param-box">
+            <label for="text">Ändamål</label>
+            <p name="text">@Model.Purpose</p>
+        </div>
+        @if (Model.DosageScheme != null)
+        {
+            <div class="param-box large">
+                <label for="dosag se">Doseringsschema</label>
+                <div>
+                    @{Html.RenderPartial("_dosageScheme", Model.DosageScheme);}
+                </div>
+            </div>
+        }
+    </div>
+    <div class="info cf">
+        <h4>Ordinatör</h4>
+        <div class="param-box">
+            <label for="ordinator">Insatt av</label>
+            <p name="ordinator">
+                @Model.Prescriber.FullName
+            </p>
+        </div>
+        <div class="param-box">
+            <label for="workplace">Arbetsplats</label>
+            <p name="workplace">
+                @Model.Prescriber.WorkPlaceCode
+            </p>
+        </div>
+    </div>
+    <div class="info cf">
+        <h4>
+            Expedition
+            @if (Model.RemainingExpiditions.GetValueOrDefault() == 0)
+            {
+                <span class="label">Alla uttag gjorda</span>
+            }
+        </h4>
+
+        <div class="param-box">
+            <label for="ordinator">Återstående uttag</label>
+            <p name="ordinator">
+                @string.Format("{0} av {1}", Model.RemainingExpiditions.GetValueOrDefault(), Model.NumbersOfExpiditions.GetValueOrDefault())
+               
+            </p>
+        </div>
+        <div class="param-box">
+            <label for="workplace">Senaste uttag</label>
+            <p name="workplace">
+                @if (Model.LastExpiditedAt.HasValue)
+                {
+                    @Model.LastExpiditedAt.Value.ToString("yyyy-MM-dd")
+                }
+            </p>
+        </div>
+        @if (Model.LastExpiditedAmount.HasValue)
+        {
+            <div class="param-box">
+                <label for="workplace">Senast uttagen mängd</label>
+                <p name="workplace">
+
+                    @Model.LastExpiditedAmount.Value
+
+                </p>
+            </div>
+        }
+        @if (Model.LastExpiditedNplPackId.IsNotEmpty())
+        {
+            <div class="param-box">
+                <label for="workplace">Senast uttaget NplPackId</label>
+                <p name="workplace">
+
+                    @Model.LastExpiditedNplPackId
+
+                </p>
+            </div>
+        }
+    </div>
+</div>

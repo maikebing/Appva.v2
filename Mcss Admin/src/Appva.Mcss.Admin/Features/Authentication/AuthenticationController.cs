@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -176,7 +177,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             {
                 return this.RedirectToAction("SignInSithsFailed");
             }
-            this.authentication.SignIn(result.Identity);
+            this.siths.SignIn(result.Identity, hsaAttributes: result.HsaAttributes);
             await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
         }

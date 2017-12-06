@@ -46,8 +46,8 @@
       <HintPath>..\..\..\Packages\Appva.NHibernateUtils.0.4.0\lib\net45\Appva.NHibernateUtils.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+    <Reference Include="Appva.Persistence, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.4.0\lib\net45\Appva.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
@@ -140,6 +140,11 @@
     <Compile Include="Entities\KnowledgeTest.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Medication\Article.cs" />
+    <Compile Include="Entities\Medication\Dosage.cs" />
+    <Compile Include="Entities\Medication\DosageScheme.cs" />
+    <Compile Include="Entities\Medication\Medication.cs" />
+    <Compile Include="Entities\Medication\Prescriber.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />
@@ -172,6 +177,7 @@
     <Compile Include="Repositories\IObservationRepository.cs" />
     <Compile Include="Repositories\ISignatureRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
+    <Compile Include="Repositories\MedicationRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />
     <Compile Include="Repositories\ObservationRepository.cs" />

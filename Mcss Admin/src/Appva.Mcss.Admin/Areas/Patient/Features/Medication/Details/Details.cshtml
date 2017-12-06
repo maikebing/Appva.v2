@@ -1,0 +1,160 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.DetailsMedicationModel
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div id="ehm">
+    
+    <h2>
+        @if (Model.Medication.DiscontinuedAt.HasValue)
+        {
+            <span class="canceled">Utsatt - </span>
+        }
+        else if (Model.Medication.CanceledAt.HasValue)
+        {
+            <span class="canceled">Mackulerad - </span>
+        }
+        @Model.Medication.Article.Name 
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
+        {
+            <span title="Dos-dispensierad" class="dos">DOS</span>
+        }
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.NeedBased)
+        {
+            <span title="Vid behov" class="vb">VB</span>
+        }
+    </h2>
+    <div class="row cf">
+        
+        <div class="e-panel col-2">
+            
+            @if (Model.Sequences.Sequence != null || (Model.Sequences.History != null && Model.Sequences.History.Count > 0))
+            {
+                var sequence = Model.Sequences.Sequence != null ? Model.Sequences.Sequence : Model.Sequences.History.FirstOrDefault();
+                <h3 class="@(Model.Sequences.Sequence != null ? "sign-list-ok" : "sing-list-updated")">Signeringslista</h3>
+                if (Model.Sequences.Sequence != null)
+                {
+                    <p class="sign-list-summary">Insats på signeringslista för <span class="schedule">@sequence.Schedule.ScheduleSettings.Name</span> är synkroniserad med ordinationen</p>
+                }
+                else
+                {
+                    <p class="sign-list-summary">Insats skapad på signeringslista för <span class="schedule">@sequence.Schedule.ScheduleSettings.Name</span> den <b>@sequence.UpdatedAt.ToString("yyyy-MM-dd")</b>, ordination skapad <b>@Model.Medication.OrdinationCreatedAt.ToString("yyyy-MM-dd")</b></p>
+                }
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            @if (Model.Sequences.Sequence != null)
+                            {
+                                <th>Ordination</th>
+                                <th>Insats på Signeringslista</th>
+                            }
+                            else
+                            {
+                                <th>Tidigare ordination</th>
+                                <th>Uppdaterad ordination</th>
+                                <th>Insats på signeringslista</th>
+                            }
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Namn</td>
+                            @if (Model.Sequences.Sequence == null)
+                            { 
+                                <td>@Model.PreviousMedication.Article.Name</td>
+                            }
+                            <td>@Model.Medication.Article.Name</td>
+                            <td>@sequence.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Ändamål/Instruktion</td>
+                            @if (Model.Sequences.Sequence == null)
+                            {
+                                <td>@Model.PreviousMedication.Purpose</td>
+                            }
+                            <td>@Model.Medication.Purpose</td>
+                            <td>@sequence.Description</td>
+                        </tr>
+                        <tr>
+                            <td>Startar</td>
+                            @if (Model.Sequences.Sequence == null)
+                            {
+                                <td>@(Model.PreviousMedication.OrdinationStartsAt.HasValue ? Model.PreviousMedication.OrdinationStartsAt.Value.ToString("yyyy-MM-dd") : "-")</td>
+                            }
+                            <td>@(Model.Medication.OrdinationStartsAt.HasValue ? Model.Medication.OrdinationStartsAt.Value.ToString("yyyy-MM-dd") :  "-")</td>
+                            <td>@sequence.StartDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                        <tr>
+                            <td>Slutar</td>
+                            @if (Model.Sequences.Sequence == null)
+                            {
+                                <td>@(Model.PreviousMedication.EndsAt.HasValue ? Model.PreviousMedication.EndsAt.Value.ToString("yyyy-MM-dd") : "-")</td>
+                            }
+                            <td>@(Model.Medication.EndsAt.HasValue ? Model.Medication.EndsAt.Value.ToString("yyyy-MM-dd") : "Tills vidare" )</td>
+                            <td>@(sequence.EndDate.HasValue ? sequence.EndDate.Value.ToString("yyyy-MM-dd") : "Tills vidare")</td>
+                        </tr>
+                        <tr>
+                            <td>Dosering</td>
+                            @if (Model.Sequences.Sequence == null)
+                            {
+                                <td>
+                                    @if(Model.PreviousMedication.DosageScheme != null)
+                                    {
+                                        Html.RenderPartial("_dosageScheme", Model.PreviousMedication.DosageScheme);
+                                    }
+                                    else
+                                    {
+                                        @Model.PreviousMedication.DosageText
+                                    }
+                                </td>
+                            }
+                            <td>
+                                @if(Model.Medication.DosageScheme != null)
+                                {
+                                    Html.RenderPartial("_dosageScheme", Model.Medication.DosageScheme);
+                                }
+                                else
+                                {
+                                    @Model.Medication.DosageText
+                                }
+                            </td>
+                            <td>
+                                @if(sequence.OnNeedBasis)
+                                {
+                                    @:Vid behov
+                                }
+                                else
+                                {
+                                    @(Model.IntervallTranslation[sequence.Interval] + " " + string.Join(", ", sequence.Times.Split(',').Select(x => string.Format("kl {0}:00 +{1}min -{2}min", x, sequence.RangeInMinutesAfter, sequence.RangeInMinutesBefore))));
+                                }
+                                
+                            </td>
+                        </tr>
+                       
+
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>Signeringslista</h3>
+                <div class="no-sequence">
+                    <p>Detta läkemedel är ännu inte upplagt på en signeringslista</p>
+                    @if (Model.Medication.Type != Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
+                    {
+                        @Html.ActionLink(Permissions.Sequence.Create, "+ Lägg till", "SelectSchedule", "Medication", new { OrdinationId = Model.Medication.OrdinationId, Id = Model.Patient.Id }, new { @class = "lb-link button add" })
+                    }
+                </div>
+            }
+            
+        </div>
+        @Html.Partial("Details/Partials/_medicationPartial", Model.Medication)
+        @Html.Partial("Details/Partials/_ordinationPartial", Model.Medication)
+        
+    </div>
+    
+</div>

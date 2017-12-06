@@ -60,7 +60,8 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            IList<Medication> medications = null
         );
         
         /// <summary>
@@ -156,7 +157,8 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            IList<Medication> medications = null
         )
         {
             if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
@@ -191,7 +193,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Overview = overView,
                 PauseAnyAlerts = pauseAnyAlerts,
                 Absent = absent,
-                AllDay = allDay
+                AllDay = allDay,
+                Medications = medications
             };
             this.context.Save(sequence);
             schedule.UpdatedAt = DateTime.Now;

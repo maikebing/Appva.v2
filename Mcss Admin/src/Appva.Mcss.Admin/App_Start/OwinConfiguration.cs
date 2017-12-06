@@ -55,6 +55,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterMediator();
             builder.RegisterGrandId();
             builder.RegisterTenaIdentifi();
+            builder.RegisterEhmApi();
             builder.RegisterAuthorization(app);
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();

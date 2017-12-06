@@ -1,0 +1,42 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@using Appva.Mcss.Admin.Models
+@model Appva.Mcss.Admin.Models.ListMedicationModel
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div id="ehm">
+
+    <h2>Läkemedelslistan</h2>
+    <div class="e-panel">
+        <h3 class="no-border">
+            Dos-dispenserade läkemedel
+            @Html.ActionLink(Permissions.Sequence.Create, "+ Skapa insats", "SelectSchedule", "Medication", new { OrdinationId = Int64.MinValue, Id = Model.Patient.Id }, new { @class = "lb-link button add" })
+        </h3>
+        @if (Model.DispensedMedications != null && Model.DispensedMedications.Count > 0)
+        {
+            Html.RenderPartial("~/Areas/Patient/Features/Medication/List/Partials/Table/_listMedicationsTable.cshtml", new ListMedicationsTableViewModel { Medications = Model.DispensedMedications, Sequences = Model.Sequences, PatientId = Model.Patient.Id });
+        }
+        else
+        {
+            <div class="no-sequence">
+                <p>Detta finns inga dos-dispenserade läkemedel</p>
+                </div>
+                }
+            </div>
+    <div class="e-panel">
+        <h3 class="no-border">Helförpackade läkemedel</h3>
+        @if (Model.OriginalPackageMedications != null && Model.OriginalPackageMedications.Count > 0)
+        {
+            Html.RenderPartial("~/Areas/Patient/Features/Medication/List/Partials/Table/_listMedicationsTable.cshtml", new ListMedicationsTableViewModel { Medications = Model.OriginalPackageMedications, Sequences = Model.Sequences, PatientId = Model.Patient.Id });
+        }
+        else
+        {
+            <div class="no-sequence">
+                <p>Det finns inga helförpackade läkemedel</p>
+            </div>
+        }
+    </div>
+
+
+
+</div>

@@ -1,0 +1,370 @@
+﻿.e-panel {
+    background: #fff;
+    padding: 10px 0;
+    margin: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    color: rgb(64,78,104);
+}
+
+#ehm h3 {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px;
+    border-bottom:solid 1px rgb(219, 224, 236);
+}
+
+#ehm h3.no-border {
+    border-bottom:none;
+}
+
+#ehm .e-panel h3.no-border a.button {
+    padding-left:20px;
+    padding-right:20px;
+    display:inline-block;
+    float:right;
+    margin-top:-10px;
+}
+
+#ehm h2 {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    padding: 0px 35px;
+    margin-top:30px;
+    color: rgb(64,78,104);
+}
+
+#ehm .row .col-2 {
+    width:calc(50% - 40px);
+    float:left;
+}
+
+
+/* TABLE */
+#ehm table {
+    border: none;
+    font-size: 14px;
+    color: rgb(64,78,104);
+}
+
+#ehm thead {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm thead th {
+    border: none;
+    background:#fff;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-weight:700;
+}
+
+#ehm tbody {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm table td {
+    border:none;
+    padding-top:4px;
+    padding-bottom:4px;
+    vertical-align:middle;
+    height:39px;
+}
+
+#ehm table td:first-child, #ehm table th:first-child  { padding-left:15px; }
+#ehm table td:last-child, #ehm table th:last-child  { padding-right:15px; }
+
+#ehm table tbody tr:nth-child(even) { background: rgb(239,241,246); }
+#ehm table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+#ehm table tbody tr:hover { background: rgb(219, 224, 236);}
+
+/* Table-row statuses */
+#ehm table tr.ok { border-left:4px solid rgb(104,173,87); }
+
+#ehm table tbody tr.updated { 
+    border-left:4px solid rgb(243,160,2); 
+    background:rgb(254,244,225);
+}
+#ehm table tbody tr.updated:hover { 
+    background:rgb(254, 235, 191);
+}
+
+#ehm table tbody tr.canceled {
+    color:#808080;
+    text-decoration:line-through;
+}
+
+#ehm table tbody tr.canceled span.canceled {
+    color:rgb(250, 251, 252);
+    background:rgb(201,73,73);
+    padding:8px;
+    border-radius:5px;
+}
+
+#ehm table tbody tr td span.prescription-expired {
+    font-style:italic;
+}
+
+#ehm table tbody tr td span.prescription-expired img {
+    width: 20px;
+    margin-left:10px;
+    vertical-align:middle;
+}
+
+/* Dosage */
+#ehm div.dosage {
+    background:#fff;
+    color:rgb(128,143,167);
+    font-size:10px;
+    text-align:center;
+    width: 30px;
+    border:1px solid rgb(219, 224, 236);
+    float:left;
+    margin:2px 10px 2px 0;
+
+}
+
+#ehm div.dosage p {
+    padding:3px;
+}
+
+#ehm div.dosage p.time {
+    padding-bottom:2px;
+    margin-bottom:0;
+    border-bottom:1px solid rgb(219, 224, 236);
+}
+#ehm div.dosage p.amount {
+    padding-top:2px;
+    margin-bottom:0;
+    font-size:10px;
+    font-weight:bold;
+}
+
+#ehm span.periodicity {
+    background:rgb(219, 224, 236);
+    font-size: 12px;
+    padding: 8px;
+    float:left;
+    margin:4px 10px 0 0;
+    font-weight:bold;
+}
+
+/* DOS & VB */
+#ehm span.dos,
+#ehm span.vb {
+    display:inline-block;
+    font-size: 10px;
+    border-radius: 38px;
+    /*padding: 10px 5px;*/
+    font-weight:bold;
+    float: right;
+    text-align:center;
+    height:30px;
+    width:30px;
+    line-height:30px;
+    vertical-align:middle;
+    border:2px solid #637491;
+}
+
+#ehm h2 span.dos,
+#ehm h2 span.vb {
+    font-size: 14px;
+    height: 40px;
+    font-weight:bold;
+    float:none;
+    width:40px;
+    margin-left:5px;
+    line-height:40px;
+}
+
+#ehm span.dos {
+    background: #637491;
+    color: #fff;
+}
+
+#ehm span.vb {
+    color:#637491;
+}
+
+/* Button */
+#ehm a.button {
+    border-radius:40px;
+    text-decoration:none;
+    padding:10px 10px;
+    background:#637491;
+    color:#fff;
+    border:1px solid rgb(64,78,104);
+}
+
+#ehm a.button.add {
+    background:rgb(104,173,87);
+    color:#fff;
+    border:1px solid rgb(88,154,73);
+}
+
+#ehm table td a.button.add {
+    font-size:20px;
+    padding:5px 10px
+}
+
+#ehm a.button.add:hover { background:rgb(88,154,73); }
+
+#ehm a.button.edit {
+    background:#637491 url(../i/ico-edit.svg) no-repeat 10px center;
+    background-size:20px;
+    padding-left:40px;
+    padding-right:10px;
+    text-transform: uppercase;
+    font-size: 10px;
+    height:34px;
+    font-weight:bold;
+    color:#fff;
+}
+
+#ehm table td a.button.edit:hover { background-color:rgb(64,78,104); }
+
+/* Details */
+
+#ehm h2 span.canceled {
+    font-style:italic;
+}
+
+#ehm .info {
+    margin:15px;
+    border-bottom:solid 1px rgb(219, 224, 236);
+}
+
+#ehm .info .param-box {
+    float:left;
+    margin: 0 10px 10px 0;
+    min-width: 150px;
+}
+
+#ehm .info .param-box.large {
+    float:left;
+    margin: 0 10px 10px 0;
+    min-width: 90%;
+}
+
+#ehm .info .param-box label {
+    color:rgb(128,143,167);
+    font-weight:bold;
+    font-size:12px;
+}
+
+#ehm .info .param-box p {
+    color:rgb(64,78,104);
+    font-size:14px;
+    margin-top:5px;
+}
+
+#ehm .info .param-box.large > div {
+    vertical-align:middle;
+    display:table-cell;
+}
+
+#ehm .info .param-box.large .periodicity {
+    margin-top:20px;
+}
+
+#ehm .e-panel .no-sequence {
+    text-align:center;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:18px;
+    color:rgb(128,143,167);
+    padding:30px 15px;
+}
+
+#ehm .e-panel .no-sequence a.button.add {
+    padding-left:20px;
+    padding-right:20px;
+    margin-top:30px;
+    display:inline-block;
+}
+
+#ehm .e-panel h3.sign-list-ok {
+    padding-left: 60px;
+    background:url(../i/check-icon.png) no-repeat 15px center;
+    background-size:35px;
+}
+
+#ehm .e-panel p.sign-list-summary {
+    padding: 15px;
+    color:rgb(64,78,104);
+    font-size:14px;
+}
+
+#ehm .e-panel p.sign-list-summary span.schedule {
+    font-weight:bold;
+}
+
+#ehm .e-panel table.compare-table tr td:first-child{
+    font-weight:bold;
+}
+
+#ehm .info span.label {
+    background:#637491;
+    color:#fff;
+    border-radius:20px;
+    padding:5px 10px;
+    font-size:12px;
+}
+
+/* Errors */
+#ehm .e-panel.error {
+    text-align:center;
+    color:rgb(64,78,104);
+}
+
+#ehm .e-panel.error img {
+    margin-top:100px;
+    width:150px;
+}
+
+#ehm .e-panel.error h2 {
+    font-size:64px;
+}
+
+#ehm .e-panel.error p {
+    font-size:18px;
+    margin-top:30px;
+    padding:0 20px;
+}
+
+#ehm .e-panel.error .contact {
+    margin-top:50px;
+    padding-top:50px;
+    padding-bottom:50px;
+    background:rgb(239,241,246);
+}
+
+#ehm .e-panel.error .contact p {
+    font-size:18px;
+    color: rgb(128,143,167);
+    margin-bottom:15px;
+    margin-top:0px;
+}
+
+#ehm .e-panel.error a.button {
+    display:inline-block;
+    color: rgb(128,143,167);
+    border: 2px solid rgb(128,143,167);
+    font-size:14px;
+    font-weight:bold;
+    background:transparent;
+    padding:10px 15px;
+}
+
+#ehm .e-panel.error a.button:hover {
+    color:rgb(255,255,255);
+    background:rgb(128,143,167);
+}

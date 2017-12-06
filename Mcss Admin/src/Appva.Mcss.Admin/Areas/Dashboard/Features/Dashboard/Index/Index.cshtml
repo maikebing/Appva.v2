@@ -46,6 +46,10 @@
             }
         </div>
         <div id="content-secondary">
+            @if (Html.HasPermissionFor(Permissions.Medication.Overview))
+    {
+        Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Medication", widgetArea = "Patient", header = "Läkemedelslista" });
+    }
             @if (Model.HasOrderOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadOrderRefill))
             {
                 Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = (Model.ArticleModuleIsInstalled ? "Article" : "Order"), widgetArea = "Patient", header = "Påfyllning av läkemedel" });

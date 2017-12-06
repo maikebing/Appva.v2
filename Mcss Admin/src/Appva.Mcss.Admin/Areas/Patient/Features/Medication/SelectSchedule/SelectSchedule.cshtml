@@ -1,0 +1,26 @@
+﻿@model Appva.Mcss.Admin.Models.SelectScheduleMedicationModel
+@{ SetTitle("Välj lista"); }
+<div class="lb-panel-small lb-validate-form" data-valclass="SelectList">
+    <div class="std-panel std-form">
+        @using (Html.BeginForm())
+        {
+                <h3 class="section-title">Ny insats</h3>
+                <div class="select">
+                    <label for="Schedule">Välj lista att lägga till insats på</label>
+                    @Html.DropDownListFor(
+                            m => m.Schedule,
+                            new SelectList(Model.Schedules, "Value", "Text", Model.Schedule),
+                            "Välj Lista ...",
+                            new { @class = "schedule" }
+                        )
+                    @Html.ValidationMessageFor(m => m.Schedule)
+                </div>
+               
+            <div class="submit">
+                @Html.AntiForgeryToken()
+                @Html.Submit("Fortsätt")
+                @Html.Cancel("Avbryt")
+            </div>
+         }
+    </div>
+</div>

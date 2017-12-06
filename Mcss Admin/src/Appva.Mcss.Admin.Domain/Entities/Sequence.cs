@@ -334,12 +334,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
-        }
+        } 
 
         /// <summary>
         /// The article
         /// </summary>
         public virtual Article Article
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the medications connected to this sequence.
+        /// </summary>
+        /// <value>
+        /// The medications.
+        /// </value>
+        public virtual IList<Medication> Medications
         {
             get;
             set;

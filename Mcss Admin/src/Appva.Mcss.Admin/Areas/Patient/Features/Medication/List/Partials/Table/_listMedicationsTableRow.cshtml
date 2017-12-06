@@ -1,0 +1,59 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListMedicationTableRowViewModel
+
+<tr class="@Model.RowStatus">
+    <td>
+        @Html.ActionLink(Permissions.Medication.Read, Model.Medication.Article.Name, "Details", "Medication", new { id = Model.PatientId, ordinationId = Model.Medication.OrdinationId }, new { })
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
+        {
+            <span title="Dos-dispensierad" class="dos">DOS</span>
+        }
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.NeedBased)
+        {
+            <span title="Vid behov" class="vb">VB</span>
+        }
+    </td>
+    <td>@Model.Medication.Article.Strength.FirstToUpper()</td>
+    <td>@Model.Medication.Article.Form.FirstToUpper()</td>
+    <td>
+        @if (Model.Medication.DosageScheme != null)
+        {
+            Html.RenderPartial("_dosageScheme", Model.Medication.DosageScheme);
+        }
+        else
+        {
+            @Model.Medication.DosageText
+        }
+    </td>
+    <td>@Model.Medication.Purpose</td>
+    <td>
+        @if (Model.Medication.OrdinationStartsAt.HasValue)
+        {
+            @Model.Medication.OrdinationStartsAt.Value.ToString("yyyy-MM-dd");
+        }
+    </td>
+    <td>
+        @if (Model.Medication.EndsAt.HasValue)
+        {
+            @Model.Medication.EndsAt.Value.ToString("yyyy-MM-dd")
+            if (Model.Medication.IsCanceled)
+            {
+                <span title="@string.Format("Mackulerad, {0}", Model.Medication.CancellationReason)" class="canceled">M</span>
+            }
+        }
+        else if (Model.Medication.OrdinationValidUntil.HasValue && Model.Medication.OrdinationValidUntil.Value < DateTime.Now)
+        {
+            <span class="prescription-expired">@Model.Medication.OrdinationValidUntil.Value.ToString("yyyy-MM-dd")<img title="Receptets giltighetstid har löpt ut" src="~/Assets/i/ico-info.png" /></span>
+        }
+
+    </td>
+    <td>
+        @if (Model.Medication.Type != Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed
+                                    && Model.Medication.EndsAt.GetValueOrDefault(DateTime.MaxValue) > DateTime.Now
+                                    && (Model.Sequences.History != null || Model.Sequences.History.Count > 0)
+                                    && Model.Sequences.Sequence == null)
+        {
+            @Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.PatientId, ordinationId = Model.Medication.OrdinationId }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })
+        }
+    </td>
+</tr>

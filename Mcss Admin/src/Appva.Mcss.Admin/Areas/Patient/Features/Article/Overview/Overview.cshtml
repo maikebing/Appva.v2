@@ -65,7 +65,7 @@
             <h2>Påfyllning av artiklar</h2>
             @if(Html.HasPermissionFor(Permissions.OrderList.Update))
             {
-                @Html.Button("Uppdatera alla", new { id = "article-update-button", @class="btn", style = "float:right" })
+                @Html.Button("Uppdatera alla", new { id = "article-update-button", @class="std-btn", style = "float:right" })
                 <span class="article-loading-status"><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
             }
         </div>

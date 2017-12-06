@@ -35,11 +35,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IIdentityService identityService;
 
         /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
-
-        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -62,12 +57,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewOrderHandler(
             IIdentityService identityService,
-            ISettingsService settingsService,
             IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
-            this.settingsService = settingsService;
             this.persistence = persistence;
             this.filtering = filtering;
         }
@@ -79,7 +72,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
@@ -103,8 +95,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new OrderOverviewViewModel
             {
                 Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List(),
-                HasMigratedArticles = orderListConfiguration.HasMigratedArticles,
-                SequencesWithoutArticlesCount = orders.Where(x => x.Article == null).RowCount()
             };
         }
 

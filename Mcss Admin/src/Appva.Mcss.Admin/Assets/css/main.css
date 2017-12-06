@@ -3402,7 +3402,8 @@ form .time {width:4em;}
 }
 
 /* Standard button */
-a.std-btn {
+a.std-btn,
+button.std-btn {
 	padding:4px 12px;
 	color:#fff;
 	background:#455169 url(../i/bg-stdbtn.png) repeat-x;
@@ -3415,14 +3416,17 @@ a.std-btn {
 	font-weight:bold;
 }
 a.std-btn:hover,
-a.std-btn:focus {
+a.std-btn:focus,
+button.std-btn:focus,
+button.std-btn:hover {
 	color:#fff;
 	border-color:#001;
 	-webkit-box-shadow:0 0 4px #445068;
 	-moz-box-shadow:0 0 4px #445068;
 	box-shadow:0 0 4px #445068;
 }
-a.std-btn:active {
+a.std-btn:active,
+button.std-btn:active {
 	background:#445068;
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;

@@ -3,7 +3,7 @@
 <div>
     <div class="heading cf"><h2>Påfyllning av läkemedel</h2></div>
     <div class="panel-c">
-        @if ((Model.Orders == null || Model.Orders.Count == 0) || Model.SequencesWithoutArticlesCount == 0)
+        @if (Model.Orders == null || Model.Orders.Count == 0)
         {
             <div class="no-data">
                 <h3>Inga påfyllningar begärda</h3>
@@ -24,7 +24,7 @@
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        if (Model.HasMigratedArticles && order.Article == null)
+                        if (order.Article == null)
                         {
                             <tr>
                                 <td>

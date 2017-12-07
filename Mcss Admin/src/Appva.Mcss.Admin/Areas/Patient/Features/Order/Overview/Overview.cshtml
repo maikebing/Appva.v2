@@ -24,8 +24,7 @@
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        if (order.Article == null)
-                        {
+                        
                             <tr>
                                 <td>
                                     @if (Html.HasPermissionFor(Permissions.Schedule.Read))
@@ -88,7 +87,6 @@
                                     </p>
                                 </td>
                             </tr>
-                        }
                     }
                 </tbody>
             </table>

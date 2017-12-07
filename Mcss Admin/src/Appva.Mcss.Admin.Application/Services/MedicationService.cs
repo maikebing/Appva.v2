@@ -169,6 +169,7 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var m in medications.Where(x => x.PreviousMedications.Count > 0))
             {
                 ordinationIds.AddRange(m.PreviousMedications.Select(x => x.OrdinationId).ToList());
+                ordinationIds.AddRange(m.PreviousMedications.Where(x => x.HistoricalOrdinationId != null).Select(x => x.HistoricalOrdinationId.GetValueOrDefault()).ToList());
             }
             var sequences = sequenceRepository.List(ordinationsIds: ordinationIds);
 
@@ -179,7 +180,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 var history = new List<Sequence>();
                 foreach(var h in m.PreviousMedications)
                 {
-                    var s = sequences.Where(x => x.Medications.Any(y => y.OrdinationId == m.OrdinationId) != null).ToList();
+                    var s = sequences.Where(x => x.Medications.Any(y => y.OrdinationId == h.OrdinationId || y.OrdinationId == h.HistoricalOrdinationId)).ToList();
                     if (s != null && s.Count > 0)
                     {
                         history.AddRange(s);

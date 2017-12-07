@@ -7,11 +7,11 @@
 <div id="ehm">
     
     <h2>
-        @if (Model.Medication.DiscontinuedAt.HasValue)
+        @if (Model.Medication.DiscontinuedAt.HasValue && Model.Medication.DiscontinuedAt.Value < DateTime.Now)
         {
             <span class="canceled">Utsatt - </span>
         }
-        else if (Model.Medication.CanceledAt.HasValue)
+        else if (Model.Medication.CanceledAt.HasValue && Model.Medication.CanceledAt.Value < DateTime.Now)
         {
             <span class="canceled">Mackulerad - </span>
         }
@@ -32,7 +32,13 @@
             @if (Model.Sequences.Sequence != null || (Model.Sequences.History != null && Model.Sequences.History.Count > 0))
             {
                 var sequence = Model.Sequences.Sequence != null ? Model.Sequences.Sequence : Model.Sequences.History.FirstOrDefault();
-                <h3 class="@(Model.Sequences.Sequence != null ? "sign-list-ok" : "sing-list-updated")">Signeringslista</h3>
+                <h3 class="@(Model.Sequences.Sequence != null ? "sign-list-ok" : "sign-list-updated")">
+                    @if (Model.Sequences.Sequence == null)
+                    {
+                        <span class="icon">!</span>
+                    }
+                    Signeringslista
+                </h3>
                 if (Model.Sequences.Sequence != null)
                 {
                     <p class="sign-list-summary">Insats på signeringslista för <span class="schedule">@sequence.Schedule.ScheduleSettings.Name</span> är synkroniserad med ordinationen</p>
@@ -138,6 +144,10 @@
 
                     </tbody>
                 </table>
+                <div class="submit">
+                    @Html.ActionLink(Permissions.Sequence.Update, "Kvittera uppdateringar", "AddMedicationToSequence", "Medication", new { Id = Model.Patient.Id, SequenceId = Model.Sequences.Sequence, OrdinationId = Model.Medication.OrdinationId }, new { @class = "button" })
+                    @Html.ActionLink(Permissions.Sequence.Update, "Ändra insats", "Update", "Medication", new { Id = Model.Patient.Id, SequenceId = Model.Sequences.Sequence, OrdinationId = Model.Medication.OrdinationId }, new { @class = "button lb-link" })
+                </div>
             }
             else
             {

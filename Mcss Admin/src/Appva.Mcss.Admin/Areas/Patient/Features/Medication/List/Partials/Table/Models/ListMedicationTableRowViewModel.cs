@@ -71,6 +71,14 @@ namespace Appva.Mcss.Admin.Models
 
         #endregion
 
+        #region Computed properties.
+
+        /// <summary>
+        /// Gets the row status.
+        /// </summary>
+        /// <value>
+        /// The row status.
+        /// </value>
         public string RowStatus
         {
             get
@@ -88,10 +96,42 @@ namespace Appva.Mcss.Admin.Models
                 {
                     status += " canceled";
                 }
-                
+
                 return status;
-                
+
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has sequence.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has sequence; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasSequence
+        {
+            get
+            {
+                return this.Sequences.Sequence != null || (this.Sequences.History != null && this.Sequences.History.Count > 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance can create sequence.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance can create sequence; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanCreateSequence
+        {
+            get
+            {
+                return this.Medication.Type != OrdinationType.Dispensed &&
+                    this.Medication.EndsAt.GetValueOrDefault(DateTime.MaxValue) > DateTime.Now &&
+                    !this.HasSequence;
+            }
+        }
+
+        #endregion
     }
 }

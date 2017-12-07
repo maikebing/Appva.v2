@@ -8,7 +8,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using Appva.Common.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,7 +17,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Medication : AggregateRoot<Medication>
+    public class Medication : AggregateRoot
     {
         #region Constructor.
 
@@ -34,6 +33,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         public virtual long OrdinationId
+        {
+            get;
+            set;
+        }
+
+        public virtual long? PreviousOrdinationId
+        {
+            get;
+            set;
+        }
+
+        public virtual long? HistoricalOrdinationId
         {
             get;
             set;
@@ -114,7 +125,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
 
-        public virtual Article Article 
+        public virtual ArticleDetails Article 
         {
             get;
             set;

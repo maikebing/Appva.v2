@@ -297,6 +297,24 @@
     background-size:35px;
 }
 
+#ehm .e-panel h3.sign-list-updated {
+    line-height:25px;
+}
+
+#ehm .e-panel h3.sign-list-updated .icon {
+    background:rgb(243,160,2);
+    color:#fff;
+    padding: 2px 12px;
+    border-radius:20px;
+    margin-top:-4px;
+    margin-bottom:-6px;
+    margin-right:6px;
+    font-size:24px;
+    line-height:35px;
+}
+
+    
+
 #ehm .e-panel p.sign-list-summary {
     padding: 15px;
     color:rgb(64,78,104);
@@ -367,4 +385,24 @@
 #ehm .e-panel.error a.button:hover {
     color:rgb(255,255,255);
     background:rgb(128,143,167);
+}
+
+/* Loading */
+.lb-wrap div.loading {
+    display:none;
+    position:absolute;
+    z-index:99999999;
+    top:40px;
+    bottom:0;
+    left:0;
+    right:0;
+    background:rgba(250, 251, 252, 0.5);
+    text-align:center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lb-wrap div.loading img {
+    width:40px;
+    height:40px;
 }

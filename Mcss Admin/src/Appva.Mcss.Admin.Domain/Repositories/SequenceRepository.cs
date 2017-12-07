@@ -47,22 +47,13 @@ using System.Linq;
 
         #endregion
 
-        /// <inheritdoc />
-        public void Update(Sequence entity)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            this.Context.Update<Sequence>(entity);
-        }
-
-        #endregion
-
         #region ISequenceRepository members.
 
         /// <inheritdoc />
         public IList<Sequence> List(IList<long> ordinationsIds = null)
         {   
             // TODO: Check permissions to schedules 
-            var query = this.persistenceContext.QueryOver<Sequence>();
+            var query = this.Context.QueryOver<Sequence>();
 
             if (ordinationsIds != null)
             {

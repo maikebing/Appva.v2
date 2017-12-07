@@ -48,6 +48,13 @@ namespace Appva.Ehm.Models
             set;
         }
 
+        [JsonProperty("historisktOrdinationsId")]
+        public long? HistoricalOrdinationId
+        {
+            get;
+            set;
+        }
+
         [JsonProperty("ordinationstyp")]
         public string OrdinationType
         {
@@ -329,7 +336,7 @@ namespace Appva.Ehm.Models
 
 
         [JsonProperty("tidigareOrdinationsId")]
-        public string PreviousOrdinationId
+        public long? PreviousOrdinationId
         {
             get;
             set;

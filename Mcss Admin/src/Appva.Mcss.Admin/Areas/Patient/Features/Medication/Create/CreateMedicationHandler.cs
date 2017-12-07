@@ -35,14 +35,19 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         private readonly IMedicationService medicationService;
 
         /// <summary>
-        /// The <see cref="IScheduleService"/>
+        /// The <see cref="IScheduleService"/>.
         /// </summary>
         private readonly IScheduleService scheduleService;
 
         /// <summary>
-        /// The <see cref="IDelegationService"/>
+        /// The <see cref="IDelegationService"/>.
         /// </summary>
         private readonly IDelegationService delegationService;
+
+        /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventoryService;
 
         #endregion
 
@@ -65,12 +70,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         public CreateMedicationHandler(
             IScheduleService scheduleService,
             IMedicationService medicationService,
-            IDelegationService delegationService
+            IDelegationService delegationService,
+            IInventoryService inventoryService
             )
         {
             this.scheduleService    = scheduleService;
             this.medicationService  = medicationService;
             this.delegationService  = delegationService;
+            this.inventoryService   = inventoryService;
         }
 
         #endregion
@@ -81,8 +88,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         public override async Task<CreateMedicationModel> Handle(CreateMedicationRequest message)
         {
             var schedule    = this.scheduleService.Find(message.Schedule);
-            var delegations = schedule.ScheduleSettings.DelegationTaxon != null ? 
-                this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false) :
+            var delegations = schedule.ScheduleSettings.DelegationTaxon != null ?
+                this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
+                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }) :
                 null;
                 
             //// If ordination-id is set, the request is for an original packaged medication.
@@ -91,18 +99,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 var medication = await this.medicationService.Find(message.OrdinationId, message.Id);
                 return new CreateMedicationModel
                 {
-                    ScheduleId = message.Schedule,
-                    Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                    OnNeedBasis = medication.Type == OrdinationType.NeedBased,
-                    OnNeedBasisStartDate = medication.Type == OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
-                    OnNeedBasisEndDate = medication.Type == OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
-                    StartDate = medication.Type != OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
-                    EndDate = medication.Type != OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
-                    Name = medication.Article.Name,
-                    Interval = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ? (int)medication.DosageScheme.GetPeriodicity : 0,
-                    Times = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ?
-                        this.GetTimes(times, medication.DosageScheme.Dosages.Select(x => x.Time).ToList()) :
-                        this.GetTimes(times, new List<int>())
+                    ScheduleId              = message.Schedule,
+                    Delegations             = delegations,
+                    OnNeedBasis             = medication.Type == OrdinationType.NeedBased,
+                    OnNeedBasisStartDate    = medication.Type == OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                    OnNeedBasisEndDate      = medication.Type == OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                    StartDate               = medication.Type != OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                    EndDate                 = medication.Type != OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                    Name                    = medication.Article.Name,
+                    Interval                = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ? (int)medication.DosageScheme.GetPeriodicity : 0,
+                    Times                   = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ?
+                                                this.GetTimes(times, medication.DosageScheme.Dosages.Select(x => x.Time).ToList()) :
+                                                this.GetTimes(times, new List<int>()),
+                    Inventories             = schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                    CreateNewInventory      = true
                 };
             }
 
@@ -110,12 +120,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
             return new CreateMedicationModel
             {
                 ScheduleId = message.Schedule,
-                Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+                Delegations = delegations,
                 OnNeedBasis = false,
                 StartDate = DateTime.Now,
                 Name = "Dos-påse",
                 Interval = 1,
-                Times = this.GetTimes(times, new List<int>(){ 8,12,16,20 })
+                Times = this.GetTimes(times, new List<int>(){ 8,12,16,20 }),
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                CreateNewInventory = true
             };
         }
 

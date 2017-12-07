@@ -90,7 +90,7 @@ using System.Web.Mvc;
             get
             {
                 var sequence = this.Sequences.History.OrderBy(x => x.CreatedAt).FirstOrDefault(x => x.IsActive);
-                return this.Medication.PreviousMedications.OrderBy(x => x.OrdinationCreatedAt).FirstOrDefault(x => sequence.Medications.Select(y => y.OrdinationId).ToList().Contains(x.OrdinationId));
+                return this.Medication.PreviousMedications.OrderBy(x => x.OrdinationCreatedAt).FirstOrDefault(x => sequence.Medications.Select(y => y.OrdinationId).ToList().Contains(x.HistoricalOrdinationId.GetValueOrDefault(x.OrdinationId)));
             }
         }
 

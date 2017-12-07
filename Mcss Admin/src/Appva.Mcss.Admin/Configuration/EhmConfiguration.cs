@@ -29,5 +29,16 @@ namespace Appva.Mcss.Admin.Configuration
                 return ConfigurationManager.AppSettings.Get("eHM.ServerUrl");
             }
         }
+
+        /// <summary>
+        /// Gets the shared prescriber code.
+        /// </summary>
+        internal static string SharedLegitimationCode
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("eHM.SharedLegitimationCode");
+            }
+        }
     }
 }

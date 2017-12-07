@@ -48,10 +48,7 @@
 
     </td>
     <td>
-        @if (Model.Medication.Type != Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed
-                                    && Model.Medication.EndsAt.GetValueOrDefault(DateTime.MaxValue) > DateTime.Now
-                                    && (Model.Sequences.History != null || Model.Sequences.History.Count > 0)
-                                    && Model.Sequences.Sequence == null)
+        @if (Model.CanCreateSequence)
         {
             @Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.PatientId, ordinationId = Model.Medication.OrdinationId }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })
         }

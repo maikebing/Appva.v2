@@ -240,11 +240,17 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterGrandId(this ContainerBuilder builder)
         {
-            if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+            if( ApplicationEnvironment.Is.Development )
             {
+                //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+                //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+                
                 builder.RegisterType<MockedGrandIdClient>().As<IGrandIdClient>().InstancePerRequest();
-                //builder.Register(x => new MockedGrandIdClient(userHsaId: "richardhenriksson")).As<IMobileGrandIdClient>().SingleInstance();
-
+            }
+            else if (ApplicationEnvironment.Is.Staging)
+            {
                 var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
                 var options = RestOptions.CreateNew(null, modelBinder);
                 builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();

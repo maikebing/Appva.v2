@@ -8,7 +8,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Resources;
+    using Appva.Core.Utilities;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
@@ -47,9 +51,19 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         private readonly IPatientService patientService;
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
         private readonly ISequenceService sequenceService;
+
+        /// <summary>
+        /// The <see cref="IRoleService"/>.
+        /// </summary>
+        private readonly IRoleService roleService;
+
+        /// <summary>
+        /// The <see cref="IInvetoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventoryService;
 
         #endregion
 
@@ -60,13 +74,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
             IScheduleService scheduleService,
             ITaxonomyService taxonService,
             IPatientService patientService,
-            ISequenceService sequenceService)
+            ISequenceService sequenceService,
+            IRoleService roleService,
+            IInventoryService inventoryService)
         {
             this.medicationService  = medicationService;
             this.scheduleService    = scheduleService;
             this.taxonService       = taxonService;
             this.patientService     = patientService;
             this.sequenceService    = sequenceService;
+            this.roleService        = roleService;
+            this.inventoryService   = inventoryService;
         }
 
         #endregion
@@ -83,8 +101,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         {
             var patient = this.patientService.Get(message.Id);
             var schedule = this.scheduleService.Find(message.ScheduleId);
-            var start = message.OnNeedBasis ? message.OnNeedBasisStartDate.GetValueOrDefault() : message.StartDate.GetValueOrDefault();
-            var end = message.OnNeedBasis ? message.OnNeedBasisEndDate : message.EndDate;
             var delegation = this.taxonService.Load(message.Delegation.GetValueOrDefault());
 
             var medications = new List<Medication>() { };
@@ -108,6 +124,50 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 }
             }
 
+            //// Sequence creation
+            DateTime start = DateTimeUtilities.Now();
+            DateTime? end = null;
+            if (message.Dates.IsNotEmpty() && message.Interval == 0)
+            {
+                DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out start, out end);
+            }
+            if (message.Interval > 0)
+            {
+                message.Dates = null;
+            }
+            if (message.OnNeedBasis)
+            {
+                if (message.OnNeedBasisStartDate.HasValue)
+                {
+                    start = message.OnNeedBasisStartDate.Value;
+                }
+                if (message.OnNeedBasisEndDate.HasValue)
+                {
+                    end = message.OnNeedBasisEndDate.Value;
+                }
+            }
+            else
+            {
+                if (message.StartDate.HasValue)
+                {
+                    start = message.StartDate.Value;
+                }
+                if (message.EndDate.HasValue)
+                {
+                    end = message.EndDate.Value;
+                }
+            }
+
+            Inventory inventory = null;
+            if (schedule.ScheduleSettings.HasInventory)
+            {
+                if (message.CreateNewInventory)
+                {
+                    message.Inventory = this.inventoryService.Create(message.Name, null, null, schedule.Patient);
+                }
+                inventory = this.inventoryService.Find(message.Inventory.GetValueOrDefault());
+            }
+
             this.sequenceService.Create(
                 patient: patient,
                 startDate: start,
@@ -115,13 +175,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 schedule: schedule,
                 description: message.Description,
                 canRaiseAlert: null,
-                interval: 0,
+                interval: message.Interval.GetValueOrDefault(),
                 name: message.Name,
                 rangeInMinutesAfter: message.RangeInMinutesAfter,
                 rangeInMinutesBefore: message.RangeInMinutesBefore,
                 times: string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                 onNeedBasis: message.OnNeedBasis,
-                medications: medications);
+                medications: medications,
+                taxon: message.Delegation.HasValue ? this.taxonService.Load(message.Delegation.GetValueOrDefault()) : null,
+                requiredRole: message.Nurse ? this.roleService.Find(RoleTypes.Nurse) : null,
+                dates: message.Dates,
+                inventory: inventory);
+
 
             return new DetailsMedicationRequest { Id = patient.Id, OrdinationId = medications.FirstOrDefault().OrdinationId };
         }

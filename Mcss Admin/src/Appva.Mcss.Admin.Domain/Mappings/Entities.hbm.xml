@@ -806,7 +806,7 @@
     <property name="Purpose" />
     <property name="DosageText1" />
     <property name="DosageText2" />
-    <component name="Article" class="Article">
+    <component name="Article" class="ArticleDetails">
       <property name="Name" />
       <property name="Form" />
       <property name="Strength" />

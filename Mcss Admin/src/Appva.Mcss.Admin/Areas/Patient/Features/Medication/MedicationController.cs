@@ -171,7 +171,75 @@ using Appva.Mcss.Admin.Application.Security;
 
         #endregion
 
-        #region Select schedule 
+        #region Update
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("update/{ordinationId}")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
+        public ActionResult Update(UpdateMedicationRequest request)
+        {
+            try
+            {
+                var response = this.mediator.Send(request);
+                return this.View(response);
+            }
+            catch (EhmException e)
+            {
+                return this.HandleError(e, request.Id);
+            }
+        }
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("update/{ordinationId}")]
+        [HttpPost]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        public async Task<ActionResult> Update(UpdateMedicationModel request)
+        {
+            try
+            {
+                var response = await this.mediator.SendAsync(request);
+                return this.RedirectToAction("Details", response);
+            }
+            catch (EhmException e)
+            {
+                return this.HandleError(e, request.Id);
+            }
+        }
+
+        #endregion
+
+        #region Add medication to sequence
+
+        /// <summary>
+        /// Adds an medication to an existing sequence
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{ordinationId}/sequence/{sequenceId:guid}/add")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
+        public async Task<ActionResult> AddMedicationToSequence(AddMedicationToSequence request)
+        {
+            try
+            {
+                await this.mediator.SendAsync(request);
+                return this.Redirect(this.Request.UrlReferrer.ToString());
+            }
+            catch (EhmException e)
+            {
+                return this.HandleError(e, request.Id);
+            }
+        }
+
+        #endregion
+
+        #region Select schedule
 
         /// <summary>
         /// Details for a medication

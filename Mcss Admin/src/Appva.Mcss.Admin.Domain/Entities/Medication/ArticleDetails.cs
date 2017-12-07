@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Article
+    public class ArticleDetails
     {
         #region Properties.
 

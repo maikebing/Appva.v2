@@ -8,7 +8,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using Appva.Common.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,7 +17,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Dosage : AggregateRoot<Dosage>
+    public class Dosage : AggregateRoot
     {
         #region Constructor.
 

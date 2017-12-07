@@ -46,6 +46,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
+        /// The <see cref="IArticleService"/>
+        /// </summary>
+        private readonly IArticleService articleService;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
@@ -72,13 +77,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="roleService"></param>
         /// <param name="settingsService"></param>
         /// <param name="auditing"></param>
-        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing)
+        public CreateSequenceFormHandler(
+            IPersistenceContext context, 
+            IInventoryService inventories, 
+            IRoleService roleService, 
+            ISettingsService settingsService, 
+            IAuditService auditing,
+            IArticleService articleService)
         {
             this.context         = context;
             this.inventories     = inventories;
             this.roleService     = roleService;
             this.auditing        = auditing;
             this.settingsService = settingsService;
+            this.articleService  = articleService;
         }
 
         #endregion
@@ -98,16 +110,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (message.IsOrderable)
             {
-                var article = Article.CreateNew(
+                var article = this.articleService.CreateArticle(
                     sequence.Name, 
                     sequence.Description, 
                     sequence.Patient, 
-                    sequence.Schedule.ScheduleSettings.ArticleCategory, 
-                    ArticleStatus.NotStarted
-                );
-
-                this.context.Save(article);
-                this.auditing.Create(sequence.Patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
+                    sequence.Schedule.ScheduleSettings.ArticleCategory);
                 sequence.Article = article;
             }
 

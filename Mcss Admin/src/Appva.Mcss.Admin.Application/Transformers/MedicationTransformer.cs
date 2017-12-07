@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Application.Transformers
 
         internal static Medication From(Ordination ehmOrdination)
         {
-            var article       = new Article
+            var article       = new ArticleDetails
             {
                 ArticleNumber = ehmOrdination.ArticleNumber,
                 Atc           = ehmOrdination.ArticleAtc,
@@ -64,18 +64,18 @@ namespace Appva.Mcss.Admin.Application.Transformers
             var history = ehmOrdination.PreviousOrdinations != null ? ehmOrdination.PreviousOrdinations.Select(x => From(x)).ToList() : new List<Medication>();
             return new Medication
             {
-                Article             = article,
-                DosageText1         = ehmOrdination.TreatmentDosageText1,
-                DosageText2         = ehmOrdination.TreatmentDosageText2,
-                OrdinationCreatedAt = ehmOrdination.OrdinationCreatedAt,
-                OrdinationId        = ehmOrdination.Id,
-                Prescriber          = prescriber,
-                Purpose             = ehmOrdination.TreatmentPurpose,
+                Article                 = article,
+                DosageText1             = ehmOrdination.TreatmentDosageText1,
+                DosageText2             = ehmOrdination.TreatmentDosageText2,
+                OrdinationCreatedAt     = ehmOrdination.OrdinationCreatedAt,
+                OrdinationId            = ehmOrdination.Id,
+                Prescriber              = prescriber,
+                Purpose                 = ehmOrdination.TreatmentPurpose,
                 OrdinationStartsAt      = ehmOrdination.OrdinationStartsAt,
-                Status              = ehmOrdination.Status,
-                TreatmentEndsAt     = ehmOrdination.TreatmentEndsAt,
-                TreatmentStartsAt   = ehmOrdination.TreatmentStartsAt,
-                Type                = OrdinationTypeExtension.FromString(ehmOrdination.OrdinationType),
+                Status                  = ehmOrdination.Status,
+                TreatmentEndsAt         = ehmOrdination.TreatmentEndsAt,
+                TreatmentStartsAt       = ehmOrdination.TreatmentStartsAt,
+                Type                    = OrdinationTypeExtension.FromString(ehmOrdination.OrdinationType),
                 OrdinationValidUntil    = ehmOrdination.OrdinationValidUntil,
                 CanceledAt              = ehmOrdination.CanceledAt,
                 CancellationComment     = ehmOrdination.CancellationComment,
@@ -90,7 +90,9 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 RemainingExpiditions    = ehmOrdination.RemainingExpiditions,
                 LastExpiditedAt         = ehmOrdination.LastExpiditedAt,
                 LastExpiditedNplPackId  = ehmOrdination.LastExpiditedNplPackId,
-                LastExpiditedAmount     = ehmOrdination.LastExpiditedAmount
+                LastExpiditedAmount     = ehmOrdination.LastExpiditedAmount,
+                PreviousOrdinationId    = ehmOrdination.PreviousOrdinationId,
+                HistoricalOrdinationId  = ehmOrdination.HistoricalOrdinationId
             };
         }
 

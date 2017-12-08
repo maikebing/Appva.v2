@@ -71,7 +71,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
             sequence.Medications.Add(medication);
             this.sequenceService.Update(sequence);
 
-            this.audit.Update(sequence.Patient, "lade till medicinering {0} (ref. {1}) till insats '{2}' på signeringslista (ref. {4})", medication.Article.Name, medication.Id, sequence.Name, sequence.Id);
+            this.audit.Update(sequence.Patient, "lade till medicinering {0} (ref. {1}) till insats '{2}' på signeringslista (ref. {3}) utan ändringar", medication.Article.Name, medication.Id, sequence.Name, sequence.Id);
 
             return new DetailsMedicationRequest
             {

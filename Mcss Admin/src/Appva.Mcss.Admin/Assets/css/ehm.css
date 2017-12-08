@@ -313,6 +313,12 @@
     line-height:35px;
 }
 
+#ehm .e-panel .controls {
+    padding:15px;
+    margin-bottom:12px;
+    text-align:right;
+}
+
     
 
 #ehm .e-panel p.sign-list-summary {

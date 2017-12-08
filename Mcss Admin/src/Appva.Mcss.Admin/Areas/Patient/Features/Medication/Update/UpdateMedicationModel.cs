@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMedicationModel : IAsyncRequest<DetailsMedicationRequest>
+    public class UpdateMedicationModel : CreateOrUpdateSequence, IAsyncRequest<DetailsMedicationRequest>
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -44,12 +44,12 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the sequence identifier.
+        /// Gets or sets the previous sequence identifier.
         /// </summary>
         /// <value>
-        /// The sequence identifier.
+        /// The previous sequence identifier.
         /// </value>
-        public Guid SequenceId
+        public Guid PreviousSequenceId
         {
             get;
             set;

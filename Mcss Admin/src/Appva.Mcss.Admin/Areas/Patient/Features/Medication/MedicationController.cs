@@ -180,11 +180,11 @@ using Appva.Mcss.Admin.Application.Security;
         [Route("update/{ordinationId}")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
-        public ActionResult Update(UpdateMedicationRequest request)
+        public async Task<ActionResult> Update(UpdateMedicationRequest request)
         {
             try
             {
-                var response = this.mediator.Send(request);
+                var response = await this.mediator.SendAsync(request);
                 return this.View(response);
             }
             catch (EhmException e)

@@ -613,6 +613,8 @@
     <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationModelHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationRequestHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -1700,6 +1702,7 @@
     <Content Include="Areas\Patient\Features\Medication\Overview\Overview.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorSithsRequired.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTable.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

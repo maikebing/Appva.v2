@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMedicationRequest : IRequest<UpdateMedicationModel>
+    public class UpdateMedicationRequest : IAsyncRequest<UpdateMedicationModel>
     {
         /// <summary>
         /// Gets or sets the identifier.

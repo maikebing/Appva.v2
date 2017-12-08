@@ -186,7 +186,6 @@ namespace Appva.Mcss.Admin.Application.Services
                         history.AddRange(s);
                     }
                 }
-                //var sequence = 
                 var model = new SequenceMedicationCompareModel {
                     Sequence = sequences.FirstOrDefault(x => x.Medications.Any(y => y.OrdinationId == m.OrdinationId)),
                     History = history.Distinct().ToList()

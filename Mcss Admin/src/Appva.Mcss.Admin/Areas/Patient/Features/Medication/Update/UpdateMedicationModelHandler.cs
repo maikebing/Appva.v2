@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
     using System;
@@ -18,6 +19,9 @@ namespace Appva.Mcss.Admin.Areas.Handlers
     using System.Web.Mvc;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Core.Utilities;
+    using Appva.Mcss.Admin.Application.Extensions;
+    using Appva.Core.Resources;
 
     #endregion
 
@@ -48,6 +52,16 @@ namespace Appva.Mcss.Admin.Areas.Handlers
         /// </summary>
         private readonly IInventoryService inventoryService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonService;
+
+        /// <summary>
+        /// The <see cref="IRoleService"/>
+        /// </summary>
+        private readonly IRoleService roleService;
+
         #endregion
 
         #region Constructor.
@@ -56,12 +70,16 @@ namespace Appva.Mcss.Admin.Areas.Handlers
             IMedicationService medicationService,
             ISequenceService sequenceService,
             IDelegationService delegationService,
-            IInventoryService inventoryService)
+            IInventoryService inventoryService,
+            ITaxonomyService taxonService,
+            IRoleService roleService)
         {
             this.medicationService  = medicationService;
             this.sequenceService    = sequenceService;
             this.delegationService  = delegationService;
             this.inventoryService   = inventoryService;
+            this.taxonService       = taxonService;
+            this.roleService        = roleService;
         }
 
         #endregion
@@ -76,18 +94,93 @@ namespace Appva.Mcss.Admin.Areas.Handlers
 
         #region RequestHandler overrides.
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        /// <inheritdoc/>
         public override async Task<DetailsMedicationRequest> Handle(UpdateMedicationModel message)
         {
-            var medication       = await this.medicationService.Find(message.OrdinationId, message.PatientId);
+            var medication       = await this.medicationService.Find(message.OrdinationId, message.Id);
             var previousSequence = this.sequenceService.Find(message.PreviousSequenceId);
 
+            DateTime start = DateTimeUtilities.Now();
+            DateTime? end = null;
+            if (message.Dates.IsNotEmpty() && message.Interval == 0)
+            {
+                DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out start, out end);
+            }
+            if (message.Interval > 0)
+            {
+                message.Dates = null;
+            }
+            if (message.OnNeedBasis)
+            {
+                if (message.OnNeedBasisStartDate.HasValue)
+                {
+                    start = message.OnNeedBasisStartDate.Value;
+                }
+                if (message.OnNeedBasisEndDate.HasValue)
+                {
+                    end = message.OnNeedBasisEndDate.Value;
+                }
+            }
+            else
+            {
+                if (message.StartDate.HasValue)
+                {
+                    start = message.StartDate.Value;
+                }
+                if (message.EndDate.HasValue)
+                {
+                    end = message.EndDate.Value;
+                }
+            }
+            
+            //// If startdate is today, time must be included.
+            start = start.Date == DateTime.Now.Date ? DateTime.Now : start;
+
+            Inventory inventory = null;
+            if (previousSequence.Schedule.ScheduleSettings.HasInventory)
+            {
+                if (message.CreateNewInventory)
+                {
+                    message.Inventory = this.inventoryService.Create(message.Name, null, null, previousSequence.Schedule.Patient);
+                }
+                inventory = this.inventoryService.Find(message.Inventory.GetValueOrDefault());
+            }
+
             //// End the previous sequence.
-            previousSequence.EndDate = message.StartDate.HasValue ? message.StartDate.GetValueOrDefault().AddDays(-1) : null as DateTime?;
+            //// If change should be done from today it must be valid until the exact time to not miss already created events.
+            previousSequence.EndDate = start.Date == DateTime.Now.Date ? start : start.AddDays(-1);
+
+            this.sequenceService.Update(previousSequence);
+
+            this.sequenceService.Create(
+                patient: previousSequence.Patient,
+                startDate: start,
+                endDate: end,
+                schedule: previousSequence.Schedule,
+                description: message.Description,
+                canRaiseAlert: null,
+                interval: message.Interval.GetValueOrDefault(),
+                name: message.Name,
+                rangeInMinutesAfter: message.RangeInMinutesAfter,
+                rangeInMinutesBefore: message.RangeInMinutesBefore,
+                times: string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
+                onNeedBasis: message.OnNeedBasis,
+                medications: new List<Medication>() { medication },
+                taxon: message.Delegation.HasValue ? this.taxonService.Load(message.Delegation.GetValueOrDefault()) : null,
+                requiredRole: message.Nurse ? this.roleService.Find(RoleTypes.Nurse) : null,
+                dates: message.Dates,
+                inventory: inventory);
+            
+
 
             return new DetailsMedicationRequest
             {
-                Id = message.PatientId,
+                Id = message.Id,
                 OrdinationId = message.OrdinationId
             };
         }

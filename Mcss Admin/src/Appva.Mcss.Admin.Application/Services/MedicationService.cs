@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var extracted = medications.SelectMany(x => x.PreviousMedications).ToList();
             var all = medications.Concat(extracted).ToList();
-            var ordinationIds = medications.Select(y => y.OrdinationId).ToList();
+            var ordinationIds = medications.Select(y => y.HistoricalOrdinationId.GetValueOrDefault(y.OrdinationId)).ToList();
             foreach (var m in medications.Where(x => x.PreviousMedications.Count > 0))
             {
                 ordinationIds.AddRange(m.PreviousMedications.Select(x => x.OrdinationId).ToList());
@@ -187,7 +187,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     }
                 }
                 var model = new SequenceMedicationCompareModel {
-                    Sequence = sequences.FirstOrDefault(x => x.Medications.Any(y => y.OrdinationId == m.OrdinationId)),
+                    Sequence = sequences.FirstOrDefault(x => x.Medications.Any(y => y.OrdinationId == m.HistoricalOrdinationId.GetValueOrDefault(m.OrdinationId))),
                     History = history.Distinct().ToList()
                 };
                 retval.Add(m.OrdinationId,model);

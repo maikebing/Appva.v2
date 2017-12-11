@@ -600,7 +600,7 @@
     <Content Include="Areas\Backoffice\Features\Ehm\Index\Index.cshtml" />
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributes.cshtml" />
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMock.cshtml" />
-    <None Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2017.cshtml" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationRequest.cs" />
@@ -1703,6 +1703,7 @@
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorSithsRequired.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTable.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

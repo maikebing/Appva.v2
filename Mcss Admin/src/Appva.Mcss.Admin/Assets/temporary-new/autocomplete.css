@@ -1,0 +1,43 @@
+/** Autocomplete
+* TODO: Styling utan jQuery ui
+================================================================================ */
+
+/* styling on jQuery UI classes
+ * TODO: Prefix .ui-rules with .autocomplete;
+-------------------------------------------------------------- */
+.ui-menu {
+	padding-left:0;
+	border:1px solid #efefef;
+	border:1px solid var(--c-light-grey);
+	list-style-type:none;
+	background:#fff;
+}
+.ui-autocomplete {
+	position:absolute;
+	top:0;
+	left:0;
+}
+.ui-menu-item-wrapper:hover,
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+.ui-button:hover,
+.ui-button:focus {
+	background:#ebf0f8;
+	background:var(--c-baby-blue);
+}
+.ui-helper-hidden-accessible {
+	position:absolute;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+	clip:rect(1px, 1px, 1px, 1px);
+	padding:0;
+	border:0;
+}

@@ -1,114 +1,672 @@
 ﻿@model CreateSequenceForm
-@{ SetTitle("Skapa"); }
-<div class="lb-panel lb-validate-form" data-valclass="SequenceCreate">
-	<div class="std-panel activity-edit std-form">
-        @using (Html.BeginForm())
-        {
-        <div class="row cf">
-            <div class="form-section col">
-                <h3 class="section-title">Ange insats</h3>
-                    @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
-                    @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
-                    @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
-                    @if (Model.Delegations.Count() > 0)
-                    {
-                    <div class="select">
-                        @Html.LabelFor(m => m.Delegation)
-                        @Html.DropDownListFor(
-                            m => m.Delegation,
-                            new SelectList(Model.Delegations, "Value", "Text", Model.Delegation),
-                            "Välj delegering ...",
-                            new { @class = "delegation" }
-                        )
-                        @Html.ValidationMessageFor(m => m.Delegation)
-	                </div>
-                }
-                
+@using System.Linq.Expressions
+@{ 
+    SetTitle("Skapa");
+    Layout = "~/Areas/Patient/Features/Shared/_NewCssLayout.cshtml";   
+}
 
-                    @if (Model.Inventories != null)
-                    {
-                        <div class="sequence-inventory">
-                            <h3 class="section-title">Ange förbrukningsjournal</h3>
-                            <div class="row toggle-group cf">
-                                <div class="radio col">
-                                    @Html.RadioButtonFor(m => m.CreateNewInventory, true, new { @id = "inventory-type-1", @class = "toggle", @data_toggletarget = "toggle-inventory-target-1", @data_togglegroup = "toggle-inventory" })
-                                    <label for="inventory-type-1">Skapa ny</label>
-                                </div>
-                                <div class="radio col">
-                                    @Html.RadioButtonFor(m => m.CreateNewInventory, false, new { @id = "inventory-type-2", @class = "toggle", @data_toggletarget = "toggle-inventory-target-2", @data_togglegroup = "toggle-inventory" })
-                                    <label for="inventory-type-2">Välj befintlig</label>
-                                </div>
-                            </div>
-                            <div class="toggle-inventory-target-1 toggle-inventory">
-                            </div>
-                            <div class="toggle-inventory-target-2 toggle-inventory">
-                                @Html.DropDownListFor(
-                                        m => m.Inventory,
-                                        new SelectList(Model.Inventories, "Value", "Text", Model.Inventory),
-                                        "Välj förbrukningsjournal ...",
-                                        new { @class = "inventories" })
-            </div>
-                        </div>
-                    }
-                </div>
-            <div class="form-section wide-section col">
-                <h3 class="section-title">Ange när det ska ges</h3>
-                        <div class="row toggle-group d cf">
-					<div class="radio col">
-                                @Html.RadioButtonFor(m => m.OnNeedBasis, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-1">Stående</label>
-					</div>
-					<div class="radio col">
-                                @Html.RadioButtonFor(m => m.OnNeedBasis, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-2">Vid behov</label>
-					</div>
-				</div>
-                        <div class="toggle-target toggle-target-1 toggle-in-need-based">
-					<div class="row cf">
-						<div class="select col">
-                            @Html.LabelFor(m => m.Interval)
-                            @Html.DropDownListFor(
-                                m => m.Interval,
-                                new SelectList(Model.Intervals, "Value", "Text", Model.Interval),
-                                "Välj frekvens ...",
-                                new { @class = "freq-select" }
-                            )
-                            @Html.ValidationMessageFor(m => m.Interval)
-						</div>
-						<div class="text freq-show col">
-                            <a class="btn btn-mdatepick check-datetime-create" href="#">Välj dagar</a>
-                            @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
-						</div>
-                                @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-create").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                                @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-						</div>
-					<div class="checkbox-grid">
-						<strong class="label">Klockslag:</strong>
-                                @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList().Validate().Build()
-                            <input id="TestTimes" name="TestTimes" type="hidden" />
-						</div>
-					<div class="text mini label-group">
-						<strong class="label">Ges inom:</strong>
-						<label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter innan</label>
-						@Html.ValidationMessageFor(m => m.RangeInMinutesBefore)
-                        <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter efter</label>
-					    @Html.ValidationMessageFor(m => m.RangeInMinutesAfter)
-                    </div>
-				</div>
-                        <div class="toggle-target toggle-target-2 toggle-in-need-based">
-					<div class="row cf">
-                                @Html.FormGroup(x => x.OnNeedBasisStartDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                                @Html.FormGroup(x => x.OnNeedBasisEndDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-					</div>
-				</div>
-            </div>
+@helper NewFormHeader(string title, string description) {
+    <div class="form-section-header">
+        <div class="form-section-header__number"></div>
+        <div class="form-section-header__text">
+            <h2 class="form-section-header__heading">@title</h2>
+            <div class="form-section-header__description">@description</div>
         </div>
-	    <div class="submit">
-            @Html.AntiForgeryToken()
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
-	    </div>
-    }
     </div>
-    
+}
+
+
+<div class="section section--hspace section--vspace section--bluetone">
+    <h2>Lägg till insats</h2>
+	<div>
+        @using (Html.BeginForm("Create", "Sequence", FormMethod.Post, new { @class = "validate" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="grid grid--flowing grid--align-top" data-columns="m:1 l:2">
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Om insatsen", "Beskriv insatsen och vilka som är behöriga att ge den.")
+                        @Html.FormGroup(x => x.Name, "form-controls").Label("Insats").TextBox("T.ex. dosett, insulin, smörjning").Validate().Build()
+                        @Html.FormGroup(x => x.Instruction, "form-controls form-controls--text").Label("Instruktion").TextArea(null, new { @rows = "6", @cols = "30" }).Validate().Build()
+                        @if (Model.Delegations.Count() == 0)
+                        {
+                            <div class="form-controls form-controls--select form-controls--full-margin" id="required-delegation-container" data-toggle-by-input="disable">
+                                @Html.LabelFor(x => x.DelegationId, "Kräver delegering för")
+                                @Html.DropDownListFor(x => x.DelegationId, new SelectList(/*Model.Delegations*/
+                                    new List<SelectListItem> { new SelectListItem { Value = "p", Text = "sdf" } }, "Value", "Text", Model.DelegationId),
+                                    "Välj delegering ...",
+                                    new {  @class = "delegation" }
+                                )
+                                @Html.ValidationMessageFor(x => x.DelegationId)
+                            </div>
+                        }
+                        @Html.FormGroup(x => x.IsRequiredRole, "form-controls form-controls--checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "toggle-target", @data_toggle_targets="[\"required-delegation-container\"]" }).Validate().Build()
+                    </div>
+                </div>
+                @if (Model.Inventories != null)
+                {
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Om insatsen", "Beskriv insatsen och vilka som är behöriga att ge den.")
+                        <fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["create-new-inventory-panel", "choose-inventory-panel"]' aria-controls="@InventoryState.New @InventoryState.Use">
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.InventoryType, InventoryState.New, new { @checked = "checked", id = "create-new-inventory" })
+                                @Html.Label("create-new-inventory", "Skapa ny")
+                            </div>
+                            <div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.InventoryType, InventoryState.Use, new { id = "choose-inventory" })
+                                @Html.Label("choose-inventory", "Välj befintlig")
+                            </div>
+                        </fieldset>
+                        <div id="create-new-inventory-panel" data-toggle-values="@InventoryState.New" data-toggle-by-input="show" class="section" style="display: none;"></div>
+                        <div id="choose-inventory-panel"     data-toggle-values="@InventoryState.Use" data-toggle-by-input="show" class="section" style="display: none;">
+                            @Html.DropDownListFor(x => x.InventoryId, new SelectList(Model.Inventories, "Value", "Text", Model.InventoryId), "Välj förbrukningsjournal ...", new { @class = "inventories" })
+                        </div>
+                    </div>
+                </div>
+                }
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Insatsens start och slut", "Ange om insatsen ska ges vid behov eller under en viss tidsperiod.")
+                        <fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["date-range", "repeating", "times", "choose-dates"]'>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.Type, SequenceType.Scheduled, new { @checked = "checked", id = "id-repeating-" + SequenceType.Scheduled.GetHashCode() })
+                                @Html.Label("id-repeating-" + SequenceType.Scheduled.GetHashCode(), "Stående")
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.Type, SequenceType.DateRange, new { id = "id-choose-dates-" + SequenceType.DateRange.GetHashCode() })
+                                @Html.Label("id-choose-dates-" + +SequenceType.DateRange.GetHashCode(), "Specifika datum")
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.Type, SequenceType.NeedBased, new { id = "id-when-needed-" + SequenceType.NeedBased.GetHashCode() })
+                                @Html.Label("id-when-needed-" + SequenceType.NeedBased.GetHashCode(), "Vid behov")
+							</div>
+						</fieldset>
+                        <div id="date-range" data-toggle-values="@SequenceType.DateRange" data-toggle-by-input="hide" class="section">
+							<div class="grid grid--align-center">
+								<div data-size="xs:24 s:10 m:8 l:10 xl:8">
+									<!--<div class="form-controls date-picker">-->
+                                        @Html.FormGroup(x => x.StartDate, "form-controls date-picker").AsteriskLabel("Startdatum", new { @class = "required-indicator" }).TextBox("ÅÅÅÅ-MM-DD", new 
+                                        { 
+                                            @class = "datepicker", 
+                                            @data_datepicker_limit="future", 
+                                            @data_rule_datelimit="future", 
+                                            @data_rule_date="true", 
+                                            @autocomplete="off"
+                                        }).Validate().Build()
+										<!--<label for="from-date123">Startdatum <span class="required-indicator">*</span></label>
+										<input id="from-date123" data-datepicker-limit="future" data-rule-datelimit="future" class="datepicker" data-rule-date="true" autocomplete="off" placeholder="ÅÅÅÅ-MM-DD" name="from-date123" />-->
+									<!--</div>-->
+								</div>
+								<div>
+								<svg class="icon icon--e icon--separator icon--separator-offset">
+									<use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon" />
+								</svg>
+								</div>
+								<div data-size="xs:24 s:10 m:8 l:10 xl:8">
+									<div class="form-controls date-picker">
+										<label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Slutdatum 
+                                            <span class="tooltip" tabindex="0" aria-describedby="no-end-date">
+											    <svg class="icon icon--round icon--info" aria-hidden="true">
+												    <use xlink:href="/project/images/icons/icon.sprite.svg#questionmark-icon" />
+											    </svg>
+											    <span id="no-end-date" class="tooltip__text">
+												    Ska insatsen ske tills vidare, lämna fältet tomt
+											    </span>
+										    </span>
+                                        </label>
+                                        @Html.FormGroup(x => x.EndDate, "").TextBox("Tills vidare", new
+                                        {
+                                            @class                 = "datepicker",
+                                            @data_datepicker_limit = "future",
+                                            @data_rule_datelimit   = "future",
+                                            @data_rule_date        = "true",
+                                            @data_rule_greaterthan = "#StartDate",
+                                            @data_msg_greaterthan  = "Slutdatum måste vara senare än startdatumet",
+                                            @aria_describedby      = "no-end-date",
+                                            @autocomplete          = "off"
+                                        }).Validate().Build()
+										
+										<!--<input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657E" data-datepicker-limit="future"
+											data-rule-datelimit="future"
+											class="datepicker"
+											autocomplete="off"
+											placeholder="Tills vidare"
+											name="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
+											data-rule-greaterthan="#from-date123"
+											data-rule-date="true"
+											data-msg-greaterthan="Slutdatum måste vara senare än startdatumet"
+											aria-describedby="no-end-date"
+										/>-->
+									</div>
+								</div>
+							</div>
+							<div class="form-controls form-controls--checkbox inliner inliner--align-center">
+                                @Html.CheckBoxFor(x => x.IsPeriodWithTimeOfDay, new { @class = "toggle-target", @data_toggle_targets = "[\"exact-interval\"]" });
+								@Html.LabelFor(x => x.IsPeriodWithTimeOfDay, "Ange klockslag för start och slut?")
+                                <!--<input type="checkbox" name="id58a574bc9d0d6" id="id58a574bc92342" class="toggle-target" data-toggle-targets='["exact-interval"]' />
+								<label for="id58a574bc92342">Ange klockslag för start och slut?</label>-->
+							</div>
+							<div id="exact-interval" data-toggle-by-input="show" class="section section--blue section--narrow section--bubble section--hspace section--vspace">
+								<fieldset class="timepicker">
+									<legend>Start:</legend>
+                                    <!--<div class="form-controls">-->
+                                        @Html.FormGroup(x => x.StartHour, "form-controls").AsteriskLabel("Timmar", new
+                                        {
+                                            @class = "visually-hidden"
+                                        }).TextBox(null, new 
+                                        {
+                                            @type = "number",
+                                            @data_direction = "vertical",
+                                            @max = "23", 
+                                            @min = "0", 
+                                            @size = "2", 
+                                            @required = "required"
+                                        }).Validate().Build();
+                                        <!--<label class="visually-hidden" for="id5a281574b6560">Timmar <b class="required-indicator">*</b></label>
+                                        <input type="number" id="id5a281574b6560" name="id5a281574b6560" value="0" data-direction="vertical" max="23" min="0" size="2" required="required" />
+                                    </div>-->
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="/project/images/icons/icon.sprite.svg#colon-icon" />
+									</svg>
+                                    @Html.FormGroup(x => x.StartMinute, "form-controls").AsteriskLabel("Minuter", new
+                                        {
+                                            @class = "visually-hidden"
+                                        }).TextBox(null, new 
+                                        {
+                                            @type = "number",
+                                            @data_direction = "vertical",
+                                            @step = "5",
+                                            @max = "59", 
+                                            @min = "0", 
+                                            @size = "2", 
+                                            @required = "required"
+                                        }).Validate().Build();
+                                    <!--<div class="form-controls">
+                                        <label class="visually-hidden" for="id5a281574b7e25">Minuter <b class="required-indicator">*</b></label>
+                                        <input type="number" id="id5a281574b7e25" name="id5a281574b7e25" value="0" data-direction="vertical" step="5" max="59" min="0" size="2" required="required" />
+                                    </div>-->
+								</fieldset>
+								<fieldset class="timepicker">
+									<legend>Slut:</legend>	
+                                    @Html.FormGroup(x => x.EndHour, "form-controls").AsteriskLabel("Timmar", new
+                                        {
+                                            @class = "visually-hidden"
+                                        }).TextBox(null, new 
+                                        {
+                                            @type = "number",
+                                            @data_direction = "vertical",
+                                            @max = "23", 
+                                            @min = "0", 
+                                            @size = "2", 
+                                            @required = "required"
+                                        }).Validate().Build();
+                                    <!--<div class="form-controls">
+                                        <label class="visually-hidden" for="id5a281574b970b">Timmar <b class="required-indicator">*</b></label>
+                                        <input type="number" id="id5a281574b970b" name="id5a281574b970b" value="23" data-direction="vertical" max="23" min="0" size="2" required="required" />
+                                    </div>-->
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="/project/images/icons/icon.sprite.svg#colon-icon" />
+									</svg>	
+                                    @Html.FormGroup(x => x.EndMinute, "form-controls").AsteriskLabel("Minuter", new
+                                        {
+                                            @class = "visually-hidden"
+                                        }).TextBox(null, new 
+                                        {
+                                            @type = "number",
+                                            @data_direction = "vertical",
+                                            @step = "5",
+                                            @max = "59", 
+                                            @min = "0", 
+                                            @size = "2", 
+                                            @required = "required"
+                                        }).Validate().Build();
+                                   <!-- <div class="form-controls">
+                                        <label class="visually-hidden" for="id5a281574bb002">Minuter <b class="required-indicator">*</b></label>
+                                        <input type="number" id="id5a281574bb002" name="id5a281574bb002" value="55" data-direction="vertical" step="5" max="59" min="0" size="2" required="required" />
+                                    </div>-->
+
+								</fieldset>
+							</div>
+						</div>
+                        <div id="choose-dates" data-toggle-values="@SequenceType.DateRange" data-toggle-by-input="show" class="section">
+                            <div class="grid grid--align-bottom">
+	                            <div data-size="xs:24 s:10 m:8 l:12 xl:8">
+		                            <div class="form-controls date-picker">
+			                            <label for="chosen-date">Datum att lägga till</label>
+			                            <input
+				                            id="chosen-date"
+				                            data-datepicker-limit="future"
+				                            data-datepicker-selected-dates='["2017-04-18"]'
+				                            class="datepicker"
+				                            name="chosen-date"
+				                            data-input-value-list="choose-date-value-list-12312"
+				                            data-input-value-list-button="button-56237BDFD292"
+				                            autocomplete="off"
+			                            />
+		                            </div>
+	                            </div>
+	                            <div data-size="xs:24 s:10 m:8 l:10 xl:8">
+		                            <div class="form-controls">
+			                            <button class="button"
+			                            type="submit"
+			                            id="button-56237BDFD292"
+			                            data-soft-post="chosen-date">
+				                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Lägg till
+			                            </button>
+		                            </div>
+	                            </div>
+                            </div>
+                            <ul class="input-value-list" id="choose-date-value-list-12312">
+	                            <li>
+		                            2017-04-18<button class="button button--small" type="submit" value="remove-2017-04-12">
+			                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>
+			                            Ta bort
+		                            </button>
+		                            <input value="2017-04-18" id="choose-date-value-list-12312_hidden-input_0" name="choose-date-value-list-12312_hidden-input_0" type="hidden" data-input-value-list-added-by="chosen-date" />
+	                            </li>
+                            </ul>
+						</div>
+                    </div>
+                </div>
+                <div data-size="s:24">
+					<div id="repeating" class="section section--hspace section--vspace section--card" data-toggle-values="@SequenceType.Scheduled" data-toggle-by-input="show">
+						 @NewFormHeader("Repetera", "Ange om insatsen ska upprepas med ett visst dags- eller veckointervall.")
+						<fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["by-week", "by-day"]'>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.Type, Repetition.Daily, new { @checked = "checked", id = "id-repetition-" + Repetition.Daily.GetHashCode() })
+                                @Html.Label("id-repetition-" + Repetition.Daily.GetHashCode(), "Dagligen")
+								<!--<input type="radio" checked="checked" name="id58a6f4f8a0141" id="id58a6f4f8a0146" value="by-day" />
+								<label for="id58a6f4f8a0146">Dagligen</label>-->
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.RadioButtonFor(x => x.Type, Repetition.Weekly, new { @checked = "checked", id = "id-repetition-" + Repetition.Weekly.GetHashCode() })
+                                @Html.Label("id-repetition-" + Repetition.Weekly.GetHashCode(), "Veckovis")
+								<!--<input type="radio" name="id58a6f4f8a0141" id="id58a6f4f8a014b" value="by-week" />
+								<label for="id58a6f4f8a014b">Veckovis</label>-->
+							</div>
+						</fieldset>
+						<div id="by-day" data-toggle-values="@Repetition.Daily" data-toggle-by-input="show" class="flex flex flex--align-center flex--align-middle flex--margin-bottom">
+							<span class="label" aria-hidden="true">Var</span>
+							<div class="form-controls form-controls--no-margin">
+								<label for="id58945264977f6" class="visually-hidden">Antal dagar mellan insats</label>
+								<input
+									id="id58945264977f6"
+									name="id58945264977f6"
+									required="required"
+									size="3"
+									type="number"
+									min="1"
+									value="1"
+									data-direction="vertical"
+									aria-required="true"
+									aria-describedby="every-day"
+									/>
+							</div>
+							<span class="label" aria-hidden="true">:e dag</span>
+							<span class="tooltip" tabindex="0" aria-describedby="every-day">
+									<svg class="icon icon--round icon--info" aria-hidden="true">
+										<use xlink:href="/project/images/icons/icon.sprite.svg#questionmark-icon" />
+									</svg>
+									<span id="every-day" class="tooltip__text">
+										Ska en insats ske varje dag: Välj 1.
+								</span>
+							</span>
+						</div>
+						<div id="by-week" data-toggle-values="by-week" data-toggle-by-input="show">
+							<div class="flex flex flex--align-center flex--align-middle flex--margin-bottom">
+								<span class="label" aria-hidden="true">Var</span>
+								<div class="form-controls form-controls--no-margin">
+									<label for="id58945264977fa" class="visually-hidden">Antal veckor mellan insats</label>
+									<input id="id58945264977fa"
+										name="id58945264977fa"
+										required="required"
+										size="2"
+										type="number"
+										min="1"
+										value="1"
+										data-direction="vertical"
+										aria-required="true" />
+								</div>
+								<span class="label" aria-hidden="true">:e vecka</span>
+								<span class="tooltip" tabindex="0">
+									<svg class="icon icon--round icon--info" aria-hidden="true">
+										<use xlink:href="/project/images/icons/icon.sprite.svg#alert-icon" />
+									</svg>
+									<span id="tooltip2" class="tooltip__text">
+										Ska en insats ske varje vecka: Välj 1.
+									</span>
+								</span>
+							</div>		
+                            <fieldset class="form-controls inliner inliner--align-center">
+                                <legend class="checkbox-tab--legend">Välj veckodagar <span class="required-indicator">*</span></legend>
+                                @foreach (var dayofweek in Appva.Domain.DayOfWeek.DaysOfWeek)
+                                {
+                                    <div class="form-controls form-controls--checkbox-tab">
+                                        <input type="checkbox" name="id5a281574bdb20" id="dow-@dayofweek.Order" />
+                                        <label for="dow-@dayofweek.Order">@dayofweek</label>
+                                    </div>
+                                }
+                            </fieldset>
+						</div>
+					</div>
+				</div>
+                <div data-size="s:24">
+					<div
+						id="times"
+						data-toggle-values="when-needed"
+						data-toggle-by-input="hide"
+						>
+						<div class="section section--hspace section--vspace section--card">
+							<div class="form-section-header">
+								<div class="form-section-header__number">
+								</div>
+								<div class="form-section-header__text">
+ 									<h2 class="form-section-header__heading">Ange klockslag för insatsen</h2>
+									<div class="form-section-header__description">Ange vid vilka tider som insatsen ska utföras.</div>
+								</div>
+							</div>
+							<fieldset class="form-controls form-controls--inline-children">
+								<legend>Klockslag, dag</legend>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367312dba" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-6&quot;]" />
+									<label for="id58b9367312dba">06</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b93673131c5" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-7&quot;]" />
+									<label for="id58b93673131c5">07</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b93673137d4" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-8&quot;]" />
+									<label for="id58b93673137d4">08</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367313de0" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-9&quot;]" />
+									<label for="id58b9367313de0">09</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b936731413c" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-10&quot;]" />
+									<label for="id58b936731413c">10</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b936731443d" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-11&quot;]" />
+									<label for="id58b936731443d">11</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b936731494f" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-12&quot;]" />
+									<label for="id58b936731494f">12</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367314b6b" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-13&quot;]" />
+									<label for="id58b9367314b6b">13</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367314d7e" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-14&quot;]" />
+									<label for="id58b9367314d7e">14</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367314f8c" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-15&quot;]" />
+									<label for="id58b9367314f8c">15</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b936731519a" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-16&quot;]" />
+									<label for="id58b936731519a">16</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367315485" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-17&quot;]" />
+									<label for="id58b9367315485">17</label>
+								</div>
+							</fieldset>
+							<fieldset class="form-controls form-controls--inline-children">
+								<legend>Klockslag, kväll och natt</legend>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b936731587f" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-18&quot;]" />
+									<label for="id58b936731587f">18</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367315bd1" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-19&quot;]" />
+									<label for="id58b9367315bd1">19</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367315f96" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-20&quot;]" />
+									<label for="id58b9367315f96">20</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367316336" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-21&quot;]" />
+									<label for="id58b9367316336">21</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b93673166c4" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-22&quot;]" />
+									<label for="id58b93673166c4">22</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367314712" id="id58b9367316a93" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-23&quot;]" />
+									<label for="id58b9367316a93">23</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367311a6c" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-0&quot;]" />
+									<label for="id58b9367311a6c">00</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367311dd6" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-1&quot;]" />
+									<label for="id58b9367311dd6">01</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367312117" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-2&quot;]" />
+									<label for="id58b9367312117">02</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367312485" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-3&quot;]" />
+									<label for="id58b9367312485">03</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367312808" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-4&quot;]" />
+									<label for="id58b9367312808">04</label>
+								</div>
+								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+									<input type="checkbox" name="id58b9367311673" id="id58b9367312b75" class="toggle-target" data-toggle-targets="[&quot;fine-tune-container-5&quot;]" />
+									<label for="id58b9367312b75">05</label>
+								</div>
+							</fieldset>
+							<div class="collapsable-section collapsed">
+								<h2 class="collapsable-section-trigger">Finjustera tider</h2>
+								<div class="collapsable-section-content" data-show-message-if-empty="Inga valda tider" data-show-message-if-empty-class="system-message system-message--warning">
+									<div id="fine-tune-container-6" class="form-controls inline-label-input">
+										<label for="fine-tune-6">06:</label>
+										<input id="fine-tune-6" name="fine-tune-6" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-7" class="form-controls inline-label-input">
+										<label for="fine-tune-7">07:</label>
+										<input id="fine-tune-7" name="fine-tune-7" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-8" class="form-controls inline-label-input">
+										<label for="fine-tune-8">08:</label>
+										<input id="fine-tune-8" name="fine-tune-8" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-9" class="form-controls inline-label-input">
+										<label for="fine-tune-9">09:</label>
+										<input id="fine-tune-9" name="fine-tune-9" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-10" class="form-controls inline-label-input">
+										<label for="fine-tune-10">10:</label>
+										<input id="fine-tune-10" name="fine-tune-10" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-11" class="form-controls inline-label-input">
+										<label for="fine-tune-11">11:</label>
+										<input id="fine-tune-11" name="fine-tune-11" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-12" class="form-controls inline-label-input">
+										<label for="fine-tune-12">12:</label>
+										<input id="fine-tune-12" name="fine-tune-12" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-13" class="form-controls inline-label-input">
+										<label for="fine-tune-13">13:</label>
+										<input id="fine-tune-13" name="fine-tune-13" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-14" class="form-controls inline-label-input">
+										<label for="fine-tune-14">14:</label>
+										<input id="fine-tune-14" name="fine-tune-14" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-15" class="form-controls inline-label-input">
+										<label for="fine-tune-15">15:</label>
+										<input id="fine-tune-15" name="fine-tune-15" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-16" class="form-controls inline-label-input">
+										<label for="fine-tune-16">16:</label>
+										<input id="fine-tune-16" name="fine-tune-16" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-17" class="form-controls inline-label-input">
+										<label for="fine-tune-17">17:</label>
+										<input id="fine-tune-17" name="fine-tune-17" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-18" class="form-controls inline-label-input">
+										<label for="fine-tune-18">18:</label>
+										<input id="fine-tune-18" name="fine-tune-18" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-19" class="form-controls inline-label-input">
+										<label for="fine-tune-19">19:</label>
+										<input id="fine-tune-19" name="fine-tune-19" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-20" class="form-controls inline-label-input">
+										<label for="fine-tune-20">20:</label>
+										<input id="fine-tune-20" name="fine-tune-20" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-21" class="form-controls inline-label-input">
+										<label for="fine-tune-21">21:</label>
+										<input id="fine-tune-21" name="fine-tune-21" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-22" class="form-controls inline-label-input">
+										<label for="fine-tune-22">22:</label>
+										<input id="fine-tune-22" name="fine-tune-22" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-23" class="form-controls inline-label-input">
+										<label for="fine-tune-23">23:</label>
+										<input id="fine-tune-23" name="fine-tune-23" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-0" class="form-controls inline-label-input">
+										<label for="fine-tune-0">00:</label>
+										<input id="fine-tune-0" name="fine-tune-0" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-1" class="form-controls inline-label-input">
+										<label for="fine-tune-1">01:</label>
+										<input id="fine-tune-1" name="fine-tune-1" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-2" class="form-controls inline-label-input">
+										<label for="fine-tune-2">02:</label>
+										<input id="fine-tune-2" name="fine-tune-2" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-3" class="form-controls inline-label-input">
+										<label for="fine-tune-3">03:</label>
+										<input id="fine-tune-3" name="fine-tune-3" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-4" class="form-controls inline-label-input">
+										<label for="fine-tune-4">04:</label>
+										<input id="fine-tune-4" name="fine-tune-4" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+									<div id="fine-tune-container-5" class="form-controls inline-label-input">
+										<label for="fine-tune-5">05:</label>
+										<input id="fine-tune-5" name="fine-tune-5" type="number" size="2" min="0" max="59" step="5" data-direction="vertical" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-size="s:24">
+					<div class="section section--hspace section--vspace section--card">
+						<div class="form-section-header">
+							<div class="form-section-header__number">
+							</div>
+							<div class="form-section-header__text">
+								<h2 class="form-section-header__heading">Ges inom</h2>
+								<div class="form-section-header__description">Ange vilket tidsintervall som insatsen får utföras inom.</div>
+							</div>
+						</div>
+						<fieldset>
+							<div class="flex flex flex--align-middle flex--align-center flex--margin-bottom">
+								<div class="flex flex flex--align-middle flex--margin-left">
+									<span class="label" aria-hidden="true">Får ges</span>
+										<div class="form-controls form-controls--no-margin">
+											<label for="7938791mlfm8m" class="visually-hidden">Minuter innan</label>
+											<input id="7938791mlfm8m" name="7938791mlfm8m" value="0" type="number" size="2" max="60" min="0" data-direction="vertical" />
+										</div>
+									<span class="label" aria-hidden="true">minuter innan</span>
+								</div>
+								<div>
+									<svg class="icon icon--e icon--separator">
+										<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+									</svg>
+								</div>
+								<div class="flex flex flex--align-middle flex--margin-left">
+									<span class="label" aria-hidden="true">och</span>
+									<div class="form-controls form-controls--no-margin">
+										<label for="749j8mfm89m9sf" class="visually-hidden">Minuter efter</label>
+										<input id="749j8mfm89m9sf" name="749j8mfm89m9sf" value="0" type="number" size="2" max="60" min="0" data-direction="vertical" />
+									</div>
+									<span class="label" aria-hidden="true">minuter efter</span>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div data-size="s:24">
+					<div class="form-controls form-controls--align-end">
+						<a class="button button--secondary" href="/">Avbryt</a>
+						<button class="button button--primary" type="submit">Spara</button>
+					</div>
+				</div>    
+                <!--
+
+                <div class="form-section wide-section col">
+                    <h3 class="section-title">Ange när det ska ges</h3>
+                    <div class="row toggle-group d cf">
+                        <div class="radio col">
+                            @Html.RadioButtonFor(m => m.IsNeedBased, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
+                            <label for="activity-type-1">Stående</label>
+                        </div>
+                        <div class="radio col">
+                            @Html.RadioButtonFor(m => m.IsNeedBased, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
+                            <label for="activity-type-2">Vid behov</label>
+                        </div>
+                    </div>
+                    <div class="toggle-target toggle-target-1 toggle-in-need-based">
+                        <div class="row cf">
+                            <div class="select col">
+                                @Html.LabelFor(m => m.Interval)
+                                @Html.DropDownListFor(x => x.Interval, new SelectList(new List<SelectListItem> { new SelectListItem { Text = "k", Value = "1" }}/*Model.Intervals*/, "Value", "Text", Model.Interval),
+                                    "Välj frekvens ...",
+                                    new { @class = "freq-select" }
+                                )
+                                @Html.ValidationMessageFor(m => m.Interval)
+                            </div>
+                            <div class="text freq-show col">
+                                <a class="btn btn-mdatepick check-datetime-create" href="#">Välj dagar</a>
+                                @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
+                            </div>
+                    @*
+                            @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-create").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                            @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                        *@</div>
+                        <div class="checkbox-grid">
+                            <strong class="label">Klockslag:</strong>
+                            @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList().Validate().Build()
+                            <input id="TestTimes" name="TestTimes" type="hidden" />
+                        </div>
+                        <div class="text mini label-group">
+                            <strong class="label">Ges inom:</strong>
+                            <label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter innan</label>
+                            @Html.ValidationMessageFor(m => m.RangeInMinutesBefore)
+                            <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter efter</label>
+                            @Html.ValidationMessageFor(m => m.RangeInMinutesAfter)
+                        </div>
+                    </div>
+                </div>
+                <div class="submit">
+                    @Html.Submit("Spara")
+                    @Html.Cancel("Avbryt")
+                </div>
+                    -->
+            </div>
+        }
+    </div>
 </div>

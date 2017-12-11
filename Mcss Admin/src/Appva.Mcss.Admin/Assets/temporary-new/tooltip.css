@@ -1,0 +1,57 @@
+/* =============================================================================
+ * A little icon that if clicked shows some info
+ * TODO: Make it better for screenreaders
+ * 1. Good for tooltips in labels etc.
+ * postcss-bem-linter: define tooltip
+ ============================================================================ */
+.tooltip {
+	position:relative;
+	padding-left:0.3em;
+	white-space:normal;
+}
+.tooltip__term {
+	text-decoration:underline dotted currentcolor;
+}
+.tooltip__text {
+	display:none;
+	position:absolute;
+	top:calc(100% + 12px);
+	left:-8px;
+	z-index:10;
+	min-width:300px;
+	padding:24px 24px;
+	padding:var(--l-space) var(--l-space);
+	background-color:#445068;
+	background-color:var(--c-marine);
+	color:#fff;
+	font-weight:normal; /* [1] */
+}
+.tooltip__text--left {
+	right:0;
+}
+.tooltip__text--center {
+	left:50%;
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+.tooltip__term:hover + .tooltip .tooltip__text,
+.tooltip__term:focus + .tooltip .tooltip__text,
+.tooltip:hover .tooltip__text,
+.tooltip:focus .tooltip__text {
+	display:block;
+}
+.tooltip__text::after {
+	position:absolute;
+	top:-25px;
+	left:3px;
+	width:0;
+	height:0;
+	border:solid transparent;
+	border-width:15px;
+	border-bottom-color:#445068;
+	border-bottom-color:var(--c-marine);
+	content:"";
+}
+.tooltip__text--center::after {
+	right:50%;
+}

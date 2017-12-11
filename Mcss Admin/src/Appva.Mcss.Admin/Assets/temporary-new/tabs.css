@@ -1,0 +1,152 @@
+/* =============================================================================
+ * Tabs
+ * postcss-bem-linter: define tabs
+ *
+============================================================================= */
+.tabs ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+.tabs__item {
+	display:list-item;
+	overflow:hidden;
+	margin-right:auto;
+	margin-bottom:-1px;
+	margin-left:24px;
+	margin-left:var(--l-space);
+	border:1px solid #445068;
+	border:1px solid var(--c-marine);
+}
+.tabs a {
+	display:block;
+	padding:calc(24px / 4) calc(24px / 2);
+	padding:calc(var(--l-space) / 4) calc(var(--l-space) / 2);
+	color:#445068;
+	color:var(--c-marine);
+	text-decoration:none;
+	text-shadow:1px 1px 0 rgba(255, 255, 255, 0.9);
+	letter-spacing:0.02em;
+}
+.tabs__item--selected {
+	margin-left:0;
+	padding-left:24px;
+	padding-left:var(--l-space);
+	border-top:2px solid #67ad3d;
+	border-top:2px solid var(--c-green);
+	border-bottom:none;
+	border-left:none;
+	background:#eff1f6;
+	background:var(--c-bluetone);
+}
+
+/* postcss-bem-linter: ignore */
+.tabs__item--selected ~ * {
+	box-shadow:-24px 0 0 #eff1f6;
+	box-shadow:-24px 0 0 var(--c-bluetone);
+}
+
+@media only screen and (min-width:760px) {
+	.tabs ul {
+		display:-webkit-flex;
+		display:-ms-flexbox;
+		display:flex;
+		margin-bottom:24px;
+		margin-bottom:var(--l-vspace);
+		border-bottom:1px solid #445068;
+		border-bottom:1px solid var(--c-marine);
+	}
+	.tabs__item {
+		display:block;
+		margin-right:calc(24px / 4);
+		margin-right:calc(var(--l-space) / 4);
+		margin-left:0;
+		border-top:2px solid #445068;
+		border-top:2px solid var(--c-marine);
+	}
+	.tabs__item:first-of-type {
+		margin-left:24px;
+		margin-left:var(--l-space);
+	}
+	.tabs__item:last-of-type {
+		margin-right:24px;
+		margin-right:var(--l-space);
+	}
+	.tabs__item--selected {
+		margin-bottom:-1px;
+		padding-left:0;
+		border:1px solid #445068;
+		border:1px solid var(--c-marine);
+		border-top:2px solid #67ad3d;
+		border-top:2px solid var(--c-green);
+		border-bottom:none;
+		background-image:linear-gradient(to top, #fff, #ebf0f8);
+		background-image:linear-gradient(to top, #fff, var(--c-baby-blue));
+	}
+
+	/* postcss-bem-linter: ignore */
+	.tabs__item--selected ~ * {
+		box-shadow:none;
+	}
+	.tabs a:hover,
+	.tabs a:focus {
+		border-radius:5px 5px 0 0;
+		background-image:linear-gradient(to top, #fff 0, #ebf0f8 50%);
+		background-image:linear-gradient(to top, #fff 0, var(--c-baby-blue) 50%);
+	}
+	/* Above bluetone section */
+	.tabs--above-bluetone ul {
+		margin-bottom:0;
+	}
+	.tabs--above-bluetone .tabs__item {
+		background:#fff;
+	}
+	.tabs--above-bluetone .tabs__item--selected {
+		background-image:linear-gradient(to top, #eff1f6, #ebf0f8);
+		background-image:linear-gradient(to top, var(--c-bluetone), var(--c-baby-blue));
+	}
+	.tabs--above-bluetone a:hover,
+	.tabs--above-bluetone a:focus {
+		border-radius:5px 5px 0 0;
+		background-image:linear-gradient(to top, #eff1f6 0, #fff 50%);
+		background-image:linear-gradient(to top, var(--c-bluetone) 0, #fff 50%);
+	}
+}
+
+@media only screen and (min-width:600px) {
+	/* Vertical tabs
+	-------------------------------------------------------------- */
+	.tabs--vertical {
+		border-right:1px solid #445068;
+		border-right:1px solid var(--c-marine);
+	}
+	.tabs--vertical ul {
+		-ms-flex-direction:column;
+		-webkit-flex-direction:column;
+		flex-direction:column;
+		border-bottom:none;
+	}
+	.tabs--vertical .tabs__item {
+		margin-right:0;
+		margin-right:-1px;
+		margin-bottom:calc(24px / 4);
+		margin-bottom:calc(var(--l-space) / 4);
+		margin-left:24px;
+		margin-left:var(--l-space);
+		border:1px solid #445068;
+		border:1px solid var(--c-marine);
+		border-radius:5px 0 0 5px;
+	}
+	.tabs--vertical .tabs__item--selected {
+		margin-left:0;
+		border-right:none;
+		background-image:linear-gradient(to left, #fff, #ebf0f8);
+		background-image:linear-gradient(to left, #fff, var(--c-baby-blue));
+	}
+	.tabs--vertical a:hover,
+	.tabs--vertical a:focus {
+		border-radius:5px 5px 0 0;
+		background-image:linear-gradient(to left, #fff 0, #ebf0f8 50%);
+		background-image:linear-gradient(to left, #fff 0, var(--c-baby-blue) 50%);
+	}
+}

@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web.Mvc;
     using Appva.Core.Resources;
     using Appva.Cqrs;
+    using Appva.Domain;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -78,6 +79,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override CreateSequenceForm Handle(CreateSequence message)
         {
+            var patient  = this.context.Get<Patient>(message.PatientId);
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             //// Temporary mapping
             Role requiredRole = null;
@@ -92,8 +94,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             return new CreateSequenceForm
             {
-                Id = message.Id,
-                ScheduleId = schedule.Id,
+                StartDate   = Date.Today,
+                StartHour   = TimeOfDay.Now.Hour,
+                StartMinute = TimeOfDay.Now.Minute,
+                EndDate     = null,
+                EndHour     = 23,
+                EndMinute   = 59,
+                PatientId   = patient.Id,
+                ScheduleId  = schedule.Id,
                 Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,
@@ -104,8 +112,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Id = x,
                     Checked = false
                 }).ToList(),
-                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                CreateNewInventory = true,
+                Inventories        = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(patient.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                CreateNewInventory = schedule.ScheduleSettings.HasInventory,
                 RequiredRoleText   = requiredRole.Name.ToLower()
                 
             };
@@ -123,7 +131,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new List<int>
             {
-                6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5
+                6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5
             };
         }
 

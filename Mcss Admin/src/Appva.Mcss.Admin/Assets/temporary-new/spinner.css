@@ -1,0 +1,61 @@
+/* =============================================================================
+ * Spinner for loading things
+ *
+============================================================================= */
+.spinner {
+	position:relative;
+}
+.spinner::after {
+	display:block;
+	position:absolute;
+	top:50%;
+	left:50%;
+	z-index:2;
+	width:40px;
+	height:40px;
+	border-radius:100%;
+	background-color:#333;
+	content:"";
+	-webkit-transform-origin:0 0;
+	transform-origin:0 0;
+	-webkit-animation:scale-and-fade 2.0s infinite ease-in-out;
+	animation:scale-and-fade 2.0s infinite ease-in-out;
+}
+body.spinner::after {
+	position:fixed;
+}
+.spinner::before {
+	display:block;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:1;
+	background:rgba(255, 255, 255, 0.5);
+	content:"";
+}
+
+@-webkit-keyframes scale-and-fade {
+	0% {
+		-webkit-transform:scale(0) translate(-50%, -50%) rotate(0);
+		transform:scale(0) translate(-50%, -50%) rotate(0);
+	}
+	100% {
+		opacity:0;
+		-webkit-transform:scale(1.0) translate(0, 0) rotate(2turn);
+		transform:scale(1.0) translate(0, 0) rotate(2turn);
+	}
+}
+
+@keyframes scale-and-fade {
+	0% {
+		-webkit-transform:scale(0) translate(-50%, -50%) rotate(0);
+		transform:scale(0) translate(-50%, -50%) rotate(0);
+	}
+	100% {
+		opacity:0;
+		-webkit-transform:scale(1.0) translate(0, 0) rotate(2turn);
+		transform:scale(1.0) translate(0, 0) rotate(2turn);
+	}
+}

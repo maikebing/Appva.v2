@@ -1,0 +1,23 @@
+/* =============================================================================
+ * Search results
+ * postcss-bem-linter: define search-results
+============================================================================= */
+.search-results__list {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+
+/* Single result
+ * postcss-bem-linter: define search-result
+----------------------------------------------------------------------------- */
+.search-result {
+	margin-bottom:calc(24px * 2);
+	margin-bottom:calc(var(--l-space) * 2);
+}
+.search-result__title {
+	margin-bottom:calc(24px / 2);
+	margin-bottom:calc(var(--l-space) / 2);
+	font-weight:bold;
+}

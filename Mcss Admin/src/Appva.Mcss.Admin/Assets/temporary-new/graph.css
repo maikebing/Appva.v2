@@ -1,0 +1,94 @@
+/* =============================================================================
+ * Graph
+ *
+ * [1] Prevents strokes from scaling (in non ie-browsers)
+============================================================================= */
+.graph svg,
+svg.graph {
+	max-width:100%;
+	font-size:24px;
+	vector-effect:non-scaling-stroke;
+}
+.graph circle,
+.graph polyline,
+.graph line {
+	vector-effect:non-scaling-stroke; /* [1] */
+}
+.graph circle {
+	width:10px !important;
+	height:10px !important;
+}
+.graph .grid {
+	stroke:#ddd;
+	fill:none;
+	stroke-miterlimit:10;
+}
+.graph .grid text {
+	stroke:none;
+	fill:#ddd;
+	stroke-miterlimit:10;
+}
+.graph .line {
+	stroke:#67ad3d;
+	fill:none;
+	stroke-miterlimit:10;
+	stroke-width:4px;
+}
+.graph .markers {
+	stroke-miterlimit:10;
+	stroke:#000;
+	fill:#fff;
+	stroke-width:4px;
+	text-anchor:start;
+}
+.graph a:hover circle {
+	fill:#eee;
+}
+.graph .markers a:last-of-type .info {
+	text-anchor:end;
+}
+.graph a:hover .info {
+	display:block;
+}
+.graph .info {
+	display:none;
+	-webkit-transform:translate(0, 40px);
+	transform:translate(0, 40px);
+	fill:#000;
+	stroke:none;
+}
+
+@media only screen and (min-width:480px) {
+	.graph svg,
+	svg.graph {
+		font-size:20px;
+	}
+}
+
+@media only screen and (min-width:600px) {
+	.graph svg,
+	svg.graph {
+		font-size:20px;
+	}
+}
+
+@media only screen and (min-width:760px) {
+	.graph svg,
+	svg.graph {
+		font-size:18px;
+	}
+}
+
+@media only screen and (min-width:1000px) {
+	.graph svg,
+	svg.graph {
+		font-size:16px;
+	}
+}
+
+@media only screen and (min-width:1400px) {
+	.graph svg,
+	svg.graph {
+		font-size:14px;
+	}
+}

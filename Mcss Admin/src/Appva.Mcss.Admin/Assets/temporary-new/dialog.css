@@ -1,0 +1,66 @@
+/* DIALOGS
+================================================================================ */
+#dialogs {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:2010;
+	width:100%;
+}
+.dialog-bg::after {
+	position:fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:2000;
+	background:#666;
+	background:rgba(0, 0, 0, 0.5);
+	content:"";
+}
+.dialog {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	position:absolute;
+	left:50%;
+	-ms-flex-direction:column;
+	-webkit-flex-direction:column;
+	flex-direction:column;
+	min-width:320px;
+	max-width:calc(100% - 24px * 2);
+	max-width:calc(100% - var(--l-space) * 2);
+	outline:0;
+	box-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.4);
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+
+
+
+/* Content */
+.dialog__content {
+	padding:24px;
+	padding:var(--l-space);
+	background:#fff;
+}
+.dialog__content form {
+	margin-bottom:0;
+}
+
+/* Close button */
+.dialog__close {
+	position:absolute;
+	top:10px;
+	right:10px;
+	border:none !important;
+}
+
+@media only screen and (max-width:679px) {
+	.dialog {
+		width:calc(100% - 24px);
+		width:calc(100% - var(--l-space));
+	}
+}

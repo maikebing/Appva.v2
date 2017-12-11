@@ -1,0 +1,131 @@
+/* =============================================================================
+ * Table general.
+ * Usable classes: .table-general__subrow-parent, .table-general__subrow-heading
+============================================================================= */
+.table-general {
+	position:relative;
+}
+.table-general thead,
+.table-general tr {
+	border-bottom:0;
+}
+.table-general thead {
+	border-top:1px solid #dbe0ec;
+	border-top:1px solid var(--c-bluetone-sel);
+	border-bottom:1px solid #dbe0ec;
+	border-bottom:1px solid var(--c-bluetone-sel);
+	background-color:#fff;
+}
+.table-general thead th {
+	padding-left:calc(24px / 2);
+	padding-left:calc(var(--l-space) / 2);
+	color:#637491;
+	color:var(--c-blue);
+	vertical-align:bottom;
+}
+.table-general td {
+	height:calc(24px + 20px);
+	height:calc(var(--l-space) + 20px);
+	padding:0 0.5em;
+	color:#404e68;
+	color:var(--c-text);
+	font-size:0.9rem;
+	vertical-align:middle;
+}
+
+/* Styles every other row
+---------------------------------------------- */
+.table-general--even {
+	background-color:#eff1f6;
+	background-color:var(--c-bluetone);
+}
+
+/* Table row hover style
+---------------------------------------------- */
+.table-general tbody tr:hover:not(.table-general__row--disabled) {
+	background-color:hsl(222, 31%, 82%);
+}
+
+/* Lefthand border
+---------------------------------------------- */
+.table-general td:first-child {
+	border-left:calc(24px / 4) solid #808fa7;
+	border-left:calc(var(--l-space) / 4) solid var(--c-text-sel);
+}
+
+/* Color modifiers
+=============================================================================== */
+
+/* Positive row
+---------------------------------------------- */
+.table-general__row--positive {
+	background-color:hsl(108, 34%, 82%);
+}
+.table-general__row--positive td:first-child {
+	border-left:calc(24px / 4) solid #68ad57;
+	border-left:calc(var(--l-space) / 4) solid var(--c-standard-green);
+}
+.table-general__row--positive:hover {
+	background-color:hsl(108, 34%, 70%) !important;
+}
+
+/* Negative row
+---------------------------------------------- */
+.table-general__row--negative {
+	background-color:hsl(0, 54%, 88%);
+}
+.table-general__row--negative td:first-child {
+	border-left:calc(24px / 4) solid #c94949;
+	border-left:calc(var(--l-space) / 4) solid var(--c-alarmred);
+}
+.table-general__row--negative:hover {
+	background-color:hsl(0, 54%, 80%) !important;
+}
+
+/* Yellow row
+---------------------------------------------- */
+.table-general__row--yellow {
+	background-color:hsl(55, 80%, 90%);
+}
+.table-general__row--yellow td:first-child {
+	border-left:calc(24px / 4) solid hsl(55, 100%, 46%);
+}
+.table-general__row--yellow:hover {
+	background-color:hsl(55, 80%, 80%) !important;
+}
+
+/* Purple row
+---------------------------------------------- */
+.table-general__row--purple {
+	background-color:hsl(275, 40%, 88%);
+}
+.table-general__row--purple td:first-child {
+	border-left:calc(24px / 4) solid hsl(275, 48%, 60%);
+}
+.table-general__row--purple:hover {
+	background-color:hsl(275, 40%, 80%) !important;
+}
+
+/* Disabled row
+=============================================================================== */
+.table-general__row--disabled td {
+	font-style:italic;
+	text-decoration:line-through;
+	opacity:0.5;
+}
+.table-general__row--disabled td:first-child {
+	border-left:none;
+}
+
+/* Subtable
+=============================================================================== */
+.table-general__subrow-heading {
+	border-left:calc(24px / 4) solid #808fa7;
+	border-left:calc(var(--l-space) / 4) solid var(--c-text-sel);
+}
+.table-general__subrow td:first-child {
+	padding-left:24px;
+	padding-left:var(--l-space);
+	border-left:calc(24px / 4) solid hsl(217, 18%, 72%) !important;
+	border-left:calc(var(--l-space) / 4) solid hsl(217, 18%, 72%) !important;
+}

@@ -1,0 +1,71 @@
+/* Fixed layout
+================================================================================ */
+.flex--margin-bottom {
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+}
+
+/* Flex elements
+----------------------------------------------------------------------------- */
+.flex {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-wrap:wrap;
+	-webkit-flex-wrap:wrap;
+	flex-wrap:wrap;
+}
+
+/* To reset .grid rules
+--------------------------------------------------- */
+.grid .flex[data-size],
+.grid .flex[data-size] > * {
+	-ms-flex-direction:initial;
+	-webkit-flex-direction:initial;
+	flex-direction:initial;
+	-ms-flex:initial;
+	-webkit-flex:initial;
+	flex:initial;
+}
+.flex--align-top {
+	-ms-flex-align:start;
+	-webkit-align-items:flex-start;
+	align-items:flex-start;
+}
+.flex--align-middle {
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+}
+.flex--align-bottom {
+	-ms-flex-align:end;
+	-webkit-align-items:flex-end;
+	align-items:flex-end;
+}
+.flex--align-center {
+	-ms-flex-pack:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+}
+
+@media only screen and (min-width:480px) {
+	.flex--margin-left {
+		margin-left:24px;
+		margin-left:var(--l-space);
+	}
+	.flex--align-right {
+		-ms-flex-pack:end;
+		-webkit-justify-content:flex-end;
+		justify-content:flex-end;
+	}
+	.flex--align-center {
+		-ms-flex-pack:center;
+		-webkit-justify-content:center;
+		justify-content:center;
+	}
+	.flex--vertical {
+		-ms-flex-direction:column;
+		-webkit-flex-direction:column;
+		flex-direction:column;
+	}
+}

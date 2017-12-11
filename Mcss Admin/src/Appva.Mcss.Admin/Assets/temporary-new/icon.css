@@ -1,0 +1,123 @@
+/* =============================================================================
+ * Icons
+ *
+ * 1. Display inline with surrounding text content.
+ * 2. Inherit the parent text color for icon fills.
+ * 3. Use parent font-size for width and height.
+ * 5. Makes it possible to have round icons
+ * 6. Edge and vivaldi doesn't bubble the click
+ *    event without it.
+ *
+ * postcss-bem-linter: define icon
+============================================================================= */
+.icon {
+	display:inline-block; /* [1] */
+	box-sizing:content-box; /* [5] */
+	width:1em; /* [3] */
+	height:1em; /* [3] */
+	overflow:visible; /* [5] */
+	fill:currentColor; /* [2] */
+}
+
+/* Inline icons, icons in text or in buttons
+-------------------------------------------------------------- */
+
+/* postcss-bem-linter: ignore */
+.icon--inline,
+.button .icon {
+	margin-bottom:-0.1em;
+}
+
+/* Rotation
+ * Different icon rotations, north is default
+-------------------------------------------------------------- */
+.icon--s {
+	-webkit-transform:rotate(180deg);
+	transform:rotate(180deg);
+}
+.icon--w {
+	-webkit-transform:rotate(-90deg);
+	transform:rotate(-90deg);
+}
+.icon--e {
+	-webkit-transform:rotate(90deg);
+	transform:rotate(90deg);
+}
+
+/* Aligment
+-------------------------------------------------------------- */
+.icon--ml {
+	margin-left:0.5em;
+}
+.icon--mr {
+	margin-right:0.5em;
+}
+/* Shape
+ * 1. To prevent the icon from making lines higher than line-height
+-------------------------------------------------------------- */
+.icon--round {
+	box-sizing:content-box;
+	overflow:visible;
+	margin-top:-0.5em; /* 1 */
+	margin-bottom:-0.5em; /* 1 */
+	padding:0.3em;
+	border-radius:50%;
+}
+
+/* Backgrounds
+ * 1. first color same as --c-green, the second a wee bit darker
+-------------------------------------------------------------- */
+.icon--warning {
+	background-color:hsl(55, 100%, 40%);
+	background-image:radial-gradient(circle farthest-side at 50% 30%, hsl(55, 100%, 40%), hsl(55, 100%, 35%));
+	color:#fff;
+}
+.icon--info {
+	background-color:#dbe0ec;
+	background-color:var(--c-bluetone-sel);
+	color:#fff;
+}
+.icon--positive {
+	background-color:#67ad3d;
+	background-color:var(--c-green);
+	background-image:radial-gradient(circle farthest-side at 50% 30%, #67ad3d, #478d2d);/* [1] */
+	color:#fff;
+}
+.icon--negative {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+	background-image:radial-gradient(circle farthest-side at 50% 30%, #c94949, #a92929);
+	color:#fff;
+}
+/* Field separator (vertical ruler)
+ * Separates different sections/form fields, aligning center and middle
+-------------------------------------------------------------- */
+.icon--separator {
+	display:none;
+	width:24px;
+	width:var(--l-space);
+	height:24px;
+	height:var(--l-space);
+	margin:calc(24px / 2) auto;
+	margin:calc(var(--l-space) / 2) auto;
+	color:#dbe0ec;
+	/* color:var(--c-bluetone-sel); --bugs out in Edge */
+}
+
+@media only screen and (min-width:480px) {
+	/* For two (or more) rows surrounding the element */
+	.icon--separator {
+		display:block;
+		margin-bottom:0 auto;
+		margin-left:24px;
+		margin-left:var(--l-space);
+	}
+}
+
+@media only screen and (min-width:600px) {
+	/* For two (or more) rows surrounding the element */
+	.icon--separator-offset {
+		margin-top:calc(24px + 4px);
+		margin-top:calc(var(--l-space) + 4px);
+	}
+}

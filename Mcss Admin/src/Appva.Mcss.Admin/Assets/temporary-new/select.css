@@ -1,0 +1,118 @@
+/* =============================================================================
+ * Custom select elements
+ *
+ * Hide (via JS) the closed select element and show a completely stylable
+ * element instead
+============================================================================= */
+.custom-select {
+	position:relative;
+}
+
+
+/* Settings of the the hidden select
+----------------------------------------------------------------------------- */
+select.replaced {
+	display:block;
+	position:relative;
+	z-index:10;
+	border:none;
+	opacity:0;
+}
+select.replaced option:disabled {
+	font-style:italic;
+}
+
+/* Set height and width of both elements
+----------------------------------------------------------------------------- */
+select.replaced,
+.custom-select__select {
+	width:100%;
+	height:calc(24px + 6px);
+	height:calc(var(--l-space) + 6px);
+}
+
+/* The span elements that are inserted underneath the real select
+----------------------------------------------------------------------------- */
+.custom-select__select {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:1;
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	border:2px solid #dbe0ec;
+	border:2px solid var(--c-bluetone-sel);
+	border-radius:5px;
+	background:#fff;
+	color:#404e68;
+	color:var(--c-text);
+}
+/* Disabled select
+------------------------------------------------------------------------------ */
+select:disabled + .custom-select__select {
+	border-color:#eff1f6;
+	border-color:var(--c-bluetone);
+	box-shadow:none;
+	background:#eff1f6;
+	background:var(--c-bluetone);
+	color:#dbe0ec;
+	color:var(--c-bluetone-sel);
+}
+select:disabled + .custom-select__select .custom-select__icon {
+	background:#eff1f6;
+	background:var(--c-bluetone);
+	color:#808fa7;
+	color:var(--c-text-sel);
+}
+/* The text in the select
+ * 1. TODO: Maybe use som variable based value instead
+-------------------------------------------------------------- */
+.custom-select__text {
+	display:block;
+	-ms-flex:1;
+	-webkit-flex:1;
+	flex:1;
+	width:calc(100% - 24px);
+	width:calc(100% - var(--l-space));
+	overflow:hidden;
+	padding-right:0.5rem; /* [1] */
+	padding-left:0.5rem; /* [1] */
+	font-size:0.85rem;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.custom-select__placeholder {
+	font-size:0.8rem;
+}
+.custom-select__icon {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-pack:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	-ms-flex:none;
+	-webkit-flex:none;
+	flex:none;
+	width:24px;
+	width:var(--l-space);
+	height:100%;
+	border-radius:0 5px 5px 0;
+	color:#637491;
+	color:var(--c-blue);
+}
+.custom-select__select--is-active {
+	border:2px solid transparent;
+	box-shadow:0 0 0 2px #637491;
+	box-shadow:0 0 0 2px var(--c-blue);
+}
+.custom-select__select--is-disabled {
+	font-style:italic;
+}

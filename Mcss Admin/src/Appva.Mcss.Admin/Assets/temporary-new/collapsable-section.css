@@ -1,0 +1,13 @@
+/* Collapsable sections
+ * TODO: more buttonlike styling?
+================================================================================ */
+.js .collapsable-section.collapsed .collapsable-section-content {
+	display:none;
+}
+.js .collapsable-section__button {
+	text-decoration:underline;
+}
+.js:not(.mousedown) .collapsable-section__button:focus {
+	outline:2px dotted #dbe0ec;
+	outline:2px dotted var(--c-bluetone-sel);
+}

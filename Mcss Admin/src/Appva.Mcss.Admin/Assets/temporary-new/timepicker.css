@@ -1,0 +1,48 @@
+/* =============================================================================
+ * A timepicker with spinners for hours and minutes
+ * postcss-bem-linter: define timepicker
+ ============================================================================ */
+.timepicker {
+	display:inline-block;
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+	white-space:nowrap;
+}
+
+/* postcss-bem-linter: ignore */
+.timepicker > * {
+	display:inline-block;
+	margin-right:-1ch;
+	margin-bottom:0;
+	vertical-align:middle;
+}
+/* postcss-bem-linter: ignore */
+.timepicker > *:last-child {
+	margin-right:0;
+}
+
+/* postcss-bem-linter: ignore */
+.timepicker .numberspinner--vertical {
+	padding:0;
+}
+.timepicker svg {
+	height:0.75rem;
+	padding:0.1rem;
+}
+.timepicker legend {
+	display:block;
+	margin-right:0.5ch;
+}
+.timepicker + .timepicker {
+	margin-left:0;
+}
+
+@media only screen and (min-width:480px) {
+	.timepicker legend {
+		float:left;
+		padding-top:40px;
+	}
+	.timepicker + .timepicker {
+		margin-left:3ch;
+	}
+}

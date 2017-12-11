@@ -1,0 +1,63 @@
+/* =============================================================================
+ * Form controls
+============================================================================= */
+
+/* Container for form controls
+ * 1. To be able to absolutely position validation-errors
+----------------------------------------------------------------------------- */
+.form-controls {
+	position:relative; /* [1] */
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+}
+.form-controls--no-margin {
+	margin-bottom:0;
+}
+.form-controls--half-margin {
+	margin-bottom:calc(24px / 2);
+	margin-bottom:calc(var(--l-space) / 2);
+}
+/* Make the form controls sit inline */
+.form-controls--inline {
+	display:inline-block;
+}
+/* Makes the immediate children of the element inline */
+.form-controls--inline-children {
+	margin-bottom:0;
+}
+.form-controls--inline-children > .form-controls {
+	display:inline-block;
+}
+.form-controls--align-end {
+	text-align:right;
+}
+.form-controls__error-message {
+	position:absolute;
+	bottom:-5px;
+	left:0;
+	z-index:1;
+	max-width:500px;
+	padding:calc(24px / 8) calc(24px / 2);
+	padding:calc(var(--l-space) / 8) calc(var(--l-space) / 2);
+	border:1px solid #b94744;
+	border:1px solid var(--c-red);
+	box-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.4);
+	background:#efefef;
+	background:var(--c-light-grey);
+	color:#b94744;
+	color:var(--c-red);
+	-webkit-transform:translateY(100%);
+	transform:translateY(100%);
+}
+.form-controls__error-message::before {
+	position:absolute;
+	top:-10px;
+	left:5px;
+	width:0;
+	height:0;
+	border-right:10px solid transparent;
+	border-bottom:10px solid #b94744;
+	border-bottom:10px solid var(--c-red);
+	border-left:10px solid transparent;
+	content:"";
+}

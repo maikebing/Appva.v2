@@ -1,0 +1,30 @@
+/* =============================================================================
+ * Variables
+============================================================================= */
+:root {
+	/* Colour variables */
+	--c-red:#b94744;
+	--c-green:#67ad3d;
+	--c-marine:#445068;
+	--c-baby-blue:#ebf0f8;
+	--c-light-grey:#efefef;
+	/* New color variables */
+	--c-blue:#637491;
+	--c-blue-sel:#404e68;
+	--c-bluetone:#eff1f6;
+	--c-bluetone-sel:#dbe0ec;
+	--c-text:#404e68;
+	--c-text-sel:#808fa7;
+	--c-standard-green:#68ad57;
+	--c-standard-green-sel:#589f49;
+	--c-alarmred:#c94949;
+	--c-alarmred-15tone:#f7e4e4;
+	/* Font-related variables
+	 * TODO: Come up with a concept for base sizing. REM / Variable */
+	--fz-default:0.875rem;
+	--ff-default:Helvetica, Arial, Verdana, sans-serif;
+	/* Length variables */
+	--l-space:24px;
+	--l-hspace:24px;
+	--l-vspace:24px;
+}

@@ -1,0 +1,40 @@
+/* Scrollable tables
+------------------------------------- */
+.scrollable-table {
+	position:relative;
+	width:100%;
+	overflow:hidden;
+}
+.scrollable-table::after {
+	position:absolute;
+	top:0;
+	left:100%;
+	z-index:1;
+	width:50px;
+	height:100%;
+	border-radius:15px 0 0 15px / 125px 0 0 125px;
+	box-shadow:-6px 0 5px rgba(0, 0, 0, 0.32);
+	content:"";
+}
+.scrollable-table.shadow-left::before {
+	position:absolute;
+	top:0;
+	right:100%;
+	z-index:1;
+	width:50px;
+	height:100%;
+	border-radius:0 15px 15px 0 / 0 125px 125px 0;
+	box-shadow:6px 0 5px rgba(0, 0, 0, 0.32);
+	content:"";
+}
+.scrollable-table.no-shadow-right::after {
+	display:none;
+}
+.scrollable-table > .inner {
+	width:100%;
+	overflow:scroll;
+	overflow-x:scroll;
+	overflow-y:visible;
+	margin:0 0 24px;
+	padding:15px 0 0 0;
+}

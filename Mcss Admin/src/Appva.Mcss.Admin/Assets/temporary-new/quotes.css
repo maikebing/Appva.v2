@@ -1,0 +1,21 @@
+/* =============================================================================
+ * Quotes
+ *
+ * [1] Line up first letter in first row with the second row's left side.
+============================================================================= */
+blockquote p:first-of-type {
+	text-indent:-0.33em; /* [1] */
+}
+blockquote p:first-of-type::before {
+	content:"”";
+}
+blockquote p:last-of-type::after {
+	content:"”";
+}
+q {
+	font-style:italic;
+}
+q::before,
+q::after {
+	font-style:normal;
+}

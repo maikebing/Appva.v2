@@ -1,0 +1,51 @@
+/* =============================================================================
+ * Tables
+============================================================================= */
+table {
+	width:100%;
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+	border-spacing:0;
+	border-collapse:collapse;
+}
+caption {
+	margin-bottom:12px;
+	font-weight:bold;
+	text-align:left;
+}
+thead {
+	border-bottom:1px solid #ccc;
+}
+td,
+th {
+	padding:calc(24px / 3);
+	padding:calc(var(--l-space) / 3);
+	vertical-align:top;
+}
+th {
+	font-weight:bold;
+	vertical-align:bottom;
+	text-align:left;
+}
+tr {
+	border-bottom:1px solid #eee;
+}
+
+/* Table column widths
+ * Use on col or colgroup elements
+----------------------------------------------------------------------------- */
+.column-width--10 {
+	width:10%;
+}
+.column-width--15 {
+	width:15%;
+}
+.column-width--20 {
+	width:20%;
+}
+.column-width--25 {
+	width:25%;
+}
+.column-width--30 {
+	width:30%;
+}

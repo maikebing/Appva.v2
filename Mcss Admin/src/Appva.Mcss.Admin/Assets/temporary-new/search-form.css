@@ -1,0 +1,36 @@
+/* =============================================================================
+ * Search form
+============================================================================= */
+
+/* Input + button combo
+ *
+ * [1] Allow the input to shrink
+ *
+ * TODO: Move to separate component
+----------------------------------------------------------------------------- */
+.input-button-combo {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+}
+input.input-button-combo__input {
+	-ms-flex-positive:1;
+	-webkit-flex-grow:1;
+	flex-grow:1;
+	min-width:0; /* [1] */
+	border-color:transparent;
+}
+label.input-button-combo__label {
+	-ms-flex-positive:0;
+	-webkit-flex-grow:0;
+	flex-grow:0;
+	min-width:0; /* [1] */
+}
+.button.input-button-combo__button {
+	-ms-flex:none;
+	-webkit-flex:none;
+	flex:none;
+	border-color:#000;
+	background:#000;
+	color:#fff;
+}

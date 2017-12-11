@@ -1,0 +1,23 @@
+/* =============================================================================
+ * Visually hidden
+ *
+ * Hidden visually, but screen readers will read it.
+============================================================================= */
+.visually-hidden {
+	position:absolute;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+	clip:rect(1px, 1px, 1px, 1px);
+	padding:0;
+	border:0;
+}
+.visually-hidden--focusable:active,
+.visually-hidden--focusable:focus {
+	position:static;
+	width:auto;
+	height:auto;
+	overflow:visible;
+	clip:auto;
+	margin:0;
+}

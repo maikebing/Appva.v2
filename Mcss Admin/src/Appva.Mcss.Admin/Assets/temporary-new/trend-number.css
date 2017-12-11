@@ -1,0 +1,30 @@
+/* =============================================================================
+ * A number with an arrow
+ * postcss-bem-linter: define trend-number
+ ============================================================================ */
+.trend-number {
+	font-weight:bold;
+	font-size:1.75rem;
+}
+.trend-number > svg {
+	-webkit-transform:rotate(45deg);
+	transform:rotate(45deg);
+	-webkit-transform-origin:50% 50%;
+	transform-origin:50% 50%;
+}
+.trend-number--positive {
+	color:#67ad3d;
+	color:var(--c-green);
+}
+.trend-number--positive > svg {
+	-webkit-transform:rotate(0);
+	transform:rotate(0);
+}
+.trend-number--negative {
+	color:#b94744;
+	color:var(--c-red);
+}
+.trend-number--negative > svg {
+	-webkit-transform:rotate(90deg);
+	transform:rotate(90deg);
+}

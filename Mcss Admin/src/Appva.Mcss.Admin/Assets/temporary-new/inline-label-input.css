@@ -1,0 +1,49 @@
+/* =============================================================================
+ * Inline label input
+ * 1. Prevent the label from splitting to two lines unless it has to.
+ * postcss-bem-linter: define inline-label-input
+============================================================================= */
+.inline-label-input {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+}
+/* postcss-bem-linter: ignore */
+.inline-label-input > * {
+	margin-right:calc(24px / 2);
+	margin-right:calc(var(--l-space) / 2);
+}
+/* postcss-bem-linter: ignore */
+.inline-label-input > *:last-child {
+	margin-right:0;
+}
+/* postcss-bem-linter: ignore */
+.inline-label-input input,
+.inline-label-input .custom-select {
+	-ms-flex-item-align:auto;
+	-webkit-align-self:auto;
+	align-self:auto;
+	-ms-flex:1 1 auto;
+	-webkit-flex:1 1 auto;
+	flex:1 1 auto;
+}
+.inline-label-input label {
+	-ms-flex-item-align:auto;
+	-webkit-align-self:auto;
+	align-self:auto;
+	-ms-flex:0 1 auto;
+	-webkit-flex:0 1 auto;
+	flex:0 1 auto;
+	width:auto; /* [1] */
+}
+.inline-label-input button {
+	-ms-flex-item-align:auto;
+	-webkit-align-self:auto;
+	align-self:auto;
+	-ms-flex:0 1 auto;
+	-webkit-flex:0 1 auto;
+	flex:0 1 auto;
+}

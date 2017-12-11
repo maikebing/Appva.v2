@@ -1,0 +1,53 @@
+/* =============================================================================
+ * Main navigation
+ * postcss-bem-linter: define main-nav
+ *
+============================================================================= */
+.main-nav {
+	color:#fff;
+}
+.main-nav ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+.main-nav a {
+	display:block;
+	padding:10px 20px;
+	color:#fff;
+	font-weight:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);
+	letter-spacing:0.02em;
+}
+.main-nav a:focus,
+.main-nav a:hover {
+	background-color:rgba(255, 255, 255, 0.1);
+}
+
+@media only screen and (min-width:480px) {
+	.main-nav {
+		float:left;
+	}
+	.main-nav ul {
+		display:-webkit-flex;
+		display:-ms-flexbox;
+		display:flex;
+	}
+	.main-nav__item--selected > a {
+		border-bottom:4px solid #fff;
+	}
+	.main-nav a:focus,
+	.main-nav a:hover {
+		border-bottom:4px solid #404e68;
+		border-bottom:4px solid var(--c-blue-sel);
+	}
+	.main-nav__item--selected > a:focus,
+	.main-nav__item--selected > a:hover {
+		border-bottom:4px solid #efefef;
+		border-bottom:4px solid var(--c-light-grey);
+	}
+	.main-nav__item {
+		display:block;
+	}
+}

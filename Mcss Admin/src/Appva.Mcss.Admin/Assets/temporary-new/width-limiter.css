@@ -1,0 +1,36 @@
+/* =============================================================================
+ * Width limiter
+ *
+ * Limits width and centers container on page.
+ * postcss-bem-linter: define width-limiter
+============================================================================= */
+.width-limiter {
+	max-width:1500px;
+	margin-right:auto;
+	margin-left:auto;
+	padding-right:2%;
+	padding-left:2%;
+}
+/* Aligns the limiter to the start of the reading direction. Left on LTR */
+.width-limiter--start {
+	margin-left:0;
+}
+/* Aligns the limiter to the end of the reading direction. Right on LTR */
+.width-limiter--end {
+	margin-right:0;
+}
+.width-limiter--xs {
+	max-width:320px;
+}
+.width-limiter--s {
+	max-width:480px;
+}
+.width-limiter--m {
+	max-width:760px;
+}
+.width-limiter--l {
+	max-width:1000px;
+}
+.width-limiter--xl {
+	max-width:1500px;
+}

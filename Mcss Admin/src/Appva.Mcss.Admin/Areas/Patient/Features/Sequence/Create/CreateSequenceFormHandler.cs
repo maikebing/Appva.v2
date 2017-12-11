@@ -95,9 +95,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             Taxon delegation = null;
-            if (message.Delegation.HasValue && ! message.Nurse)
+            if (message.DelegationId.HasValue && ! message.IsRequiredRole)
             {
-                delegation = this.context.Get<Taxon>(message.Delegation.Value);
+                delegation = this.context.Get<Taxon>(message.DelegationId.Value);
             }
             this.CreateOrUpdateSequence(message, schedule, delegation);
             //this.context.Save(sequence);
@@ -112,7 +112,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             return new DetailsSchedule
                 {
-                    Id = message.Id,
+                    Id = message.PatientId,
                     ScheduleId = message.ScheduleId
                 };
         }
@@ -128,7 +128,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             Role requiredRole = null;
             
             //// Start with need based.
-            if (message.OnNeedBasis)
+            if (message.IsNeedBased)
             {
                 //// do all need based stuff first.
             }
@@ -141,7 +141,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 timesOfDay = message.Times.Where(x => x.Checked == true).Select(x => TimeOfDay.Parse(x.Id + ":00"));
             }
 
-            if (message.Nurse)
+            if (message.IsRequiredRole)
             {
                 //// Temporary mapping
                 var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
@@ -160,28 +160,28 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 if (message.CreateNewInventory)
                 {
-                    message.Inventory = this.inventories.Create(message.Name, null, null, schedule.Patient);
+                    message.InventoryId = this.inventories.Create(message.Name, null, null, schedule.Patient);
                 }
-                inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
+                inventory = this.inventories.Find(message.InventoryId.GetValueOrDefault());
             }
 
-            if (message.OnNeedBasis == true)
+            if (message.IsNeedBased == true)
             {
-                startDate = message.OnNeedBasisStartDate.HasValue ? message.OnNeedBasisStartDate.Value : startDate;
-                endDate = message.OnNeedBasisEndDate.HasValue ? message.OnNeedBasisEndDate.Value : endDate;
+                //startDate = message.OnNeedBasisStartDate.HasValue ? message.OnNeedBasisStartDate.Value : startDate;
+                //endDate = message.OnNeedBasisEndDate.HasValue ? message.OnNeedBasisEndDate.Value : endDate;
 
-                this.sequenceService.CreateNeedBasedSequence(schedule, message.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                //this.sequenceService.CreateNeedBasedSequence(schedule, message.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
             else if (message.Interval.HasValue && message.Interval.Value > 0 && message.Dates.IsNull())
             {
                 startDate = message.StartDate.HasValue ? message.StartDate.Value : startDate;
                 endDate = message.EndDate.HasValue ? message.EndDate.Value : endDate;
-                this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, timesOfDay, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                //this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, timesOfDay, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
             else
             {
-                DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
-                this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, timesOfDay, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                //DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
+                //this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, timesOfDay, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
         }
 
@@ -197,13 +197,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             Role requiredRole = null;
             if (message.Dates.IsNotEmpty() && message.Interval == 0)
             {
-                DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
+                //DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
             }
             if (message.Interval > 0)
             {
                 message.Dates = null;
             }
-            if (message.Nurse)
+            if (message.IsRequiredRole)
             {
                 //// Temporary mapping
                 var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
@@ -217,16 +217,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
 
-            if (message.OnNeedBasis == true)
+            if (message.IsNeedBased == true)
             {
-                if (message.OnNeedBasisStartDate.HasValue)
+                /*if (message.OnNeedBasisStartDate.HasValue)
                 {
                     startDate = message.OnNeedBasisStartDate.Value;
                 }
                 if (message.OnNeedBasisEndDate.HasValue)
                 {
                     endDate = message.OnNeedBasisEndDate.Value;
-                }
+                }*/
             }
             else
             {
@@ -244,9 +244,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if(schedule.ScheduleSettings.HasInventory){
                 if(message.CreateNewInventory)
                 {
-                    message.Inventory = this.inventories.Create(message.Name, null, null, schedule.Patient);
+                    message.InventoryId = this.inventories.Create(message.Name, null, null, schedule.Patient);
                 }
-                inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
+                inventory = this.inventories.Find(message.InventoryId.GetValueOrDefault());
             }
             
             //return new Sequence()

@@ -1,0 +1,14 @@
+/* Input value list
+ * Adds values from an input to a list, whence they later can be removed.
+ * TODO: Should this be two components?
+ * TODO: Add only one, add more?
+ * TODO: Flera inputs; samma lista?
+================================================================================ */
+.input-value-list {
+	padding-left:0;
+	list-style-type:none;
+}
+.input-value-list li {
+	margin-bottom:calc(24px / 2);
+	margin-bottom:calc(var(--l-space) / 2);
+}

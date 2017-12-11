@@ -1,0 +1,11 @@
+/* =============================================================================
+ * Clearfix
+ *
+ * Clears floats
+ * See http://www.cssmojo.com/the-very-latest-clearfix-reloaded/
+============================================================================= */
+.clearfix::after {
+	display:block;
+	clear:both;
+	content:"";
+}

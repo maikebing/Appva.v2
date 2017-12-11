@@ -1,0 +1,33 @@
+/* =============================================================================
+ * Section
+ * postcss-bem-linter: define scroll-area
+============================================================================= */
+.scroll-area {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-direction:column;
+	-webkit-flex-direction:column;
+	flex-direction:column;
+	-ms-flex-wrap:nowrap;
+	-webkit-flex-wrap:nowrap;
+	flex-wrap:nowrap;
+	-ms-flex-align:stretch;
+	-webkit-align-items:stretch;
+	align-items:stretch;
+	-ms-flex:1 1 auto;
+	-webkit-flex:1 1 auto;
+	flex:1 1 auto;
+	width:100%;
+}
+.scroll-area__fixed {
+	-ms-flex:0 0 auto;
+	-webkit-flex:0 0 auto;
+	flex:0 0 auto;
+}
+.scroll-area__scrolling {
+	-ms-flex:1 1 auto;
+	-webkit-flex:1 1 auto;
+	flex:1 1 auto;
+	overflow-y:auto;
+}

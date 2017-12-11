@@ -1,0 +1,124 @@
+/* =============================================================================
+ * Custom checkboxes and radio buttons
+ *
+ * Wrapped in an @media block to avoid affecting incapable browsers
+============================================================================= */
+@media only screen {
+	.form-controls--checkbox,
+	.form-controls--radio {
+		position:relative;
+	}
+	.table-general .form-controls {
+		vertical-align:middle;
+	}
+	fieldset.form-controls--checkbox:last-child,
+	fieldset.form-controls--radio:last-child {
+		margin-bottom:0;
+	}
+	.form-controls--checkbox input,
+	.form-controls--radio input {
+		position:absolute;
+		width:18px !important;
+		height:18px;
+		overflow:hidden;
+		margin:0;
+		padding:0;
+		outline:0 !important;
+		border:0;
+		opacity:0;
+		cursor:pointer;
+	}
+	.form-controls input:focus,
+	.form-controls--checkbox input:focus,
+	.form-controls--radio input:focus {
+		outline:none;
+	}
+	.form-controls--checkbox label,
+	.form-controls--radio label {
+		display:inline-block;
+		margin:0;
+		font-weight:normal;
+		font-size:0.875rem;
+		line-height:20px;
+		vertical-align:middle;
+		cursor:pointer;
+	}
+	.form-controls--checkbox__label-hidden,
+	.form-controls--radio__label-hidden {
+		width:20px;
+		overflow:hidden;
+		white-space:nowrap;
+	}
+	.form-controls--checkbox label::before,
+	.form-controls--radio label::before {
+		display:inline-block;
+		width:20px;
+		height:20px;
+		margin-right:8px;
+		content:"";
+		vertical-align:middle;
+	}
+	.form-controls--checkbox-narrow,
+	.form-controls--radio-narrow {
+		margin-right:calc(24px / 8);
+		margin-right:calc(var(--l-space) / 8);
+		text-align:center;
+	}
+	.form-controls--checkbox-narrow label::before,
+	.form-controls--radio-narrow label::before {
+		display:block;
+		margin:auto;
+	}
+	/* TODO: Decide what SVG to use, and use only that */
+	.form-controls--checkbox label::before {
+		background:url("../../../../images/custom-checkbox-new.svg?embed");
+	}
+	.form-controls--radio label::before {
+		background:url("../../../../images/custom-radio.svg?embed");
+	}
+
+
+	/* Unchecked + Hover */
+	.form-controls--checkbox input + label:hover::before,
+	.form-controls--checkbox input:hover + label::before,
+	.form-controls--checkbox input:focus + label::before {
+		background-position:0 -20px;
+	}
+	.form-controls--radio input + label:hover::before,
+	.form-controls--radio input:hover + label::before,
+	.form-controls--radio input:focus + label::before {
+		background-position:-20px 0;
+	}
+
+
+	/* Checked */
+	.form-controls--checkbox input:checked + label::before {
+		background-position:-20px 0;
+	}
+	.form-controls--radio input:checked + label::before {
+		background-position:-40px 0;
+	}
+
+	/* Checked + Hover */
+	.form-controls--checkbox input:checked + label:hover::before,
+	.form-controls--checkbox input:checked:hover + label::before,
+	.form-controls--checkbox input:checked:focus + label::before {
+		background-position:-20px -20px;
+	}
+	.form-controls--radio input:checked + label:hover::before,
+	.form-controls--radio input:checked:hover + label::before,
+	.form-controls--radio input:checked:focus + label::before {
+		background-position:-60px 0;
+	}
+
+
+	/* Disabled */
+	.form-controls--checkbox input:disabled + label::before {
+		background-position:0 -40px;
+	}
+
+	/* Disabled + checked */
+	.form-controls--checkbox input:disabled:checked + label::before {
+		background-position:-20px -40px;
+	}
+}

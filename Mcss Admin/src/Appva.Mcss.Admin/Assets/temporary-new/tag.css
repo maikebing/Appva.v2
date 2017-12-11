@@ -1,0 +1,21 @@
+/* =============================================================================
+ * Tag
+ * postcss-bem-linter: define tag
+============================================================================= */
+.tag {
+	padding:0 0.4em 0.2em 0.4em;
+	border-radius:500px;
+	background:#999;
+}
+.tag--red {
+	background:#900;
+	color:#fff;
+}
+.tag--green {
+	background:#090;
+	color:#fff;
+}
+.tag--blue {
+	background:#009;
+	color:#fff;
+}

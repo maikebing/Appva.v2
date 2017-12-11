@@ -1,0 +1,13 @@
+/* =============================================================================
+ * Sortable tables
+ * TODO: Add focus and hover styling
+ * TODO: Get rid of button blank, and maybe .button as well?
+============================================================================= */
+.sortable-table__direction {
+	text-decoration:none;
+}
+/* [class] added to trump blank button */
+.sortable-table__direction--active[class] {
+	color:#67ad3d !important;
+	color:var(--c-green) !important;
+}

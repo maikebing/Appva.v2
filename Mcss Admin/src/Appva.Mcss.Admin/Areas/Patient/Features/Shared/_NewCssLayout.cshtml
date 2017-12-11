@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="sv" class="js mousedown">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>@Page.Title - Appva MCSS</title>
+        <!--
+        <link rel="stylesheet" href="/Assets/temporary-new/fonts.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/reset.css">
+        -->
+        <link rel="stylesheet" href="/Assets/temporary-new/variables.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/forms.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/date-picker.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/checkboxes-and-radio.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/form-controls.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/select.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/images.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/inline-typography.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/links.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/lists.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/quotes.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/tables.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/typography.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/autocomplete.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/clearfix.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/collapsable-section.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/distributor.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/exit-confirmation.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/flex.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/grid.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/icon.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/input-value-list.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/inliner.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/js-visibility.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/numberspinner.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/spinner.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/scrollable-tables.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/sortable-tables.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/section.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/tag.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/text-align.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/visually-hidden.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/width-limiter.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/alert-message.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/additional-menu.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/button.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/card.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/checkbox-tab.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/dialog.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/figure.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/form-section-header.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/graph.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/footer.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/header.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/logo.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/inline-label-input.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/key-value-grid.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/main.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/main-navigation.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/paging.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/skip-link.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/sub-navigation.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/supplemental-navigation.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/tabs.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/person-list.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/prepare-week.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/radio-tab.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/search-form.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/search-results.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/scroll-area.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/sub-header.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/table-general.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/timepicker.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/tooltip.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/trend-number.css">
+        <link rel="stylesheet" href="/Assets/temporary-new/user-panel.css">
+        <script src="/Assets/temporary-new/jquery-2.2.0.min.js"></script>
+        <script src="/Assets/temporary-new/jquery.breakpoint-min.js"></script>
+        <script src="/Assets/temporary-new/jquery-ui-1.12.1.custom.min.js"></script>
+        @RenderSection("head", required: false)
+    </head>
+    <body>
+        <div class="global-filter">
+            @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
+        </div>
+        <div id="header" class="cf">
+            <div id="logo"><img src="@Url.Image("logo.png")" alt="" /></div>
+            @Html.Partial("_LoginPartial")
+            @Html.Partial("_MenuPartial")
+        </div>
+        <div id="main" class="@ViewBag.MainClass">
+            @RenderBody()
+        </div>
+        @Html.Partial("_Footer")
+        
+        <script src="/Assets/temporary-new/svgxuse.min.js"></script>
+        <script src="/Assets/temporary-new/jquery.validate.js"></script>
+        <script src="/Assets/temporary-new/messages_sv.min.js"></script>
+        <script src="/Assets/temporary-new/netr.js"></script>
+        <script src="/Assets/temporary-new/netr.string.js"></script>
+        <script src="/Assets/temporary-new/netr.uri.js"></script>
+        <script src="/Assets/temporary-new/jquery.netr-extensions.js"></script>
+        <script src="/Assets/temporary-new/netr.latinise.js"></script>
+        <script src="/Assets/temporary-new/netr.throttle.js"></script>
+        <script src="/Assets/temporary-new/autocomplete.js"></script>
+        <script src="/Assets/temporary-new/exit-confirmation.js"></script>
+        <script src="/Assets/temporary-new/input-value-list.js"></script>
+        <script src="/Assets/temporary-new/mouse-click-class-toggler.js"></script>
+        <script src="/Assets/temporary-new/numberspinner.js"></script>
+        <script src="/Assets/temporary-new/collapsable-section.js"></script>
+        <script src="/Assets/temporary-new/scrollable-tables.js"></script>
+        <script src="/Assets/temporary-new/sortable-tables.js"></script>
+        <script src="/Assets/temporary-new/toggle-by-input.js"></script>
+        <script src="/Assets/temporary-new/post-single-input.js"></script>
+        <script src="/Assets/temporary-new/show-message-if-empty.js"></script>
+        <script src="/Assets/temporary-new/update-section.js"></script>
+        <script src="/Assets/temporary-new/validation.js"></script>
+        <script src="/Assets/temporary-new/select.js"></script>
+        <script src="/Assets/temporary-new/skip-link.js"></script>
+        <script src="/Assets/temporary-new/additional-menu.js"></script>
+        <script src="/Assets/temporary-new/tabs.js"></script>
+        <script src="/Assets/temporary-new/table-general.js"></script>
+        <script src="/Assets/temporary-new/date-picker.js"></script>
+        <script src="/Assets/temporary-new/dialog.js"></script>
+        <script src="/Assets/temporary-new/datepicker-sv.js"></script>
+        <script src="/Assets/temporary-new/sv.js"></script>
+        <script src="/Assets/temporary-new/base.js"></script>
+        @RenderSection("JavaScript", required: false)
+    </body>
+</html>

@@ -1,0 +1,40 @@
+/* =============================================================================
+ * Skip link
+ * postcss-bem-linter: define skip-link
+ *
+ * [1] 10001 to make it appear on top of the header
+============================================================================= */
+.skip-link {
+	position:absolute;
+	top:-10px;
+	right:0;
+	left:0;
+	z-index:10001; /* [1] */
+	height:10px;
+}
+.skip-link a {
+	display:block;
+	position:relative;
+	bottom:0;
+	width:100%;
+	padding:0.5em;
+	outline:none;
+	box-shadow:0 5px 5px rgba(0, 0, 0, 0.5);
+	background:#fff;
+	color:#111;
+	font-size:2em;
+	line-height:1;
+	text-align:center;
+	text-decoration:none;
+	text-transform:uppercase;
+	transition:-webkit-transform ease 0.5s;
+	transition:transform ease 0.5s;
+	transition:transform ease 0.5s, -webkit-transform ease 0.5s;
+	-webkit-transform:translateY(-100%);
+	transform:translateY(-100%);
+}
+.skip-link a:focus,
+.skip-link a:active {
+	-webkit-transform:translateY(0);
+	transform:translateY(0);
+}

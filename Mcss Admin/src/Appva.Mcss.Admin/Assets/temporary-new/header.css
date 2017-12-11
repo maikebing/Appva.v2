@@ -1,0 +1,26 @@
+/* =============================================================================
+ * Header
+ * postcss-bem-linter: define header
+============================================================================= */
+.header {
+	position:relative;
+	margin-bottom:calc(24px / 2);
+	margin-bottom:calc(var(--l-space) / 2);
+	background-color:#637491;
+	background-color:var(--c-blue);
+	color:#fff;
+}
+
+@media only screen and (min-width:1000px) {
+	.header__inner {
+		display:-webkit-flex;
+		display:-ms-flexbox;
+		display:flex;
+		-ms-flex-pack:justify;
+		-webkit-justify-content:space-between;
+		justify-content:space-between;
+		-ms-flex-align:end;
+		-webkit-align-items:flex-end;
+		align-items:flex-end;
+	}
+}

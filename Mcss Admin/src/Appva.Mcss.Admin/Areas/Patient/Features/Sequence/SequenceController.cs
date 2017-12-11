@@ -9,6 +9,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     #region Imports.
 
     using System.Web.Mvc;
+    using Appva.Core.Environment;
+    using Appva.Core.Logging;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
@@ -21,9 +24,43 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// The sequence http controller.
     /// </summary>
-    [RouteArea("patient"), RoutePrefix("sequence")]
+    [RouteArea("patient"), RoutePrefix("{patientId:guid}/schedule/{scheduleId:guid}/sequence")]
     public sealed class SequenceController : Controller
-    {       
+    {
+        #region Variabels.
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<SequenceController>();
+
+        /// <summary>
+        /// The <see cref="IApplicationEnvironment"/>.
+        /// </summary>
+        private readonly IApplicationEnvironment environment;
+
+        /// <summary>
+        /// The <see cref="IMediator"/>.
+        /// </summary>
+        private readonly IMediator mediator;
+
+        #endregion
+
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SequenceController"/> class.
+        /// </summary>
+        /// <param name="environment">The <see cref="IApplicationEnvironment"/>.</param>
+        /// <param name="mediator">The <see cref="IMediator"/>.</param>
+        public SequenceController(IApplicationEnvironment environment, IMediator mediator)
+        {
+            this.environment = environment;
+            this.mediator    = mediator;
+        }
+
+        #endregion
+
         #region Create View.
 
         /// <summary>
@@ -31,12 +68,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The create sequence request</param>
         /// <returns>A create form</returns>
-        [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
-        [HttpGet, Hydrate, Dispatch]
-        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        [Route("create")]
+        [HttpGet, Hydrate]
+        [Permissions(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequence request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            return this.View(response);
         }
 
         /// <summary>
@@ -44,16 +82,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The create sequence request</param>
         /// <returns>A redirect to schedule details if successful</returns>
-        [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
         [PermissionsAttribute(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequenceForm request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            ///Dispatch("Details", "Schedule")
+            return this.View(response);
         }
 
         #endregion
-
+        /*
         #region Edit View.
 
         /// <summary>
@@ -148,5 +188,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         }
 
         #endregion
+         * 
+         */
     }
 }

@@ -46,7 +46,7 @@
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
     @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
-    @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { patientId = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn" })
     @if (Appva.Core.Environment.ApplicationEnvironment.Is.Development || Appva.Core.Environment.ApplicationEnvironment.Is.Staging)
     {
         <a href="@Url.Action("view", "testcalendar", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id})" class="btn">Signeringskalender</a>

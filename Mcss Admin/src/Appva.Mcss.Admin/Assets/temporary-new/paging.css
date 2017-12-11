@@ -1,0 +1,38 @@
+/* =============================================================================
+ * Paging
+ * postcss-bem-linter: define paging
+============================================================================= */
+.paging {
+	text-align:center;
+}
+.paging a,
+.paging__selected {
+	display:inline-block;
+	padding:4px 8px;
+	border-radius:100px;
+	box-shadow:inset 1px 1px 6px rgba(255, 255, 255, 0.7), inset -1px -1px 6px rgba(0, 0, 0, 0.7);
+	background:#445068;
+	background:var(--c-marine);
+	line-height:1;
+}
+.paging a {
+	color:#fff;
+	text-decoration:none;
+}
+.paging a:hover,
+.paging a:focus {
+	box-shadow:inset 1px 1px 6px rgba(0, 0, 0, 0.7), inset -1px -1px 6px rgba(255, 255, 255, 0.7);
+	text-shadow:1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+.paging__selected {
+	background:#fff;
+	color:#445068;
+	color:var(--c-marine);
+}
+
+@media only screen and (min-width:600px) {
+	.paging a,
+	.paging__selected {
+		margin:0 2px;
+	}
+}

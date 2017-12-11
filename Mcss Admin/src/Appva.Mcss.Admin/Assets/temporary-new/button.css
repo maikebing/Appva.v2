@@ -1,0 +1,254 @@
+/* =============================================================================
+ * Buttons
+ * postcss-bem-linter: define button
+ * !important: To be able to override a:link states
+ * Also styles disabled and hover/active/focus styles
+ * Hover/active/focus background colors set in HSLA, with hover/focus at -5% and active at -10%..
+============================================================================= */
+
+/* Default button
+---------------------------------------------- */
+.button {
+	display:inline-block;
+	position:relative;
+	width:auto;
+	padding:8px 16px;
+	border:1px solid #dbe0ec;
+	border:1px solid var(--c-bluetone-sel);
+	border-radius:500px;
+	box-shadow:0 0 0 -1px rgba(0, 0, 0, 0.5), 0 0 0 -1px rgba(0, 0, 0, 0.2);
+	background-color:#eff1f6;
+	background-color:var(--c-bluetone);
+	color:#404e68 !important;
+	color:var(--c-text) !important;
+	text-align:center;
+	text-decoration:none;
+	cursor:pointer;
+	transition:box-shadow 0.2s;
+}
+.button:hover,
+.button:focus {
+	box-shadow:1px 1px 2px 0 rgba(0, 0, 0, 0.2), 2px 4px 5px 1px rgba(0, 0, 0, 0.12);
+	background-color:#fff;
+}
+
+/* TODO: Focus style on icon button */
+/* postcss-bem-linter: ignore */
+html:not(.mousedown) .button:focus {
+	text-decoration:underline;
+}
+/* postcss-bem-linter: ignore */
+html:not(.mousedown) .button:focus > svg {
+	-webkit-filter:drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+	filter:drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+}
+.button:active {
+	box-shadow:inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset 2px 4px 5px 1px rgba(0, 0, 0, 0.12);
+	background-color:hsla(223, 28%, 85%, 1);
+}
+.button:disabled:hover {
+	background-color:#eff1f6;
+	background-color:var(--c-bluetone);
+}
+.button:disabled,
+.button:disabled:active,
+.button:disabled:hover {
+	top:auto;
+	right:auto;
+	bottom:auto;
+	box-shadow:none;
+	opacity:0.4;
+	cursor:auto;
+}
+/* postcss-bem-linter: ignore */
+.button .icon {
+	margin-bottom:-0.1em;
+}
+
+@media print {
+	.button {
+		display:none;
+	}
+}
+
+/* Neutral
+---------------------------------------------- */
+.button--neutral {
+	background-color:#808fa7;
+	background-color:var(--c-text-sel);
+	color:#fff !important;
+}
+.button--neutral:hover,
+.button--neutral:focus {
+	background-color:hsla(217, 18%, 53%, 1);
+}
+.button--neutral:active {
+	background-color:hsla(217, 18%, 48%, 1);
+}
+.button--neutral:disabled:hover {
+	background-color:#808fa7;
+	background-color:var(--c-text-sel);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Colors
+----------------------------------------------------------------------------- */
+
+/* Primary (save) button
+---------------------------------------------- */
+.button--primary {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+	color:#fff !important;/* [1] */
+}
+.button--primary:hover,
+.button--primary:focus {
+	background-color:hsla(108, 34%, 46%, 1);
+}
+.button--primary:active {
+	background-color:hsla(108, 34%, 41%, 1);
+}
+.button--primary:disabled:hover {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+}
+
+/* Secondary (cancel) button
+---------------------------------------------- */
+.button--secondary {
+	background:#fff;
+	color:#404e68;
+	color:var(--c-text);
+}
+.button--secondary:hover,
+.button--secondary:focus {
+	background-color:hsla(0, 0%, 95%, 1);
+}
+.button--secondary:active {
+	background-color:hsla(0, 0%, 90%, 1);
+}
+.button--secondary:disabled,
+.button--secondary:disabled:hover {
+	border:1px solid #808fa7;
+	border:1px solid var(--c-text-sel);
+}
+.button--secondary:disabled:hover {
+	background-color:#fff;
+}
+
+
+/* Positive button
+---------------------------------------------- */
+.button--positive {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+	color:#fff !important;
+}
+.button--positive:hover,
+.button--positive:focus {
+	background-color:hsla(108, 34%, 46%, 1);
+}
+.button--positive:active {
+	background-color:hsla(108, 34%, 41%, 1);
+}
+.button--positive:disabled:hover {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+}
+
+/* Negative button
+---------------------------------------------- */
+.button--negative {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+	color:#fff !important; /* [1] */
+}
+.button--negative:hover,
+.button--negative:focus {
+	background-color:hsla(0, 54%, 49%, 1);
+}
+.button--negative:active {
+	background-color:hsla(0, 54%, 44%, 1);
+}
+.button--negative:disabled:hover {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Margins, inline buttons and text-transform
+----------------------------------------------------------------------------- */
+
+/* Margins
+---------------------------------------------- */
+.button--m {
+	margin:0 24px;
+	margin:0 var(--l-space);
+}
+.button--ml {
+	margin-left:24px;
+	margin-left:var(--l-space);
+}
+.button--mr {
+	margin-right:24px;
+	margin-right:var(--l-space);
+}
+
+/* Small button
+---------------------------------------------- */
+.button--small {
+	margin-right:4px;
+	margin-left:4px;
+	padding:0 0.5em;
+	line-height:1.5em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Special buttons
+----------------------------------------------------------------------------- */
+
+/* Blank (list-style) button
+---------------------------------------------- */
+.button--blank {
+	display:inline-block;
+	margin:0;
+	padding:0 0.5em;
+	border:none;
+	border-radius:0;
+	box-shadow:none;
+	background:transparent;
+	color:inherit !important;
+	line-height:1.5em;
+	text-align:inherit;
+	text-transform:unset;
+}
+.button--blank:hover,
+.button--blank:focus {
+	top:0;
+	right:0;
+	bottom:0;
+	box-shadow:none;
+}
+
+/* Icon only button
+---------------------------------------------- */
+.button--icon-only {
+	padding:8px 12px;
+}
+/* Block
+ * [1] We want block buttons to be flexible and thus need more room for text
+---------------------------------------------- */
+.button--block {
+	z-index:1;
+	width:100%;
+	padding-right:11px; /* [1] */
+	padding-left:11px; /* [1] */
+}
+.button--block:hover,
+.button--block:focus {
+	z-index:2;
+}
+.button--block:active {
+	z-index:0;
+}

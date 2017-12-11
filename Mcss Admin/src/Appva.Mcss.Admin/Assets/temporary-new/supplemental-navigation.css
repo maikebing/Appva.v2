@@ -1,0 +1,51 @@
+/* =============================================================================
+ * Supplemental navigation
+ * postcss-bem-linter: define supplemental-navigation
+ * 1. To override heading style
+ * 2. To override link styles
+============================================================================= */
+.supplemental-navigation {
+	position:absolute;
+	top:0;
+	right:0;
+	float:right;
+	color:#fff;
+}
+.supplemental-navigation > ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+.supplemental-navigation__item-link {
+	display:block;
+	padding:12px 20px;
+	color:#fff !important; /* [2] */
+	text-decoration:none;
+	text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);
+	letter-spacing:0.02em;
+}
+.supplemental-navigation a:focus,
+.supplemental-navigation a:hover {
+	background-color:rgba(255, 255, 255, 0.1);
+}
+
+@media only screen and (min-width:480px) {
+	.supplemental-navigation > ul {
+		display:-webkit-flex;
+		display:-ms-flexbox;
+		display:flex;
+	}
+}
+
+@media only screen and (min-width:1000px) {
+	.supplemental-navigation {
+		position:static;
+	}
+	.supplemental-navigation__item {
+		display:block;
+		border-left:1px solid rgba(0, 0, 0, 0.3);
+	}
+	.supplemental-navigation__item:last-of-type {
+		border-right:1px solid rgba(0, 0, 0, 0.3);
+	}
+}

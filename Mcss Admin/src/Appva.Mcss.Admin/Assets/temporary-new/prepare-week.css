@@ -1,0 +1,9 @@
+/* =============================================================================
+ * Prepare Week
+ * List with selectable days in week
+ * postcss-bem-linter: define prepare-week
+============================================================================= */
+.prepare-week {
+	padding-left:0;
+	list-style-type:none;
+}

@@ -1,0 +1,63 @@
+/* =============================================================================
+ * Form section header
+ * This creates the CSS circle and numbering.
+ *
+ * postcss-bem-linter: define form-section-header
+============================================================================= */
+/* postcss-bem-linter: ignore */
+form {
+	counter-reset:form-section-header; /* Initiate a counter */
+}
+.form-section-header {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	margin-bottom:calc(24px / 2);
+	margin-bottom:calc(var(--l-space) / 2);
+}
+/* The title colored circle under the number */
+.form-section-header__number {
+	position:relative;
+	-ms-flex:0 0 auto;
+	-webkit-flex:0 0 auto;
+	flex:0 0 auto;
+	width:64px;
+	height:64px;
+	margin-top:0;
+	margin-right:0.5rem;
+	border-radius:50%;
+	background-color:#637491;
+	background-color:var(--c-blue);
+}
+
+/* The title number inside the title colored circle */
+.form-section-header__number::before {
+	position:absolute;
+	top:50%;
+	left:50%;
+	color:#fff;
+	font-size:2.5rem;
+	content:counter(form-section-header);
+	counter-increment:form-section-header;
+	text-align:center;
+	-webkit-transform:translateX(-50%) translateY(-50%);
+	transform:translateX(-50%) translateY(-50%);
+}
+/* The text container for the title */
+.form-section-header__text {
+	-ms-flex:0 1 auto;
+	-webkit-flex:0 1 auto;
+	flex:0 1 auto;
+}
+
+/* The title for the section (inside text container) */
+.form-section-header__heading {
+	margin:0;
+	font-weight:600;
+}
+
+
+/* The description for the section (inside text container) */
+.form-section-header__description {
+	font-size:0.75rem;
+}

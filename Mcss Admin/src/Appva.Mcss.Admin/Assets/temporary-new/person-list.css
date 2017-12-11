@@ -1,0 +1,27 @@
+/* =============================================================================
+ * Person list
+ * postcss-bem-linter: define person-list
+============================================================================= */
+.person-list {
+	padding-left:0;
+	list-style-type:none;
+}
+.person-list__item {
+	padding:calc(24px / 2) calc(24px / 2);
+	padding:calc(var(--l-space) / 2) calc(var(--l-space) / 2);
+	border-bottom:1px solid #eee;
+}
+.person-list__item:last-of-type {
+	border-bottom:none;
+}
+.person-list__name {
+	display:block;
+	font-weight:bold;
+	font-size:1.2em;
+}
+.person-list__definition dt {
+	font-weight:bold;
+}
+.person-list__definition dt::after {
+	content:":";
+}

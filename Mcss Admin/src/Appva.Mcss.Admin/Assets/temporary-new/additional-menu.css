@@ -1,0 +1,91 @@
+/* =============================================================================
+ * Additional menu
+ *
+ * postcss-bem-linter: define additional-menu
+============================================================================= */
+.additional-menu {
+	display:inline-block;
+	position:relative;
+}
+.additional-menu__trigger {
+	margin-bottom:0;
+	border-bottom-right-radius:1rem;
+	border-bottom-left-radius:1rem;
+	font-size:1rem;
+	line-height:24px;
+	line-height:var(--l-space);
+	transition:all 0.2s !important;
+}
+
+/* postcss-bem-linter: ignore */
+.additional-menu--open .additional-menu__trigger,
+.no-js .additional-menu:hover .additional-menu__trigger,
+.no-js .additional-menu:focus .additional-menu__trigger {
+	border-bottom-right-radius:0;
+	border-bottom-left-radius:0;
+}
+.additional-menu__list {
+	visibility:hidden;
+	position:absolute;
+	top:calc(100% - 1px);
+	left:0;
+	z-index:10;
+	width:400px;
+	padding:calc(24px / 2) 0;
+	padding:calc(var(--l-space) / 2) 0;
+	border:1px solid #efefef;
+	border:1px solid var(--c-light-grey);
+	box-shadow:2px 2px 3px rgba(0, 0, 0, 0.3);
+	list-style-type:none;
+	background:#fff;
+	transition:-webkit-transform 0.2s;
+	transition:transform 0.2s;
+	transition:transform 0.2s, -webkit-transform 0.2s;
+	-webkit-transform:scale(0, 0);
+	transform:scale(0, 0);
+	-webkit-transform-origin:0.5rem 0;
+	transform-origin:0.5rem 0;
+}
+.additional-menu__list--right {
+	right:0;
+	left:auto;
+	-webkit-transform-origin:calc(100% - 0.5rem) 0;
+	transform-origin:calc(100% - 0.5rem) 0;
+}
+
+/* postcss-bem-linter: ignore */
+.additional-menu--open .additional-menu__list,
+.no-js .additional-menu:hover .additional-menu__list,
+.no-js .additional-menu:focus .additional-menu__list {
+	visibility:visible;
+	-webkit-transform:scale(1, 1);
+	transform:scale(1, 1);
+}
+.additional-menu a {
+	display:block;
+	padding:calc(24px / 2) 24px;
+	padding:calc(var(--l-space) / 2) var(--l-space);
+	color:#000;
+	line-height:1.2;
+	text-decoration:none;
+}
+.additional-menu a:hover,
+.additional-menu a:focus {
+	background:#68ad57;
+	background:var(--c-standard-green);
+	color:#fff;
+}
+.additional-menu > ul ul {
+	padding-left:calc(24px / 2);
+	padding-left:calc(var(--l-space) / 2);
+}
+.additional-menu__item--selected a,
+.additional-menu__item--selected a:visited {
+	background:#68ad57;
+	background:var(--c-standard-green);
+	color:#fff;
+}
+.additional-menu__item--selected a:hover {
+	background:#589f49;
+	background:var(--c-standard-green-sel);
+}

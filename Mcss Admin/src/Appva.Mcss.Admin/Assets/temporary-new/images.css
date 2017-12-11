@@ -1,0 +1,27 @@
+/* =============================================================================
+ * Images
+ *
+ * [1] Fluid images for responsive purposes.
+ * [2] Setting `vertical-align` removes the whitespace that appears under `img`
+ *     elements when they are dropped into a page as-is. Safer alternative to
+ *     using `display: block;`.
+ * [3] Maintain the aspect ratio when img is scaled down based on parent width.
+============================================================================= */
+img {
+	max-width:100%; /* [1] */
+	border:none;
+	vertical-align:middle; /* [2] */
+}
+img[height] {
+	height:auto; /* [3] */
+}
+.img--left {
+	float:left;
+	margin:0 24px 24px 0;
+	margin:0 var(--l-space) var(--l-space) 0;
+}
+.img--right {
+	float:right;
+	margin:0 0 24px 24px;
+	margin:0 0 var(--l-space) var(--l-space);
+}

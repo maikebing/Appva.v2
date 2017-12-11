@@ -1,0 +1,127 @@
+/* =============================================================================
+ * Section
+ * 1. prevents margin-collapse
+ * postcss-bem-linter: define section
+============================================================================= */
+
+
+/* Spacing
+-------------------------------------------------------------- */
+.section--hspace {
+	padding-right:24px;
+	padding-right:var(--l-space);
+	padding-left:24px;
+	padding-left:var(--l-space);
+}
+.section--vspace {
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+	border-bottom:1px solid transparent; /* [1] */
+}
+
+/* narrow section
+ * @Comments: content sets size
+ * 1. TODO: there must be a better way to get width from content
+-------------------------------------------------------------- */
+.section--narrow {
+	display:table; /* [1] */
+	margin-right:auto;
+	margin-left:auto;
+}
+
+/* Bubble section
+ * @Comments Looks like a speech bubble
+-------------------------------------------------------------- */
+.section--bubble {
+	position:relative;
+	width:150px;
+	border-radius:10px;
+	white-space:normal;
+}
+
+@media only screen and (min-width:480px) {
+	.section--bubble {
+		width:auto;
+		white-space:nowrap;
+	}
+}
+
+/* Makes a triangle using some creative CSS */
+.section--bubble::after {
+	position:absolute;
+	top:-30px;
+	left:50%;
+	width:0;
+	height:0;
+	border:solid transparent;
+	border-width:15px;
+	/* Let's not set a color until we need one */
+	border-bottom-color:transparent;
+	content:"";
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+
+/* Themes
+-------------------------------------------------------------- */
+.section--white {
+	padding-top:24px;
+	padding-top:var(--l-space);
+	border-bottom:1px solid transparent; /* [1] */
+	background:#fff;
+	color:#404e68;
+	color:var(--c-text);
+}
+.section--white::after {
+	border-bottom-color:#fff;
+}
+
+/* card section */
+.section--card {
+	padding-top:24px;
+	padding-top:var(--l-space);
+	border-bottom:1px solid transparent; /* [1] */
+	box-shadow:1px 1px 2px 0 rgba(0, 0, 0, 0.5), 2px 4px 5px 1px rgba(0, 0, 0, 0.12);
+	background:#fff;
+}
+.section--card.section--bubble::after {
+	border-bottom-color:#fff;
+}
+/* Faking a shadow */
+.section--card.section--bubble::before {
+	position:absolute;
+	top:-27px;
+	left:calc(50% + 3px);
+	width:0;
+	height:0;
+	border:solid transparent;
+	border-width:13px;
+	border-bottom-color:rgba(0, 0, 0, 0.1);
+	content:"";
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+
+/* (dark) blue */
+.section--blue {
+	padding-top:24px;
+	padding-top:var(--l-space);
+	border-bottom:1px solid transparent; /* [1] */
+	background-color:#637491;
+	background-color:var(--c-blue);
+	color:#eff1f6;
+	color:var(--c-bluetone);
+}
+.section--blue::after {
+	border-bottom-color:#637491;
+	border-bottom-color:var(--c-blue);
+}
+
+/* Bright blue (bluetone) */
+.section--bluetone {
+	padding-top:24px;
+	padding-top:var(--l-space);
+	border-bottom:1px solid transparent; /* [1] */
+	background-color:#eff1f6;
+	background-color:var(--c-bluetone);
+}

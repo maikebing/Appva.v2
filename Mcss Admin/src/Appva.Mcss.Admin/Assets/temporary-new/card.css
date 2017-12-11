@@ -1,0 +1,27 @@
+/* =============================================================================
+ * Card
+ * postcss-bem-linter: define card
+============================================================================= */
+.card {
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+	padding:24px 0;
+	padding:var(--l-space) 0;
+}
+
+@media only screen and (min-width:480px) {
+	.card--height-limited {
+		display:-webkit-flex;
+		display:-ms-flexbox;
+		display:flex;
+		-ms-flex-align:stretch;
+		-webkit-align-items:stretch;
+		align-items:stretch;
+		max-height:50vh;
+	}
+	.card {
+		padding:24px 24px;
+		padding:var(--l-space) var(--l-space);
+		box-shadow:2px 2px 3px rgba(0, 0, 0, 0.3);
+	}
+}

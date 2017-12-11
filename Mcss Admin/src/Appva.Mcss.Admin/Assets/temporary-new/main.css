@@ -1,0 +1,12 @@
+/* =============================================================================
+ * Main
+ * postcss-bem-linter: define main
+ *
+ * Contains everything between .header and .footer
+ *
+ * [1] Following the skip link moves focus to .main, but we don't want it to
+ *     get an outline since it isn't an interactive element
+============================================================================= */
+.main:focus {
+	outline:none; /* [1] */
+}

@@ -1,0 +1,19 @@
+/* =============================================================================
+ * Inliner
+ *
+ * Puts child elements in line after each other
+============================================================================= */
+.inliner > * {
+	display:inline-block;
+}
+
+/* Center-align inline items
+-------------------------------------------------------------- */
+.inliner--align-center {
+	font-size:0; /* Remove space between items */
+	text-align:center;
+}
+.inliner--align-center > * {
+	font-size:1rem;
+	font-size:initial; /* Reset font size */
+}

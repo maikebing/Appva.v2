@@ -1,0 +1,92 @@
+/* =============================================================================
+ * An alert message that can be used by itself and within dialogs
+ * [1] Prevents margin collapse
+ * postcss-bem-linter: define alert-message
+ ============================================================================ */
+.alert-message {
+	margin-bottom:1rem;
+	padding:1rem 1rem 0 1rem;
+	border-bottom:1px solid transparent; /* [1] */
+	background-color:#637491;
+	background-color:var(--c-blue);
+}
+.alert-message__heading {
+	color:#fff;
+}
+
+/* postcss-bem-linter: ignore */
+.alert-message .icon {
+	background-color:#404e68;
+	background-color:var(--c-blue-sel);
+	color:#637491;
+	color:var(--c-blue);
+}
+
+/* postcss-bem-linter: ignore */
+.alert-message + .dialog__close {
+	color:#637491 !important;
+	color:var(--c-blue) !important;
+}
+
+/* Alert message in dialog
+-------------------------------------------------------------- */
+.alert-message--dialog {
+	margin-bottom:0;
+}
+
+/* Positive message
+---------------------------------------------- */
+.alert-message--positive {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+}
+/* postcss-bem-linter: ignore */
+.alert-message--positive .icon {
+	background-color:hsl(108, 34%, 68%);
+	color:#68ad57;
+	color:var(--c-standard-green);
+}
+
+/* To style the close-button when in a dialog */
+/* postcss-bem-linter: ignore */
+.alert-message--positive + .dialog__close {
+	color:#68ad57 !important;
+	color:var(--c-standard-green) !important;
+}
+
+/* Negative message
+---------------------------------------------- */
+.alert-message--negative {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+}
+/* postcss-bem-linter: ignore */
+.alert-message--negative .icon {
+	background-color:hsl(2, 46%, 68%);
+	color:#c94949;
+	color:var(--c-alarmred);
+}
+
+/* To style the close-button when in a dialog */
+/* postcss-bem-linter: ignore */
+.alert-message--negative + .dialog__close {
+	color:#c94949 !important;
+	color:var(--c-alarmred) !important;
+}
+
+/* Warning message
+---------------------------------------------- */
+.alert-message--warning {
+	background-color:hsl(55, 100%, 40%);
+}
+/* postcss-bem-linter: ignore */
+.alert-message--warning .icon {
+	background-color:hsl(55, 100%, 45%);
+	color:hsl(55, 100%, 40%);
+}
+
+/* To style the close-button when in a dialog */
+/* postcss-bem-linter: ignore */
+.alert-message--warning + .dialog__close {
+	color:hsl(55, 100%, 40%) !important;
+}

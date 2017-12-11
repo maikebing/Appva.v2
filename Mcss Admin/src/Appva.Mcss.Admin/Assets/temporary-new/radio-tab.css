@@ -1,0 +1,69 @@
+/* =============================================================================
+ * Radio tab
+ *
+ * Makes radiobuttons look like tabs
+ * TODO: How do I know which one is selected if only two?
+ * TODO: Focus style
+============================================================================= */
+.form-controls--radio-tab {
+	display:block !important;
+	min-width:130px;
+	margin-bottom:0;
+	text-align:center;
+}
+.form-controls--radio-tab:last-of-type {
+	margin-bottom:30px;
+}
+.form-controls--radio-tab label {
+	margin:0;
+	padding:4px 10px;
+	background-color:#dbe0ec;
+	background-color:var(--c-bluetone-sel);
+	color:#404e68;
+	color:var(--c-text);
+	font-weight:normal;
+	line-height:26px;
+	cursor:pointer;
+}
+/* Selected style */
+.form-controls--radio-tab input:checked ~ label {
+	background-color:#637491;
+	background-color:var(--c-blue);
+	color:#fff;
+	font-weight:bold;
+	cursor:auto;
+}
+/* Focused style, note that the focus style only applies when
+ * triggered by keyboard
+ */
+html:not(.mousedown) .form-controls--radio-tab input:focus ~ label {
+	box-shadow:inset 0 0 0 2px #dbe0ec;
+	box-shadow:inset 0 0 0 2px var(--c-bluetone-sel);
+}
+.form-controls--radio-tab input[type="radio"] {
+	position:absolute;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+	clip:rect(1px, 1px, 1px, 1px);
+	padding:0;
+	border:0;
+}
+.form-controls--radio-tab:first-of-type label {
+	border-radius:5px 5px 0 0;
+}
+.form-controls--radio-tab:last-of-type label {
+	border-radius:0 0 5px 5px;
+}
+
+@media only screen and (min-width:540px) {
+	.form-controls--radio-tab {
+		display:inline-block !important;
+	}
+	.form-controls--radio-tab:first-of-type label {
+		border-radius:5px 0 0 5px;
+	}
+	.form-controls--radio-tab:last-of-type label {
+		border-radius:0 5px 5px 0;
+	}
+}

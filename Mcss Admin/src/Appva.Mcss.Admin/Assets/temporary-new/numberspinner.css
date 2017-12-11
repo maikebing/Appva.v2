@@ -1,0 +1,86 @@
+/* Number spinner
+ * 1 Hide spin buttons in Firefox
+ * 2 Makes the input stay above the element after in the markup (and it's shadow)
+================================================================================ */
+/* Hide spin buttons in WebKit */
+.numberspinner [type="number"]::-webkit-inner-spin-button,
+.numberspinner [type="number"]::-webkit-outer-spin-button {
+	margin:0;
+	-webkit-appearance:none;
+}
+.numberspinner [type="number"] {
+	display:inline-block;
+	padding:0;
+	border-radius:0;
+	text-align:center;
+	-moz-appearance:textfield; /* [1] */
+}
+.numberspinner {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+}
+.numberspinner .decrease,
+.numberspinner .increase {
+	display:inline-block;
+	box-sizing:border-box;
+	padding:0 0.2em;
+	line-height:1em;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.numberspinner--vertical .decrease,
+.numberspinner--vertical .increase {
+	width:auto;
+	height:2em;
+}
+.numberspinner .increase {
+	margin-left:0.25em;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+}
+.numberspinner .decrease {
+	margin-right:0.25em;
+	border-top-right-radius:0;
+	border-bottom-right-radius:0;
+}
+.numberspinner--vertical .increase {
+	margin-bottom:0.25em;
+	margin-left:0;
+	border-radius:500px 500px 0 0;
+}
+.numberspinner--vertical .decrease {
+	margin-top:0.25em;
+	margin-right:0;
+	border-radius:0 0 500px 500px;
+}
+.numberspinner--vertical {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-direction:column-reverse;
+	-webkit-flex-direction:column-reverse;
+	flex-direction:column-reverse;
+	-ms-flex-align:stretch;
+	-webkit-align-items:stretch;
+	align-items:stretch;
+	padding:0 0.5em;
+}
+.numberspinner--vertical [type="number"] {
+	display:block;
+	z-index:1; /* [2] */
+	width:auto;
+}
+
+/* Size (width) of input field
+ * #MtSAMA for numberspinner
+----------------------------------------------------------------------------- */
+.numberspinner [size="2"] {
+	width:2em;
+}
+.numberspinner [size="3"] {
+	width:3em;
+}
+.numberspinner [size="4"] {
+	width:4em;
+}

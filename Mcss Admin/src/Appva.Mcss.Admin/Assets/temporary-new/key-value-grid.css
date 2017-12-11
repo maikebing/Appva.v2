@@ -1,0 +1,18 @@
+/* Key value grid
+ * An actually really useful dl!
+ * postcss-bem-linter: define key-value-grid
+================================================================================ */
+.key-value-grid {
+	margin-bottom:24px;
+	margin-bottom:var(--l-vspace);
+}
+
+@media only screen and (min-width:480px) {
+	.key-value-grid {
+		display:grid;
+		grid-template-columns:1fr 1fr;
+	}
+}
+.key-value-grid dd + dd {
+	grid-column:2;
+}

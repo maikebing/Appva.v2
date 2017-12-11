@@ -1,0 +1,23 @@
+/* =============================================================================
+ * Reset
+============================================================================= */
+* {
+	box-sizing:border-box;
+	margin:0;
+}
+fieldset,
+legend,
+td,
+th {
+	padding:0;
+}
+html {
+	background:#fff;
+	color:#404e68;
+	color:var(--c-text);
+	font-size:16px;
+	font-family:Helvetica, Arial, Verdana, sans-serif;
+	font-family:var(--ff-default);
+	line-height:24px;
+	line-height:var(--l-space);
+}

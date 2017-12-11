@@ -1,0 +1,36 @@
+/* =============================================================================
+ * An image with a caption
+ * 1. probably a good reason for this..
+ * 2. SVG needs it apparently, otherwise the height might end up being
+ *    anything...
+ * postcss-bem-linter: define figure
+ ============================================================================ */
+.figure {
+	display:block;
+	width:100%;
+	padding:0; /* [1] */
+}
+.figure__image {
+	width:100%;
+	height:auto; /* [2] */
+}
+.figure__figcaption {
+	display:block;
+	font-style:italic;
+	text-align:right;
+}
+
+@media only screen and (min-width:480px), print {
+	.figure--left {
+		float:left;
+		width:50%;
+		padding-right:24px;
+		padding-right:var(--l-space);
+	}
+	.figure--right {
+		float:right;
+		width:50%;
+		padding-left:24px;
+		padding-left:var(--l-space);
+	}
+}

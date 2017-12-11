@@ -1,0 +1,14 @@
+/* =============================================================================
+ * JavaScript visibility
+ *
+ * .js-hidden hides when JS is available
+ * .js-visible shows if JS is available (same as hides if JS doesn't work)
+ * But it's probably better to add the element with JS rather than showing it
+ * sith css..
+============================================================================= */
+.js .js-hidden {
+	display:none;
+}
+html:not(.js) .js-visible {
+	display:none;
+}

@@ -1,0 +1,15 @@
+/* =============================================================================
+ * Footer
+ * postcss-bem-linter: define footer
+============================================================================= */
+.footer {
+	margin-top:50px;
+	padding:20px 0;
+	background-color:#445068;
+	background-color:var(--c-marine);
+	color:#fff;
+}
+.footer__link,
+.footer__link:visited {
+	color:inherit;
+}

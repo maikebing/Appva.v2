@@ -1,0 +1,39 @@
+/* =============================================================================
+ * Inline typography
+ *
+ * Typographic tweaks to inline elements.
+============================================================================= */
+abbr {
+	border-bottom:1px dotted rgb(136, 136, 136);
+	cursor:help;
+}
+code,
+kbd,
+var {
+	font-size:0.9em;
+	font-family:Monaco, Courier, "Courier New", Tahoma;
+}
+dfn,
+cite {
+	font-style:normal;
+}
+
+
+/* Sub and sup elements
+ *
+ * [1] Avoid line-height issues caused by default rendering of sub and sup elements
+----------------------------------------------------------------------------- */
+sub,
+sup {
+	position:relative; /* [1] */
+	height:0;
+	line-height:1;
+	vertical-align:baseline;
+}
+sup {
+	bottom:1ex; /* [1] */
+	font-size:0.7rem;
+}
+sub {
+	top:0.5ex; /* [1] */
+}

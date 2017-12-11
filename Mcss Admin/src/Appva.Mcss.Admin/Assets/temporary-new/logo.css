@@ -1,0 +1,28 @@
+/* =============================================================================
+ * Logo
+ * postcss-bem-linter: define logo
+ *
+ * [1] For text fallback if the image doesn't load
+============================================================================= */
+.logo {
+	padding-top:7px;
+	color:#fff; /* [1] */
+	font-size:2rem; /* [1] */
+}
+.logo a {
+	color:inherit; /* [1] */
+	text-decoration:none;
+}
+.logo img {
+	display:block;
+	box-sizing:content-box;
+	width:auto;
+	height:36px;
+}
+
+@media screen and (min-width:1000px) {
+	.logo {
+		margin-bottom:5px;
+		padding-top:0;
+	}
+}

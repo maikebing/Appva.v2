@@ -1,0 +1,80 @@
+/* =============================================================================
+ * Typography
+ *
+============================================================================= */
+p {
+	margin-bottom:24px;
+	margin-bottom:var(--l-space);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-bottom:1rem;
+	color:#404e68;
+	color:var(--c-text);
+	font-weight:normal;
+	line-height:1.2;
+	letter-spacing:0.01em;
+}
+h1,
+.h1 {
+	font-size:4rem;
+	letter-spacing:0;
+}
+h2,
+.h2 {
+	font-size:2rem;
+	letter-spacing:0;
+}
+h3,
+.h3 {
+	font-size:1.5rem;
+}
+h4,
+.h4 {
+	font-size:1.125rem;
+}
+h5,
+.h5 {
+	font-size:1.1rem;
+}
+h6,
+.h6 {
+	font-size:1rem;
+}
+.label {
+	color:inherit;
+	font-weight:bold;
+	line-height:20px;
+	white-space:normal;
+}
+
+/* Invert text
+ * TODO: Put in an utility?
+-------------------------------------------------------------- */
+.negative-text {
+	color:#fff;
+}
+/* Required indicator
+ * a span with an asterisk in usually
+-------------------------------------------------------------- */
+.required-indicator {
+	color:#c94949;
+	color:var(--c-alarmred);
+}
+/* "Read more"-links
+ * TODO: Put somewhere else? With link styles? Separate stylesheet??
+ */
+.read-more-link {
+	font-style:italic;
+	font-size:0.75em;
+}
+.label {
+	color:inherit;
+	font-weight:bold;
+	line-height:20px;
+	white-space:normal;
+}

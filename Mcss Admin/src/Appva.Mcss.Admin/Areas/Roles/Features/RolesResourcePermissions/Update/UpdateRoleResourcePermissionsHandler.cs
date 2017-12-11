@@ -71,7 +71,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Handlers
                     x =>  x.Resource.Replace(schema, "").Split('/').First(y => y.IsNotEmpty()),
                     x => new Tickable
                     {
-                        Id = x.Id,
+                        Id = x.Id.ToString(),
                         Label = x.Name,
                         HelpText = x.Description,
                         IsSelected = selected.Contains(x)

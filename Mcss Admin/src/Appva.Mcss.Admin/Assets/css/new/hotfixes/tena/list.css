@@ -1,0 +1,113 @@
+﻿
+body {
+    background:rgb(239,241,246);
+}
+
+label, 
+.button,
+.tena-list .error,
+.tena-list p {
+    font-size:1rem;
+}
+
+.icon--positive {
+    background:rgb(88,159,73);
+}
+.icon--neutral {
+    background:rgb(64,78,104);
+}
+
+/* Sections */
+
+.tena-list .section--header {
+    border-bottom: 1px solid rgb(219,224,236);
+}
+
+/* Left-nav */
+
+.tena-list .sub-nav {
+    margin-bottom:12px;
+}
+
+.tena-list .sub-nav h2 {
+    font-weight:bold;
+    text-transform: uppercase;
+    margin-top:16px;
+    padding:0 16px;
+    font-size:14px;
+}
+
+.tena-list .sub-nav .sub-nav__item a {
+    padding:12px 24px;
+    font-size:14px;
+    color:rgb(64,78,104);
+    margin:0px;
+}
+
+.tena-list .sub-nav .sub-nav__item.sub-nav__item--selected a {
+    color:#ffffff;
+}
+
+/* Details */
+.tena-list dl {
+    margin-right:48px;
+}
+
+.tena-list dl dt {
+    font-size: 14px;
+    color:rgb(128,143,167);
+    font-weight:normal;
+}
+.tena-list dl dd {
+    font-size: 14px;
+    color:rgb(64,78,104);
+}
+
+.tena-list dl dd img.icon.in-progress,
+.tena-list dl dd img.icon.pending,
+.tena-list dl dd img.icon.completed {
+    background: rgb(99,116,145);
+    border-radius:15px;
+    padding:5px;
+}
+
+.tena-list dl dd img.icon.pending{
+    background:rgb(244, 170, 0);
+}
+
+.tena-list dl dd img.icon.completed {
+    border:5px solid rgb(104,173,87);
+    background:#fff;
+    padding:0px;
+}
+
+/* Table */
+.tena-list table tbody tr:nth-child(even) { background: rgb(239,241,246); }
+.tena-list table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+.tena-list table tbody tr:hover { background: rgb(219, 224, 236);}
+
+.tena-list .table-general thead th { color:rgb(64,78,104); }
+.tena-list .table-general td { 
+    color:rgb(64,78,104); 
+    padding-left:12px;
+}
+
+.dialog__content .tena-list.section--bluetone {
+    margin-left:-24px;
+    margin-right:-24px;
+    padding-bottom:24px;
+}
+
+/* Upload dialog specific */
+
+.dialog__content .tena-list .error {
+    background:rgba(201,73,73,0.15);
+    border-left:4px solid rgb(201,73,73);
+    padding:8px;
+    color:rgb(201,73,73);
+    margin:24px 0;
+}
+
+.dialog__content .tena-list {
+    color: rgb(64,78,104);
+}

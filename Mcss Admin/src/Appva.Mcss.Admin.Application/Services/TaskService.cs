@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -43,7 +44,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Lists tasks by given criterias
         /// </summary>
         /// <returns>A <see cref="PageableSet"/> of Tasks</returns>
-        PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10);
+        IPaged<Task> List(ListTaskModel model, int page = 1, int pageSize = 10);
 
         /// <summary>
         /// Updates the task status.
@@ -111,7 +112,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Task Get(Guid id)
         {
-            return this.taskRepository.Find(id);
+            return this.taskRepository.Get(id);
         }
 
         /// <inheritdoc />
@@ -126,7 +127,7 @@ namespace Appva.Mcss.Admin.Application.Services
         public void HandleAlert(Guid taskId)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var task = this.taskRepository.Find(taskId);
+            var task = this.taskRepository.Get(taskId);
             task.DelayHandled = true;
             task.DelayHandledBy = account;
             this.taskRepository.Update(task);
@@ -150,7 +151,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
+        public IPaged<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = GetAllRoleScheduleSettingsList(account);

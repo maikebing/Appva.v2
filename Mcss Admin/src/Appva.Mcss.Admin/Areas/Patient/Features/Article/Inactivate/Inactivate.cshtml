@@ -1,0 +1,22 @@
+﻿@using Appva.Mcss.Admin.Areas.Models
+@model InactivateArticleModel
+@{ SetTitle("Ta bort en artikel"); }
+<div class="section section--hspace">
+    <h2>Ta bort artikel</h2>
+    <div id="remove-item">
+        @using (Html.Post(null, new { PatientId = Model.PatientId, ArticleId = Model.ArticleId }))
+        {
+            <div class="width-limiter width-limiter--xs">
+                <p>Är du säker på att du vill ta bort artikeln "<b>@Model.Article.Name</b>"?</p>
+                @if (Model.Sequences != null && Model.Sequences.Count > 0)
+                {
+                    <p>Artikeln är kopplad till @Model.Sequences.Count @(Model.Sequences.Count == 1 ? "insats":"insatser"). Artikeln kommer att tas bort från @(Model.Sequences.Count == 1 ? "denna insats" : "dessa insatser") och det kommer inte gå att begära påfyllning från @(Model.Sequences.Count == 1 ? "insatsen" : "insatserna")</p>
+                }
+                <div class="form-controls form-controls--align-end form-controls--no-margin">
+                    <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+                    @Html.Submit("Ta bort artikel", new { @class = "button button--negative" })
+                </div>
+            </div>
+        }
+    </div>
+</div>

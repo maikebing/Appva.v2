@@ -19,11 +19,12 @@
 				{
 					@Html.ActionLink(Permissions.Role.Delete, "Ta bort", "Delete", "Roles", new { Id = role.Id }, new { @class = "btn btn-del" })
 				}
-				@Html.ActionLink(Permissions.Role.Update, "Redigera",                    "Update", "Roles",            new { Id = role.Id }, new { @class = "btn lb-link" })
-				@Html.ActionLink(Permissions.Role.Update, "Koppla till signeringslista", "Update", "RolesSchedules",   new { Id = role.Id }, new { @class = "btn lb-link" })
-				@Html.ActionLink(Permissions.Role.Update, "Koppla till roller",          "Update", "RolesRoles",       new { Id = role.Id }, new { @class = "btn lb-link" })
-                @Html.ActionLink(Permissions.Role.Update, "Koppla till delegeringar",    "Update", "RolesDelegations", new { Id = role.Id }, new { @class = "btn lb-link" })
-                @Html.ActionLink(Permissions.Role.Update, "Behörighet mobil enhet", "Update", "RolesResourcePermissions", new { Id = role.Id }, new { @class = "btn lb-link" })
+				@Html.ActionLink(Permissions.Role.Update, "Redigera",                    "Update", "Roles",                    new { Id = role.Id }, new { @class = "btn lb-link" })
+				@Html.ActionLink(Permissions.Role.Update, "Koppla till signeringslista", "Update", "RolesSchedules",           new { Id = role.Id }, new { @class = "btn lb-link" })
+				@Html.ActionLink(Permissions.Role.Update, "Koppla till roller",          "Update", "RolesRoles",               new { Id = role.Id }, new { @class = "btn lb-link" })
+                @Html.ActionLink(Permissions.Role.Update, "Koppla till delegeringar",    "Update", "RolesDelegations",         new { Id = role.Id }, new { @class = "btn lb-link" })
+                @Html.ActionLink(Permissions.Role.Update, "Koppla till artikelkategorier", "Update", "RolesCategoryPermissions", new { Id = role.Id }, new { @class = "btn lb-link" })
+                @Html.ActionLink(Permissions.Role.Update, "Behörighet mobil enhet",      "Update", "RolesResourcePermissions", new { Id = role.Id }, new { @class = "btn lb-link" })
 				<div class="h">
 					<h2>@role.Name</h2>
 					<span class="pnr">@role.Description</span>

@@ -62,8 +62,8 @@ namespace Appva.Mcss.Admin.Areas.Roles.Handlers
             var role = this.roleService.Find(message.RoleId);
 
             var permissionList = message.Permissions.SelectMany(x => x.Value);
-            var unseleceted = this.permissions.ListAllIn(permissionList.Where(x => x.IsSelected == false).Select(x => x.Id).ToArray());
-            var selected    = this.permissions.ListAllIn(permissionList.Where(x => x.IsSelected == true).Select(x => x.Id).ToArray());
+            var unseleceted = this.permissions.ListAllIn(permissionList.Where(x => x.IsSelected == false).Select(x => new Guid(x.Id)).ToArray());
+            var selected    = this.permissions.ListAllIn(permissionList.Where(x => x.IsSelected == true).Select(x => new Guid(x.Id)).ToArray());
 
             foreach (var u in unseleceted)
             {

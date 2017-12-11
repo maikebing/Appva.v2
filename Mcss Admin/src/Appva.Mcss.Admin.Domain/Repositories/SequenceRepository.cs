@@ -9,10 +9,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 using Appva.Persistence;
     using Appva.Repository;
-    using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,54 +27,56 @@ using System.Linq;
         Sequence Get(Guid id);
 
         #endregion
+        /// <summary>
+        /// Lists the specified ordinations ids.
+        /// </summary>
+        /// <param name="ordinationsIds">If set, lists by given ordination-ids<param>
+        /// <returns></returns>
+        IList<Sequence> List(IList<long> ordinationsIds = null);
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SequenceRepository : ISequenceRepository
+    public sealed class SequenceRepository : Repository<Sequence>, ISequenceRepository
     {
-        #region Variables.
+        #region Fields.
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>
+        /// </summary>
         private readonly IPersistenceContext persistenceContext;
 
         #endregion
 
-        #region Constructor.
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceRepository"/> class.
         /// </summary>
-        public SequenceRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public SequenceRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
         }
 
 
         #endregion
 
-        public Sequence Get(Guid id)
-        {
-            return this.persistenceContext.Get<Sequence>(id);
-        }
+        #region IUpdateRepository members.
 
         /// <inheritdoc />
-        public Sequence Find(Guid id)
-        {
-            return this.persistenceContext.Get<Sequence>(id);
-        }
+        public IList<Sequence> List(IList<long> ordinationsIds = null)
+        {   
+            // TODO: Check permissions to schedules 
+            var query = this.Context.QueryOver<Sequence>();
 
-        /// <inheritdoc />
-        public void Save(Sequence entity)
+            if (ordinationsIds != null)
         {
-            this.persistenceContext.Save(entity);
-        }
-
-        /// <inheritdoc />
-        public void Update(Sequence entity)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            this.persistenceContext.Update(entity);
+                var array = ordinationsIds.ToArray();
+                Medication alias = null;
+                query.JoinQueryOver(x => x.Medications, () => alias)
+                    .WhereRestrictionOn(() => alias.OrdinationId).IsIn(array);
+            }
+            return query.List();
         }
     }
 }

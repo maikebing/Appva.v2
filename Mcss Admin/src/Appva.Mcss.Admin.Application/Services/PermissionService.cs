@@ -10,9 +10,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.VO;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -55,6 +59,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPermissionRepository repository;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -63,8 +72,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="PermissionService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IPermissionRepository"/> implementation</param>
-        public PermissionService(IPermissionRepository repository)
+        public PermissionService(
+            ISettingsService settings,
+            IPermissionRepository repository)
         {
+            this.settings   = settings;
             this.repository = repository;
         }
 
@@ -75,13 +87,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public IList<Permission> List(string bySchema = null)
         {
-            if (bySchema.IsEmpty())
-            {
-                return this.repository.List();
-            }
+            var permissions = bySchema.IsEmpty() ? 
+                this.repository.List() :
+                this.repository.Search(bySchema);
 
-            return this.repository.Search(bySchema);
-            
+            return HideNotActivated(permissions);
         }
 
         /// <inheritdoc />
@@ -94,6 +104,32 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Permission> ListByRoles(IList<Role> roles)
         {
             return this.repository.ByRoles(roles);
+        }
+
+        #endregion
+
+        #region Private helpers.
+
+        /// <summary>
+        /// Hides the not activated permissions.
+        /// </summary>
+        /// <param name="permissions">The permissions.</param>
+        /// <returns></returns>
+        private IList<Permission> HideNotActivated(IList<Permission> permissions)
+        {
+            var notInstalled = new List<string>();
+
+            //// If article module not installed
+            if (this.settings.Find<OrderListConfiguration>(ApplicationSettings.OrderListSettings).IsInstalled == false)
+            {
+                notInstalled.Add(Permissions.OrderList.CreateValue);
+                notInstalled.Add(Permissions.OrderList.ReadValue);
+                notInstalled.Add(Permissions.OrderList.UpdateValue);
+                notInstalled.Add(Permissions.OrderList.DeleteValue);
+                notInstalled.Add(Permissions.Article.ReadValue);
+            }
+
+            return permissions.Where(x => !notInstalled.Contains(x.Resource)).ToList();
         }
 
         #endregion

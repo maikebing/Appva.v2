@@ -57,8 +57,8 @@
       <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.6.1\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -73,28 +73,27 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.GrandId, Version=0.1.4.17896, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+    <Reference Include="Appva.GrandId, Version=0.1.6.20311, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.8\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
     </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Mvc, Version=0.6.0.17012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.6.0\lib\net45\Appva.Mvc.dll</HintPath>
+    <Reference Include="Appva.Mvc, Version=0.7.2.21183, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.7.2\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Office.0.3.1\lib\net45\Appva.Office.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+    <Reference Include="Appva.Persistence, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.4.0\lib\net45\Appva.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Persistence.Autofac, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -184,9 +183,8 @@
     <Reference Include="MvcPaging">
       <HintPath>..\..\..\Packages\MvcPaging.2.1.2\lib\net40\MvcPaging.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
@@ -219,6 +217,12 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
@@ -312,6 +316,13 @@
     <Compile Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRoleHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\ArticleController.cs" />
+    <Compile Include="Areas\Area51\Features\Article\List\ArticleOption.cs" />
+    <Compile Include="Areas\Area51\Features\Article\List\ArticleOptionListHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticles.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticlesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateCategories\MigrateCategories.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateCategories\MigrateCategoriesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Audit\AuditController.cs" />
     <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationCreateHandler.cs" />
     <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationHandler.cs" />
@@ -344,6 +355,7 @@
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\SyncLdap.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncHandler.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncModel.cs" />
+    <Compile Include="Areas\Area51\Features\Location\InstallLocationsController.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Handler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
@@ -375,6 +387,18 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\AddCategory\AddArticleCategoryHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\AddCategory\AddArticleCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\AddCategory\AddArticleCategoryPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\ArticleController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\DeleteCategory\DeleteArticleCategoryHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\DeleteCategory\DeleteArticleCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleCategoryList.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleListHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleListModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsModel.cs" />
@@ -402,6 +426,15 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\EhmController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\Index\EhmSettingsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\Index\EhmSettingsRequestHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesFormHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesRequestHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockFormHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockRequestHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitModel.cs" />
@@ -463,6 +496,12 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTena.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTenaHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Update\UpdateTenaHandler.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -488,6 +527,27 @@
     <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidget.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Add\AddArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Add\AddArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Add\AddArticlePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Article\ArticleController.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Edit\EditArticle.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Edit\EditArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Edit\EditArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Edit\EditArticlePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticle.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticlePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Article\List\ListArticle.cs" />
+    <Compile Include="Areas\Patient\Features\Article\List\ListArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\List\ListArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\OverviewUpdate\OverviewUpdateArticle.cs" />
+    <Compile Include="Areas\Patient\Features\Article\OverviewUpdate\OverviewUpdateArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverviewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\UpdateStatus\ArticleStatusHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\UpdateStatus\ArticleStatusModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
@@ -528,6 +588,34 @@
     <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\AddMedicationToSequence\AddMedicationToSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\AddMedicationToSequence\AddMedicationToSequencePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationRequest.cs" />
+    <Content Include="Areas\Patient\Features\Medication\Details\Partials\_ordinationPartial.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\Index\Index.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributes.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMock.cshtml" />
+    <None Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\Partials\Table\Models\ListMedicationsTableViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\Partials\Table\Models\ListMedicationTableRowViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Overview\MedicationOverviewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationModelHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Update\UpdateMedicationRequestHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -647,6 +735,32 @@
     <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendar.cs" />
     <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendarModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientId.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDate.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDateHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResident.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResidentHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResidentModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodHandlerAsync.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -730,6 +844,10 @@
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
     <Compile Include="Areas\Report\Features\Report\ReportController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\RolesCategoryPermissionsController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissions.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissionsHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissionsPublisher.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\RolesDelegationsController.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegation.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegationHandler.cs" />
@@ -766,8 +884,11 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\EhmConfiguration.cs" />
     <Compile Include="Configuration\GrandIdConfiguration.cs" />
+    <Compile Include="Configuration\MockedGrandIdClient.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
+    <Compile Include="Configuration\TenaIdentifiConfiguration.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
@@ -797,11 +918,13 @@
     </Compile>
     <Compile Include="Infrastructure\AbstractExceptionHandler.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\LoginMethodAttribute.cs" />
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
     <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\EhmExceptionHandlerAttribute.cs" />
     <Compile Include="Infrastructure\MvcExceptionHandler.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
     <Compile Include="Infrastructure\PatientTransformer.cs" />
@@ -814,6 +937,7 @@
     <Compile Include="Areas\Dashboard\Features\Dashboard\Load\LoadWidget.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertModel.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertOverviewViewModel.cs" />
+    <Compile Include="Models\ArticleOverviewViewModel.cs" />
     <Compile Include="Models\ChartDataPointViewModel.cs" />
     <Compile Include="Models\CheckBoxViewModel.cs" />
     <Compile Include="Models\DateSpanViewModel.cs" />
@@ -868,6 +992,12 @@
   <ItemGroup>
     <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\css\new\all.min.css" />
+    <Content Include="Assets\css\new\hotfixes\general.css" />
+    <Content Include="Assets\css\new\hotfixes\tena\list.css" />
+    <Content Include="Assets\css\new\hotfixes\tena\registration.css" />
+    <Content Include="Assets\css\new\main.prefixed.css" />
+    <Content Include="Assets\css\ehm.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
     <Content Include="Assets\error-pages\404.html" />
@@ -891,6 +1021,56 @@
     <Content Include="Assets\css\ui-lightness\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Assets\css\ui-lightness\jquery-ui-1.9.0.custom.css" />
     <Content Include="Assets\css\ui-lightness\jquery-ui-1.9.0.custom.min.css" />
+    <Content Include="Assets\images\custom-checkbox-new.svg" />
+    <Content Include="Assets\images\custom-checkbox.svg" />
+    <Content Include="Assets\images\custom-radio.svg" />
+    <Content Include="Assets\images\favicon-32x32.png" />
+    <Content Include="Assets\images\favicon.ico" />
+    <Content Include="Assets\images\icons\alert.svg" />
+    <Content Include="Assets\images\icons\angle-arrow-down.svg" />
+    <Content Include="Assets\images\icons\angle-arrow-left.svg" />
+    <Content Include="Assets\images\icons\angle-arrow-right.svg" />
+    <Content Include="Assets\images\icons\angle-arrow-up.svg" />
+    <Content Include="Assets\images\icons\arrow--fat.svg" />
+    <Content Include="Assets\images\icons\arrow-ne.svg" />
+    <Content Include="Assets\images\icons\calendar.svg" />
+    <Content Include="Assets\images\icons\check.svg" />
+    <Content Include="Assets\images\icons\clock.svg" />
+    <Content Include="Assets\images\icons\colon.svg" />
+    <Content Include="Assets\images\icons\double.svg" />
+    <Content Include="Assets\images\icons\e.svg" />
+    <Content Include="Assets\images\icons\edit.svg" />
+    <Content Include="Assets\images\icons\fall.svg" />
+    <Content Include="Assets\images\icons\feather.svg" />
+    <Content Include="Assets\images\icons\ico-continuous.svg" />
+    <Content Include="Assets\images\icons\ico-pending.svg" />
+    <Content Include="Assets\images\icons\ico-question.svg" />
+    <Content Include="Assets\images\icons\ico-upload.svg" />
+    <Content Include="Assets\images\icons\icon.sprite.svg" />
+    <Content Include="Assets\images\icons\icons.txt" />
+    <Content Include="Assets\images\icons\key.svg" />
+    <Content Include="Assets\images\icons\log-out.svg" />
+    <Content Include="Assets\images\icons\magnifier.svg" />
+    <Content Include="Assets\images\icons\minus.svg" />
+    <Content Include="Assets\images\icons\mouth.svg" />
+    <Content Include="Assets\images\icons\p.svg" />
+    <Content Include="Assets\images\icons\pdf.svg" />
+    <Content Include="Assets\images\icons\pencil.svg" />
+    <Content Include="Assets\images\icons\plus.svg" />
+    <Content Include="Assets\images\icons\pressure-wound.svg" />
+    <Content Include="Assets\images\icons\print.svg" />
+    <Content Include="Assets\images\icons\question.svg" />
+    <Content Include="Assets\images\icons\questionmark.svg" />
+    <Content Include="Assets\images\icons\scale.svg" />
+    <Content Include="Assets\images\icons\toothbrush.svg" />
+    <Content Include="Assets\images\icons\user.svg" />
+    <Content Include="Assets\images\icons\waran.svg" />
+    <Content Include="Assets\images\icons\x.svg" />
+    <Content Include="Assets\images\icons\xlsx.svg" />
+    <Content Include="Assets\images\images.txt" />
+    <Content Include="Assets\images\logo.png" />
+    <Content Include="Assets\images\logo.svg" />
+    <Content Include="Assets\images\mcss-logo.svg" />
     <Content Include="Assets\i\ajax-load%402x.gif" />
     <Content Include="Assets\i\ajax-load.gif" />
     <Content Include="Assets\i\appva-footer-logo.png" />
@@ -914,6 +1094,10 @@
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
     <Content Include="Assets\i\dot-grey.png" />
+    <Content Include="Assets\i\error.png" />
+    <Content Include="Assets\i\icn-change-password.png" />
+    <Content Include="Assets\i\icn-dualstaffing.png" />
+    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
     <Content Include="Assets\i\globalfilter-select.png" />
@@ -958,8 +1142,6 @@
     <Content Include="Assets\i\icn-sent%402x.png" />
     <Content Include="Assets\i\icn-sent.png" />
     <Content Include="Assets\i\icn-sleep.png" />
-    <Content Include="Assets\i\icn-test1.png" />
-    <Content Include="Assets\i\icn-test2.png" />
     <Content Include="Assets\i\icn-toggle.png" />
     <Content Include="Assets\i\icn-toolclock.png" />
     <Content Include="Assets\i\icn-toolneed.png" />
@@ -972,9 +1154,16 @@
     <Content Include="Assets\i\icn-warning-waran.png" />
     <Content Include="Assets\i\ico-activity-group.png" />
     <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-continuous.png" />
     <Content Include="Assets\i\ico-escape.png" />
+    <Content Include="Assets\i\ico-info.png" />
     <Content Include="Assets\i\ico-outdoor-act-message-group.png" />
     <Content Include="Assets\i\ico-outdoor-act-message.png" />
+    <Content Include="Assets\i\ico-pending.png" />
+    <Content Include="Assets\i\ico-question.png" />
+    <Content Include="Assets\i\ico-tena-identifi.png" />
+    <Content Include="Assets\i\ico-trash.png" />
+    <Content Include="Assets\i\ico-upload.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\ico-warning-antiglukos.png" />
@@ -983,6 +1172,8 @@
     <Content Include="Assets\i\ico-warning-hypersensitive.png" />
     <Content Include="Assets\i\ico-warning-swallow.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
+    <Content Include="Assets\i\ico-edit.png" />
+    <Content Include="Assets\i\ico-edit.svg" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />
     <Content Include="Assets\i\ipad-late.png" />
@@ -996,6 +1187,7 @@
     <Content Include="Assets\i\logo.png" />
     <Content Include="Assets\i\minichart.jpg" />
     <Content Include="Assets\i\no-connection.png" />
+    <Content Include="Assets\i\not-allowed.png" />
     <Content Include="Assets\i\page_white_excel.png" />
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
@@ -1013,10 +1205,21 @@
     <Content Include="Assets\i\siths-icon.png" />
     <Content Include="Assets\i\sort-arrow.png" />
     <Content Include="Assets\i\statusicons-tiles%402x.png" />
+    <Content Include="Assets\i\tena\tena-1.png" />
+    <Content Include="Assets\i\tena\tena-2.png" />
+    <Content Include="Assets\i\tena\tena-3.png" />
+    <Content Include="Assets\i\tena\tena-4.png" />
+    <Content Include="Assets\i\tena\tena-5.png" />
     <Content Include="Assets\i\trenddn.png" />
     <Content Include="Assets\i\trendup.png" />
     <Content Include="Assets\i\trest-logo.png" />
     <Content Include="Assets\i\web-ajax-loader.gif" />
+    <Content Include="Assets\js\base\base.js" />
+    <Content Include="Assets\js\base\elements\forms\date-picker.js" />
+    <Content Include="Assets\js\base\elements\forms\select.js" />
+    <Content Include="Assets\js\components\dialog\dialog.js" />
+    <Content Include="Assets\js\components\navigation\skip-link.js" />
+    <Content Include="Assets\js\components\navigation\tabs.js" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.js" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.min.js" />
     <Content Include="Assets\js\jquery\jquery-1.8.2.js" />
@@ -1031,7 +1234,9 @@
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.min.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot.resize.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.js" />
+    <Content Include="Assets\js\lang\sv.js" />
     <Content Include="Assets\js\main.js" />
+    <Content Include="Assets\js\main.updated.js" />
     <Content Include="Assets\js\mcss.calendar.js" />
     <Content Include="Assets\js\mcss.calendar.lb.js" />
     <Content Include="Assets\js\mcss.chart.js" />
@@ -1044,6 +1249,37 @@
     <Content Include="Assets\js\mcss.prepareweeks.js" />
     <Content Include="Assets\js\mcss.validation.js" />
     <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
+    <Content Include="Assets\js\utilities\autocomplete.js" />
+    <Content Include="Assets\js\utilities\collapsable-section.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.css" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.txt" />
+    <Content Include="Assets\js\utilities\input-value-list.js" />
+    <Content Include="Assets\js\utilities\jquery.netr-extensions.js" />
+    <Content Include="Assets\js\utilities\mouse-click-class-toggler.js" />
+    <Content Include="Assets\js\utilities\netr.js" />
+    <Content Include="Assets\js\utilities\netr.latinise.js" />
+    <Content Include="Assets\js\utilities\netr.string.js" />
+    <Content Include="Assets\js\utilities\netr.throttle.js" />
+    <Content Include="Assets\js\utilities\netr.uri.js" />
+    <Content Include="Assets\js\utilities\numberspinner.js" />
+    <Content Include="Assets\js\utilities\post-single-input.js" />
+    <Content Include="Assets\js\utilities\scrollable-tables.js" />
+    <Content Include="Assets\js\utilities\show-message-if-empty.js" />
+    <Content Include="Assets\js\utilities\sortable-tables.js" />
+    <Content Include="Assets\js\utilities\toggle-by-input.js" />
+    <Content Include="Assets\js\utilities\update-section.js" />
+    <Content Include="Assets\js\utilities\validation.js" />
+    <Content Include="Assets\js\vendor\datepicker-sv.js" />
+    <Content Include="Assets\js\vendor\jquery-2.2.0.min.js" />
+    <Content Include="Assets\js\vendor\jquery-ui-1.12.1.custom.min.js" />
+    <Content Include="Assets\js\vendor\jquery-validation\additional-methods.js" />
+    <Content Include="Assets\js\vendor\jquery-validation\jquery.validate.js" />
+    <Content Include="Assets\js\vendor\jquery-validation\localization\messages_sv.js" />
+    <Content Include="Assets\js\vendor\jquery-validation\localization\messages_sv.min.js" />
+    <Content Include="Assets\js\vendor\jquery.breakpoint-min.js" />
+    <Content Include="Assets\js\vendor\svgxuse.min.js" />
     <Content Include="Assets\js\zxcvbn.js" />
     <Content Include="Assets\temporary-new\additional-menu.css" />
     <Content Include="Assets\temporary-new\additional-menu.js" />
@@ -1194,6 +1430,10 @@
       <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
       <Name>Appva.Admin.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
+      <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
+      <Name>Appva.Ehm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>
       <Name>Appva.Mcss.Admin.Application</Name>
@@ -1201,6 +1441,14 @@
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Mvc.BetaExtensions\Appva.BetaMvc.csproj">
+      <Project>{20192d0e-85f8-42d3-adc5-b8404fcb1950}</Project>
+      <Name>Appva.BetaMvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Sca\Appva.Sca.csproj">
+      <Project>{f523cd19-d7c7-41b7-a28e-a2b978086513}</Project>
+      <Name>Appva.Sca</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -1210,7 +1458,9 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Area51\Features\Test\Index\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
+    <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>
@@ -1532,16 +1782,35 @@
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\List\List.cshtml" />
+    <Content Include="Assets\images\custom-checkbox.svg_old" />
+    <Content Include="Assets\images\graph.ai" />
+    <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\_ViewStart.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Add\Add.cshtml" />
     <Content Include="Areas\Roles\Features\RolesResourcePermissions\Update\Update.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissions.cshtml" />
     <Content Include="Areas\Roles\Features\RolesDelegations\Update\Update.cshtml" />
     <Content Include="Areas\Roles\Features\RolesRoles\Update\Update.cshtml" />
+    <Content Include="Areas\Area51\Features\Location\Index\Index.cshtml" />
     <Content Include="Features\Shared\SignInSithsFailed.cshtml" />
     <Content Include="Features\Shared\_LoginHeaderLogo.cshtml" />
     <Content Include="Features\Shared\_SignInFormPartial.cshtml" />
     <Content Include="Areas\Area51\Features\Shared\_aclButtons.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\_ViewStart.cshtml" />
+    <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Register\Register.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Partials\_EmptyList.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadToIdentifi.cshtml" />
+    <Content Include="Assets\css\new\all.min.css.map" />
+    <Content Include="Assets\images\custom-checkbox.svg_old" />
+    <Content Include="Assets\images\graph.ai" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
     <Content Include="Areas\Patient\Features\TestCalendar\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\TestCalendar\Create\Create.cshtml" />
@@ -1552,6 +1821,29 @@
     <Content Include="Areas\Patient\Features\TestCalendar\Overview\_OverviewCalendarTask.cshtml" />
     <Content Include="Areas\Patient\Features\TestCalendar\View\View.cshtml" />
     <Content Include="Areas\Patient\Features\Shared\_NewCssLayout.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelp.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Article\AddCategory\AddCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Article\EditCategory\EditCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Article\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
+    <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Inactivate\Inactivate.cshtml" />
+    <Content Include="Areas\Roles\Features\RolesCategoryPermissions\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Partials\_EmptyList.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmError.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Details\Details.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\SelectSchedule\SelectSchedule.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\_dosageScheme.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorPatientNotFound.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmUnauthorized.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTableRow.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Overview\Overview.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorSithsRequired.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTable.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

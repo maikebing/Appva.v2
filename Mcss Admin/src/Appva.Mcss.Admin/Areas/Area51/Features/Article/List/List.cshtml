@@ -1,0 +1,67 @@
+﻿@model Appva.Mcss.Admin.Features.Area51.ArticleOption.ArticleOption
+@{
+    SetTitle("Area 51 - Beställningslista");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Beställningslista</h1>
+    <div style="float:right;font-weight:bold;color:mediumseagreen;padding-top:7px">@Html.Alert()</div>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist" class="articlecategory">
+            <p style="margin-top:10px;font-weight:bold">Migreringsstatus: 
+                <span style="display:inline-block;background:@(Model.HasMigratableItems == false ? Html.Raw("#F1FFF7;border:1px solid #D8F9E6") : Html.Raw("#FFF5F5;border:1px solid #F9E1E1"));padding:4px 8px;font-weight:normal">
+                    @(Model.HasMigratableItems == false ? "All data har migrerats!" : "Det finns data som behöver migreras.")
+                </span>
+            </p>
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th>Steg</th>
+                        <th>Inställning</th>
+                        <th class="prtd">Status</th>
+                        <th class="prtd-140">Åtgärd</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Skapa artikelkategorier för listor med beställningsfunktion.</td>
+                        @if(Model.HasCreatedCategories)
+                        {
+                            <td class="prtd" style="background:#F1FFF7">Har exekverats</td>
+                        }
+                        else
+                        {
+                            <td class="prtd">Ej exekverad</td>
+                        }
+                        <td class="prtd-140 btnpad">@Html.ActionLink("Kör skript", "migratecategories", "article", new { @class = "btn" })</td>
+                    </tr>
+                    <tr @(Model.HasCreatedCategories ? Html.Raw("") : Html.Raw("style=\"opacity:.3\""))>
+                        <td>2</td>
+                        <td>Påbörja migrering från <i>Sequence</i> till <i>Article</i> och <i>Category</i>.</td>
+                        @if (Model.HasMigratedArticles)
+                        {
+                            <td class="prtd" style="background:#F1FFF7">Har exekverats</td>
+                        }
+                        else
+                        {
+                            <td class="prtd">Ej exekverad</td>
+                        }
+                        <td class="prtd-140 btnpad">
+                            @if (Model.HasCreatedCategories)
+                            {
+                                @Html.ActionLink("Kör skript", "migratearticles", "article", new { @class = "btn" })
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="btn">Kör skript</a>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

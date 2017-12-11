@@ -54,10 +54,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
 
             return new ListNotifictationsModel
             {
-                Page = (int)notifications.CurrentPage,
-                PageSize = (int)notifications.PageSize,
-                Total = (int)notifications.TotalCount,
-                Notifications = notifications.Entities
+                Page          = notifications.PageQuery.PageNumber,
+                PageSize      = notifications.PageQuery.PageSize,
+                Total         = (int) notifications.TotalCount,
+                Notifications = notifications.Items
             };
         }
 

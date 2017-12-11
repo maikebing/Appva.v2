@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Web.Mvc;
 using Appva.Mcss.Admin.Application.Models;
 using Appva.Repository;
+using Appva.Mcss.Admin.Domain;
 
 namespace Appva.Mcss.Web.ViewModels {
     public class DelegationReportViewModel : DateSpanViewModel {
@@ -20,6 +21,6 @@ namespace Appva.Mcss.Web.ViewModels {
         public IList<ScheduleSettings> Schedules { get; set; }
         public ReportData Report { get; set; }
         public ReportData PreviousPeriodReport { get; set; }
-        public PageableSet<Task> Tasks { get; set; }
+        public IPaged<Task> Tasks { get; set; }
     }
 }

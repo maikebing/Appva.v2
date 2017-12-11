@@ -8,7 +8,8 @@ namespace Appva.Mcss.Admin.Application.Security
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Application.Models;
+using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -95,6 +96,14 @@ namespace Appva.Mcss.Admin.Application.Security
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the hsa attributes.
+        /// </summary>
+        HsaAttributes HsaAttributes
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -143,10 +152,11 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="code">The result code</param>
         /// <param name="identity">The identity if authenticated, otherwise null</param>
-        private AuthenticationResult(ResultCode code, Account identity = null)
+        private AuthenticationResult(ResultCode code, Account identity = null, HsaAttributes hsaAttributes = null)
         {
-            this.Code = code;
-            this.Identity = identity;
+            this.Code           = code;
+            this.Identity       = identity;
+            this.HsaAttributes  = hsaAttributes;
         }
 
         #endregion
@@ -275,6 +285,12 @@ namespace Appva.Mcss.Admin.Application.Security
             private set;
         }
 
+        public HsaAttributes HsaAttributes
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region Static Functions.
@@ -285,9 +301,9 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="code">The result code</param>
         /// <param name="identity">The identity if authenticated, otherwise null</param>
         /// <returns>A new <see cref="IAuthenticationResult"/> instance</returns>
-        public static IAuthenticationResult CreateNew(ResultCode code, Account identity = null)
+        public static IAuthenticationResult CreateNew(ResultCode code, Account identity = null, HsaAttributes hsaAttributes = null)
         {
-            return new AuthenticationResult(code, identity);
+            return new AuthenticationResult(code, identity, hsaAttributes);
         }
 
         /// <summary>
@@ -295,9 +311,9 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="account">The authenticated identity</param>
         /// <returns>A new successful <see cref="IAuthenticationResult"/> instance</returns>
-        public static IAuthenticationResult CreateSuccessResult(Account account)
+        public static IAuthenticationResult CreateSuccessResult(Account account, HsaAttributes hsaAttributes = null)
         {
-            return new AuthenticationResult(ResultCode.Success, account);
+            return new AuthenticationResult(ResultCode.Success, account, hsaAttributes);
         }
 
         #endregion

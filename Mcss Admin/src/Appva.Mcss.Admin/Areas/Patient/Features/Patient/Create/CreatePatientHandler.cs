@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var assessments = assessable ? this.taxonomyService.List(TaxonomicSchema.RiskAssessment)
                 .Select(x => new Assessment
                 {
-                    Id          = x.Id,
+                    Id          = x.Id.ToString(),
                     Label       = x.Name,
                     Description = x.Description,
                     ImagePath   = x.Type

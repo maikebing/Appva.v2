@@ -37,7 +37,7 @@
 
 			@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", Model.Report)
 
-            @if (Model.Tasks.Entities.Count > 0) {
+            @if (Model.Tasks.Items.Count() > 0) {
             <div id="signed-events" class="listing">
 			    <h2 class="heading">Insatser under perioden</h2>
                 <table>
@@ -53,123 +53,123 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Tasks.Entities) {
-                            <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
-						        <td>@task.Name</td>
-						        <td>
-                                    @if (task.OnNeedBasis) {
-                                        @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
-                                    } else {
-                                        if (!task.IsCompleted) {
-                                            @:-
-                                        }
-                                        else {
-                                            @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
-                                        }
-                                    }
-                                </td>
-						        <td>
-                                    @if (task.Delayed && task.CompletedBy.IsNull()) {
-                                        @:Ej signerad
-                                    } else {
-                                        if (task.OnNeedBasis) {
-										    @:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
-    									} else {
-                                            @:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
-		    							}
-                                    }
-                                </td>
-					    	    <td>
-                                    @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled)
-                                    @if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
-                                        @:±@task.RangeInMinutesBefore min
+                        @foreach (var task in Model.Tasks.Items) {
+    <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+						    <td>@task.Name</td>
+						    <td>
+                                @if (task.OnNeedBasis) {
+                                    @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
+                                } else {
+                                    if (!task.IsCompleted) {
+                                        @:-
                                     }
                                     else {
-                                        @:+@task.RangeInMinutesAfter -@task.RangeInMinutesBefore min
+                                        @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
                                     }
-                                </td>
-                                <td>
-                                    @task.Patient.FullName
-                                </td>
-                                <td>
-                                    @if (task.CompletedBy.IsNotNull()) {
-                                        @task.CompletedBy.FullName
+                                }
+                            </td>
+						    <td>
+                                @if (task.Delayed && task.CompletedBy.IsNull()) {
+                                    @:Ej signerad
+                                } else {
+                                    if (task.OnNeedBasis) {
+										@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
+									} else {
+                                        @:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
+									}
+                                }
+                            </td>
+						    <td>
+                                @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled)
+                                @if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
+                                    @:±@task.RangeInMinutesBefore min
+                                }
+            else {
+                                    @:+@task.RangeInMinutesAfter -@task.RangeInMinutesBefore min
+                                }
+                            </td>
+                            <td>
+                                @task.Patient.FullName
+                            </td>
+                            <td>
+                                @if (task.CompletedBy.IsNotNull()) {
+                                    @task.CompletedBy.FullName
+            }
+            else {
+                                    @:--
+                                }
+                            </td>
+                            <td>
+            @if (task.StatusTaxon != null) {
+                                    <img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
+                if (task.Delayed && task.StatusTaxon.Weight < 2) {
+                                        <strong>Avvikelse:</strong> @String.Format("{0} för sent", task.StatusTaxon.Name)
                                     }
-                                    else {
-                                        @:--
+                else if (task.StatusTaxon.Weight > 1) {
+                                        <strong>Avvikelse:</strong> @task.StatusTaxon.Name
                                     }
-                                </td>
-                                <td>
-                                    @if (task.StatusTaxon != null) {
-                                        <img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
-                                        if (task.Delayed && task.StatusTaxon.Weight < 2) {
-                                            <strong>Avvikelse:</strong> @String.Format("{0} för sent", task.StatusTaxon.Name)
-                                        }
-                                        else if (task.StatusTaxon.Weight > 1) {
-                                            <strong>Avvikelse:</strong> @task.StatusTaxon.Name
-                                        }
-                                        else {
-                                            @task.StatusTaxon.Name
-                                        }
+                else {
+                                        @task.StatusTaxon.Name
                                     }
-                                    else {
-                                        if (task.Status.Equals(1)) {
-                                            <img src="@Url.Image("icn-ok.png")" alt="OK" />
-                                            if (task.Delayed) {
-                                                <strong>Avvikelse:</strong> @:Given för sent
-                                            }
-                                            else {
-                                                @:OK
-                                            }
+                                }
+            else {
+                if (task.Status.Equals(1)) {
+                                        <img src="@Url.Image("icn-ok.png")" alt="OK" />
+                                        if (task.Delayed) {
+                                            <strong>Avvikelse:</strong> @:Given för sent
                                         }
-                                        else if (task.Status.Equals(2)) {
-                                            <img src="@Url.Image("icn-part.png")" alt="Delvis given" />
-                                            <strong>Avvikelse:</strong> @:Delvis given
+                    else {
+                                            @:OK
                                         }
-                                        else if (task.Status.Equals(3)) {
-                                            <img src="@Url.Image("icn-none.png")" alt="Ej given" />
-                                            <strong>Avvikelse:</strong> @:Ej given
-                                        }
-                                        else if (task.Status.Equals(4)) {
-                                            <img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
-                                            <strong>Avvikelse:</strong> @: Kan ej ta
-                                        }
-                                        else if (task.Status.Equals(5)) {
-                                            <img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
-                                        }
-                                        else if (task.Status.Equals(6)) {
-                                            <img src="@Url.Image("icn-none.png")" alt="Larm" />
-                                            <strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
-                                        }
-                                        else {
-                                            if (task.Delayed) {
-                                                <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
-                                                <strong>Avvikelse:</strong>
-                                                if (task.DelayHandled)
+                }
+                else if (task.Status.Equals(2)) {
+                                        <img src="@Url.Image("icn-part.png")" alt="Delvis given" />
+                                        <strong>Avvikelse:</strong> @:Delvis given
+                                    }
+                else if (task.Status.Equals(3)) {
+                                        <img src="@Url.Image("icn-none.png")" alt="Ej given" />
+                                        <strong>Avvikelse:</strong> @:Ej given
+                                    }
+                else if (task.Status.Equals(4)) {
+                                        <img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
+                                        <strong>Avvikelse:</strong> @: Kan ej ta
+                                    }
+                else if (task.Status.Equals(5)) {
+                                        <img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
+                                    }
+                else if (task.Status.Equals(6)) {
+                                        <img src="@Url.Image("icn-none.png")" alt="Larm" />
+                                        <strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
+                                    }
+                else {
+                                        if (task.Delayed) {
+                                            <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
+                                            <strong>Avvikelse:</strong>
+                                            if (task.DelayHandled)
+                                            {
+                                                if (Html.HasPermissionFor(Permissions.Alert.Read))
                                                 {
-                                                    if (Html.HasPermissionFor(Permissions.Alert.Read))
-                                                    {
-                                                        @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
-                                                    }
-                                                    else
-                                                    {
-                                                        @:Larm åtgärdat
-                                                    }
+                                                    @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
                                                 }
                                                 else
                                                 {
-                                                    @:Ej given
+                                                    @:Larm åtgärdat
                                                 }
+                                            }
+                                            else
+                                            {
+                                                @:Ej given
                                             }
                                         }
                                     }
+                                }
                             </td>
 					    </tr>
                         }
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
+            @Html.Pager(Model.Tasks.PageQuery.PageSize, Model.Tasks.PageQuery.PageNumber, (int) Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()

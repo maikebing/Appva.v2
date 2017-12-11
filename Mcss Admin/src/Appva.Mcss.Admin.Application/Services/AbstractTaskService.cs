@@ -279,9 +279,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        private Tuple<List<Prescription>, IList<Signature>> CreatePrescriptions(IList<Task> tasks)
+        private Tuple<List<Prescription>, IList<Application.Pdf.Prescriptions.Signature>> CreatePrescriptions(IList<Task> tasks)
         {
-            var signatures = new List<Signature>();
+            var signatures = new List<Application.Pdf.Prescriptions.Signature>();
             var bucket = new Dictionary<Guid, string>();
             var temp = new Dictionary<string, Prescription>();
             foreach (var task in tasks)
@@ -302,7 +302,7 @@ namespace Appva.Mcss.Admin.Application.Services
                             bucket,
                             task.CompletedBy.Id,
                             (task.CompletedBy.FirstName.Substring(0, 1) + task.CompletedBy.LastName.Substring(0, 1)).ToUpper());
-                        var signature = new Signature(task.CompletedBy.FullName, initials);
+                        var signature = new Application.Pdf.Prescriptions.Signature(task.CompletedBy.FullName, initials);
                         if (!signatures.Contains(signature))
                         {
                             signatures.Add(signature);
@@ -333,7 +333,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     }
                 }
             }
-            return new Tuple<List<Prescription>, IList<Signature>>(temp.Values.ToList(), signatures);
+            return new Tuple<List<Prescription>, IList<Application.Pdf.Prescriptions.Signature>>(temp.Values.ToList(), signatures);
         }
 
         /// <summary>
@@ -341,9 +341,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        private Tuple<List<Prescription>, IList<Signature>> CreatePrescriptions(IList<PreparedTask> tasks)
+        private Tuple<List<Prescription>, IList<Application.Pdf.Prescriptions.Signature>> CreatePrescriptions(IList<PreparedTask> tasks)
         {
-            var signatures = new List<Signature>();
+            var signatures = new List<Application.Pdf.Prescriptions.Signature>();
             var bucket = new Dictionary<Guid, string>();
             var temp = new Dictionary<string, Prescription>();
             foreach (var task in tasks)
@@ -363,7 +363,7 @@ namespace Appva.Mcss.Admin.Application.Services
                             bucket,
                             task.PreparedBy.Id,
                             (task.PreparedBy.FirstName.Substring(0, 1) + task.PreparedBy.LastName.Substring(0, 1)).ToUpper());
-                        var signature = new Signature(task.PreparedBy.FullName, initials);
+                        var signature = new Application.Pdf.Prescriptions.Signature(task.PreparedBy.FullName, initials);
                         if (!signatures.Contains(signature))
                         {
                             signatures.Add(signature);
@@ -372,7 +372,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     }
                 }
             }
-            return new Tuple<List<Prescription>, IList<Signature>>(temp.Values.ToList(), signatures);
+            return new Tuple<List<Prescription>, IList<Application.Pdf.Prescriptions.Signature>>(temp.Values.ToList(), signatures);
         }
 
         /// <summary>
@@ -432,14 +432,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="rows"></param>
         /// <returns></returns>
-        private static IList<Signature> CreateEmptySignaturesRows(int rows)
+        private static IList<Application.Pdf.Prescriptions.Signature> CreateEmptySignaturesRows(int rows)
         {
             Requires.Range(rows > 0, "amount", "Amount must not be zero or below.");
-            var result = new List<Signature>();
+            var result = new List<Application.Pdf.Prescriptions.Signature>();
             var size = rows * 4;
             for (var i = 0; i < size; i++)
             {
-                result.Add(new Signature(string.Empty, string.Empty));
+                result.Add(new Application.Pdf.Prescriptions.Signature(string.Empty, string.Empty));
             }
             return result;
         }

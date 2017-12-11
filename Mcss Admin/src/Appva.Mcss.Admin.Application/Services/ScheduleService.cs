@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -43,6 +44,20 @@ namespace Appva.Mcss.Admin.Application.Services
                 IList<Task> events = null,
                 bool findEventsForDay = false
             );
+
+        /// <summary>
+        /// Lists all schedules by given patient
+        /// </summary>
+        /// <param name="byPatient"></param>
+        /// <returns></returns>
+        IList<Schedule> List(Guid byPatient);
+
+        /// <summary>
+        /// Finds schedule by the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Schedule Find(Guid id);
 
         /// <summary>
         /// Gets all schedulesettings in  the system or for a given patient/account
@@ -82,9 +97,20 @@ namespace Appva.Mcss.Admin.Application.Services
     {
         #region Variables.
 
+        /// <summary>
+        /// The <see cref="ILogService"/>.
+        /// </summary>
         private readonly ILogService logService;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
         private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identity;
 
         //private readonly IScheduleRepository scheduleRepository;
 
@@ -95,10 +121,37 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleService"/> class.
         /// </summary>
-        public ScheduleService(ILogService logService, IPersistenceContext persistence)
+        public ScheduleService(
+            ILogService logService, 
+            IPersistenceContext persistence,
+            IIdentityService identity)
         {
-            this.logService = logService;
-            this.persistence = persistence;
+            this.logService     = logService;
+            this.persistence    = persistence;
+            this.identity       = identity;
+        }
+
+        #endregion
+
+        #region IScheduleService members
+
+        /// <inheritdoc />
+        public IList<Schedule> List(Guid byPatient)
+        {
+            var schedulePermissions = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToArray();
+            var query = this.persistence.QueryOver<Schedule>()
+                .Where(s => s.Patient.Id == byPatient && s.IsActive == true)
+                .JoinQueryOver<ScheduleSettings>(s => s.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(schedulePermissions)
+                    .And(s => s.ScheduleType == ScheduleType.Action);
+
+            return query.List();
+        }
+
+        /// <inheritdoc />
+        public Schedule Find(Guid id)
+        {
+            return this.persistence.Get<Schedule>(id);
         }
 
         #endregion
@@ -374,7 +427,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 if (sequence.Repeat.TimesOfDay != null)
                 {
                     foreach (var time in sequence.Repeat.TimesOfDay)
-                    {
+            {
                         retval.Add(any.Date.AddHours(time.Hour));
                     }
                 }

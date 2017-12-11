@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The Accounts
         /// </summary>
-        public PageableSet<AccountModel> Accounts
+        public IPaged<AccountModel> Accounts
         {
             get;
             set;

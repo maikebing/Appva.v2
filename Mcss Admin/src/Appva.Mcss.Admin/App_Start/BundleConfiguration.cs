@@ -40,7 +40,10 @@ namespace Appva.Mcss.Admin
                 "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css"
             ));
             bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
-                "~/Assets/css/datePicker.css", "~/Assets/css/main.css"
+                "~/Assets/css/datePicker.css", "~/Assets/css/main.css", "~/Assets/css/ehm.css"
+            ));
+            bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
+                "~/Assets/css/new/all.min.css", "~/Assets/css/new/main.prefixed.css"
             ));
             //// Authorization and external user management
             bundles.Add(new StyleBundle("~/Assets/css/auth").Include(
@@ -52,6 +55,29 @@ namespace Appva.Mcss.Admin
             bundles.Add(new ScriptBundle("~/Assets/js/auth").Include(
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/zxcvbn.js", "~/Assets/js/mcss.password-strength.js"
             ));
+
+            // New design
+            bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
+                "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/hotfixes/general.css", "~/Assets/css/new/main.prefixed.css"
+            ));
+
+            ////Exit-Confirmation
+            //bundles.Add(new ScriptBundle("~/Assets/js/utilities/exit-confirmation").Include(
+            //    "/Assets/js/utilities/exit-confirmation/exit-confirmation.js"
+            //));
+            //bundles.Add(new StyleBundle("~/Assets/js/utilities/exit-confirmation").Include(
+            //    "~/Assets/js/utilities/exit-confirmation/exit-confirmation.css"
+            //));
+
+            ////Dialog
+            //bundles.Add(new ScriptBundle("").Include(""));
+            //bundles.Add(new StyleBundle("").Include(""));
+
+            //Date-Picker
+            bundles.Add(new ScriptBundle("~/Assets/js/base/elements/forms").Include("~/Assets/js/base/elements/forms/date-picker.js"));
+            bundles.Add(new StyleBundle("~/Assets/css").Include("~/Assets/css/date-picker.css"));
+
+
         }
     }
 }

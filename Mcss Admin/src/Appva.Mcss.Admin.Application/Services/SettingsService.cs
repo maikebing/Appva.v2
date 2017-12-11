@@ -15,7 +15,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Linq;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
-    using Appva.Caching.Providers;
     using Appva.Core.Extensions;
     using Appva.Core.Logging;
     using Appva.Core.Resources;
@@ -27,6 +26,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using NHibernate;
     using Validation;
 
     #endregion
@@ -281,7 +281,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             var item = this.repository.Find(key.Key);
             if (item == null)
             {
-                this.repository.Save(Setting.CreateNew(
+                this.repository.Save(Setting.New(
                     key.Key,
                     key.Namespace,
                     key.Name,

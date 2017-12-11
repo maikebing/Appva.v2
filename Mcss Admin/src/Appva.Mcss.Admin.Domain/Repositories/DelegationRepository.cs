@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using System;
@@ -19,11 +18,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     #endregion
 
-    public interface IDelegationRepository : 
-        IIdentityRepository<Delegation>,
+    public interface IDelegationRepository :
+        IRepository<Delegation>,
         IUpdateRepository<Delegation>,
-        ISaveRepository<Delegation>,
-        IRepository
+        ISaveRepository<Delegation>
     {
         /// <summary>
         /// List all delegation by given paramters
@@ -33,6 +31,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="isPending"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">If taxon filter is null or empty.</exception>
         IList<Delegation> List(string taxonFilter, Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
 
         /// <summary>
@@ -46,25 +45,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DelegationRepository : IDelegationRepository
+    public sealed class DelegationRepository : Repository<Delegation>, IDelegationRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>
-        /// </summary>
-        private readonly IPersistenceContext persistence;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationRepository"/> class.
         /// </summary>
-        public DelegationRepository(IPersistenceContext persistence)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public DelegationRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistence = persistence;
         }
 
         #endregion
@@ -78,7 +69,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 throw new ArgumentException("A Taxon filter must be set", "taxonFilter");
             }
-            var query = this.persistence.QueryOver<Delegation>();
+            var query = this.Context.QueryOver<Delegation>();
             if (byAccount.HasValue && byAccount.Value.IsNotEmpty())
             {
                 query.Where(x => x.Account.Id == byAccount.Value);
@@ -117,22 +108,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        #region IIdentityRepository members.
-
-        /// <inheritdoc />
-        public Delegation Find(Guid id)
-        {
-            return this.persistence.Get<Delegation>(id);
-        }
-
-        #endregion
-
         #region IUpdateRepository members.
 
         /// <inheritdoc />
         public void Update(Delegation entity, ChangeSet changes)
         {
-            this.persistence.Save<ChangeSet>(changes);
+            this.Context.Save<ChangeSet>(changes);
             this.Update(entity);
         }
 
@@ -140,7 +121,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Update(Delegation entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            this.persistence.Update<Delegation>(entity);
+            this.Context.Update<Delegation>(entity);
         }
 
         #endregion
@@ -150,7 +131,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public void Save(Delegation entity)
         {
-            this.persistence.Save<Delegation>(entity);
+            this.Context.Save<Delegation>(entity);
         }
 
         #endregion

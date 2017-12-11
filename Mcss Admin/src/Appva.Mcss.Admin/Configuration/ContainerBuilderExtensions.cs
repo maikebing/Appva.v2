@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Security.Middleware.Cookie;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
@@ -47,6 +48,10 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Http.ModelBinding;
     using System.Reflection;
     using System;
+    using Appva.Sca;
+    using System.Configuration;
+    using Appva.Mcss.Admin.Application.Transformers;
+    using Appva.Ehm;
 
     #endregion
 
@@ -153,8 +158,8 @@ namespace Appva.Mcss.Admin.Configuration
                 builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
                 return;
             }
-            builder.RegisterType<NoOpMailService>().As<IRazorMailService>().SingleInstance();
-        }
+                builder.RegisterType<NoOpMailService>().As<IRazorMailService>().SingleInstance();
+            }
 
         /// <summary>
         /// Registers the nhibernate profiler.
@@ -216,7 +221,7 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerRequest();
-            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest()
+            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().New()).As<IPersistenceContext>().InstancePerRequest()
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 
@@ -226,10 +231,45 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterGrandId(this ContainerBuilder builder)
         {
+            if( ApplicationEnvironment.Is.Development )
+            {
+                //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+                //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+                
+                builder.RegisterType<MockedGrandIdClient>().As<IGrandIdClient>().InstancePerRequest();
+            }
+            else if (ApplicationEnvironment.Is.Staging)
+            {
+                var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                var options = RestOptions.CreateNew(null, modelBinder);
+                builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+
+                //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+                //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+
+            }
+            else
+            {
             var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
-            var options     = RestOptions.CreateNew(null, modelBinder);
-            builder.Register(x => new GrandIdClient      (options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+                var options = RestOptions.CreateNew(null, modelBinder);
+                builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
             builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+        }
+        }
+
+        /// <summary>
+        /// Registers the tena identifi api service.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        public static void RegisterTenaIdentifi(this ContainerBuilder builder)
+        {
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(TenaIdentifiClient)));
+            var options     = RestOptions.CreateNew(null, modelBinder);
+            builder.Register(x => new TenaIdentifiClient(options, TenaIdentifiConfiguration.ServerUrl)).As<ITenaIdentifiClient>().SingleInstance();
         }
 
         /// <summary>
@@ -238,8 +278,8 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterRepositories(this ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
-                .Any(y => y.IsAssignableFrom(typeof(IRepository)))).AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(IRepository<>).Assembly)
+                .AsClosedTypesOf(typeof(IRepository<>)).AsImplementedInterfaces().InstancePerRequest();
         }
 
         /// <summary>
@@ -250,6 +290,29 @@ namespace Appva.Mcss.Admin.Configuration
         {
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
+        }
+
+        /// <summary>
+        /// Registers all transformers.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/>.</param>
+        public static void RegisterTransformers(this ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(typeof(ITransformer).Assembly).Where(x => x.GetInterfaces()
+                .Any(y => y.IsAssignableFrom(typeof(ITransformer)))).AsImplementedInterfaces().InstancePerRequest();
+        }
+
+        /// <summary>
+        /// Registers the the eHM API client.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
+        public static void RegisterEhmApi(this ContainerBuilder builder)
+        {
+            var configuration = new EhmConfiguration(AppvaEhmConfiguration.ServerUrl);
+            var modelBinder   = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(EhmClient)));
+            var options       = RestOptions.CreateNew(null, modelBinder);
+            builder.Register(x => new EhmClient(options, configuration)).As<IEhmClient>().SingleInstance();
+            //builder.Register(x => new MockedEhmClient()).As<IEhmClient>().SingleInstance();
         }
     }
 }

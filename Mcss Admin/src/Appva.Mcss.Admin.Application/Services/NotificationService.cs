@@ -8,16 +8,16 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Repository;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Web.Hosting;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Lists tasks by given criterias
         /// </summary>
         /// <returns>A <see cref="PageableSet"/> of Notifications</returns>
-        PageableSet<Notification> List(int page = 1, int pageSize = 10);
+        IPaged<Notification> List(int page = 1, int pageSize = 10);
 
         /// <summary>
         /// Lists all installed and availabel templates
@@ -116,12 +116,12 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public PageableSet<Notification> List(int page = 1, int pageSize = 10)
+        public IPaged<Notification> List(int page = 1, int pageSize = 10)
         {
             this.audit.Read("Användare {0} läste lista över notifieringar", this.identity.Principal.Identity.Name);
-            return this.notifications.List((ulong)page, (ulong)pageSize);
+            return this.notifications.List(page, pageSize);
         }
-
+        
         /// <inheritdoc />
         public IList<string> GetTemplates()
         {

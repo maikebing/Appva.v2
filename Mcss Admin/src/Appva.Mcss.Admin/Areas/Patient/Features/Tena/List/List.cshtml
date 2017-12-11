@@ -1,0 +1,154 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@using Appva.Mcss.Domain.Unit
+@model Appva.Mcss.Admin.Models.ListTenaModel
+@{
+    SetTitle("TENA Identifi");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div class="tena-list section section--hspace section--vspace section--bluetone">
+    <div class="distributor distributor--justified">
+        <div class="distributor__inline-children">
+            <h2>TENA Identifi</h2>
+            
+        </div>
+        <!-- Admin panelen? -->
+        <!--div class="form-controls">
+            <a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
+        </div-->
+    </div>
+    <div>
+        <div class="grid">
+            <div data-size="xs:24 s:10 m:8 l:6 xl:6">
+                <div class="section section--card section--vspace">
+                    <div class="section section--header section--hspace">
+                        <div class="form-controls text-align--center">
+                            @using (Html.BeginLink(Permissions.Tena.Create, "Create", "Tena", "add-measuring-period", new { }, new { @class = "button button--primary open-in-dialog" }))
+                            {
+                                <svg class="icon icon--mr" aria-hidden="true">
+                                    <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                                </svg>
+                                @:Ny mätperiod
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Lista över mätperioder -->
+                    <div class="sub-nav" role="navigation">
+                        <h2>Mätperioder</h2>
+                        <ul>
+                            @foreach (var item in Model.Periods)
+                            {
+                                <li class="@(item.Id == Model.CurrentPeriodId ? "sub-nav__item sub-nav__item--selected" : "sub-nav__item")">
+                                    <a href="@Url.Action("list", "tena", new { Periodid=item.Id })" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tena-measurements-list" class="section section--vspace section--card" data-size="xs:24 s:14 m:16 l:18 xl:18">
+                @if (Model.Period != null)
+                {
+                    <div class="section section--header section--hspace">
+                        <div class="distributor distributor--justified">
+
+                            <h3>TENA Identifi mätperiod</h3>
+                            <div class="form-controls form-controls--inline">
+                                @if (Model.Period.Items != null && Model.Period.Items.Count() > 0)
+                                {
+                                    <a class="button button--neutral open-in-dialog" href="@Url.Action("UploadToIdentifi", "Tena", new { periodid = Model.Period.Id })#remote-response">
+                                        <img class="icon icon--mr" src="~/Assets/i/ico-upload.png" />
+                                        <!--svg class="icon icon--mr" aria-hidden="true">
+                                            <use xlink:href="~/assets/images/icons/ico-upload.svg"></use>
+                                        </svg-->Ladda upp till TENA Identifi
+                                    </a>
+                                }
+                                @Html.ActionLink(Permissions.Tena.Update, "Ändra", "Update", "Tena", "add-measuring-period", new { periodid = Model.Period.Id }, new { @class = "button open-in-dialog" })
+                            </div>
+                        </div>
+                        <div class="section section--vspace inliner">
+                            <dl>
+                                
+                                <dd>@Model.Period.Description</dd>
+                            </dl>
+                        </div>
+                        <div class="section section--vspace inliner">
+                            <dl>
+                                <dt>Status</dt>
+                                
+                                    @if (Model.Period.Status == "in-progress")
+                                    {
+                                        <dd>
+                                            <img class="icon in-progress" src="~/Assets/i/ico-continuous.png" />
+                                            Pågående
+                                        </dd>
+                                    }
+                                    else if (Model.Period.Status == "pending")
+                                    {
+                                        <dd>
+                                            <img class="icon pending" src="~/Assets/i/ico-pending.png" />
+                                            Kommande
+                                        </dd>
+                                    }
+                                    else if (Model.Period.Status == "completed")
+                                    {
+                                        <dd>
+                                            <img class="icon completed" src="~/Assets/i/check-icon.png" />
+                                            Avslutad
+                                        </dd>
+                                    }
+                            </dl>
+                            <dl>
+                                <dt>Från</dt>
+                                <dd>@Model.Period.StartDate.ToString("yyyy-MM-dd")</dd>
+                            </dl>
+                            <dl>
+                                <dt>Till</dt>
+                                <dd>@Model.Period.EndDate.ToString("yyyy-MM-dd")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    
+
+                    if (Model.Period.Items != null && Model.Period.Items.Count > 0)
+                    {
+                        <table class="table-general table-general--descending">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Datum</th>
+                                    <th scope="col">Värde</th>
+                                    <th scope="col">Registrerad av</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Period.Items.OrderByDescending(x => x.CreatedAt))
+                                {
+                                    <tr>
+                                        <td>@TimeSpanDifference.ToShortDateTime(item.CreatedAt, "Idag", "Igår") @item.CreatedAt.ToShortTimeString()</td>
+                                        <td>@(item.Measurement.GetValue<TenaIdentifiUnit>().Value.ToReadableString())</td>
+                                        <td>@item.Signature.Who.FullName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="section section--hspace section--vspace ">
+                            <div class="empty-list section section--hspace section--vspace text-align--center">
+                                <div class="section section--vspace">
+                                    <span class="h4">Det finns inga registrerade värden för denna period</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

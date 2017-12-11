@@ -1,0 +1,40 @@
+﻿@using Appva.Mcss.Admin.Domain.Entities
+@model Appva.Mcss.Admin.Domain.Entities.DosageScheme
+
+@switch(Model.GetPeriodicity)
+{
+    case Periodicity.EveryDay:
+        <span class="periodicity">Dagligen</span>
+        break;
+    case Periodicity.EverySecondDay:
+        <span class="periodicity">Varannan dag</span>
+        break;
+    case Periodicity.EveryThirdDay:
+        <span class="periodicity">Var tredje dag</span>
+        break;
+    case Periodicity.EveryFourthDay:
+        <span class="periodicity">Var fjärde dag</span>
+        break;
+    case Periodicity.EveryFifthDay:
+        <span class="periodicity">Var femte dag</span>
+        break;
+    case Periodicity.EverySixtDay:
+        <span class="periodicity">Var sjätte dag</span>
+        break;
+    case Periodicity.EveryWeek:
+        <span class="periodicity">Varje vecka</span>
+        break;
+    case Periodicity.WeeklyScheme:
+        <span class="periodicity">Veckoschema</span>
+        break;
+    case Periodicity.NotPeriodical:
+        <span class="periodicity">Oregelbunden</span>
+        break;
+}
+
+
+@foreach (var dos in Model.Dosages.Select(x => new { Time = x.Time, Amount = x.Amount}).Distinct())
+{
+    <div class="dosage"><p class="time">@string.Format("{0}:00", dos.Time)</p><p class="amount">@dos.Amount.GetValueOrDefault()</p></div>
+}
+  

@@ -1,9 +1,6 @@
 ﻿// <copyright file="EscalationLevel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,16 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class EscalationLevel : AggregateRoot<EscalationLevel>
+    public class EscalationLevel : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EscalationLevel"/> class.

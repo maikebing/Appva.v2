@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override Identity<Guid> Handle(UpdatePatient message)
         {
             var address = this.taxonomyService.Get(message.Taxon.ToGuid());
-            var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray();
             IList<Taxon> assessments = new List<Taxon>();
             if (selectedIds.Length > 0)
             {

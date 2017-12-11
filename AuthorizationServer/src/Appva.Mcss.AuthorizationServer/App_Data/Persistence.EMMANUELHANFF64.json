@@ -1,0 +1,6 @@
+﻿{
+  "SkipMultiTenant": "true",
+  "ConnectionString": "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\AppvaDb\\AuthServerDb.mdf;Integrated Security=True;Connect Timeout=30",
+  "Properties": { "generate_statistics": "true" },
+  "Assembly": "Appva.Mcss.AuthorizationServer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+}

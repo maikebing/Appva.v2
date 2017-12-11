@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 var issuer   = string.Format("https://schemas.appva.se/jwt/issuer/{0}/{1}/{2}", identity.Id, Guid.NewGuid(), DateTime.Now.Ticks);
                 var audience = string.Format("https://schemas.appva.se/jwt/audience/{0}", identity.Id);
-                this.settings.Upsert(ApplicationSettings.TokenConfiguration, SecurityTokenConfiguration.CreateNew(issuer, audience));
+                this.settings.Upsert(ApplicationSettings.TokenConfiguration, SecurityTokenConfiguration.New(issuer, audience));
             }
         }
 

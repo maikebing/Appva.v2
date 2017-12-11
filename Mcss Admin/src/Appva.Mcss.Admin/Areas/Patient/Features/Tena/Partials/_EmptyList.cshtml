@@ -1,0 +1,30 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListTenaModel
+@{
+    SetTitle("TENA Identifi");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div class="tena-list section section--hspace section--vspace section--bluetone">
+    <div class="distributor distributor--justified">
+        <h2>TENA Identifi</h2>
+
+        <div class="form-controls">
+            <!--a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a-->
+        </div>
+    </div>
+    <div class="section section--hspace section--vspace empty-list">
+        <div class="section section--hspace section--vspace text-align--center">
+            <h3>Det finns ingen mätperiod</h3>
+            <p>Skapa en mätperiod för att börja använda TENA Identifi.</p>
+            <a href="@Url.Action("create", "tena")#add-measuring-period" class="button button--primary open-in-dialog" data-dialog-title="Ny mätperiod">
+                <svg class="icon icon--mr" aria-hidden="true">
+                    <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                </svg>
+                Ny mätperiod
+            </a>
+        </div>
+
+    </div>
+</div>

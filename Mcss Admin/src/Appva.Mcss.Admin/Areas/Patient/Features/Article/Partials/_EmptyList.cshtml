@@ -1,0 +1,19 @@
+﻿
+
+@using Appva.Mcss.Admin.Application.Common
+@model bool
+
+
+
+<div class="section section--hspace section--vspace text-align--center">
+    <h3>Det finns ännu inga artiklar</h3>
+
+    <p>Börja använda beställningslistan genom att lägga till en artikel</p>
+    @using (Html.BeginLink(Permissions.OrderList.Create, "Add", "Article", "add-item-to-order-list", new { }, new { @class = "button button--primary open-in-dialog", id = "fsd", data_dialog_symbol = "+" }))
+    {
+        <svg class="icon icon--mr" aria-hidden="true">
+            <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+        </svg>
+        @:Lägg till artikel
+            }
+</div>

@@ -171,6 +171,7 @@
                 $(".dropdown").change(dropdown);
 
                 $('.lb-link').bind('lightboxopen', function () {
+                    console.log("lightboxopen");
                     disableDelegation($('.checkbox .nurse'));
                     $('.cancel').click(function () {
                         mcss.lightbox.closeAll();

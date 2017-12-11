@@ -1,9 +1,6 @@
 ﻿// <copyright file="Setting.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,16 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Setting : AggregateRoot<Setting>
+    public class Setting : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Setting"/> class.
@@ -33,27 +29,29 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="type">The type</param>
         public Setting(string key, string context, string name, string description, string value, Type type)
         {
-            this.CreatedAt = DateTime.Now;
-            this.UpdatedAt = DateTime.Now;
+            this.CreatedAt   = DateTime.Now;
+            this.UpdatedAt   = DateTime.Now;
             this.MachineName = key;
-            this.Namespace = context;
-            this.Name = name;
+            this.Namespace   = context;
+            this.Name        = name;
             this.Description = description;
-            this.Value = value;
-            this.Type = type;
+            this.Value       = value;
+            this.Type        = type;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Setting"/> class.
         /// </summary>
-        /// <remarks>Required by NHibernate.</remarks>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// <remarks>
         protected Setting()
         {
         }
 
         #endregion
 
-        #region Public Static Functions.
+        #region Public Static Builders.
 
         /// <summary>
         /// Creates a new instance of the <see cref="Setting"/> class.
@@ -64,7 +62,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The description</param>
         /// <param name="value">The value</param>
         /// <param name="type">The type</param>
-        public static Setting CreateNew(string key, string context, string name, string description, string value, Type type)
+        public static Setting New(string key, string context, string name, string description, string value, Type type)
         {
             return new Setting(key, context, name, description, value, type);
         }

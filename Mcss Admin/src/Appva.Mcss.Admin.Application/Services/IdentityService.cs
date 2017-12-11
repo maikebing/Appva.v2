@@ -55,6 +55,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         IEnumerable<Claim> SchedulePermissions();
 
         /// <summary>
+        /// Returns the current authenticated user article category permissions.
+        /// </summary>
+        /// <returns>The current authenticated user article category permissions or if not authenticated; null</returns>
+        IEnumerable<Claim> ArticleCategoryPermissions();
+
+        /// <summary>
         /// Returns whether the current authenticated user is a member of the specified role.
         /// </summary>
         /// <param name="role">The role which the user must be a member of</param>
@@ -204,6 +210,11 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.SchedulePermission)).ToList();
         }
 
+        public IEnumerable<Claim> ArticleCategoryPermissions()
+        {
+            return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.ArticleCategoryPermission)).ToList();
+        }
+
         /// <inheritdoc />
         public bool IsInRole(string role)
         {
@@ -248,5 +259,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         }
 
         #endregion
+
     }
 }

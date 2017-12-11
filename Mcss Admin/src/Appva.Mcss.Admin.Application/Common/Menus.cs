@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Common
     #region Imports.
 
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -50,8 +51,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Initializes a new instance of <see cref="Menus"/>
         /// </summary>
+        /// 
         private Menus()
-        { }
+        {
+
+        }
 
         #endregion
 
@@ -111,11 +115,14 @@ namespace Appva.Mcss.Admin.Application.Common
                     this.patient = new List<IMenuItem>()
                     {
                          MenuItem.CreateNew("Signeringslistor", "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
+                         MenuItem.CreateNew("Läkemedelslista", "List", "Medication", "Patient", null, null, Permissions.Medication.Read, this.Medication),
                          MenuItem.CreateNew("Signerade händelser", "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
                          MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
-                         MenuItem.CreateNew("Förbrukningsjournal", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null)
+                         MenuItem.CreateNew("Förbrukningsjournal", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),
+                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, this.Tena),
+                         MenuItem.CreateNew("Beställningslista", "List", "Article", "Patient", null, null, Permissions.OrderList.Read, null)
                     };
                 }
                 return this.patient;
@@ -184,6 +191,34 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Medication
+
+        /// <summary>
+        /// The menu for schedules (Dummy) field
+        /// </summary>
+        private IList<IMenuItem> medication;
+
+        /// <summary>
+        /// The schedule-menu getter
+        /// </summary>
+        private IList<IMenuItem> Medication
+        {
+            get
+            {
+                if (this.medication == null)
+                {
+                    this.medication = new List<IMenuItem>()
+                    {
+                        MenuItem.CreateNew("Detaljer läkemedel (Dummy)", "Details", "Medication", "Patient", null, null, Permissions.Medication.Read, null)
+                    };
+                }
+                return this.medication;
+            }
+        }
+
+
+        #endregion
+
         #region Log
 
         /// <summary>
@@ -208,6 +243,34 @@ namespace Appva.Mcss.Admin.Application.Common
                 return this.log;
             }
         }
+
+        #endregion
+
+        #region Tena
+
+        /// <summary>
+        /// The menu for tena (Dummy) field
+        /// </summary>
+        private IList<IMenuItem> tena;
+
+        /// <summary>
+        /// The schedule-menu getter
+        /// </summary>
+        private IList<IMenuItem> Tena
+        {
+            get
+            {
+                if (this.tena == null)
+                {
+                    this.tena = new List<IMenuItem>()
+                    {
+                        MenuItem.CreateNew("Registrera patient (Dummy)", "Register", "Tena", "Patient", null, null, Permissions.Tena.Create, null)
+                    };
+                }
+                return this.tena;
+            }
+        }
+
 
         #endregion
 

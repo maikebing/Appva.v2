@@ -109,7 +109,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     "läste saldolista för {0} (ref. {1}) sida {2} för boende {3}.",
                     currentInventory.Description,
                     currentInventory.Id,
-                    transactions.CurrentPage,
+                    transactions.PageQuery.PageNumber,
                     patient.Id);
             return new ListInventoryModel
             {
@@ -117,10 +117,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 ActiveInventories     = inventories.Where(x => x.IsActive).ToDictionary<Inventory, Guid, string>(k => k.Id, v => v.Description),
                 InactiveInventories   = inventories.Where(x => x.IsActive == false).ToDictionary<Inventory, Guid, string>(k => k.Id, v => v.Description),
                 Inventory             = currentInventory,
-                Transactions          = transactions.Entities,
+                Transactions          = transactions.Items,
                 TotalTransactionCount = (int) transactions.TotalCount,
-                PageSize              = (int) transactions.PageSize,
-                Page                  = (int) transactions.CurrentPage,
+                PageSize              = transactions.PageQuery.PageSize,
+                Page                  = transactions.PageQuery.PageNumber,
                 StartDate             = startDate,
                 EndDate               = endDate,
                 Years                 = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, startDate.Year == endDate.Year ? startDate.Year : 0),

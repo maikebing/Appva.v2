@@ -614,7 +614,7 @@
 //            sequence.IsActive = false;
 //            this.context.Update(sequence);
 //        }
-
+            
 //        public void DeleteActivity(Task task)
 //        {
 //            this.context.Delete(task);
@@ -729,7 +729,7 @@
 //                StartDate = date,
 //                IncludeCalendarTasks = true
 //            }).Entities.FirstOrDefault();
-            
+
 //            if(task.IsNotNull())
 //            {
 //                return EventTransformer.TasksToEvent(task);
@@ -870,7 +870,7 @@
 //                startDate = sequence.Repeat.Next((Date) startDate).Value; //// Handle nullable date correctly.
 //                endDate = startDate.Add(duration);
 //            }
-
+        
 //            return retval;
 //        }
 

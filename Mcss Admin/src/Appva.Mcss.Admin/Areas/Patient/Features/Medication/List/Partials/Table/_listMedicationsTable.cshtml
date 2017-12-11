@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Models.ListMedicationsTableViewModel
+@using Appva.Mcss.Admin.Models
+<table>
+    <thead>
+        <tr>
+            <th>Namn</th>
+            <th>Styrka</th>
+            <th>Läkemedelsform</th>
+            <th>Dosering</th>
+            <th>Ändamål</th>
+            <th>Insättning</th>
+            <th>Utsättning</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--tr class="updated">
+                    <td><a href="#">Alvedon</a></td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td><span class="periodicity">Dagligen</span><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                    <td>Värk i arm</td>
+                    <td>2017-09-27</td>
+                    <td></td>
+                    <td></td>
+                </tr-->
+        @foreach (var med in Model.Medications)
+        {
+            Html.RenderPartial("~/Areas/Patient/Features/Medication/List/Partials/Table/_listMedicationsTableRow.cshtml", new ListMedicationTableRowViewModel { Medication = med, Sequences = Model.Sequences[med.OrdinationId], PatientId = Model.PatientId });
+        }
+    </tbody>
+</table>

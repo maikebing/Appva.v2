@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
 using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Mock;
 
     #endregion
 
@@ -146,7 +147,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Mail Configuration",
             "Mcss.Core.Security.Messaging",
             "The E-mail configuration for sending and signing",
-            SecurityMailerConfiguration.CreateNew());
+            SecurityMailerConfiguration.New());
 
         /// <summary>
         /// The password configuration.
@@ -157,7 +158,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Password Configuration",
             "Mcss.Core.Security.Password",
             "The password configuration",
-            SecurityPasswordConfiguration.CreateNew());
+            SecurityPasswordConfiguration.NewDefault());
 
         /// <summary>
         /// The tenant authentication cookie expiration timespan.
@@ -193,7 +194,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Audit logging configuration",
             "Mcss.Core.Security.Analytics.Audit",
             "The audit configuration settings",
-            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
+            AuditLoggingConfiguration.New(new List<Guid>()));
 
         #endregion
 
@@ -208,7 +209,7 @@ using Appva.Mcss.Admin.Application.Models;
              "Pdf Generation Configuration",
              "Mcss.Core.Pdf",
              "The PDF configuration for look and feel",
-             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+             PdfLookAndFeel.NewDefault(null, "Appva AB"));
 
          /// <summary>
          /// PDF configuration for look and feel.
@@ -339,6 +340,35 @@ using Appva.Mcss.Admin.Application.Models;
 
         #endregion
 
+        #region Tena Identifi
+
+        /// <summary>
+        /// The tena settings
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
+            "MCSS.Tena",
+            "Tena settings",
+            "MCSS.Tena",
+            "The Tena settings",
+            TenaConfiguration.CreateNew(null, null));
+
+        #endregion
+
+        #region Article
+
+        /// <summary>
+        /// The order list configuration.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<OrderListConfiguration> OrderListSettings = ApplicationSettingIdentity<OrderListConfiguration>.CreateNew(
+            "MCSS.Article.Configuration",
+            "Order list configuration",
+            "MCSS.Article",
+            "Order list migration and activation settings.",
+            OrderListConfiguration.CreateNew()
+            );
+
+        #endregion
+
         #region Temporary Fixes.
 
         /// <summary>
@@ -351,6 +381,32 @@ using Appva.Mcss.Admin.Application.Models;
            "MCSS.Temporary",
            "A simple dictionary schedule settings ID to role ID for required role on sequence",
            new Dictionary<Guid, Guid>());
+
+        #endregion
+
+        #region eHM
+
+        /// <summary>
+        /// Mocked parameters for eHM
+        /// </summary>
+        /// <remarks>The setting returns <see cref="EhmMockedParameters"/></remarks>
+        public static readonly ApplicationSettingIdentity<EhmMockedParameters> EhmMockParameters = ApplicationSettingIdentity<EhmMockedParameters>.CreateNew(
+           "Appva.Ehm.MockedParameters",
+           "Mocked parameters for ehm",
+           "Appva.Ehm",
+           "Mocked codes for ehm",
+           EhmMockedParameters.Default());
+
+        /// <summary>
+        /// Tenant specific user attributes for eHM
+        /// </summary>
+        /// <remarks>The setting returns <see cref="TenantAttributes"/></remarks>
+        public static readonly ApplicationSettingIdentity<TenantAttributes> EhmTenantUserAttributes = ApplicationSettingIdentity<TenantAttributes>.CreateNew(
+           "Appva.Ehm.TenantAttributes",
+           "Tenant attributes for ehm",
+           "Appva.Ehm",
+           "Tenant specific attributes needed for SAML-tickets to eHM ",
+           TenantAttributes.Default());
 
         #endregion
     }

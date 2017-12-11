@@ -247,14 +247,14 @@ namespace Appva.Mcss.Admin.Application.Auditing
                 {
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
-                    Level = LogLevel.Info,
-                    Message = message,
-                    Type = type,
-                    Route = this.context.Url(),
+                    Level     = LogLevel.Info,
+                    Message   = message,
+                    Type      = type,
+                    Route     = this.context.Url(),
                     IpAddress = this.context.RemoteIP(),
-                    Account = user,
-                    Patient = patient,
-                    System = SystemType.Web
+                    Account   = user,
+                    Patient   = patient,
+                    System    = SystemType.Web
                 });
         }
 

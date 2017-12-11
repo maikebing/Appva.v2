@@ -1,9 +1,6 @@
 ﻿// <copyright file="Patient.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,14 +8,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Patient : Person<Patient>
+    public class Patient : Person
     {
         #region Variables.
 
@@ -30,13 +26,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Constructor 
+        #region Constructors. 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.
         /// </summary>
         public Patient()
-            :base()
         {
             this.LastActivatedAt = DateTime.Now;
         }
@@ -152,6 +147,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// information is sensitive.
         /// </summary>
         public virtual bool IsAllDemographicInformationSensitive
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The tena identifier for the patient.
+        /// </summary>
+        public virtual string TenaId
         {
             get;
             set;

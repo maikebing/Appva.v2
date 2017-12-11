@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Appva.Mcss.Admin.Domain" namespace="Appva.Mcss.Admin.Domain.Entities">
 
+  <!-- Type definitions. -->
+  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType, Appva.Mcss.Admin.Domain" name="json" />
+  
   <!-- System classes. -->
 
   <!-- Setting -->
@@ -137,6 +140,43 @@
     </bag>
   </class>
 
+  <!-- Article -->
+  <class name="Article">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NVARCHAR(MAX)" />
+    </property>
+    <property name="RefillOrderDate" />
+    <property name="OrderDate" />
+    <property name="Status" type="NHibernate.Type.EnumStringType`1[[ Appva.Mcss.Admin.Domain.Entities.ArticleStatus, Appva.Mcss.Admin.Domain]], NHibernate" />
+    <many-to-one name="OrderedBy" class="Account" />
+    <many-to-one name="RefillOrderedBy" class="Account" />
+    <many-to-one name="Category" class="Category" />
+    <many-to-one name="Patient" class="Patient" />
+  </class>
+
+  <!-- Category -->
+  <class name="Category">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NVARCHAR(MAX)" />
+    </property>
+  </class>
+
   <!-- Locations -->
   <class name="Location" table="Locations">
     <id name="Id">
@@ -182,6 +222,14 @@
     <bag name="Delegations" table="RolesTaxons" inverse="false">
       <key column="RoleId" />
       <many-to-many column="TaxonId" class="Taxon" fetch="join" />
+    </bag>
+    <bag name="ArticleCategories" table="RolesArticleCategories">
+      <key column="RoleId" />
+      <many-to-many column="CategoryId" class="Category" fetch="join" />
+    </bag>
+    <bag name="DeviceArticleCategories" table="RolesDeviceArticleCategories">
+      <key column="RoleId" />
+      <many-to-many column="CategoryId" class="Category" fetch="join" />
     </bag>
   </class>
 
@@ -305,6 +353,22 @@
     </bag>
   </class>
 
+  <!-- Provenance -->
+  <class name="Provenance" table="Provenances" mutable="false" lazy="false">
+    <composite-id>
+      <key-property name="Id"      />
+      <key-property name="Version" />
+    </composite-id>
+    <property name="CreatedAt" column="Created" update="false" />
+    <!--<property name="Version"   column="Version" update="false" />
+    <property name="EntityId"                                  />
+    <property name="EntityType"                                />-->
+    <property name="Data" type="json">
+      <column name="Type"                             />
+      <column name="Data"                             />
+    </property>
+  </class>
+  
   <!-- End System classes. -->
 
   <!-- Device -->
@@ -338,6 +402,7 @@
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />
+    <property name="TenaId" />
     <component name="PersonalIdentityNumber">
       <property name="Value" column="UniqueIdentifier" unique="true" access="nosetter.camelcase" />
     </component>
@@ -429,6 +494,7 @@
     <property name="NurseConfirmDeviationMessage" />
     <many-to-one name="DelegationTaxon" class="Taxon" />
     <many-to-one name="CombineWith" class="ScheduleSettings" />
+    <many-to-one name="ArticleCategory" class="Category" />
     <property name="ScheduleType" />
     <property name="Absence" />
     <property name="Color" />
@@ -508,6 +574,7 @@
     <many-to-one name="Taxon" class="Taxon" />
     <many-to-one name="Role"  class="Role" />
     <many-to-one name="Inventory"  class="Inventory" />
+    <many-to-one name="Article" class="Article" />
     <component name="RefillInfo" class="Refillable">
       <property name="Refill" />
       <property name="RefillOrderedDate" />
@@ -516,6 +583,10 @@
       <property name="OrderedDate" />
       <many-to-one name="OrderedBy"  class="Account" />
     </component>
+    <bag name="Medications" table="SequenceMedications" cascade="save-update">
+      <key column="SequenceId" />
+      <many-to-many column="MedicationId" class="Medication" />
+    </bag>
 
     <!--<property name="StartDate" />
     <property name="EndDate" />
@@ -537,6 +608,88 @@
     <property name="LastStockAmountCalculation" />
     -->
     
+  </class>
+  
+  <!-- Observation -->
+  <class name="Observation" table="Observations">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <discriminator column="ObservationType" />
+    <version  name="Version"                                       />
+    <property name="IsActive"     column="Active"                  />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified"      />
+    <property name="Name"                                />
+    <property name="Description"                         />
+    <many-to-one name="Patient"   class="Patient"        />
+    <bag name="Items" cascade="save-update" inverse="true">
+      <key column="Observation" />
+      <one-to-many class="ObservationItem" />
+    </bag>
+    <subclass name="TenaObservationPeriod" discriminator-value="TenaObservationPeriod">
+      <property name="StartDate" />
+      <property name="EndDate" />
+    </subclass>
+  </class>
+  
+  <!-- Observation Item -->
+  <class name="ObservationItem" table="ObservationItems">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version  name="Version"                             />
+    <property name="IsActive"     column="Active"        />
+    <property name="CreatedAt"    column="Created"       />
+    <property name="UpdatedAt"    column="Modified"      />
+    <many-to-one name="Observation" class="Observation"  />
+    <component name="Measurement">
+      <property name="Value" column="Value"              />
+      <property name="Type"  column="Type"              />
+      <property name="Code"  column="Code"               />
+    </component>
+    <many-to-one name="Signature" class="Signature"      />
+    <many-to-one name="Comment"   class="Comment"        />
+  </class>
+
+  <!-- Signature -->
+  <class name="Signature" table="Signatures">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version  name="Version"                                       />
+    <property name="IsActive"     column="Active"   update="false" />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified" update="false" />
+    <property name="Checksum"     column="Checksum" update="false" />
+    <many-to-one name="Who"  class="Account"                       />
+    <bag name="Data" cascade="save-update" inverse="false">
+      <key column="Signature" />
+      <one-to-many class="SignedData" />
+    </bag>
+  </class>
+
+  <!-- SignedData -->
+  <class name="SignedData" table="SignedDatas">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Data"                           update="false" />
+    <many-to-one name="Signature" class="Signature"                />
+  </class>
+
+  <!-- Comment -->
+  <class name="Comment" table="Comments">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive"     column="Active"   update="false" />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified"                />
+    <property name="Content"                                       />
+    <many-to-one name="Signature" class="Signature"                />
+    <many-to-one name="CreatedBy" class="Account "                 />
+    <many-to-one name="Parent"    class="Comment "                 />
   </class>
   
   <!-- Transaction -->
@@ -657,5 +810,49 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+  
+  <!-- Medication -->
+  <class name="Medication">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Updated" />
+    <property name="OrdinationId" unique="true" />
+    <property name="Status" />
+    <property name="Type" />
+    <property name="OrdinationStartsAt" />
+    <property name="OrdinationCreatedAt" />
+    <property name="OrdinationValidUntil" />
+    <property name="TreatmentStartsAt" />
+    <property name="TreatmentEndsAt" />
+    <property name="Purpose" />
+    <property name="DosageText1" />
+    <property name="DosageText2" />
+    <component name="Article" class="ArticleDetails">
+      <property name="Name" />
+      <property name="Form" />
+      <property name="Strength" />
+      <property name ="NplId" />
+      <property name="NplPackId" />
+      <property name="PackageUnit" />
+      <property name="PackageType" />
+      <property name="PackageSize" />
+      <property name="ArticleNumber" />
+      <property name="Atc" />
+      <property name="AtcCode" />
+      <property name="Stakeholder" />
+      <property name="Provided" />
+    </component>
+    <component name="Prescriber" class="Prescriber">
+      <property name="GivenName" column="PrescriberGivenName" />
+      <property name="FamilyName" column="PrescriberFamilyName" />
+      <property name="Code" column="PrescriberCode" />
+      <property name="WorkPlaceCode" column="PrescriberWorkPlaceCode" />
+    </component>
+  </class>
+
 
 </hibernate-mapping>

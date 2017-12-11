@@ -142,6 +142,18 @@ namespace Appva.Mcss.Admin.Domain.Models
         }
 
         /// <summary>
+        /// The locations.
+        /// </summary>
+        public bool IsEditableForCurrentUser
+        {
+            get;
+            set;
+        }
+        #endregion
+
+        #region Old members.
+
+        /// <summary>
         /// The users locations
         /// </summary>
         public IList<Location> Locations
@@ -193,9 +205,6 @@ namespace Appva.Mcss.Admin.Domain.Models
         {
             return this.Locations.First().Taxon.Path.Contains(taxon.Path);
         }
-
         #endregion
-
-        
     }
 }

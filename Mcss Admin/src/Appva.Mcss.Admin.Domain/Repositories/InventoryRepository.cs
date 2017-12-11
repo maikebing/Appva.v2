@@ -13,9 +13,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
-    using Appva.Repository;
     using NHibernate.Criterion;
 
     #endregion
@@ -23,10 +21,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IInventoryRepository : 
-        IIdentityRepository<Inventory>, 
-        IUpdateRepository<Inventory>,
-        IRepository
+    public interface IInventoryRepository :
+        IRepository<Inventory>, 
+        IUpdateRepository<Inventory>
     {
         /// <summary>
         /// Lists all inventories for a given patient.
@@ -46,7 +43,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="page">Current page</param>
         /// <param name="page">Current page siźe</param>
         /// <returns>List of <see cref="Inventory"/></returns>
-        PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10);
+        Paged<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10);
 
         /// <summary>
         /// Saves the inventory.
@@ -66,36 +63,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class InventoryRepository : IInventoryRepository
+    public sealed class InventoryRepository : Repository<Inventory>, IInventoryRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext persistence;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryRepository"/> class.
         /// </summary>
-        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
-        public InventoryRepository(IPersistenceContext persistence)
+        /// <param name="context">The <see cref="IPersistenceContext"/></param>
+        public InventoryRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistence = persistence;
-        }
-
-        #endregion
-
-        #region IIdentityRepository<Inventory> Members.
-
-        /// <inheritdoc />
-        public Inventory Find(Guid id)
-        {
-            return this.persistence.Get<Inventory>(id);
         }
 
         #endregion
@@ -106,7 +84,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Update(Inventory entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            this.persistence.Update<Inventory>(entity);
+            this.Context.Update<Inventory>(entity);
         }
 
         #endregion
@@ -122,7 +100,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)
                         .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.ToArray());
-            var query = this.persistence.QueryOver<Inventory>()
+            var query = this.Context.QueryOver<Inventory>()
                 .Where(
                     Restrictions.Or(
                         Restrictions.Eq(Projections.Property<Inventory>(x => x.Patient.Id), patientId),
@@ -136,12 +114,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10)
+        public Paged<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10)
         {
-            var skip = page != 0 ? (page - 1) * pageSize : 0;
-            var query = this.persistence.QueryOver<InventoryTransactionItem>()
-                .Where(x => x.IsActive)
-                  .And(x => x.Inventory.Id == inventory);
+            var pageQuery = PageQuery.New(page, pageSize);
+            var query     = this.Context
+                .QueryOver<InventoryTransactionItem>()
+                    .Where(x => x.IsActive)
+                      .And(x => x.Inventory.Id == inventory);
             if (fromDate.HasValue)
             {
                 query.Where(x => x.CreatedAt >= fromDate);
@@ -150,30 +129,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 query.Where(x => x.CreatedAt <= toDate);
             }
-            query = query.OrderBy(x => x.CreatedAt).Desc;
-            return new PageableSet<InventoryTransactionItem>
-            {
-                CurrentPage = page,
-                NextPage    = page++,
-                PageSize    = pageSize,
-                TotalCount  = query.ToRowCountQuery().RowCount(),
-                Entities    = query.Skip(skip).Take(pageSize).List()
-            };
-
+            query     = query.OrderBy(x => x.CreatedAt).Desc;
+            var count = query.ToRowCountQuery().RowCount();
+            var items = query.Skip(pageQuery.Skip).Take(pageQuery.PageSize).List();
+            return Paged<InventoryTransactionItem>.New(pageQuery, items, count);
         }
 
         /// <inheritdoc />
         public Guid Save(Inventory entity)
         {
-            return (Guid)this.persistence.Save<Inventory>(entity);
+            return (Guid) this.Context.Save<Inventory>(entity);
         }
 
         /// <inheritdoc />
         public IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate, Guid? taxonFilter)
         {
             Patient patientAlias = null;
-            Taxon taxonAlias = null;
-            var query = this.persistence.QueryOver<Inventory>()
+            Taxon taxonAlias     = null;
+            var query = this.Context.QueryOver<Inventory>()
                 .Where(x => x.IsActive)
                 .And(Restrictions.Disjunction()
                     .Add(Restrictions.IsNull(Projections.Property<Inventory>(x => x.LastRecount)))
@@ -181,7 +154,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date))
                         .Add(Restrictions.Gt(Projections.Property<Inventory>(x => x.LastRecount), toDate.GetValueOrDefault(new DateTime(2000,1,1))))))
                 .Inner.JoinAlias(x => x.Patient, () => patientAlias, () => patientAlias.IsActive && patientAlias.Deceased == false);
-            if (taxonFilter.IsNotEmpty()){
+            if (taxonFilter.IsNotEmpty())
+            {
                 query.JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .WhereRestrictionOn(() => taxonAlias.Path)
                     .IsLike(taxonFilter.ToString(), MatchMode.Anywhere);

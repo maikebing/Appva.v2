@@ -94,10 +94,10 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         private IList<Tickable> Merge(IList<Taxon> items, IList<Taxon> selected)
         {
             var selections = selected.Select(x => x.Id).ToList();
-            var tickables  = items.Select(x => new Tickable { Id = x.Id, Label = x.Name }).ToList();
+            var tickables  = items.Select(x => new Tickable { Id = x.Id.ToString(), Label = x.Name }).ToList();
             foreach (var tickable in tickables)
             {
-                if (selections.Contains(tickable.Id))
+                if (selections.Contains(new Guid(tickable.Id)))
                 {
                     tickable.IsSelected = true;
                 }

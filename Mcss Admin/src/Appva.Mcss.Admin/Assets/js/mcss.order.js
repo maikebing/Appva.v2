@@ -46,7 +46,6 @@
                     if (!elem.parent().parent().parent().find('span').hasClass('done')) {
                         elem.parent().parent().parent().find('span').addClass('ordered').html("Beställd");
                     }
-                    
                 });
             }
             else {

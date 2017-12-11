@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>ico-pending</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ico-pending" fill-rule="nonzero" fill="#FFFFFF">
+            <g id="icons8-clock">
+                <path d="M48,0 C21.484376,0 0,21.484376 0,48 C0,74.515624 21.484376,96 48,96 C74.515624,96 96,74.515624 96,48 C96,21.484376 74.515624,0 48,0 Z M48,7 C70.6460958,7 89,25.3539083 89,48 C89,70.6460958 70.6460958,89 48,89 C25.3539083,89 7,70.6460958 7,48 C7,25.3539083 25.3539083,7 48,7 Z M43.75,15.5 L42,48.25 L42.375,51.75 L67,73.5 L70.875,69.5 L50.5,47.875 L48.75,15.5 L43.75,15.5 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Application.Models
         #endregion
 
         #region Public members
-        
+
         #region HasValidValue
 
         /// <summary>

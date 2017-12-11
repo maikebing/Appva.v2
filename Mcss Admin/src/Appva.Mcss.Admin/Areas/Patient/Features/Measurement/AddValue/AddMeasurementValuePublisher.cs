@@ -61,12 +61,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 throw new ArgumentNullException("observation", string.Format("MesurementObservation with ID: {0} does not exist.", message.MeasurementId));
             }
 
+            //// UNRESOLVED: move validation to controller.
+            //// UNRESOLVED: make sure to validate correctly.
             var value = Activator.CreateInstance(observation.ScaleType, message.Value) as IUnit;
 
             this.measurementService.CreateValue(observation, this.accountService.CurrentPrincipal(), value);
-
-            //// UNRESOLVED: move validation to controller.
-            //// UNRESOLVED: make sure to validate correctly.
 
             return new ListMeasurement
             {

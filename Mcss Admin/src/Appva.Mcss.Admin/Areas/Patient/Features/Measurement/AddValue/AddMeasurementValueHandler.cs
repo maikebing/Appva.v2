@@ -51,7 +51,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (observation == null)
             {
                 throw new ArgumentNullException("observation", string.Format("MeasurementObservation with ID: {0} does not exist.", message.MeasurementId));
-            }            
+            }
+
+            //// UNRESOLVAED: Stop using MeasurementScale
             return new AddMeasurementValueModel
             {
                 MeasurementId = observation.Id,

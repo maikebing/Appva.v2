@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
@@ -95,7 +96,7 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        public Application.Models.MeasurementScale.CommonScaleValues CommonScaleValues
+        public FecesScale CommonScaleValues
         {
             get;
             set;

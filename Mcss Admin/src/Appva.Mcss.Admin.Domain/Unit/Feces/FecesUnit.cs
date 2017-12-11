@@ -96,15 +96,11 @@ namespace Appva.Mcss.Domain.Unit
                 throw new ArgumentException("str cannot be an empty string or only contain whitespace", "str");
             }
             FecesScale result;
-            if (Enum.TryParse(str, true, out result))
+            if ((Enum.TryParse(str, true, out result)) && (Enum.IsDefined(typeof(FecesScale), result)) == false)
             {
-                return result;
+                throw new ArgumentOutOfRangeException("str", str + "is not a valid feces enumeration.");
             }
-            if (TryParse(str, out result))
-            {
-                return result;
-            }
-            throw new ArgumentOutOfRangeException("str", str + "is not a valid feces enumeration.");
+            return result;
         }
 
         /// <summary>

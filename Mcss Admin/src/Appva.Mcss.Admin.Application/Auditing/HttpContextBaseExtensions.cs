@@ -54,20 +54,28 @@ namespace Appva.Mcss.Admin.Application.Auditing
             {
                 return string.Empty;
             }
-            var server = context.Request.ServerVariables;
+            var server  = context.Request.ServerVariables;
             var headers = context.Request.Headers;
-            return GetRemoteIP(headers["X-Real-IP"], server["REMOTE_ADDR"], headers["X-Forwarded-For"]);
+            return GetRemoteIP(headers["client-ip"], headers["X-Real-IP"], server["REMOTE_ADDR"], headers["X-Forwarded-For"]);
         }
 
         /// <summary>
-        /// Takes in the REMOTE_ADDR and X-Forwarded-For headers and returns what
+        /// Takes in the 'REMOTE_ADDR' and 'X-Forwarded-For' headers and returns what
         /// we consider the current requests IP to be, for logging and throttling 
         /// purposes.
         /// The logic is, basically, if xForwardedFor *has* a value and the apparent
         /// IP (the last one in the hop) is not local; use that.  Otherwise, use remoteAddr.
         /// </summary>
-        internal static string GetRemoteIP(string realIp, string remoteAddr, string xForwardedFor)
+        /// <param name="netscalerIp">The forwarded IP from netscaler. This will always be the first choice.</param>
+        /// <param name="realIp">The X-Real-IP header.</param>
+        /// <param name="remoteAddr">The REMOTE_ADDR IP.</param>
+        /// <param name="xForwardedFor">The X-Forward-For IP</param>
+        internal static string GetRemoteIP(string netscalerIp, string realIp, string remoteAddr, string xForwardedFor)
         {
+            if (netscalerIp.IsNotEmpty() && ! IsPrivateIP(netscalerIp))
+            {
+                return netscalerIp;
+            }
             if (realIp.IsNotEmpty() && ! IsPrivateIP(realIp))
             {
                 return realIp;

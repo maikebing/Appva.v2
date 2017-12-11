@@ -154,7 +154,6 @@
             <div class="grid grid--align-bottom">
                 <div data-size="xs:24 s:24 m:10 l:8 xl:6">
                     <div class="form-controls date-picker">
-                        <label for="id582eeaa156a6b">Från</label>
                         @Html.LabelFor(x => x.StartDate, "Från")
                         @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker hasDatepicker", data_datepicker_limit = "past", data_rule_date = "true" })
                         <img class="ui-datepicker-trigger" src="Provtagning%20_%20Webbplatsnamn_files/calendar.svg" alt="Välj datum" title="Välj datum">
@@ -196,9 +195,9 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.MeasurementValueList != null)
+            @if (Model.MeasurementValueList.IsNotNull())
             {
-                if (Model.MeasurementScale == "Common" || Model.MeasurementScale == "Bristol")
+                if (Model.MeasurementScale.ToLower() == "common")
                 {
                     foreach (var item in Model.MeasurementValueList)
                     {
@@ -206,6 +205,19 @@
                             <td> </td>
                             <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
                             <td>@Model.MeasurementUnit @item.Measurement.Value</td>
+                            <td>@item.Signature.Who.FullName</td>
+                            <td> </td>
+                        </tr>
+                    }
+                }
+                else if (Model.MeasurementScale.ToLower() == "bristol")
+                {
+                    foreach (var item in Model.MeasurementValueList)
+                    {
+                        <tr>
+                            <td> </td>
+                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                            <td>@item.Measurement.Value</td>
                             <td>@item.Signature.Who.FullName</td>
                             <td> </td>
                         </tr>

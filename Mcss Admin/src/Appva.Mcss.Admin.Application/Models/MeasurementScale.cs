@@ -28,7 +28,6 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         public enum Scale : byte
         {
-            None,
             Weight,
             Bristol,
             Common
@@ -39,7 +38,6 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         private enum KingScale : byte
         {
-            None,
             A1, A2, A3,
             B1, B2, B3,
             C1, C2, C3,
@@ -51,7 +49,6 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         public enum CommonScale : byte
         {
-            None,
             BigTripleA,
             BigDoubleA,
             BigA,
@@ -247,7 +244,7 @@ namespace Appva.Mcss.Admin.Application.Models
             CommonScaleValues result;
             if ((Enum.TryParse<CommonScaleValues>(value, false, out result)) == true)
             {
-                return value;
+                return result.ToString();
             }
 
             return CommonToString((CommonScale)Enum.Parse(typeof(CommonScale), value, true));
@@ -318,8 +315,6 @@ namespace Appva.Mcss.Admin.Application.Models
             {
                 return true;
             }
-
-            //if ()
             return false;
         }
 

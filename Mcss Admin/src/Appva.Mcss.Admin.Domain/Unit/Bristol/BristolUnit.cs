@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaIdentifiUnit.cs" company="Appva AB">
+﻿// <copyright file="BristolUnit.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -13,49 +13,49 @@ namespace Appva.Mcss.Domain.Unit
     #endregion
 
     /// <summary>
-    /// A Tena Identifi <see cref="IUnit"/> implementation.
+    /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaIdentifiUnit : AbstractUnit<TenaIdentifiScale>
+    public sealed class BristolUnit : AbstractUnit<BristolScale>
     {
         #region Variables.
 
         /// <summary>
         /// The unit name identifier / name.
         /// </summary>
-        public const string Id = "tena_identifi";
+        private const string Id = "bristol";
 
         #endregion
 
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaIdentifiUnit"/> class.
+        /// Initializes a new instance of the <see cref="BristolUnit"/> class.
         /// </summary>
         /// <param name="value">
-        /// A string representation of a TENA Identifi value set code, see
-        /// <see cref="TenaIdentifiScale"/>.
+        /// A string representation of a bristol scale value set code, see
+        /// <see cref="BristolScale"/>.
         /// </param>
-        public TenaIdentifiUnit(string value)
+        public BristolUnit(string value)
             : base(Id, Parse(value))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaIdentifiUnit"/> class.
+        /// Initializes a new instance of the <see cref="BristolUnit"/> class.
         /// </summary>
-        /// <param name="value">The <see cref="TenaIdentifiScale"/> enumeration.</param>
-        public TenaIdentifiUnit(TenaIdentifiScale value)
+        /// <param name="value">The <see cref="BristolScale"/> enumeration.</param>
+        public BristolUnit(BristolScale value)
             : base(Id, value)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaIdentifiUnit"/> class.
+        /// Initializes a new instance of the <see cref="BristolUnit"/> class.
         /// </summary>
         /// <remarks>
         /// For internal serialization.
         /// </remarks>
-        private TenaIdentifiUnit()
+        private BristolUnit()
             : base(Id)
         {
         }
@@ -65,14 +65,14 @@ namespace Appva.Mcss.Domain.Unit
         #region Public Static Functions.
 
         /// <summary>
-        /// Converts a string representation of a TENA Identifi code to a 
-        /// <see cref="TenaIdentifiScale"/> enum.
+        /// Converts a string representation of a bristol scale code to a 
+        /// <see cref="BristolScale"/> enum.
         /// </summary>
         /// <param name="str">
-        /// A string representation of a TENA Identifi value set code.
+        /// A string representation of a bristol scale value set code.
         /// </param>
         /// <returns>
-        /// A <see cref="TenaIdentifiScale"/> which accurately represents the 
+        /// A <see cref="BristolScale"/> which accurately represents the 
         /// <typeparamref name="str"/>.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
@@ -83,9 +83,9 @@ namespace Appva.Mcss.Domain.Unit
         /// space.
         /// </exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
-        /// <typeparamref name="str"/> is not a valid TENA identifi enumeration.
+        /// <typeparamref name="str"/> is not a valid bristol scale enumeration.
         /// </exception>
-        public static TenaIdentifiScale Parse(string str)
+        public static BristolScale Parse(string str)
         {
             if (str == null)
             {
@@ -95,10 +95,10 @@ namespace Appva.Mcss.Domain.Unit
             {
                 throw new ArgumentException("str cannot be an empty string or only contain whitespace", "str");
             }
-            TenaIdentifiScale result;
+            BristolScale result;
             if (!Enum.TryParse(str, true, out result))
             {
-                throw new ArgumentOutOfRangeException("str", str + "is not a valid TenaIdentifi enumeration.");
+                throw new ArgumentOutOfRangeException("str", str + "is not a valid bristol scale enumeration.");
             }
             return result;
         }

@@ -1,16 +1,9 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Admin.Models.ListMeasurementModel
-
-@{ 
-    SetTitle("Mätvärden");
-}
-
+@{ SetTitle("Mätvärden"); }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
-
 <div class="section section--hspace">
-
-
     <div class="inliner">
         <h2>Mätvärden</h2>
         <div>
@@ -21,30 +14,21 @@
             </a>
         </div>
     </div>
-
-
-
     <div>
         <div class="grid">
             <div data-size="xs:24 s:10 m:8 l:6 xl:6">
-
                 @if (Model.MeasurementList.IsNotNull())
                 {
                     @Html.Partial("~/Areas/Patient/Features/Measurement/List/Partials/_MeasurementList.cshtml", Model)
                 }
-
             </div>
-
             <div id="measurements" data-size="xs:24 s:14 m:16 l:18 xl:18">
-
                 @if (Model.MeasurementValueList.IsNotNull())
                 {
                     @Html.Partial("~/Areas/Patient/Features/Measurement/List/Partials/_MeasurementDetails.cshtml", Model)
 
                 }
-
             </div>
         </div>
     </div>
-
 </div>

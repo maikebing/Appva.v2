@@ -96,6 +96,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
             return new Signature(signator, data);
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Signature"/> class.
+        /// </summary>
+        /// <param name="signator">The signator.</param>
+        /// <param name="data">The signed data.</param>
+        /// <returns>A new <see cref="Signature"/> instance.</returns>
+        public static Signature New(Account signator, params SignedData[] data)
+        {
+            return new Signature(signator, data);
+        }
+
         #endregion
 
         #region Private Methods.

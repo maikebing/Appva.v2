@@ -574,22 +574,19 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <!--<discriminator column="ObservationItemType" />-->
     <version  name="Version"                             />
     <property name="IsActive"     column="Active"        />
     <property name="CreatedAt"    column="Created"       />
     <property name="UpdatedAt"    column="Modified"      />
     <many-to-one name="Observation" class="Observation"  />
-    <many-to-one name="Task" class="Task" />
+    <many-to-one name="Task"        class="Task"         />
     <component name="Measurement">
-      <property name="Value" column="Value"              />
-      <property name="Type"  column="Type"              />
-      <property name="Code"  column="Code"               />
+      <property name="Value"      column="Value"         />
+      <property name="Type"       column="Type"          />
+      <property name="Code"       column="Code"          />
     </component>
-    <many-to-one name="Signature" class="Signature" cascade="save-update"    />
-    <many-to-one name="Comment"   class="Comment"        />
-    <!--<subclass name="TaskObservationItem" discriminator-value="TaskObservationItem">
-    </subclass>-->
+    <many-to-one name="Signature" class="Signature" cascade="save-update" />
+    <many-to-one name="Comment"   class="Comment"                         />
   </class>
 
   <!-- Signature -->
@@ -753,21 +750,6 @@
     <many-to-one name="PreparedBy" class="Account" lazy="false" />
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
-  </class>
-
-  <!-- TenaObservervationItem -->
-  <class name="TenaObservationItem">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="Version" />
-    <property name="IsActive" column="Active" />
-    <property name="CreatedAt" column="Created" />
-    <property name="UpdatedAt" column="Modified" />
-    <property name="Measurement" />
-    <property name="Signature" />
-    <property name="Comment" />
-    <many-to-one name="TenaObservationPeriod" class="TenaObservationPeriod" />    
   </class>
 
 </hibernate-mapping>

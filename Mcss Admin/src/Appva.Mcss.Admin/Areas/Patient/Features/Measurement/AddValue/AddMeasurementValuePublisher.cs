@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
@@ -59,16 +60,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 throw new ArgumentNullException("observation", string.Format("MesurementObservation with ID: {0} does not exist.", message.MeasurementId));
             }
-            //// UNRESOLVED: move validation to controller.
 
-            if (MeasurementScale.HasValidValue(message.Value, observation.Scale))
-            {
-                if (observation.Scale == MeasurementScale.Scale.Common.ToString())
-                {
-                    message.Value = MeasurementScale.GetCommonScaleValue(message.Value);
-                }
-                this.measurementService.CreateValue(observation, this.accountService.CurrentPrincipal(), message.Value);
-            }
+            var value = Activator.CreateInstance(observation.ScaleType, message.Value) as IUnit;
+
+            this.measurementService.CreateValue(observation, this.accountService.CurrentPrincipal(), value);
+
+            //// UNRESOLVED: move validation to controller.
+            //// UNRESOLVED: make sure to validate correctly.
+
             return new ListMeasurement
             {
                 Id            = observation.Patient.Id,

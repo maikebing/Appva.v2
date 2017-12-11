@@ -25,9 +25,10 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// Initializes a new instance of the <see cref="Base64Binary"/> class.
         /// </summary>
         /// <param name="value">The base64 encoded string value.</param>
-        public Base64Binary(string value)
+        private Base64Binary(string value)
             : base(value)
         {
+            Requires.NotNullOrWhiteSpace(value, "value");
         }
 
         /// <summary>

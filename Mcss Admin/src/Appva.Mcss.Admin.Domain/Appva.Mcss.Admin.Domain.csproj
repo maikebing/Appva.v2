@@ -214,9 +214,14 @@
     <Compile Include="Repositories\PermissionRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Unit\AbstractUnit.cs" />
+    <Compile Include="Unit\Bristol\BristolScale.cs" />
+    <Compile Include="Unit\Bristol\BristolUnit.cs" />
+    <Compile Include="Unit\Feces\FecesScale.cs" />
+    <Compile Include="Unit\Feces\FecesUnit.cs" />
     <Compile Include="Unit\IUnit.cs" />
     <Compile Include="Unit\TenaIdentifi\TenaIdentifiScale.cs" />
     <Compile Include="Unit\TenaIdentifi\TenaIdentifiUnit.cs" />
+    <Compile Include="Unit\Weight\WeightUnit.cs" />
     <Compile Include="VO\TenaConfiguration.cs" />
     <Compile Include="Configurations\SecurityMailerConfiguration.cs" />
     <Compile Include="Configurations\SecurityPasswordConfiguration.cs" />

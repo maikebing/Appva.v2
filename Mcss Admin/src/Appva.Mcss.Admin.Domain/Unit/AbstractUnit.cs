@@ -1,39 +1,52 @@
-﻿// <copyright file="Unit.cs" company="Appva AB">
+﻿// <copyright file="AbstractUnit.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:$emailAddress$">$developer$</a>
+//     <a href="mailto:richard.alvegard@appva.com">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Domain.Unit
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Newtonsoft.Json;
 
     #endregion
 
-
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Abstract base implementation of <see cref="IUnit{T}"/>.
     /// </summary>
+    /// <typeparam name="T">The unit type.</typeparam>
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class AbstractUnit<T> : IUnit<T>
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractUnit{T}"/> class.
         /// </summary>
-        /// <param name="value">The value.</param>
-        public AbstractUnit(T value)
+        /// <param name="name">The unit name.</param>
+        /// <param name="value">The unit value.</param>
+        protected AbstractUnit(string name, T value)
         {
+            this.UnitName = name;
             this.Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractUnit{T}"/> class.
+        /// </summary>
+        /// <remarks>
+        /// For serialization purposes.
+        /// </remarks>
+        internal protected AbstractUnit(string name)
+        {
+            this.UnitName = name;
         }
 
         #endregion
 
-        #region Properties
+        #region Properties.
 
         /// <inheritdoc />
         public T Value
@@ -43,107 +56,135 @@ namespace Appva.Mcss.Domain.Unit
         }
 
         /// <inheritdoc />
-        public abstract string UnitName
+        [JsonProperty("unit")]
+        public virtual string UnitName
         {
             get;
+            private set;
         }
-
-        #endregion
-
-        #region IConvertible members.
-
-        #region Implemented.
 
         /// <inheritdoc />
-        public abstract string ToString(IFormatProvider provider);
+        [JsonProperty("value")]
+        public string StringValue
+        {
+            get
+            {
+                return this.ToString();
+            }
+        }
 
         #endregion
 
-        #region Not implemented
+        #region IConvertible Members.
 
+        /// <inheritdoc />
+        public virtual string ToString(IFormatProvider provider)
+        {
+            return this.ToString();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.Value.ToString();
+        }
+
+        /// <inheritdoc /> 
         public virtual TypeCode GetTypeCode()
         {
-            throw new NotImplementedException();
+            return Type.GetTypeCode(typeof(T));
         }
 
+        /// <inheritdoc /> 
         public virtual bool ToBoolean(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToBoolean(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual byte ToByte(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToByte(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual char ToChar(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToChar(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual DateTime ToDateTime(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToDateTime(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual decimal ToDecimal(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToDecimal(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual double ToDouble(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToDouble(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual short ToInt16(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToInt16(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual int ToInt32(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToInt32(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual long ToInt64(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToInt64(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual sbyte ToSByte(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToSByte(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual float ToSingle(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToSingle(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual object ToType(Type conversionType, IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ChangeType(this.Value, conversionType, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual ushort ToUInt16(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToUInt16(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual uint ToUInt32(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToUInt32(this.Value, provider);
         }
 
+        /// <inheritdoc /> 
         public virtual ulong ToUInt64(IFormatProvider provider)
         {
-            throw new NotImplementedException();
+            return Convert.ToUInt64(this.Value, provider);
         }
 
         #endregion
-
-        #endregion
- 
     }
 }

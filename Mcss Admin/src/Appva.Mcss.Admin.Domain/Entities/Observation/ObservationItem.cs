@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        protected ObservationItem()
+        internal protected ObservationItem()
         {
         }
 

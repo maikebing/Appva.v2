@@ -2,21 +2,48 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:$emailAddress$">$developer$</a>
+//     <a href="mailto:richard.alvegard@appva.com">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Domain.Unit
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IUnit<T> : IConvertible
+    public interface IUnit
+    {
+        /// <summary>
+        /// Gets the name of the unit.
+        /// </summary>
+        /// <value>
+        /// The name of the unit.
+        /// </value>
+        string UnitName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the string value.
+        /// </summary>
+        /// <value>
+        /// The string value.
+        /// </value>
+        string StringValue
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IUnit<T> : IUnit, IConvertible
     {
         /// <summary>
         /// Gets the value.
@@ -25,17 +52,6 @@ namespace Appva.Mcss.Domain.Unit
         /// The value.
         /// </value>
         T Value
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the name of the unit.
-        /// </summary>
-        /// <value>
-        /// The name of the unit.
-        /// </value>
-        string UnitName
         {
             get;
         }

@@ -78,6 +78,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
             return new SignedData(data);
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="SignedData"/> class.
+        /// </summary>
+        /// <param name="data">The base64 data which is signed.</param>
+        /// <returns>A new <see cref="SignedData"/> instance.</returns>
+        public static SignedData New<T>(T data) where T : class
+        {
+            return new SignedData(Base64Binary.New<T>(data));
+        }
+
         #endregion
     }
 }

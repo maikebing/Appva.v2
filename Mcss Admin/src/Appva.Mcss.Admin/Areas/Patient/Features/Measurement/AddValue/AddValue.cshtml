@@ -18,12 +18,11 @@
 
                     @if (Model.Scale == "Weight")
                     {
-                        @Html.TextBoxFor(x => x.Value, new { min = "5", max = "450", size = "3", required = "required", type = "number" })
-                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
+                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator"}).TextBox("###", new { min = "5", max = "450", size = "3", required = "required", type = "number" }).Validate().Build()
                     }
                     else if (Model.Scale == "Common")
                     {
-                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
+                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator" }).Build()
                         @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(MeasurementScale.CommonScaleValues)), new { required = "reguired" })
                     }
                     else if (Model.Scale == "Bristol")

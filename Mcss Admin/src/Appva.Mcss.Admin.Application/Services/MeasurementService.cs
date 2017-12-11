@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
@@ -82,7 +83,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="observation">The observation.</param>
         /// <param name="account">The account.</param>
         /// <param name="value">The value.</param>
-        void CreateValue(MeasurementObservation observation, Account account, string value);
+        void CreateValue(MeasurementObservation observation, Account account, IUnit value);
     }
 
     /// <summary>
@@ -190,10 +191,11 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateValue(MeasurementObservation observation, Account account, string value)
+        public void CreateValue(MeasurementObservation observation, Account account, IUnit value)
         {
             var measurement = new Measurement(value);
-            var data        = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(value)) };
+
+            var data        = new List<SignedData> { SignedData.New<IUnit>(value) };
             var signature   = Signature.New(account, data);
             var item        = ObservationItem.New(observation, measurement, null, signature);
             this.itemRepository.Save(item);

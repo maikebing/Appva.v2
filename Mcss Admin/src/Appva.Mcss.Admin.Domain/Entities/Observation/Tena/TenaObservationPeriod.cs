@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
         /// </summary>
         /// <remarks>An NHibernate visible no-argument constructor.</remarks>
-        public TenaObservationPeriod()
+        internal protected TenaObservationPeriod()
         {
         }
 

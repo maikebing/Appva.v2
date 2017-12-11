@@ -5,7 +5,7 @@
     <h2 class="visually-hidden">Huvudnavigering</h2>
     <ul>
 
-        @if (Model.MeasurementId == Guid.Empty)
+        @if (Model.MeasurementId.IsEmpty())
         {
             <li class="tabs__item tabs__item--selected">
                 <a href="@Url.Action("list", "measurement")">Alla</a>

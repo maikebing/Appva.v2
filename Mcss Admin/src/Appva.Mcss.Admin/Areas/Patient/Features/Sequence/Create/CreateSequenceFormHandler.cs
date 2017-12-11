@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Application.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
     using Appva.Core.Extensions;
@@ -45,6 +46,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
+        /// The <see cref="IArticleService"/>
+        /// </summary>
+        private readonly IArticleService articleService;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
@@ -69,14 +75,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="context"></param>
         /// <param name="inventories"></param>
         /// <param name="roleService"></param>
+        /// <param name="settingsService"></param>
         /// <param name="auditing"></param>
-        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing)
+        public CreateSequenceFormHandler(
+            IPersistenceContext context, 
+            IInventoryService inventories, 
+            IRoleService roleService, 
+            ISettingsService settingsService, 
+            IAuditService auditing,
+            IArticleService articleService)
         {
             this.context         = context;
             this.inventories     = inventories;
             this.roleService     = roleService;
             this.auditing        = auditing;
             this.settingsService = settingsService;
+            this.articleService  = articleService;
         }
 
         #endregion
@@ -93,6 +107,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
+
+            if (message.IsOrderable)
+            {
+                var article = this.articleService.CreateArticle(
+                    sequence.Name, 
+                    sequence.Description, 
+                    sequence.Patient, 
+                    sequence.Schedule.ScheduleSettings.ArticleCategory);
+                sequence.Article = article;
+            }
+
             this.context.Save(sequence);
 
             this.auditing.Create(
@@ -104,11 +129,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 sequence.Schedule.Id);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
+
             return new DetailsSchedule
-                {
-                    Id = message.Id,
-                    ScheduleId = message.ScheduleId
-                };
+            {
+                Id = message.Id,
+                ScheduleId = message.ScheduleId
+            };
         }
 
         #endregion
@@ -201,11 +227,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedule = schedule,
                 Taxon = delegation,
                 Role = requiredRole,
-                Inventory = inventory
+                Inventory = inventory,
             };
         }
-
-   
 
         #endregion
     }

@@ -24,6 +24,9 @@ namespace Appva.Mcss.Admin.Application.Common
         public const string LocationsClaimType     = "https://schemas.appva.se/2015/04/practitioner/locations";
         public const string LocationPathsClaimType = "https://schemas.appva.se/2015/04/practitioner/locations/paths";
 
+        public const string PrescriberCodeClaimType = "https://schemas.appva.se/2015/04/practitioner/prescriber-code";
+        public const string LegitimationCodeClaimType = "https://schemas.appva.se/2015/04/practitioner/legitimation-code";
+
         public static Guid Id(this IPrincipal principal)
         {
             var claim = (principal as ClaimsPrincipal).Claims
@@ -52,6 +55,30 @@ namespace Appva.Mcss.Admin.Application.Common
         {
             var claim = (principal as ClaimsPrincipal).Claims
                 .Where(x => x.Type == LocationPathsClaimType)
+                .SingleOrDefault();
+            if (claim == null)
+            {
+                return string.Empty;
+            }
+            return claim.Value;
+        }
+
+        public static string PrescriberCode(this IPrincipal principal)
+        {
+            var claim = (principal as ClaimsPrincipal).Claims
+                .Where(x => x.Type == PrescriberCodeClaimType)
+                .SingleOrDefault();
+            if (claim == null)
+            {
+                return string.Empty;
+            }
+            return claim.Value;
+        }
+
+        public static string LegitimationCode(this IPrincipal principal)
+        {
+            var claim = (principal as ClaimsPrincipal).Claims
+                .Where(x => x.Type == LegitimationCodeClaimType)
                 .SingleOrDefault();
             if (claim == null)
             {

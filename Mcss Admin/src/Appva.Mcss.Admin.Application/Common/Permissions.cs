@@ -322,6 +322,7 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to read/view order refill widget on the dashboard")]
             public static readonly IPermission ReadOrderRefill = PermissionType.CreateNew(ReadOrderRefillValue);
 
+
             /// <summary>
             /// Permission to read/view calender.
             /// </summary>
@@ -1394,6 +1395,66 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Order list.
+
+        public static class OrderList
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/article/read";
+
+            /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/article/create";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/article/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "patient/article/delete";
+
+            /// <summary>
+            /// Permission to read/view the article order list.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read articles")]
+            [Description("Permission to read/view the article order list")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to create new articles.
+            /// </summary>
+            [Sort(61)]
+            [Name("Create articles")]
+            [Description("Permission to create articles")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to update articles.
+            /// </summary>
+            [Sort(62)]
+            [Name("Update articles")]
+            [Description("Permission update the order status of an article")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
+
+
+            /// <summary>
+            /// Permission to delete articles.
+            /// </summary>
+            [Sort(64)]
+            [Name("Delete articles")]
+            [Description("Permission to delete articles")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+        }
+
+        #endregion
+
         #region Log
 
         /// <summary>
@@ -1486,36 +1547,74 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #region Backoffice.
 
-    /// <summary>
-    /// The Backoffice permissions.
-    /// </summary>
-    public static class Backoffice
-    {
         /// <summary>
-        /// The read value.
+        /// The Backoffice permissions.
         /// </summary>
-        public const string ReadValue = Schema + "backoffice/read";
+        public static class Backoffice
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "backoffice/read";
 
-        /// <summary>
-        /// Permission to read/view backoffice.
-        /// </summary>
-        [Sort(100000)]
-        [Name("Read backoffice")]
-        [Description("Permission to read/view backoffice")]
-        [Visibility(Visibility.Hidden)]
-        public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-    }
-
-    #endregion
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read backoffice")]
+            [Description("Permission to read/view backoffice")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
 
         #endregion
 
-        #region Resource
+        #region Medication
 
-        
-            #region Constants.
+        /// <summary>
+        /// The medication permissions.
+        /// </summary>
+        public static class Medication
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/medication/read";
 
             /// <summary>
+            /// The overview value.
+            /// </summary>
+            public const string OverviewValue = Schema + "patient/medication/overview";
+
+            /// <summary>
+            /// Permission to read/view medications.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read medications")]
+            [Description("Permission to read/view medication list")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to read/view medications.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read medications overview")]
+            [Description("Permission to read/view medication overviw")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Overview = PermissionType.CreateNew(OverviewValue);
+        }
+
+        #endregion
+
+    #endregion
+
+        #region Resource
+
+
+    #region Constants.
+
+    /// <summary>
             /// The permission schema for mobile.
             /// </summary>
             public const string DeviceSchema = "https://schemas.appva.se/permission/device";
@@ -1585,12 +1684,38 @@ namespace Appva.Mcss.Admin.Application.Common
                 public const string SetRefilledValue = DeviceSchema + "/article/refill";
 
                 /// <summary>
+                /// The request refill value
+                /// </summary>
+                public const string RequestRefillValue = DeviceSchema + "/article/order";
+
+                /// <summary>
+                /// The read value
+                /// </summary>
+                public const string ReadValue = DeviceSchema + "/article/read";
+
+                /// <summary>
                 /// Permission to set the article as refilled.
                 /// </summary>
                 [Sort(10000)]
-                [Name("Refill an atricle from mobile device")]
+                [Name("Refill an article from mobile device")]
                 [Description("Permission to set an article to refilled from a mobile device")]
                 public static readonly IPermission SetRefilled = PermissionType.CreateNew(SetRefilledValue);
+
+                /// <summary>
+                /// Permission to request refill from mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Request refill of an article from mobile device")]
+                [Description("Permission to request refill of an article from a mobile device")]
+                public static readonly IPermission RequestRefill = PermissionType.CreateNew(RequestRefillValue);
+
+                /// <summary>
+                /// Permission to read articles in mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Read articles from mobile device")]
+                [Description("Permission to read articles from mobile device")]
+                public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
             }
 
             #endregion

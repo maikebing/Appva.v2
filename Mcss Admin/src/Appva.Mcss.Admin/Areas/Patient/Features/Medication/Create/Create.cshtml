@@ -1,0 +1,117 @@
+﻿@model Appva.Mcss.Admin.Models.CreateMedicationModel
+@{ SetTitle("Skapa"); }
+<div class="lb-panel lb-validate-form" data-valclass="SequenceCreate">
+    <div class="std-panel activity-edit std-form">
+        @using (Html.BeginForm())
+        {
+                    <div class="row cf">
+                        <div class="form-section col">
+                            <h3 class="section-title">Ange insats</h3>
+                            @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
+                            @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
+                            @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
+                            @if (Model.Delegations != null && Model.Delegations.Count() > 0)
+                    {
+                                <div class="select">
+                                    @Html.LabelFor(m => m.Delegation)
+                                    @Html.DropDownListFor(
+                            m => m.Delegation,
+                            new SelectList(Model.Delegations, "Value", "Text", Model.Delegation),
+                            "Välj delegering ...",
+                            new { @class = "delegation" }
+                        )
+                                    @Html.ValidationMessageFor(m => m.Delegation)
+                                </div>
+                    }
+
+
+                            @if (Model.Inventories != null)
+                    {
+                                <div class="sequence-inventory">
+                                    <h3 class="section-title">Ange saldo</h3>
+                                    <div class="row toggle-group cf">
+                                        <div class="radio col">
+                                            @Html.RadioButtonFor(m => m.CreateNewInventory, true, new { @id = "inventory-type-1", @class = "toggle", @data_toggletarget = "toggle-inventory-target-1", @data_togglegroup = "toggle-inventory" })
+                                            <label for="inventory-type-1">Skapa nytt saldo</label>
+                                        </div>
+                                        <div class="radio col">
+                                            @Html.RadioButtonFor(m => m.CreateNewInventory, false, new { @id = "inventory-type-2", @class = "toggle", @data_toggletarget = "toggle-inventory-target-2", @data_togglegroup = "toggle-inventory" })
+                                            <label for="inventory-type-2">Välj befintligt saldo</label>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-inventory-target-1 toggle-inventory">
+                                    </div>
+                                    <div class="toggle-inventory-target-2 toggle-inventory">
+                                        @Html.DropDownListFor(
+                                        m => m.Inventory,
+                                        new SelectList(Model.Inventories, "Value", "Text", Model.Inventory),
+                                        "Välj saldo ...",
+                                        new { @class = "inventories" })
+                                    </div>
+                                </div>
+                    }
+                        </div>
+                        <div class="form-section wide-section col">
+                            <h3 class="section-title">Ange när det ska ges</h3>
+                            <div class="row toggle-group d cf">
+                                <div class="radio col">
+                                    @Html.RadioButtonFor(m => m.OnNeedBasis, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
+                                    <label for="activity-type-1">Stående</label>
+                                </div>
+                                <div class="radio col">
+                                    @Html.RadioButtonFor(m => m.OnNeedBasis, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
+                                    <label for="activity-type-2">Vid behov</label>
+                                </div>
+                            </div>
+                            <div class="toggle-target toggle-target-1 toggle-in-need-based">
+                                <div class="row cf">
+                                    <div class="select col">
+                                        @Html.LabelFor(m => m.Interval)
+                                        @Html.DropDownListFor(
+                                m => m.Interval,
+                                new SelectList(Model.Intervals, "Value", "Text", Model.Interval),
+                                "Välj frekvens ...",
+                                new { @class = "freq-select" }
+                            )
+                                        @Html.ValidationMessageFor(m => m.Interval)
+                                    </div>
+                                    <div class="text freq-show col">
+                                        <a class="btn btn-mdatepick check-datetime-create" href="#">Välj dagar</a>
+                                        @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
+                                    </div>
+                                    @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-create").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                                    @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                                </div>
+                                <div class="checkbox-grid">
+                                    <strong class="label">Klockslag:</strong>
+                                    @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList().Validate().Build()
+                                    <input id="TestTimes" name="TestTimes" type="hidden" />
+                                </div>
+                                <div class="text mini label-group">
+                                    <strong class="label">Ges inom:</strong>
+                                    <label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter innan</label>
+                                    @Html.ValidationMessageFor(m => m.RangeInMinutesBefore)
+                                    <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter efter</label>
+                                    @Html.ValidationMessageFor(m => m.RangeInMinutesAfter)
+                                </div>
+                            </div>
+                            <div class="toggle-target toggle-target-2 toggle-in-need-based">
+                                <div class="row cf">
+                                    @Html.FormGroup(x => x.OnNeedBasisStartDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                                    @Html.FormGroup(x => x.OnNeedBasisEndDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit">
+                        @Html.HiddenFor(x => x.ScheduleId)
+                        @Html.AntiForgeryToken()
+                        @Html.Submit("Spara")
+                        @Html.Cancel("Avbryt")
+                    </div>
+
+
+                }
+            </div>
+
+</div>

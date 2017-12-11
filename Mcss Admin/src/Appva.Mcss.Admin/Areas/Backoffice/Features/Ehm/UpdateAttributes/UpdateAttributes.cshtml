@@ -1,0 +1,25 @@
+﻿@model Appva.Mcss.Admin.Models.UpdateAttributesModel
+@{
+    SetTitle("Inställningar");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Attribut</h3>
+ 
+            @Html.FormGroup(x => x.OrganizationId, "text large").Label("Organisationsnummer").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Adress, "text large").Label("Adress").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.City, "text large").Label("Stad").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Phone, "text large").Label("Telefon").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Workplace, "text large").Label("Arbetsplats").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.WorkplaceCode, "text large").Label("Arbetsplatskod").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Zip, "text large").Label("Postnummer").TextBox().Validate().Build()
+
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

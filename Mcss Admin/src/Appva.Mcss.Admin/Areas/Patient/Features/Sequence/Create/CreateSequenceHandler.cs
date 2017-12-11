@@ -81,6 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             //// Temporary mapping
             Role requiredRole = null;
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
             if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
             {
@@ -105,9 +106,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Checked = false
                 }).ToList(),
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                CreateNewInventory = true,
-                RequiredRoleText   = requiredRole.Name.ToLower()
-                
+                CreateNewInventory  = true,
+                RequiredRoleText    = requiredRole.Name.ToLower(),
+                IsOrderableArticleEnabled = orderListConfiguration.IsInstalled && schedule.ScheduleSettings.ArticleCategory != null
             };
         }
 

@@ -1,0 +1,142 @@
+﻿/* Tables */
+table.table-general tbody tr:nth-child(even) { background: rgb(239,241,246); }
+table.table-general tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+table.table-general tbody tr:hover { background: rgb(219, 224, 236);}
+
+table.table-general thead th { color:rgb(64,78,104); }
+table.table-general td { 
+    color:rgb(64,78,104); 
+    padding-left:12px;
+}
+
+.table-general__row--noborder,
+.table-general__row--noborder td,
+.table-general__row--noborder td:first-child {
+    border-color:transparent;
+}
+
+tr.table-general tr td:first-child {
+    border-color:rgb(99,116,145);
+}
+
+tr.table-general__row--green td:first-child {
+    border-color:rgb(104,173,87);
+}
+
+.table-general .table-general__row__text-byline {
+    display:block;
+    font-size:12px;
+}
+
+.table-general th.checkbox-col {
+    max-width: 50px;
+}
+
+.table-general__checkbox {
+    opacity:0;
+}
+
+.table-general__checkbox,
+.table-general__checkbox ~ div {
+    width: 25px;
+    height: 25px;
+    cursor:pointer;
+}
+
+.table-general__checkbox ~ div {
+    background:#fff;
+    border:1px solid rgb(219, 224, 236);
+    display:block;
+    margin-top: -30px;
+    border-radius:3px;
+    color:#fff;
+}
+
+.table-general__checkbox:checked ~ div {
+    background:rgb(88,159,73);
+    background-size:20px 20px;
+    border-color: rgb(88,159,73);
+}
+
+.table-general__checkbox:checked ~ div svg {
+    width:16px;
+    height:16px;
+    margin:4px;
+}
+
+
+/* Buttons */
+
+.button {
+    padding:8px 16px;
+    font-weight:bold;
+}
+
+.button img.icon{
+    vertical-align:baseline;
+}
+
+.button--neutral {
+    background: rgb(99,116,145);
+    border:1px solid rgb(64,78,104);
+}
+
+.button--neutral:hover {
+    background:rgb(64,78,104);
+}
+
+.button--primary {
+    background: rgb(104,173,87);
+    border:1px solid rgb(88,159,73);
+}
+
+.button--primary:hover {
+    background:rgb(88,159,73);
+}
+
+.button--negative {
+    background: rgb(201,73,73);
+    border:1px solid rgb(160,40,40);
+}
+
+.button--negative:hover {
+    background:rgb(160,40,40);
+}
+
+.table-general .button {
+    font-size:14px;
+    padding:6px 16px;
+}
+
+/* Filter */
+
+.button--filter .button {
+    border-radius: 0;
+    margin:0;
+    font-size: 14px;
+    padding:6px 16px;
+    box-shadow:none;
+}
+
+.button--filter .button:first-child {
+    border-bottom-left-radius:500px;
+    border-top-left-radius:500px;
+}
+
+.button--filter .button:last-child {
+    border-bottom-right-radius:500px;
+    border-top-right-radius:500px;
+}
+
+/* Empty */
+.section .empty-list {
+    border: 4px dashed rgb(219,224,236);
+    border-radius:16px;
+    padding-top:24px;
+    margin-top:24px;
+    color:rgb(128,143,167);
+}
+
+.section .empty-list h3 {
+    color:rgb(128,143,167);
+}

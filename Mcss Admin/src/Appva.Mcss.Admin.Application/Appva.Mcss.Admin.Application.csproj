@@ -43,7 +43,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.7.0\lib\net45\Appva.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.Messaging.0.0.4\lib\net45\Appva.Core.Messaging.dll</HintPath>
@@ -53,8 +54,9 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.GrandId, Version=0.1.6.23191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.6\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+    <Reference Include="Appva.GrandId, Version=0.1.6.20311, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.8\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
@@ -70,8 +72,8 @@
       <HintPath>..\..\..\Packages\Appva.NHibernateUtils.0.4.0\lib\net45\Appva.NHibernateUtils.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+    <Reference Include="Appva.Persistence, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.4.0\lib\net45\Appva.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -186,6 +188,8 @@
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Exception\NotUniqueException.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
+    <Compile Include="Models\ArticleModel.cs" />
+    <Compile Include="Models\Mock\EhmMockedParameters.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
@@ -193,8 +197,10 @@
     <Compile Include="Models\ConfirmDeviationMessage.cs" />
     <Compile Include="Models\DelegationCategoryModel.cs" />
     <Compile Include="Models\DelegationViewModel.cs" />
+    <Compile Include="Models\HsaAttributes.cs" />
     <Compile Include="Models\InventoryAmountListModel.cs" />
     <Compile Include="Models\ListInventoryRecountItem.cs" />
+    <Compile Include="Models\MedicationModel.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
@@ -204,11 +210,13 @@
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
     <Compile Include="Models\ScheduleSettings\ConfirmDeviationMessage.cs" />
+    <Compile Include="Models\SequenceMedicationCompareModel.cs" />
     <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\SynchronizationEmailData.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Models\DelegationUpdateModel.cs" />
+    <Compile Include="Models\TenantAttributes.cs" />
     <Compile Include="Pdf\AbstractPdfDocument.cs" />
     <Compile Include="Pdf\PatientInformation.cs" />
     <Compile Include="Pdf\PdfPrintService.cs" />
@@ -241,6 +249,8 @@
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
+    <Compile Include="Services\ArticleService.cs" />
+    <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />
@@ -250,6 +260,7 @@
     <Compile Include="Services\LdapService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />
+    <Compile Include="Services\MedicationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
@@ -268,10 +279,17 @@
     <Compile Include="Services\TenaService.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Transformers\ArticleTransformer.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
+    <Compile Include="Transformers\ITransformer.cs" />
+    <Compile Include="Transformers\MedicationTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
+      <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
+      <Name>Appva.Ehm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>

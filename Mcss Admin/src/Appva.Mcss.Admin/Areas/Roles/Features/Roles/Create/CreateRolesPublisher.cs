@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         /// <inheritdoc />
         public override bool Handle(CreateRole message)
         {
-            var permissions = this.service.ListAllIn(message.Permissions.Where(x => x.IsSelected).Select(x => x.Id).ToArray());
+            var permissions = this.service.ListAllIn(message.Permissions.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray());
             this.persistence.Save(new Role
             {
                 IsActive = true,

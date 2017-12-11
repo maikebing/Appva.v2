@@ -60,8 +60,17 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            IList<Medication> medications = null,
+            Inventory inventory = null
         );
+        
+        /// <summary>
+        /// Lists the by article.
+        /// </summary>
+        /// <param name="articleId">The article identifier.</param>
+        /// <returns></returns>
+        IList<Sequence> ListByArticle(Guid articleId);
     }
 
     /// <summary>
@@ -149,7 +158,9 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            IList<Medication> medications = null,
+            Inventory inventory = null
         )
         {
             if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
@@ -184,11 +195,22 @@ namespace Appva.Mcss.Admin.Application.Services
                 Overview = overView,
                 PauseAnyAlerts = pauseAnyAlerts,
                 Absent = absent,
-                AllDay = allDay
+                AllDay = allDay,
+                Medications = medications,
+                Inventory = inventory
             };
             this.context.Save(sequence);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public IList<Sequence> ListByArticle(Guid articleId)
+        {
+            //// FIXME: Move to repository
+            return this.context.QueryOver<Sequence>()
+                        .Where(x => x.Article.Id == articleId)
+                        .List();
         }
 
         #endregion

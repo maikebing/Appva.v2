@@ -9,10 +9,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Persistence;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+using Appva.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
     #endregion
 
@@ -21,6 +21,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public interface ISequenceRepository : IRepository<Sequence>, IUpdateRepository<Sequence>
     {
+        /// <summary>
+        /// Lists the specified ordinations ids.
+        /// </summary>
+        /// <param name="ordinationsIds">If set, lists by given ordination-ids<param>
+        /// <returns></returns>
+        IList<Sequence> List(IList<long> ordinationsIds = null);
     }
 
     /// <summary>
@@ -41,11 +47,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
+        #region ISequenceRepository members.
+
         /// <inheritdoc />
-        public void Update(Sequence entity)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            this.Context.Update<Sequence>(entity);
+        public IList<Sequence> List(IList<long> ordinationsIds = null)
+        {   
+            // TODO: Check permissions to schedules 
+            var query = this.Context.QueryOver<Sequence>();
+
+            if (ordinationsIds != null)
+            {
+                var array = ordinationsIds.ToArray();
+                Medication alias = null;
+                query.JoinQueryOver(x => x.Medications, () => alias)
+                    .WhereRestrictionOn(() => alias.OrdinationId).IsIn(array);
+            }
+            return query.List();
         }
+
+        #endregion
     }
 }

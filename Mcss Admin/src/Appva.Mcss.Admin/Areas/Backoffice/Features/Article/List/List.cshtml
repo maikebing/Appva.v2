@@ -1,0 +1,62 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ArticleListModel
+@{
+    SetTitle("Backoffice - Beställningslista");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Beställningslista</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist" class="articlecategory">
+@if (Model.IsInstalled)
+                {
+            <h4 class="list-header">Artikelkategorier</h4>
+            <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
+            
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th>Namn</th>
+                        <th>Beskrivning</th>
+                        <th class="prtd">Antal listor</th>
+                        <th class="prtd">Antal artiklar</th>
+                        <th class="prtd-140">Ändrades</th>
+                        <th class="prtd">Åtgärder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CategoryList.Count > 0)
+                    {
+                        foreach (var category in Model.CategoryList)
+                        {
+                            <tr class="tr-highlight">
+                                <td>@category.Name</td>
+                                <td>@category.Description</td>
+                                <td class="prtd" style="@(category.ListCount == 0 && category.ArticleCount == 0 ? Html.Raw("#F9E1E1") : Html.Raw("transparent"))">@(category.ListCount == 0 ? Html.Raw("&mdash;") : Html.Raw(category.ListCount + " st"))</td>
+                                <td class="prtd" style="@(category.ListCount == 0 && category.ArticleCount == 0 ? Html.Raw("#F9E1E1") : Html.Raw("transparent"))">@(category.ArticleCount == 0 ? Html.Raw("&mdash;") : Html.Raw(category.ArticleCount + " st"))</td>
+                                <td class="prtd-140">@category.UpdatedAt.ToString("yyyy-MM-dd (HH:mm:ss)")</td>
+                                <td class="btnpad prtd2">
+                                    @Html.ActionLink("Ändra", "EditCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
+                                    @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles || category.HasLists ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles || category.HasLists ? "opacity:.7" : "opacity:1") })
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">Inga kategorier hittades.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+                }
+else
+{
+    <h4 >Beställningslistan är ännu inte installerad för denna kund. Var vänlig kontakta produktägare/arkitekt för aktivering.</h4>
+}
+                
+        </div>
+    </div>
+</div>

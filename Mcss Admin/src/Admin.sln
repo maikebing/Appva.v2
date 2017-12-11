@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Sca", "Appva.Sca\Appv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Sca.UnitTests", "Appva.Sca.UnitTests\Appva.Sca.UnitTests.csproj", "{BEEF1D8C-124E-46ED-A782-18443DC699DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.BetaMvc", "Appva.Mvc.BetaExtensions\Appva.BetaMvc.csproj", "{20192D0E-85F8-42D3-ADC5-B8404FCB1950}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Ehm", "Appva.Ehm\Appva.Ehm.csproj", "{0E392CD0-2967-4706-975C-881FFE9EAFEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,14 @@ Global
 		{BEEF1D8C-124E-46ED-A782-18443DC699DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEEF1D8C-124E-46ED-A782-18443DC699DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEEF1D8C-124E-46ED-A782-18443DC699DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20192D0E-85F8-42D3-ADC5-B8404FCB1950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20192D0E-85F8-42D3-ADC5-B8404FCB1950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20192D0E-85F8-42D3-ADC5-B8404FCB1950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20192D0E-85F8-42D3-ADC5-B8404FCB1950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

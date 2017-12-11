@@ -92,46 +92,6 @@ label,
     padding-left:12px;
 }
 
-.tena-list .empty-list {
-    border: 4px dashed rgb(219,224,236);
-    border-radius:16px;
-    padding-top:24px;
-    margin-top:24px;
-    color:rgb(128,143,167);
-}
-
-.tena-list .empty-list h3 {
-    color:rgb(128,143,167);
-}
-
-/* Button-fixes */
-
-.tena-list .button {
-    padding:10px 20px;
-}
-
-.tena-list .button img.icon{
-    vertical-align:baseline;
-}
-
-.tena-list .button--neutral {
-    background: rgb(99,116,145);
-    border:1px solid rgb(64,78,104);
-}
-
-.tena-list .button--neutral:hover {
-    background:rgb(64,78,104);
-}
-
-.tena-list .button--primary {
-    background: rgb(104,173,87);
-    border:1px solid rgb(88,159,73);
-}
-
-.tena-list .button--primary:hover {
-    background:rgb(88,159,73);
-}
-
 .dialog__content .tena-list.section--bluetone {
     margin-left:-24px;
     margin-right:-24px;

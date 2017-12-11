@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -22,6 +23,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class InactivateSequenceHandler : RequestHandler<InactivateSequence, DetailsSchedule>
     {
         #region Private Variables.
+
+        /// <summary>
+        /// The <see cref="IArticleService"/>.
+        /// </summary>
+        private readonly IArticleService articleService;
 
         /// <summary>
         /// The <see cref="IAuditService"/>.
@@ -42,10 +48,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="auditing">The <see cref="IAuditService"/></param>
         /// <param name="context"The <see cref="IPersistenceContext"/>></param>
-        public InactivateSequenceHandler(IAuditService auditing, IPersistenceContext context)
+        public InactivateSequenceHandler(
+            IArticleService articleService,
+            IAuditService auditing, 
+            IPersistenceContext context)
         {
-            this.auditing = auditing;
-            this.context  = context;
+            this.articleService = articleService;
+            this.auditing       = auditing;
+            this.context        = context;
         }
 
         #endregion
@@ -55,7 +65,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(InactivateSequence message)
         {
+            //// FIXME: MOVE THIS TO SERVICE!
             var sequence = this.context.Get<Sequence>(message.SequenceId);
+            if (sequence.Article != null)
+            {
+                this.articleService.InactivateArticle(sequence.Article.Id);
+            }
             sequence.IsActive  = false;
             sequence.UpdatedAt = DateTime.Now;
             this.context.Update(sequence);

@@ -40,7 +40,10 @@ namespace Appva.Mcss.Admin
                 "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css"
             ));
             bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
-                "~/Assets/css/datePicker.css", "~/Assets/css/main.css"
+                "~/Assets/css/datePicker.css", "~/Assets/css/main.css", "~/Assets/css/ehm.css"
+            ));
+            bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
+                "~/Assets/css/new/all.min.css", "~/Assets/css/new/main.prefixed.css"
             ));
             //// Authorization and external user management
             bundles.Add(new StyleBundle("~/Assets/css/auth").Include(
@@ -55,7 +58,7 @@ namespace Appva.Mcss.Admin
 
             // New design
             bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
-                "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/main.prefixed.css"
+                "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/hotfixes/general.css", "~/Assets/css/new/main.prefixed.css"
             ));
 
             ////Exit-Confirmation

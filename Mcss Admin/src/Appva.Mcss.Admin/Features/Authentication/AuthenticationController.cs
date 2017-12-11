@@ -12,12 +12,15 @@ namespace Appva.Mcss.Admin.Features.Authentication
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Configuration;
 
     #endregion
 
@@ -176,7 +179,13 @@ namespace Appva.Mcss.Admin.Features.Authentication
             {
                 return this.RedirectToAction("SignInSithsFailed");
             }
-            this.authentication.SignIn(result.Identity);
+            //// Fix to set Legitimation-code to a generic code if user dosent have an prescriber-code.
+            //// TODO: Query all parameters from user-identity an remove generic codes.
+            if (result.HsaAttributes.LegitimationCode.IsEmpty() && result.HsaAttributes.PrescriberCode.IsEmpty())
+            {
+                result.HsaAttributes.LegitimationCode = AppvaEhmConfiguration.SharedLegitimationCode;
+            }
+            this.siths.SignIn(result.Identity, hsaAttributes: result.HsaAttributes);
             await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
         }

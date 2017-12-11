@@ -52,5 +52,7 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        public bool ArticleModuleIsInstalled { get; set; }
     }
 }

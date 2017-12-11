@@ -24,12 +24,13 @@
                 <div class="section section--card section--vspace">
                     <div class="section section--header section--hspace">
                         <div class="form-controls text-align--center">
-                            <a class="button button--primary open-in-dialog" href="@Url.Action("create", "tena")#add-measuring-period">
+                            @using (Html.BeginLink(Permissions.Tena.Create, "Create", "Tena", "add-measuring-period", new { }, new { @class = "button button--primary open-in-dialog" }))
+                            {
                                 <svg class="icon icon--mr" aria-hidden="true">
                                     <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
                                 </svg>
-                                Ny mätperiod
-                            </a>
+                                @:Ny mätperiod
+                            }
                         </div>
                     </div>
 
@@ -65,9 +66,7 @@
                                         </svg-->Ladda upp till TENA Identifi
                                     </a>
                                 }
-                                <a class="button open-in-dialog" href="@Url.Action("Update", "Tena", new { periodid = Model.Period.Id })#add-measuring-period">
-                                    Ändra
-                                </a>
+                                @Html.ActionLink(Permissions.Tena.Update, "Ändra", "Update", "Tena", "add-measuring-period", new { periodid = Model.Period.Id }, new { @class = "button open-in-dialog" })
                             </div>
                         </div>
                         <div class="section section--vspace inliner">

@@ -1,0 +1,75 @@
+﻿@model Appva.Mcss.Admin.Models.SelectScheduleMedicationModel
+@{ SetTitle("Välj lista"); }
+<div class="lb-panel-small lb-validate-form" data-valclass="SelectList">
+    <div class="loading">
+        <img src="~/Assets/i/ajax-load@2x.gif" />
+    </div>
+    <div class="std-panel std-form">
+        @using (Html.BeginForm())
+        {
+                <h3 class="section-title">Ny insats</h3>
+                <div class="select">
+                    <label for="Schedule">Välj lista att lägga till insats på</label>
+                    @Html.DropDownListFor(
+                            m => m.Schedule,
+                            new SelectList(Model.Schedules, "Value", "Text", Model.Schedule),
+                            "Välj Lista ...",
+                            new { @class = "schedule" }
+                        )
+                    @Html.ValidationMessageFor(m => m.Schedule)
+                </div>
+               
+            <div class="submit">
+                @Html.AntiForgeryToken()
+                <a class='btn lb-link' disable="disable" href='' style="display:none;">Fortsätt</a>
+                @Html.Submit("Fortsätt", new { @class = "lb-link" })
+                @Html.Cancel("Avbryt")
+            </div>
+         }
+        <script type="text/javascript">
+            var href = "@Url.Action("Create", "Medication", new { id = Model.Id, ordinationId = Model.OrdinationId })"
+
+            $('input.lb-link').remove();
+            $('a.lb-link').show();
+
+            $('.lb-wrap a.lb-link').click(function (e) {
+                var clicked = $(this);
+                var actionUri = clicked.attr('href');
+                if (actionUri != "")
+                {
+                    $('div.loading').css('display', 'flex');
+                    $.ajax({
+                        url: actionUri,
+                        dataType: 'html',
+                        method: 'get',
+                        success: function (data) {
+                            var content = $(data);
+                            content.addClass('lb-panel');
+                            mcss.lightbox.replaceContent($('div.lb-wrap'), content);
+                            $('.lb-link').trigger("lightboxopen");
+                        },
+                        error: function (data) {
+                            $('div.loading').hide();
+                            $('p.error-msg').remove();
+                            clicked.parent().append("<p style='margin-top:20px;' class='error-msg'>Ett fel har tyvärr inträffat, var vänlig försök igen</p>");
+                        }
+                    });
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $('.schedule').change(function (e) {
+                var elem = $(this);
+                if (elem.val() != "") {
+                    var url = href + "?schedule=" + elem.val();
+                    $('.lb-wrap a.btn.lb-link').attr('href', url);
+                }
+                else {
+                    $('.lb-wrap a.btn.lb-link').attr('href', "");
+                }
+            })
+        </script>
+    </div>
+</div>

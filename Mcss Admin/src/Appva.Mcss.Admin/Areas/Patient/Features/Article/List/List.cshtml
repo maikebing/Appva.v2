@@ -1,0 +1,166 @@
+﻿@using Appva.Mcss.Admin.Domain.Entities;
+@using Appva.Mcss.Admin.Application.Common;
+@model ListArticleModel
+@{
+    SetTitle("Beställningslista");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div class="section section--hspace section--vspace section--bluetone orderlist">
+    <div class="">
+        <h2>Beställningslista</h2>
+        
+    </div>
+        <div class="section section--vspace section--card section--table">
+            <div class="section--hspace distributor distributor--justified">
+                <h3>Artiklar</h3>
+                <div class="button--filter">
+                    @Html.ActionLink(Permissions.OrderList.Read, "Alla", "List", "Article", new { }, new { @class = "button" + (Model.StatusFilter.HasValue ? "" : " button--neutral")  })
+                    @Html.ActionLink(Permissions.OrderList.Read, string.Format("Påfyllning begärd ({0})", Model.RefillRequestedCount), "List", "Article", new { status = ArticleStatus.RefillRequested }, new { @class = "button" + (Model.StatusFilter.GetValueOrDefault() == ArticleStatus.RefillRequested ? " button--neutral" : "") })
+                    @Html.ActionLink(Permissions.OrderList.Read, string.Format("Beställd ({0})", Model.OrderedCount), "List", "Article", new { status = ArticleStatus.OrderedFromSupplier }, new { @class = "button" + (Model.StatusFilter.GetValueOrDefault() == ArticleStatus.OrderedFromSupplier ? " button--neutral" : "") })
+                </div>
+                <div class="form-controls">
+                    @using (Html.BeginLink(Permissions.OrderList.Create, "Add", "Article", "add-item-to-order-list", new { }, new { @class = "button button--primary open-in-dialog", id = "fsd", data_dialog_symbol = "+" }))
+                    {
+                        <svg class="icon icon--mr" aria-hidden="true">
+                            <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                        </svg>
+                        @:Lägg till artikel
+                    }   
+                </div>
+            </div>
+            @if (Model.Articles.Count > 0)
+            {
+                using (Html.BeginForm("UpdateStatus", "Article", new { Id = Model.Patient.Id }))
+                {
+                    <table class="table-general">
+                        <thead>
+                            <tr>
+                                @if (Html.HasPermissionFor(Permissions.OrderList.Update))
+                                {
+                                    <th scope="col" class="checkbox-col"></th>
+                                }
+                                <th scope="col">Namn</th>
+                                <th scope="col">Beskrivning</th>
+                                <th scope="col">Kategori</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var article in Model.Articles)
+                            {
+                                <tr class="@(article.Status == ArticleStatus.OrderedFromSupplier ? "table-general__row--yellow" : article.Status == ArticleStatus.RefillRequested ? "table-general__row--green" : "")">
+                                    @if (Html.HasPermissionFor(Permissions.OrderList.Update))
+                                    {
+                                        <td>
+
+                                                @Html.Hidden(string.Format("Articles[{0}].Id", Model.Articles.IndexOf(article)), article.Id)
+                                                @Html.CheckBox(string.Format("Articles[{0}].IsSelected", Model.Articles.IndexOf(article)), false, new { @class = "table-general__checkbox", value = true })
+                                                <div>
+                                                    <svg class="icon" focusable="false" aria-hidden="true">
+                                                        <use xlink:href="/assets/images/icons/icon.sprite.svg#check-icon"></use>
+                                                    </svg>
+                                                </div>   
+                                        </td>
+                                    }
+                                    <td>@article.Name</td>
+                                    <td>@article.Description</td>
+                                    <td>@article.Category.Name</td>
+                                    <td>
+                                        @Model.OrderOptions[article.Status.ToString()]
+                                        @if (article.Status == ArticleStatus.RefillRequested)
+                                        {
+                                            <span class="table-general__row__text-byline">
+                                                @string.Format("{0}, {1}", article.RefillOrderedBy.FullName, TimeSpanDifference.ToShortDateTime(article.RefillOrderDate.GetValueOrDefault(), "Idag", "Igår"))
+                                            </span>
+                                        }
+                                        @if (article.Status == ArticleStatus.OrderedFromSupplier)
+                                        {
+                                            <span class="table-general__row__text-byline">
+                                                @string.Format("{0}, {1}", article.OrderedBy.FullName, TimeSpanDifference.ToShortDateTime(article.OrderDate.GetValueOrDefault(), "Idag", "Igår"))
+                                            </span>
+                                        }
+                                    
+                                    
+                                    </td>                              
+
+                                    <td>
+                                        <div class="form-controls--align-end section--hspace">
+                                            @Html.ActionLink(Permissions.OrderList.Update, "Ändra", "Edit", "Article", "add-item-to-order-list", new { Article = article.Id }, new { @class = "button button--neutral button--inline open-in-dialog" })
+
+                                            @using (Html.BeginLink(Permissions.OrderList.Delete, "Delete", "Article", "remove-item", new { Article = article.Id }, new { @class = "button button--negative button--icon-only button--inline open-in-dialog ", @data_dialog_title = "Ta bort artikel" }))
+                                            {
+                                                <svg class="icon" focusable="false" aria-hidden="true">
+                                                    <use xlink:href="/assets/images/icons/icon.sprite.svg#trash-icon"></use>
+                                                </svg>
+                                            }
+                                        </div>
+                                    </td>
+                                
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="section section--hspace">
+                        <p id="checkbox-summary">
+                            Markera de artiklar du vill uppdatera status för
+                        </p>
+                    </div>
+                    <div id="status-controls" class="section--vspace section--hspace inliner" style="display:none;">
+                    
+                        <div class="control-container control-container--select control-container--no-margin">
+                            @Html.DropDownList("Status", new SelectList(Model.OrderOptions, "Key", "Value"), "Välj status", new { @class = "select-style" })
+                        </div>
+                        @Html.Submit("Uppdatera", new { @class = "button button--neutral" })
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="section section--hspace section--vspace ">
+                    <div class="empty-list section section--hspace section--vspace text-align--center">
+                        <div class="section section--vspace">
+                            @if (Model.StatusFilter.HasValue)
+                            {
+                                <h3>Det finns inga artiklar med status "@Model.OrderOptions[Model.StatusFilter.Value.ToString()]"</h3>
+                            }
+                            else
+                            {
+                                <h3>Det finns ännu inga artiklar</h3>
+
+                                <p>Börja använda beställningslistan genom att lägga till en artikel</p>
+                                using (Html.BeginLink(Permissions.OrderList.Create, "Add", "Article", "add-item-to-order-list", new { }, new { @class = "button button--primary open-in-dialog", id = "fsd", data_dialog_symbol = "+" }))
+                                {
+                                    <svg class="icon icon--mr" aria-hidden="true">
+                                        <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                                    </svg>
+                                    @:Lägg till artikel
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        var checkboxSummaryDefaultText = $('#checkbox-summary').html();
+        $('input[type=checkbox]').change(function () {
+            var selectedCount = $('input[type=checkbox]:checked').length
+            if (selectedCount > 0)
+            {
+                $('#checkbox-summary').html("Ändra status för <b>" + selectedCount + "</b> artiklar");
+                $('#status-controls').show();
+            }
+            else {
+                $('#checkbox-summary').html(checkboxSummaryDefaultText);
+                $('#status-controls').hide();
+            }
+            
+        });
+    });
+</script>

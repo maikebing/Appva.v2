@@ -8,22 +8,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Web.Controllers;
-using NHibernate.Criterion;
-using NHibernate.Transform;
-    using Appva.Mcss.Admin.Application.Security.Identity;
+    using NHibernate.Criterion;
+    using NHibernate.Transform;
 
     #endregion
 
@@ -57,10 +52,11 @@ using NHibernate.Transform;
         /// Initializes a new instance of the <see cref="OverviewOrderHandler"/> class.
         /// </summary>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewOrderHandler(
-            IIdentityService identityService, 
+            IIdentityService identityService,
             IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering)
         {
@@ -98,7 +94,7 @@ using NHibernate.Transform;
                         .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
             return new OrderOverviewViewModel
             {
-                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List()
+                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List(),
             };
         }
 

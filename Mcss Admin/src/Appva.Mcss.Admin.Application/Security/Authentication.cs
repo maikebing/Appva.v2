@@ -78,17 +78,17 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IAuditService auditing;
+        protected readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="AuthenticationMethod"/>.
         /// </summary>
-        private readonly AuthenticationMethod method;
+        protected readonly AuthenticationMethod method;
 
         /// <summary>
         /// The authentication type currently enabled.
         /// </summary>
-        private readonly AuthenticationType type;
+        protected readonly AuthenticationType type;
 
         #endregion
 
@@ -212,7 +212,7 @@ namespace Appva.Mcss.Admin.Application.Security
             };
             if (account.Taxon != null)
             {
-                retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon,            account.Taxon.Id.ToString()));
+                retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()));
             }
             
             //// Add the location-claim
@@ -238,6 +238,7 @@ namespace Appva.Mcss.Admin.Application.Security
             retval.AddRange(this.accounts.Roles(account).Select(x => new Claim(ClaimTypes.Role, x.MachineName)).ToList());
             retval.AddRange(this.accounts.Permissions(account).Select(x => new Claim(Core.Resources.ClaimTypes.Permission, x.Resource)).ToList());
             retval.AddRange(TaskService.GetAllRoleScheduleSettingsList(account).Select(x => new Claim(Core.Resources.ClaimTypes.SchedulePermission, x.Id.ToString())).ToList());
+            retval.AddRange(this.GetAllArticleCategoriesFor(account).Select(x => new Claim(Core.Resources.ClaimTypes.ArticleCategoryPermission, x.Id.ToString())).ToList());
             return retval;
         }
 
@@ -248,7 +249,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="account">The account</param>
         /// <param name="password">The password</param>
         /// <returns>A <see cref="IAuthenticationResult"/></returns>
-        protected IAuthenticationResult Authenticate(object credentials, Account account, string password)
+        protected IAuthenticationResult Authenticate(object credentials, Account account, string password, HsaAttributes hsaAttributes = null)
         {
             if (account == null)
             {
@@ -291,7 +292,7 @@ namespace Appva.Mcss.Admin.Application.Security
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                 return AuthenticationResult.Failure;
             }
-            return AuthenticationResult.CreateSuccessResult(account);
+            return AuthenticationResult.CreateSuccessResult(account, hsaAttributes: hsaAttributes);
         }
 
         /// <summary>
@@ -326,6 +327,20 @@ namespace Appva.Mcss.Admin.Application.Security
                     account.ResetFailedPasswordAttempts();
                 }
             }
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        /// <summary>
+        /// Gets all article categories for user.
+        /// </summary>
+        /// <param name="account">The account.</param>
+        /// <returns></returns>
+        private IEnumerable<Category> GetAllArticleCategoriesFor(Account account)
+        {
+            return account.Roles.SelectMany(x => x.ArticleCategories).Distinct();
         }
 
         #endregion

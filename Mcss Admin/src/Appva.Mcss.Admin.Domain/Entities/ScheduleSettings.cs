@@ -126,6 +126,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+        public virtual Category ArticleCategory
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

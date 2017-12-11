@@ -48,12 +48,14 @@ namespace Appva.Mcss.Admin
             builder.RegisterNhibernateProfiler();
             builder.RegisterRepositories();
             builder.RegisterServices();
+            builder.RegisterTransformers();
             builder.RegisterTenantServices();
             builder.RegisterOwinContext();
             builder.RegisterIdentityServices();
             builder.RegisterMediator();
             builder.RegisterGrandId();
             builder.RegisterTenaIdentifi();
+            builder.RegisterEhmApi();
             builder.RegisterAuthorization(app);
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();

@@ -1,0 +1,72 @@
+﻿@using Appva.Mcss.Admin.Areas.Roles.Models;
+@model UpdateRoleCategoryPermissions
+@{
+    SetTitle("Redigera behörighet för artikelkategorier");
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#admin-ac-roles-all').change(function () {
+            var c = $('.admin-ac-role');
+            if ($(this).is(':checked')) {
+                c.prop('checked', true);
+            } else {
+                c.prop('checked', false);
+            }
+        });
+        $('#device-ac-roles-all').change(function () {
+            var c = $('.device-ac-role');
+            if ($(this).is(':checked')) {
+                c.prop('checked', true);
+            } else {
+                c.prop('checked', false);
+            }
+        });
+        $('.ac-role-col').click(function () {
+            var c = $(this);
+            if (c.siblings('td').find('.admin-ac-role').is(':checked') && c.siblings('td').find('.device-ac-role').is(':checked')) {
+                c.siblings('td').find('.admin-ac-role').prop('checked', false);
+                c.siblings('td').find('.device-ac-role').prop('checked', false);
+            } else {
+                c.siblings('td').find('.admin-ac-role').prop('checked', true);
+                c.siblings('td').find('.device-ac-role').prop('checked', true);
+            }
+        });
+    });
+</script>
+<div class="std-panel std-form lb-panel-big lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Redigera behörighet för artikelkategorier</h3>
+            <table id="ac-roles-table">
+                <thead>
+                    <tr>
+                        <th>Kategorier</th>
+                        <th style="width:80px">@Html.CheckBox("Admin", false, new { id = "admin-ac-roles-all" }) <label for="admin-ac-roles-all">Webb</label></th>
+                        <th style="width:80px">@Html.CheckBox("Enheter", false, new { id = "device-ac-roles-all" }) <label for="device-ac-roles-all">Enheter</label></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Categories.Count; i++)
+                    {
+                        <tr>
+                            <td class="ac-role-col">@Model.Categories[i].Label</td>
+                            <td>
+                                @Html.CheckBoxFor(x => x.Categories[i].IsSelected, new { @class = "admin-ac-role" })
+                                @Html.HiddenFor(x => x.Categories[i].Id)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(x => x.DeviceCategories[i].IsSelected, new { @class = "device-ac-role" })
+                                @Html.HiddenFor(x => x.DeviceCategories[i].Id)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.HiddenFor(x => x.Id)
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+        </div>
+    }
+</div>

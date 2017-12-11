@@ -125,6 +125,24 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// If the sequence is orderable
+        /// </summary>
+        public bool IsOrderable
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the article order option is enabled.
+        /// </summary>
+        public bool IsOrderableArticleEnabled
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// If the sequence only can be completed by a nurse
         /// </summary>
         public bool Nurse 

@@ -14,8 +14,11 @@
             @Html.FormGroup(x => x.CanRaiseAlerts, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.HasSetupDrugsPanel, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.HasInventory, "checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()            
+            @if (!Model.ArticleModuleIsInstalled)
+            {
+                @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
+            }
             <h3 class="section-title">Dialogruta vid avvikande signering</h3>
             @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("Inkludera lista med sköterskor att kontakta").Validate().Build()
@@ -24,8 +27,16 @@
             <h3 class="section-title">Delegering</h3>
             @Html.LabelFor(x => x.DelegationTaxon)
             @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
+
+            @if (Model.ArticleModuleIsInstalled)
+            {
+                <h3 class="section-title">Beställningslista</h3>
+                @Html.LabelFor(x => x.SelectedCategory, "Artikelkategori")
+                @Html.DropDownListFor(x => x.SelectedCategory, Model.Categories, "Ej beställningsbara insatser")
+            }
         </div>
         <div class="submit">
+            @Html.HiddenFor(x => x.ArticleModuleIsInstalled)
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }

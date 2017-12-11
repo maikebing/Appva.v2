@@ -289,6 +289,7 @@
     <Content Include="Global.asax" />
     <Content Include="App_Data\persistence.json" />
     <Content Include="App_Data\Persistence.RICHARDHENRIKSS.json" />
+    <Content Include="App_Data\Persistence.EMMANUELHANFF64.json" />
     <Content Include="App_Data\Persistence.FREDRIKANDECC0F.json" />
     <None Include="App_Data\persistence.WIN-OLL39JT07TP.json">
       <DependentUpon>persistence.json</DependentUpon>

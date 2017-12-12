@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         /// <inheritdoc />
         public override bool Handle(UpdateRoleDelegation message)
         {
-            var ids    = message.Delegations.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var ids    = message.Delegations.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray();
             var taxons = this.persistence.QueryOver<Taxon>()
                 .AndRestrictionOn(x => x.Id)
                 .IsIn(ids)

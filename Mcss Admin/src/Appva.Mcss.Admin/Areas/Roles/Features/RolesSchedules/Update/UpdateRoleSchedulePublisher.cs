@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var allSchedules = message.Schedules.Concat(message.Categories);
             var settings = this.persistence.QueryOver<ScheduleSettings>()
                 .AndRestrictionOn(x => x.Id)
-                .IsIn(allSchedules.Where(x => x.IsSelected).Select(x => x.Id).ToArray())
+                .IsIn(allSchedules.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                 .List();
             var role = this.persistence.Get<Role>(message.Id);
             role.ScheduleSettings = settings;

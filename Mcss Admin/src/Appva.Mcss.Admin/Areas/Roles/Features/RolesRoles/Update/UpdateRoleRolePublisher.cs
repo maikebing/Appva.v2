@@ -59,8 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var allRoles = message.AdminRoles.Concat(message.UserRoles);
             var roles = this.persistence.QueryOver<Role>()
                 .AndRestrictionOn(x => x.Id)
-                .IsIn(allRoles.Where(x => x.IsSelected)
-                .Select(x => x.Id).ToArray())
+                .IsIn(allRoles.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                 .List();
             var role   = this.persistence.Get<Role>(message.Id);
             role.Roles = roles;

@@ -10,7 +10,6 @@
     <div class="e-panel">
         <h3 class="no-border">
             Dos-dispenserade läkemedel
-            @Html.ActionLink(Permissions.Sequence.Create, "+ Skapa insats", "SelectSchedule", "Medication", new { OrdinationId = Int64.MinValue, Id = Model.Patient.Id }, new { @class = "lb-link button add" })
         </h3>
         @if (Model.DispensedMedications != null && Model.DispensedMedications.Count > 0)
         {

@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateSequenceHandler : RequestHandler<CreateSequence, CreateSequenceForm>
+    internal sealed class CreateSequenceHandler : RequestHandler<CreateSequence, CreateSequencePostRequest>
     {
         #region Variables.
 
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override CreateSequenceForm Handle(CreateSequence message)
+        public override CreateSequencePostRequest Handle(CreateSequence message)
         {
             var patient  = this.context.Get<Patient>(message.PatientId);
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
@@ -92,7 +92,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
-            return new CreateSequenceForm
+            return new CreateSequencePostRequest
             {
                 StartDate   = Date.Today,
                 StartHour   = TimeOfDay.Now.Hour,
@@ -107,31 +107,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         Text = x.Name,
                         Value = x.Id.ToString() })
                         : new List<SelectListItem>(),
-                Times = CreateTimes().Select(x => new CheckBoxViewModel
-                {
-                    Id = x,
-                    Checked = false
-                }).ToList(),
+                Times              = TimeOfDay.Hours.Select(x => new CheckBoxViewModel { Id = x.Hour, Checked = false }),
                 Inventories        = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(patient.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory = schedule.ScheduleSettings.HasInventory,
                 RequiredRoleText   = requiredRole.Name.ToLower()
-                
-            };
-        }
-
-        #endregion
-
-        #region Private Methods.
-
-        /// <summary>
-        /// TODO: REFACTOR?
-        /// </summary>
-        /// <returns></returns>
-        private IList<int> CreateTimes()
-        {
-            return new List<int>
-            {
-                6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5
             };
         }
 

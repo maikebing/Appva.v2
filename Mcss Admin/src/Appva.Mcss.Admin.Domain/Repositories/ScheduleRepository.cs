@@ -3,67 +3,25 @@
     #region Imports
 
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
-    using Appva.Repository;
-    using System;
 
     #endregion
 
-    public interface IScheduleRepository : IIdentityRepository<Schedule>, 
+    public interface IScheduleRepository : 
         IUpdateRepository<Schedule>, 
         ISaveRepository<Schedule>, 
-        IRepository
+        IRepository<Schedule>
     {
-        #region Fields
-
-        Schedule Get(Guid id);
-
-        #endregion
     }
 
-    public class ScheduleRepository : IScheduleRepository
+    public class ScheduleRepository : Repository<Schedule>, IScheduleRepository
     {
-        private readonly IPersistenceContext persistenceContext;
+        #region Constructors.
 
-        #region Constructor
-
-        public ScheduleRepository(IPersistenceContext persistenceContext) 
+        public ScheduleRepository(IPersistenceContext context) 
+            : base (context) 
         {
-            this.persistenceContext = persistenceContext;
         }
-
-        public Schedule Get(Guid id)
-        {
-            return this.persistenceContext.Get<Schedule>(id);
-        }
-
-        public Schedule Find(Guid id)
-        {
-            return this.persistenceContext.Get<Schedule>(id);
-        }
-
-        public void Save(Schedule entity)
-        {
-            this.persistenceContext.Save<Schedule>(entity);
-        }
-
-        public void Update(Schedule entity)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            this.persistenceContext.Update<Schedule>(entity);
-        }
-
-        #endregion
-
-        #region IScheduleRepository Members
-
-        /// <inheritdoc />
-        //public new void Update(Schedule schedule)
-        //{
-        //    schedule.UpdatedAt = DateTime.Now;
-        //    this.PersistenceContext.Update<Schedule>(schedule);
-        //}
 
         #endregion
     }

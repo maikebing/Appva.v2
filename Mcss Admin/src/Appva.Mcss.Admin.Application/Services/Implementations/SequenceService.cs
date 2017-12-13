@@ -347,7 +347,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
         /// <returns></returns>
         public IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account = this.accountService.Get(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
             Taxon taxonAlias = null;
             Patient patientAlias = null;
@@ -420,7 +420,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
         /// <returns></returns>
         public IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account = this.accountService.Get(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
             Taxon taxonAlias = null;
             Patient patientAlias = null;
@@ -467,7 +467,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
         /// <inheritdoc />
         public IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account = this.accountService.Get(this.identityService.PrincipalId);
 
             // move to a repo?
             var categories = this.context.QueryOver<ScheduleSettings>()
@@ -575,7 +575,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
                 EndDate = date,
                 StartDate = date,
                 IncludeCalendarTasks = true
-            }).Entities.FirstOrDefault();
+            }).Items.FirstOrDefault();
 
             if (task.IsNotNull())
             {
@@ -864,5 +864,87 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
         }
 
         #endregion
+
+        /// <inheritdoc />
+        public void Create(
+            Patient patient,
+            DateTime startDate,
+            DateTime? endDate,
+            Schedule schedule,
+            String description,
+            bool? canRaiseAlert,
+            int interval,
+            int intervalFactor = 0,
+            bool intervalIsDate = false,
+            int rangeInMinutesBefore = 0,
+            int rangeInMinutesAfter = 0,
+            String name = null,
+            String times = null,
+            String dates = null,
+            bool onNeedBasis = false,
+            bool reminder = false,
+            int remindInMinutesBefore = 0,
+            Account reminderRecipient = null,
+            Taxon taxon = null,
+            Role requiredRole = null,
+            bool overView = true,
+            bool pauseAnyAlerts = false,
+            bool absent = false,
+            bool allDay = false,
+            IList<Medication> medications = null,
+            Inventory inventory = null
+        )
+        {
+            if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
+            {
+                canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
+            }
+            /// FIXME: HELP ME!!!
+            /*var sequence = new Sequence
+            {
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                Patient = patient,
+                StartDate = startDate,
+                EndDate = endDate,
+                Schedule = schedule,
+                Name = name,
+                Description = description,
+                RangeInMinutesAfter = rangeInMinutesAfter,
+                RangeInMinutesBefore = rangeInMinutesBefore,
+                Times = times,
+                Dates = dates,
+                Interval = interval,
+                IntervalFactor = intervalFactor,
+                IntervalIsDate = intervalIsDate,
+                OnNeedBasis = onNeedBasis,
+                Reminder = reminder,
+                ReminderInMinutesBefore = remindInMinutesBefore,
+                ReminderRecipient = reminderRecipient,
+                Taxon = taxon,
+                Role = requiredRole,
+                CanRaiseAlert = (bool)canRaiseAlert,
+                Overview = overView,
+                PauseAnyAlerts = pauseAnyAlerts,
+                Absent = absent,
+                IsAllDay = allDay,
+                Medications = medications,
+                Inventory = inventory
+            };
+            this.context.Save(sequence);*/
+            throw new Exception("ooooooooooooohohohohohohohohooh");
+            schedule.UpdatedAt = DateTime.Now;
+            this.context.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public IList<Sequence> ListByArticle(Guid articleId)
+        {
+            //// FIXME: Move to repository
+            return this.context.QueryOver<Sequence>()
+                        .Where(x => x.Article.Id == articleId)
+                        .List();
+        }
     }
 }

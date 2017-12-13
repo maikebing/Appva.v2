@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         [PermissionsAttribute(Permissions.Sequence.CreateValue)]
-        public ActionResult Create(CreateSequenceForm request)
+        public ActionResult Create(CreateSequencePostRequest request)
         {
             var response = this.mediator.Send(request);
             ///Dispatch("Details", "Schedule")

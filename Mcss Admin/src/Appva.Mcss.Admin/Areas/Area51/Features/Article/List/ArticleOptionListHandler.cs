@@ -61,16 +61,14 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             var settings = this.service.Find(ApplicationSettings.OrderListSettings);
             var migratableItems = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
-                .And(x => x.EndDate >= DateTime.Now || x.EndDate == null)
-                .And(x => x.Article == null)
+                  .And(x => x.Repeat.EndAt >= DateTime.Now || x.Repeat.EndAt == null)
+                  .And(x => x.Article == null)
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)
                         .Where(x => x.OrderRefill == true)
                         .And(x => x.ArticleCategory != null)
                         .RowCount();
             var hasMigratableItems = migratableItems > 0;
-
-
             return new ArticleOption
             {
                 HasCreatedCategories = settings.HasCreatedCategories,

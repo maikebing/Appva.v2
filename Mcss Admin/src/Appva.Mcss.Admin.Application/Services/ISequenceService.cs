@@ -33,6 +33,42 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequence"></param>
         void Update(Sequence sequence);
 
+        void Create(
+            Patient patient,
+            DateTime startDate,
+            DateTime? endDate,
+            Schedule schedule,
+            String description,
+            bool? canRaiseAlert,
+            int interval,
+            int intervalFactor = 0,
+            bool intervalIsDate = false,
+            int rangeInMinutesBefore = 0,
+            int rangeInMinutesAfter = 0,
+            String name = null,
+            String times = null,
+            String dates = null,
+            bool onNeedBasis = false,
+            bool reminder = false,
+            int remindInMinutesBefore = 0,
+            Account reminderRecipient = null,
+            Taxon taxon = null,
+            Role requiredRole = null,
+            bool overView = true,
+            bool pauseAnyAlerts = false,
+            bool absent = false,
+            bool allDay = false,
+            IList<Medication> medications = null,
+            Inventory inventory = null
+        );
+
+        /// <summary>
+        /// Lists the by article.
+        /// </summary>
+        /// <param name="articleId">The article identifier.</param>
+        /// <returns></returns>
+        IList<Sequence> ListByArticle(Guid articleId);
+
         void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
 

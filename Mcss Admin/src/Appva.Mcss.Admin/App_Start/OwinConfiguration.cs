@@ -38,13 +38,22 @@ namespace Appva.Mcss.Admin
         /// <param name="app">The <see cref="IAppBuilder"/></param>
         public void Configuration(IAppBuilder app)
         {
-            var builder = new ContainerBuilder();
-            var assembly = Assembly.GetExecutingAssembly();
+            var builder     = new ContainerBuilder();
+            var assembly    = Assembly.GetExecutingAssembly();
+            var environment = builder.RegisterEnvironment();
+            if (environment.Is.Development)
+            {
+                ////http://localhost:2090/development/develop/list
+                ////builder.RegisterControllers(assembly).Except<PermissionsController>();
+            }
+            else
+            {
+                ////builder.RegisterControllers(assembly);
+            }
             builder.RegisterControllers(assembly);
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
             builder.RegisterModule(new AutofacWebTypesModule());
             builder.RegisterFilterProvider();
-            builder.RegisterEnvironment();
             builder.RegisterNhibernateProfiler();
             builder.RegisterRepositories();
             builder.RegisterServices();

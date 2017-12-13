@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
-    using Appva.Common.Domain;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -94,16 +94,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         /// <inheritdoc />
-        public override bool Equals(Refillable other)
+        #region ValueObject Overrides.
+
+        // / <inheritdoc />
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            //// WTF: Why isn't this implemented?
-            throw new NotImplementedException();
+            yield return Refill;
+            yield return RefillOrderedBy;
+            yield return RefillOrderedDate;
+            yield return Ordered;
+            yield return OrderedDate;
+            yield return OrderedBy;
         }
 
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

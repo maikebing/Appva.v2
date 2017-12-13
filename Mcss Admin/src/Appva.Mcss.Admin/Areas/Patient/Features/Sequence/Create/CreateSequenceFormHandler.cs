@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateSequenceFormHandler : RequestHandler<CreateSequenceForm, DetailsSchedule>
+    internal sealed class CreateSequenceFormHandler : RequestHandler<CreateSequencePostRequest, DetailsSchedule>
     {
         #region Variables.
 
@@ -91,7 +91,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override DetailsSchedule Handle(CreateSequenceForm message)
+        public override DetailsSchedule Handle(CreateSequencePostRequest message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             Taxon delegation = null;
@@ -99,6 +99,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.DelegationId.Value);
             }
+            if (message.Dates.IsNotEmpty())
+            {
+                TimingSchedule.New(message.GetSelectedDates(), message.GetSelectedTimesOfDay());
+            }
+            if (message.IsNeedBased)
+            {
+                TimingSchedule.New(message.GetSelectedPeriod(), message.GetSelectedFrequency(), message.GetSelectedTimesOfDay());
+                //// do all need based stuff first.
+            }
+
             this.CreateOrUpdateSequence(message, schedule, delegation);
             //this.context.Save(sequence);
 
@@ -121,15 +131,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region Private Methods.
 
-        private void CreateOrUpdateSequence(CreateSequenceForm message, Schedule schedule, Taxon delegation)
+        private void CreateOrUpdateSequence(CreateSequencePostRequest message, Schedule schedule, Taxon delegation)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
             Role requiredRole = null;
             
+            if (message.Dates.IsNotEmpty())
+            {
+                TimingSchedule.New(message.GetSelectedDates(), message.GetSelectedTimesOfDay());
+            }
             //// Start with need based.
             if (message.IsNeedBased)
             {
+                //TimingSchedule.New();
+                ////TimingSchedule.New(Period.New())
                 //// do all need based stuff first.
             }
 
@@ -190,7 +206,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private void CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation)
+        private void CreateOrUpdate(CreateSequencePostRequest message, Schedule schedule, Taxon delegation)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
@@ -241,8 +257,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             Inventory inventory = null;
-            if(schedule.ScheduleSettings.HasInventory){
-                if(message.CreateNewInventory)
+            if (schedule.ScheduleSettings.HasInventory)
+            {
+                if (message.CreateNewInventory)
                 {
                     message.InventoryId = this.inventories.Create(message.Name, null, null, schedule.Patient);
                 }

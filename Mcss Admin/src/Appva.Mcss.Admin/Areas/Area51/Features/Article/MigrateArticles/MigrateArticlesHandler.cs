@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             var maxNumberOfRowsPerTransaction = 10000;
             var list = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
-                .And(x => x.EndDate >= DateTime.Now || x.EndDate == null )
+                .And(x => x.Repeat.EndAt >= DateTime.Now || x.Repeat.EndAt == null)
                 .And(x => x.Article == null)
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)

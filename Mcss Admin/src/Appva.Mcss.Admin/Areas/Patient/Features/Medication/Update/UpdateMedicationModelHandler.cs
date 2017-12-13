@@ -153,8 +153,9 @@ namespace Appva.Mcss.Admin.Areas.Handlers
 
             //// End the previous sequence.
             //// If change should be done from today it must be valid until the exact time to not miss already created events.
-            previousSequence.EndDate = start.Date == DateTime.Now.Date ? start : start.AddDays(-1);
-
+            //// FIXME: THIS MUST BE SET 
+            ///previousSequence.Repeat.EndAt = start.Date == DateTime.Now.Date ? start : start.AddDays(-1);
+            throw new Exception("dlslkjdfjklfdsklsf");
             this.sequenceService.Update(previousSequence);
 
             this.sequenceService.Create(

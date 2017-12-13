@@ -696,7 +696,7 @@
     <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequence.cs" />
-    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceForm.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequencePostRequest.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceFormHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequence.cs" />
@@ -1433,6 +1433,10 @@
     <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
       <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
       <Name>Appva.Ehm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Html\Appva.Html.csproj">
+      <Project>{40459229-0d42-4916-96f0-17bc28556584}</Project>
+      <Name>Appva.Html</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>

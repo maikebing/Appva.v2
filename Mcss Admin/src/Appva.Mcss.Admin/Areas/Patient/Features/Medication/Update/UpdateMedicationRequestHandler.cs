@@ -79,40 +79,38 @@ namespace Appva.Mcss.Admin.Areas.Handlers
         /// <inheritdoc />
         public override async Task<UpdateMedicationModel> Handle(UpdateMedicationRequest message)
         {
-            var medication = await this.medicationService.Find(message.OrdinationId, message.Id);
-            var sequence   = this.sequenceService.Find(message.SequenceId);
-
+            var medication   = await this.medicationService.Find(message.OrdinationId, message.Id);
+            var sequence     = this.sequenceService.Find(message.SequenceId);
              var delegations = sequence.Schedule.ScheduleSettings.DelegationTaxon != null ?
                 this.delegationService.ListDelegationTaxons(byRoot: sequence.Schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }) :
                 null;
-
             return new UpdateMedicationModel
             {
-                PreviousSequenceId = message.SequenceId,
-                OrdinationId = message.OrdinationId,
-                CreateNewInventory = false,
-                Dates = sequence.Dates,
-                Delegation = sequence.Taxon != null ? sequence.Taxon.Id : null as Guid?,
-                Delegations = delegations,
-                Description = sequence.Description,
-                Interval = sequence.Interval,
-                Inventories = sequence.Schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                Inventory = sequence.Inventory != null ? sequence.Inventory.Id : null as Guid?,
-                Name = sequence.Name,
-                Nurse = sequence.Role != null,
-                OnNeedBasis = sequence.OnNeedBasis,
-                Patient = sequence.Patient,
-                PatientId = sequence.Patient.Id,
-                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
-                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
-                Schedule = sequence.Schedule,
-                ScheduleId = sequence.Schedule.Id,
-                Times = this.GetTimes(times, sequence.Times.Split(',').Select(x => Convert.ToInt32(x)).ToList()),
-                OnNeedBasisStartDate = sequence.OnNeedBasis ? medication.OrdinationStartsAt : (DateTime?)null,
-                OnNeedBasisEndDate = sequence.OnNeedBasis ? medication.EndsAt : (DateTime?)null,
-                StartDate = !sequence.OnNeedBasis ? medication.OrdinationStartsAt : (DateTime?)null,
-                EndDate = !sequence.OnNeedBasis ? medication.EndsAt : (DateTime?)null,
+                PreviousSequenceId   = message.SequenceId,
+                OrdinationId         = message.OrdinationId,
+                CreateNewInventory   = false,
+                Dates                = string.Join(",", sequence.Repeat.BoundsRange.Select(x => x.ToString())),
+                Delegation           = sequence.Taxon != null ? sequence.Taxon.Id : null as Guid?,
+                Delegations          = delegations,
+                Description          = sequence.Description,
+                Interval             = sequence.Repeat.Interval,
+                Inventories          = sequence.Schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                Inventory            = sequence.Inventory != null ? sequence.Inventory.Id : null as Guid?,
+                Name                 = sequence.Name,
+                Nurse                = sequence.Role != null,
+                OnNeedBasis          = sequence.Repeat.IsNeedBased,
+                Patient              = sequence.Patient,
+                PatientId            = sequence.Patient.Id,
+                RangeInMinutesAfter  = sequence.Repeat.OffsetAfter,
+                RangeInMinutesBefore = sequence.Repeat.OffsetBefore,
+                Schedule             = sequence.Schedule,
+                ScheduleId           = sequence.Schedule.Id,
+                Times                = this.GetTimes(times, sequence.Repeat.TimesOfDay.Select(x => x.Hour).ToList()),
+                OnNeedBasisStartDate = sequence.Repeat.IsNeedBased   ? medication.OrdinationStartsAt : (DateTime?) null,
+                OnNeedBasisEndDate   = sequence.Repeat.IsNeedBased   ? medication.EndsAt : (DateTime?) null,
+                StartDate            = ! sequence.Repeat.IsNeedBased ? medication.OrdinationStartsAt : (DateTime?) null,
+                EndDate              = ! sequence.Repeat.IsNeedBased ? medication.EndsAt : (DateTime?) null,
             };
         }
       

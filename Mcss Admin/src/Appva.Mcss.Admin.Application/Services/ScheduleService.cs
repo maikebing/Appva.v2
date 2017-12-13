@@ -86,8 +86,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="schedule"></param>
         void SaveScheduleSetting(ScheduleSettings schedule);
-
-        Schedule Find(Guid id);
     }
 
     /// <summary>
@@ -538,11 +536,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return null;
-        }
-
-        public Schedule Find(Guid id)
-        {
-            return this.persistence.Get<Schedule>(id);
         }
     }
 }

@@ -9,24 +9,20 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Persistence;
-    using Appva.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Persistence;
+    // using Appva.Repository;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
-    public interface ISequenceRepository : IIdentityRepository<Sequence>, 
+    public interface ISequenceRepository : 
+        //IIdentityRepository<Sequence>, 
         IUpdateRepository<Sequence>, 
         ISaveRepository<Sequence>, 
-        IRepository
+        IRepository<Sequence>
     {
-        #region Fields
-
-        Sequence Get(Guid id);
-
-        #endregion
         /// <summary>
         /// Lists the specified ordinations ids.
         /// </summary>
@@ -40,7 +36,7 @@ using System.Linq;
     /// </summary>
     public sealed class SequenceRepository : Repository<Sequence>, ISequenceRepository
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>
@@ -48,6 +44,8 @@ using System.Linq;
         private readonly IPersistenceContext persistenceContext;
 
         #endregion
+
+        #region Contructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceRepository"/> class.
@@ -61,8 +59,6 @@ using System.Linq;
 
         #endregion
 
-        #region IUpdateRepository members.
-
         /// <inheritdoc />
         public IList<Sequence> List(IList<long> ordinationsIds = null)
         {   
@@ -70,7 +66,7 @@ using System.Linq;
             var query = this.Context.QueryOver<Sequence>();
 
             if (ordinationsIds != null)
-        {
+            {
                 var array = ordinationsIds.ToArray();
                 Medication alias = null;
                 query.JoinQueryOver(x => x.Medications, () => alias)

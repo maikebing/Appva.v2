@@ -66,10 +66,11 @@ namespace Appva.Mcss.Admin.Configuration
         /// </summary>
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         /// <remarks>This must be registered first in order</remarks>
-        public static void RegisterEnvironment(this ContainerBuilder builder)
+        public static IApplicationEnvironment RegisterEnvironment(this ContainerBuilder builder)
         {
             var environment = WebApplicationConfiguration.For<MvcApplication>();
             builder.Register<IApplicationEnvironment>(x => environment).SingleInstance();
+            return environment;
         }
 
         /// <summary>

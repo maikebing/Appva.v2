@@ -210,6 +210,10 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
                 new Claim(ClaimTypes.Version, ApplicationEnvironment.Info.Version)
             };
+            if (ApplicationEnvironment.Is.Development)
+            {
+                retval.Add(new Claim(Core.Resources.ClaimTypes.Permission, "develop"));
+            }
             if (account.Taxon != null)
             {
                 retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()));

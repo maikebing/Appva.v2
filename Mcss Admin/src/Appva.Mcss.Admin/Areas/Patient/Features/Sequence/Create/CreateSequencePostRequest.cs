@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateSequenceForm.cs" company="Appva AB">
+﻿// <copyright file="CreateSequencePostRequest.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,23 +9,23 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using Appva.Cqrs;
-using Appva.Domain;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Web.ViewModels;
-using Appva.Mvc;
-using DataAnnotationsExtensions;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Domain;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateSequenceForm : IRequest<DetailsSchedule>
+    public sealed class CreateSequencePostRequest : IRequest<DetailsSchedule>
     {
         #region Variables.
         /*
@@ -54,7 +54,7 @@ using DataAnnotationsExtensions;
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateOrUpdateSequence"/> class.
         /// </summary>
-        public CreateSequenceForm()
+        public CreateSequencePostRequest()
         {
             //Intervals = AllIntervals;
         }
@@ -62,24 +62,6 @@ using DataAnnotationsExtensions;
         #endregion
 
         #region Properties.
-
-        /// <summary>
-        /// The Patient
-        /// </summary>
-        public Patient Patient 
-        {
-            get; 
-            set;
-        }
-
-        /// <summary>
-        /// The Schedule
-        /// </summary>
-        public Schedule Schedule 
-        { 
-            get; 
-            set; 
-        }
 
         /// <summary>
         /// The Sequence name.
@@ -166,6 +148,12 @@ using DataAnnotationsExtensions;
             set; 
         }
 
+        public Repetition Repetition
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// The startdate, if scheduled
         /// </summary>
@@ -182,6 +170,7 @@ using DataAnnotationsExtensions;
             get;
             set;
         }
+
         public int? StartHour
         {
             get;
@@ -345,6 +334,26 @@ using DataAnnotationsExtensions;
         }
 
         #endregion
+
+        public Frequency GetSelectedFrequency()
+        {
+            return Frequency.New(this.Interval.GetValueOrDefault(0), this.Repetition == Models.Repetition.Daily ? UnitOfTime.Day : UnitOfTime.Week);
+        }
+
+        public Period GetSelectedPeriod()
+        {
+            return Period.New(this.StartDate, this.EndDate);
+        }
+
+        public IEnumerable<Date> GetSelectedDates()
+        {
+            this.Dates.Where(x => x.Checked == true);
+        }
+
+        public IEnumerable<TimeOfDay> GetSelectedTimesOfDay()
+        {
+            return this.Times.Where(x => x.Checked == true).Select(x => TimeOfDay.Parse(x.Id + ":00"));
+        }
     }
 
     public enum SequenceType

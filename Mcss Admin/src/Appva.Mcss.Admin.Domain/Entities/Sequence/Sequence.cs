@@ -11,7 +11,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
     using Validation;
     using Appva.Domain;
     using NHibernate.Classic;
@@ -22,7 +21,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Sequence : AggregateRoot<Sequence>, ILifecycle
+    public class Sequence : AggregateRoot, ILifecycle
     {
         #region Variables.
 
@@ -34,6 +33,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Constructors.
+
+        public static Sequence New(Schedule schedule, string name, string description, Repeat repeat)
+        {
+            return new Sequence();
+        }
 
         public Sequence(Schedule schedule, string name, string description, Repeat repeat, 
             Taxon taxon = null, Role role = null, Inventory inventory = null, Refillable refillModel = null,
@@ -195,8 +199,29 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
-        } 
-       
+        }
+
+        /// <summary>
+        /// The article
+        /// </summary>
+        public virtual Article Article
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the medications connected to this sequence.
+        /// </summary>
+        /// <value>
+        /// The medications.
+        /// </value>
+        public virtual IList<Medication> Medications
+        {
+            get;
+            set;
+        }
+
         ///// <summary>
         ///// If a reminder should be e.g. e-mailed to the <see cref="ReminderRecipient"/>.
         ///// </summary>

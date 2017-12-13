@@ -19,22 +19,22 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface IMeasurementRepository : 
-        IRepository<MeasurementObservation>, 
-        ISaveRepository<MeasurementObservation>, 
-        IUpdateRepository<MeasurementObservation>
+        IRepository<Observation>, 
+        ISaveRepository<Observation>, 
+        IUpdateRepository<Observation>
     {
         /// <summary>
         /// Gets the measurement categories.
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
-        IList<MeasurementObservation> ListByPatient(Guid patientId);
+        IList<Observation> ListByPatient(Guid patientId);
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class MeasurementRepository : Repository<MeasurementObservation>, IMeasurementRepository
+    public class MeasurementRepository : Repository<Observation>, IMeasurementRepository
     {
         #region Constructors.
 
@@ -52,9 +52,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IMeasurementRepository Members.
 
         /// <inheritdoc />
-        public IList<MeasurementObservation> ListByPatient(Guid patientId)
+        public IList<Observation> ListByPatient(Guid patientId)
         {
-            return this.Context.QueryOver<MeasurementObservation>()
+            return this.Context.QueryOver<Observation>()
                   .Where(x => x.IsActive)
                     .And(x => x.Patient.Id == patientId)
                 .OrderBy(x => x.Name).Asc

@@ -173,7 +173,6 @@
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\Color.cs" />
-    <Compile Include="Common\DosageDefaults.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
@@ -254,10 +253,11 @@
     <Compile Include="Services\LdapService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />
-    <Compile Include="Services\MeasurementService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
+    <Compile Include="Services\ObservationItemService.cs" />
+    <Compile Include="Services\ObservationService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Common\ApplicationSettings.cs" />

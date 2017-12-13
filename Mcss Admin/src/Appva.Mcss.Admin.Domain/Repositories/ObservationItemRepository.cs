@@ -4,17 +4,13 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports
 
-    using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
 
     #endregion
@@ -33,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IList<ObservationItem> List(Guid observationId);
 
         /// <summary>
-        /// Lists the by date.
+        /// Lists Observations Items by date.
         /// </summary>
         /// <param name="observationId">The observation identifier.</param>
         /// <param name="startDate">The start date.</param>
@@ -44,10 +40,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
     }
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public sealed class ObservationItemRepository : Repository<ObservationItem>, IObservationItemRepository
     {
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObservationItemRepository"/> class.
+        /// </summary>
+        /// <param name="context">The <see cref="T:Appva.Persistence.IPersistenceContext" />.</param>
         public ObservationItemRepository(IPersistenceContext context) 
             : base(context)
         {
@@ -61,7 +64,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public IList<ObservationItem> List(Guid observationId)
         {
             return this.Context.QueryOver<ObservationItem>()
-                  .Where(x => x.IsActive).And(x => x.Observation.Id == observationId)
+                  .Where(x => x.IsActive)
+                    .And(x => x.Observation.Id == observationId)
                 .OrderBy(x => x.CreatedAt).Desc
                    .List();
         }

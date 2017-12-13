@@ -1,13 +1,12 @@
-﻿// <copyright file="ListMeasurement.cs" company="Appva AB">
+﻿// <copyright file="ListObservation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using Appva.Cqrs;
@@ -15,9 +14,10 @@ namespace Appva.Mcss.Admin.Models
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class ListObservation.
     /// </summary>
-    public class ListMeasurement : IRequest<ListMeasurementModel>
+    /// <seealso cref="Appva.Cqrs.IRequest{Appva.Mcss.Admin.Models.ListObservationModel}" />
+    public class ListObservation : IRequest<ListObservationModel>
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement identifier.
         /// </summary>
-        public Guid MeasurementId
+        public Guid ObservationId
         {
             get;
             set;

@@ -20,15 +20,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// Class UpdateMeasurementHandler.
     /// </summary>
-    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateMeasurement, Appva.Mcss.Admin.Models.UpdateMeasurementModel}" />
-    public class UpdateMeasurementHandler : RequestHandler<UpdateMeasurement, UpdateMeasurementModel>
+    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateObservation, Appva.Mcss.Admin.Models.UpdateObservationModel}" />
+    public class UpdateMeasurementHandler : RequestHandler<UpdateObservation, UpdateObservationModel>
     {
         #region Variables.
 
         /// <summary>
         /// The MeasurementService
         /// </summary>
-        private readonly IMeasurementService measurementService;
+        private readonly IObservationService observationService;
 
         /// <summary>
         /// The delegation service
@@ -44,9 +44,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="measurementService">The measurement service.</param>
         /// <param name="delegationService">The delegation service.</param>
-        public UpdateMeasurementHandler(IMeasurementService measurementService, IDelegationService delegationService)
+        public UpdateMeasurementHandler(IObservationService observationService, IDelegationService delegationService)
         {
-            this.measurementService = measurementService;
+            this.observationService = observationService;
             this.delegationService  = delegationService;
         }
 
@@ -55,16 +55,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override UpdateMeasurementModel Handle(UpdateMeasurement message)
+        public override UpdateObservationModel Handle(UpdateObservation message)
         {
-            var observation = this.measurementService.Get(message.MeasurementId);
+            var observation = this.observationService.Get(message.ObservationId);
             if (observation == null)
             {
-                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.MeasurementId));
+                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.ObservationId));
             }
-            return new UpdateMeasurementModel
+            return new UpdateObservationModel
             {
-                MeasurementId        = observation.Id,
+                ObservationId        = observation.Id,
                 Name                 = observation.Name,
                 Instruction          = observation.Description,
                 SelectedScale        = MeasurementScale.GetNameForScale(observation.Scale),

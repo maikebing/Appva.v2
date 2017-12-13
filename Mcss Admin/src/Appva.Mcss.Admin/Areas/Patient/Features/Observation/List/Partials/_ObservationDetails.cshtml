@@ -1,8 +1,8 @@
-﻿@model Appva.Mcss.Admin.Models.ListMeasurementModel
+﻿@model Appva.Mcss.Admin.Models.ListObservationModel
 
 <div class="distributor distributor--justified">
     <div class="inliner">
-        <h3>@Model.MeasurementName</h3>
+        <h3>@Model.Name</h3>
         <div class="form-controls">
             <a class="button button--right" href="https://appva-gui.azurewebsites.net/"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pdf-icon"></use></svg>skapa PDF</a>
         </div>
@@ -10,7 +10,7 @@
     <div>
         <div class="form-controls form-controls--inline">
             <a class="button open-in-dialog"
-               href="@Url.Action("update", "measurement", new { MeasurementId = Model.MeasurementId })#add-observation"
+               href="@Url.Action("update", "observation", new { ObservationId = Model.ObservationId })#add-observation"
                data-dialog-title="Lägg till mätvärde">
                 <svg class="icon icon--mr" aria-hidden="true">
                     <use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use>
@@ -19,10 +19,10 @@
         </div>
     </div>
 </div>
-<p>@Model.MeasurementInstructions</p>
+<p>@Model.Instructions</p>
 <dl>
     <dt>Skala som används</dt>
-    <dd>@Model.MeasurementLongScale</dd>
+    <dd>@Model.LongScale</dd>
 </dl>
 
 <dl>
@@ -150,7 +150,7 @@
 
 <div class="grid grid--align-bottom">
     <div data-size="xs:24 s:24 m:24 l:18 xl:20">
-        <form action="@Url.Action("view", "measurement", new { measurementId = Model.MeasurementId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+        <form action="@Url.Action("filter", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
             <div class="grid grid--align-bottom">
                 <div data-size="xs:24 s:24 m:10 l:8 xl:6">
                     <div class="form-controls date-picker">
@@ -177,7 +177,7 @@
 
     <div data-size="xs:24 s:24 m:24 l:6 xl:4">
         <div class="form-controls form-controls--align-end">
-            <a class="button open-in-dialog" href="@Url.Action("addvalue", "measurement", new { measurementId = Model.MeasurementId })#add-observation-value" data-dialog-title="Lägg till mätvärde">
+            <a class="button open-in-dialog" href="@Url.Action("addvalue", "observation", new { ObservationId = Model.ObservationId })#add-observation-value" data-dialog-title="Lägg till mätvärde">
                 <svg class="icon icon--mr"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>
                 Mata in värde
             </a>
@@ -195,7 +195,21 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.MeasurementValueList.IsNotNull())
+            @if (Model.ObservationItemList.IsNotNull())
+            {
+                foreach (var item in Model.ObservationItemList)
+                {
+                    <tr>
+                        <td> </td>
+                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                        <td>@item.Measurement.Value</td>
+                        <td>@item.Signature.Who.FullName</td>
+                        <td> </td>
+                    </tr>
+                }
+            }
+
+            @*@if (Model.MeasurementValueList.IsNotNull())
             {
                 if (Model.MeasurementScale.ToLower() == "common")
                 {
@@ -236,7 +250,9 @@
                         </tr>
                     }
                 }
-            }
+            }*@
+
+
         </tbody>
     </table>
 </div>

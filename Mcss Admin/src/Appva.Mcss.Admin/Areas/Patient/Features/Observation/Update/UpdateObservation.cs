@@ -1,29 +1,29 @@
-﻿// <copyright file="UpdateMeasurement.cs" company="Appva AB">
+﻿// <copyright file="UpdateObservation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
 
     using System;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class UpdateObservation.
     /// </summary>
-    public class UpdateMeasurement : Identity<UpdateMeasurementModel>
+    /// <seealso cref="Appva.Mcss.Admin.Models.Identity{Appva.Mcss.Admin.Models.UpdateObservationModel}" />
+    public class UpdateObservation : Identity<UpdateObservationModel>
     {
-        #region Variables
+        #region Properties.
 
         /// <summary>
         /// The Measurement Observation Id.
         /// </summary>
-        public Guid MeasurementId
+        public Guid ObservationId
         {
             get;
             set;

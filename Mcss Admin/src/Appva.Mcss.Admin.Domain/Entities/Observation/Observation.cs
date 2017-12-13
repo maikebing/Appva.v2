@@ -3,7 +3,6 @@
 // </copyright>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
-    using Newtonsoft.Json;
     #region Imports.
 
     using System;
@@ -28,16 +27,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        public Observation(Patient patient, string name, string description, object scale)
+        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) ////UNRESOLVED: custom scale used by DosageObservation
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
             Requires.NotNullOrWhiteSpace(description, "description");
-            Requires.NotNull(scale,       "scale");
             this.Patient     = patient;
             this.Name        = name;
             this.Description = description;
-            this.Scale       = JsonConvert.SerializeObject(scale);
+            this.Delegation  = delegation;
+            this.Scale       = scale == null ? null : scale.ToString();
         }
 
         /// <summary>
@@ -76,6 +75,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// The observation description.
         /// </summary>
         public virtual string Description
+        {
+            get;
+            internal protected set;
+        }
+
+        /// <summary>
+        /// The delegation.
+        /// </summary>
+        public virtual Taxon Delegation
         {
             get;
             internal protected set;
@@ -121,6 +129,39 @@ namespace Appva.Mcss.Admin.Domain.Entities
             {
                 return this;
             }                
+        }
+
+        #endregion
+
+        #region Public Methods.
+
+        /// <summary>
+        /// Updates the current tena period.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="instruction">The instruction.</param>
+        public virtual void Update(string name, string instruction)
+        {
+            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(instruction, "description");
+            this.Name = name;
+            this.Description = instruction;
+        }
+
+        /// <summary>
+        /// Updates the current measurement observation.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="instruction">The instruction.</param>
+        /// <param name="delegation">The delegation.</param>
+        public virtual void Update(string name, string instruction, Taxon delegation)
+        {
+            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(instruction, "description");
+            Requires.NotNull(delegation, "delegation");
+            this.Name = name;
+            this.Description = instruction;
+            this.Delegation = delegation;
         }
 
         #endregion

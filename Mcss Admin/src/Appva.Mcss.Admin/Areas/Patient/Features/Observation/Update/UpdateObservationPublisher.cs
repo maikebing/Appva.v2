@@ -17,15 +17,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// Class UpdateMeasurementPublisher.
     /// </summary>
-    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateMeasurementModel, Appva.Mcss.Admin.Models.ListMeasurement}" />
-    public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ListMeasurement>
+    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateObservationModel, Appva.Mcss.Admin.Models.ListObservation}" />
+    public class UpdateMeasurementPublisher : RequestHandler<UpdateObservationModel, ListObservation>
     {
         #region Variables.
 
         /// <summary>
         /// The Measurement Service
         /// </summary>
-        private readonly IMeasurementService measurementService;
+        private readonly IObservationService observationService;
 
         /// <summary>
         /// The taxon service
@@ -41,9 +41,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="measurementService">The measurement service.</param>
         /// <param name="taxonService">The taxon service.</param>
-        public UpdateMeasurementPublisher(IMeasurementService measurementService, ITaxonomyService taxonService)
+        public UpdateMeasurementPublisher(IObservationService observationService, ITaxonomyService taxonService)
         {
-            this.measurementService = measurementService;
+            this.observationService = observationService;
             this.taxonService       = taxonService;
         }
 
@@ -52,12 +52,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override ListMeasurement Handle(UpdateMeasurementModel message)
+        public override ListObservation Handle(UpdateObservationModel message)
         {
-            var observation = this.measurementService.Get(message.MeasurementId);
+            var observation = this.observationService.Get(message.ObservationId);
             if (observation == null)
             {
-                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.MeasurementId));
+                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.ObservationId));
             }
             var delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
             if (delegation == null)
@@ -68,11 +68,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 observation.Update(message.Name, message.Instruction, delegation);
             }
-            this.measurementService.Update(observation);
-            return new ListMeasurement
+            //// UNRESOLVED: Fix Me!!!
+            this.observationService.Update(observation);
+            return new ListObservation
             {
                 Id = message.Id,
-                MeasurementId = message.MeasurementId
+                ObservationId = message.ObservationId
             };
         }
 

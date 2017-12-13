@@ -10,11 +10,26 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
 
     #endregion
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IObservationRepository :
+        IRepository<Observation>, 
+        ISaveRepository<Observation>, 
+        IUpdateRepository<Observation>
+    {
+        /// <summary>
+        /// Returns a collection of observations for a patient.
+        /// </summary>
+        /// <param name="patientId">The patient ID.</param>
+        /// <returns>A collection of <see cref="Observation"/>.</returns>
+        IList<Observation> ListByPatient(Guid patientId);
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.

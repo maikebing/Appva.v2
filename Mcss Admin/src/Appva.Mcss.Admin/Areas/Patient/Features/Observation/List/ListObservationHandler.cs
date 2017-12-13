@@ -20,14 +20,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListMeasurementHandler : RequestHandler<ListMeasurement, ListMeasurementModel>
+    public class ListMeasurementHandler : RequestHandler<ListObservation, ListObservationModel>
     {
         #region Variables.
 
         /// <summary>
-        /// The measurement service.
+        /// The observation service
         /// </summary>
-        private readonly IMeasurementService measurementService;
+        private readonly IObservationService observationService;
+
+        /// <summary>
+        /// The observation item service
+        /// </summary>
+        private readonly IObservationItemService observationItemService;
 
         /// <summary>
         /// The patient service.
@@ -49,11 +54,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="service">The service.</param>
         /// <param name="patientService">The patient service.</param>
         /// <param name="patientTransformer">The patient transformer.</param>
-        public ListMeasurementHandler(IMeasurementService measurementService, IPatientService patientService, IPatientTransformer patientTransformer)
+        public ListMeasurementHandler(IObservationService observationService, IObservationItemService observationItemService, IPatientService patientService, IPatientTransformer patientTransformer)
         {
-            this.measurementService = measurementService;
-            this.patientService     = patientService;
-            this.patientTransformer = patientTransformer;
+            this.observationService     = observationService;
+            this.observationItemService = observationItemService;
+            this.patientService         = patientService;
+            this.patientTransformer     = patientTransformer;
         }
 
         #endregion
@@ -61,35 +67,35 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override ListMeasurementModel Handle(ListMeasurement message)
+        public override ListObservationModel Handle(ListObservation message)
         {
             var patient = this.patientService.Get(message.Id);
             if (patient == null)
             {
                 throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist", message.Id));
             }
-            if (message.MeasurementId.IsNotEmpty())
+            if (message.ObservationId.IsNotEmpty())
             {
-                var observation = this.measurementService.Get(message.MeasurementId);
-                return new ListMeasurementModel
+                var observation = this.observationService.Get(message.ObservationId);
+                return new ListObservationModel
                 {
                     Id                      = observation.Patient.Id,
-                    MeasurementId           = observation.Id,
+                    ObservationId           = observation.Id,
                     PatientViewModel        = this.patientTransformer.ToPatient(observation.Patient),
-                    MeasurementList         = this.measurementService.ListByPatient(observation.Patient.Id),
-                    MeasurementValueList    = this.measurementService.GetValueList(observation.Id),
-                    MeasurementUnit         = MeasurementScale.GetUnitForScale(observation.Scale),
-                    MeasurementLongScale    = MeasurementScale.GetNameForScale(observation.Scale),
-                    MeasurementScale        = observation.Scale,
+                    ObservationList         = this.observationService.ListByPatient(observation.Patient.Id),
+                    ObservationItemList     = this.observationItemService.List(observation.Id),
+                    Unit         = MeasurementScale.GetUnitForScale(observation.Scale),
+                    LongScale    = MeasurementScale.GetNameForScale(observation.Scale),
+                    Scale        = observation.Scale,
                     Delegation              = observation.Delegation,
-                    MeasurementName         = observation.Name,
-                    MeasurementInstructions = observation.Description
+                    Name                    = observation.Name,
+                    Instructions            = observation.Description
                 };
             }
-            return new ListMeasurementModel
+            return new ListObservationModel
             {
                 PatientViewModel = this.patientTransformer.ToPatient(patient),
-                MeasurementList  = this.measurementService.ListByPatient(patient.Id)
+                ObservationList  = this.observationService.ListByPatient(patient.Id)
             };
         }
 

@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// CreateMeasurementHandler class.
     /// </summary>
-    public class CreateMeasurementHandler : RequestHandler<CreateMeasurement, CreateMeasurementModel>
+    public class CreateMeasurementHandler : RequestHandler<CreateObservation, CreateObservationModel>
     {
         #region Variables.
 
@@ -61,17 +61,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override CreateMeasurementModel Handle(CreateMeasurement message)
+        public override CreateObservationModel Handle(CreateObservation message)
         {
-            //// UNRESOLVED: Permissions gällande delegationTaxon för vad vi får välja på observation nivå. Hur skall vi göra?
             var accountId   = this.identityService.PrincipalId;
             var account     = this.accountService.Find(accountId);
             var taxonFilter = account.Locations.Select(x => x.Taxon.Path).FirstOrDefault();
-            var delegations = this.delegationService.List(taxonFilter, accountId); ////.ListDelegationTaxons()
-            return new CreateMeasurementModel
+            var delegations = this.delegationService.ListDelegationTaxons();
+            return new CreateObservationModel
             {
                 PatientId            = message.Id,
-                SelectScaleList      = MeasurementScale.All().Skip(1).Select(x => new SelectListItem { Text = x.Name(), Value = x.ToString() }),
+                SelectScaleList      = MeasurementScale.All().Select(x => new SelectListItem { Text = x.Name(), Value = x.ToString() }), //// UNRESOLVED: Get list from other source.
                 SelectDelegationList = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
             };
         }

@@ -1,10 +1,10 @@
-﻿@model Appva.Mcss.Admin.Models.UpdateMeasurementModel
+﻿@model Appva.Mcss.Admin.Models.UpdateObservationModel
 
 <div class="section section--hspace">
     <h2>Ändra observation</h2>
     <div id="add-observation">
 
-        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { MeasurementId = Model.MeasurementId, @class = "validate", novalidate = "novalidate" }))
+        @using (Html.BeginForm("update", "observation", FormMethod.Post, new { MeasurementId = Model.MeasurementId, @class = "validate", novalidate = "novalidate" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary()

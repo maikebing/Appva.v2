@@ -9,6 +9,8 @@ namespace Appva.Mcss.Domain.Unit
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -153,6 +155,17 @@ namespace Appva.Mcss.Domain.Unit
                     return false;
             }
         }
+
+        /// <summary>
+        /// Alls this instance.
+        /// </summary>
+        /// <returns>IEnumerable&lt;FecesScale&gt;.</returns>
+        public static IEnumerable<FecesScale> All()
+        {
+            //// UNRESOLELVED: Does this work?
+            return Enum.GetValues(typeof(FecesScale)).ToString().Cast<FecesScale>();
+        }
+
 
         #endregion
 

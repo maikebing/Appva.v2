@@ -97,19 +97,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="instruction">The instruction.</param>
-        public virtual void Update(string name, string instruction)
-        {
-            Requires.NotNullOrWhiteSpace(name,        "name");
-            Requires.NotNullOrWhiteSpace(instruction, "description");
-            this.Name        = name;
-            this.Description = instruction;
-        }
-
-        /// <summary>
-        /// Updates the current tena period.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="instruction">The instruction.</param>
         /// <param name="startsAt">The starts at.</param>
         /// <param name="endsAt">The ends at.</param>
         public virtual void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)

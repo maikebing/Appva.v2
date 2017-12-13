@@ -1,13 +1,12 @@
-﻿// <copyright file="ListMeasurementModel.cs" company="Appva AB">
+﻿// <copyright file="ListObservationModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using System.Collections.Generic;
@@ -17,11 +16,11 @@ namespace Appva.Mcss.Admin.Models
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class ListObservationModel.
     /// </summary>
-    public class ListMeasurementModel
+    public class ListObservationModel
     {
-        #region Variables
+        #region Properties.
 
         /// <summary>
         /// Gets or sets the identifier.
@@ -35,7 +34,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement identifier.
         /// </summary>
-        public Guid MeasurementId
+        public Guid ObservationId
         {
             get;
             set;
@@ -53,7 +52,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The measurement observation list.
         /// </summary>
-        public IList<MeasurementObservation> MeasurementList
+        public IList<Observation> ObservationList
         {
             get;
             set;
@@ -62,7 +61,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement value list.
         /// </summary>
-        public IList<ObservationItem> MeasurementValueList
+        public IList<ObservationItem> ObservationItemList
         {
             get;
             set;
@@ -71,7 +70,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement unit.
         /// </summary>
-        public string MeasurementUnit
+        public string Unit
         {
             get;
             set;
@@ -80,7 +79,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement long scale.
         /// </summary>
-        public string MeasurementLongScale
+        public string LongScale
         {
             get;
             set;
@@ -89,7 +88,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement scale.
         /// </summary>
-        public string MeasurementScale
+        public string Scale
         {
             get;
             set;
@@ -107,7 +106,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the name of the measurement.
         /// </summary>
-        public string MeasurementName
+        public string Name
         {
             get;
             set;
@@ -116,7 +115,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the measurement instructions.
         /// </summary>
-        public string MeasurementInstructions
+        public string Instructions
         {
             get;
             set;

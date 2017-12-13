@@ -12,20 +12,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class AddMeasurementValueHandler : RequestHandler<AddMeasurementValue, AddMeasurementValueModel>
+    public class AddMeasurementValueHandler : RequestHandler<AddObservationValue, AddObservationValueModel>
     {
         #region Variables.
 
         /// <summary>
-        /// The measurement service
+        /// The observation service
         /// </summary>
-        private readonly IMeasurementService measurementService;
+        private readonly IObservationService observationService;
 
         #endregion
 
@@ -35,9 +36,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="AddMeasurementValueHandler"/> class.
         /// </summary>
         /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
-        public AddMeasurementValueHandler(IMeasurementService measurementService)
+        public AddMeasurementValueHandler(IObservationService observationService)
         {
-            this.measurementService = measurementService;
+            this.observationService = observationService;
         }
 
         #endregion
@@ -45,23 +46,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override AddMeasurementValueModel Handle(AddMeasurementValue message)
+        public override AddObservationValueModel Handle(AddObservationValue message)
         {
-            var observation = this.measurementService.Get(message.MeasurementId);
+            var observation = this.observationService.Get(message.ObservationId);
             if (observation == null)
             {
-                throw new ArgumentNullException("observation", string.Format("MeasurementObservation with ID: {0} does not exist.", message.MeasurementId));
+                throw new ArgumentNullException("observation", string.Format("Observation with ID: {0} does not exist.", message.ObservationId));
             }
 
             //// UNRESOLVAED: Stop using MeasurementScale
-            return new AddMeasurementValueModel
+            return new AddObservationValueModel
             {
-                MeasurementId = observation.Id,
+                ObservationId = observation.Id,
                 Name          = observation.Name,
                 Instruction   = observation.Description,
-                Unit          = MeasurementScale.GetUnitForScale(observation.Scale),
+                Unit          = MeasurementScale.GetUnitForScale(observation.Scale), // observation.GetUnit()
                 Scale         = observation.Scale,
-                LongScale     = MeasurementScale.GetNameForScale(observation.Scale)
+                LongScale     = MeasurementScale.GetNameForScale(observation.Scale) // obsevation.GetName()
             };
         }
 

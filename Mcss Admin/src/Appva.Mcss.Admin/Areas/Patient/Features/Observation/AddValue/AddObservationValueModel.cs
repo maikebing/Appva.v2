@@ -1,41 +1,39 @@
-﻿// <copyright file="CreateMeasurementModel.cs" company="Appva AB">
+﻿// <copyright file="AddObservationValueModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class AddObservationValueModel.
     /// </summary>
-    public class CreateMeasurementModel : Identity<ListMeasurement>
+    public class AddObservationValueModel : Identity<ListObservation>
     {
         #region Variables
 
         /// <summary>
-        /// Patient Id
+        /// The Observation Id
         /// </summary>
-        public Guid PatientId
+        [Required]
+        public Guid ObservationId
         {
-            get; set;
+            get;
+            set;
         }
 
         /// <summary>
-        /// The name.
+        /// The name
         /// </summary>
-        [Required]
         public string Name
         {
             get;
@@ -43,49 +41,67 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Gets or sets the instruction.
+        /// </summary>
+        public string Instruction
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the value.
         /// </summary>
         [Required]
-        public string Description
+        public string Value
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The Scale SelectList.
+        /// Gets or sets the comment.
         /// </summary>
-        [DisplayName("Skala")]
-        public IEnumerable<SelectListItem> SelectScaleList
+        public string Comment
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The delegation select list.
+        /// Gets or sets the unit.
         /// </summary>
-        [DisplayName("Kräver delegering för")]
-        public IEnumerable<SelectListItem> SelectDelegationList
+        public string Unit
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The selected delegation.
+        /// Gets or sets the scale.
         /// </summary>
-        public string SelectedDelegation
+        public string Scale
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The selected scale.
+        /// Gets or sets the long scale.
         /// </summary>
-        [Required]
-        public string SelectedScale
+        public string LongScale
+        {
+            get;
+            set;
+        }
+
+        public FecesScale CommonScaleValues
+        {
+            get;
+            set;
+        }
+
+        public string SelectedScaleValue
         {
             get;
             set;

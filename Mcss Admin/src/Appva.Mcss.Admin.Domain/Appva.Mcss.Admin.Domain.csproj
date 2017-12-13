@@ -141,12 +141,16 @@
     <Compile Include="Entities\KnowledgeTest.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Observation\Measurement\BristolObservation.cs" />
+    <Compile Include="Entities\Observation\Measurement\FecesObservation.cs" />
     <Compile Include="Entities\Observation\Measurement\MeasurementObservation.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationReadByAccount.cs" />
+    <Compile Include="Entities\Observation\Measurement\WeightObservation.cs" />
     <Compile Include="Entities\Observation\Observation.cs" />
+    <Compile Include="Entities\Observation\ObservationFactory.cs" />
     <Compile Include="Entities\Observation\ObservationItem.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
@@ -167,7 +171,6 @@
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\DosageObservationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
-    <Compile Include="Repositories\IObservationRepository.cs" />
     <Compile Include="Repositories\ISignatureRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\MeasurementRepository.cs" />

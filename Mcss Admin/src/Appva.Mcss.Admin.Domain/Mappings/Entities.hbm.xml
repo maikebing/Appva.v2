@@ -542,13 +542,14 @@
     </id>
     <discriminator column="ObservationType" />
     <version  name="Version"                                       />
-    <property name="IsActive"     column="Active"                  />
-    <property name="CreatedAt"    column="Created"  update="false" />
-    <property name="UpdatedAt"    column="Modified"      />
-    <property name="Name"                                />
-    <property name="Description"                         />
-    <property name="Scale" column="scale" type="StringClob" />
-    <many-to-one name="Patient"   class="Patient"        />
+    <property name="IsActive"      column="Active"                  />
+    <property name="CreatedAt"     column="Created"  update="false" />
+    <property name="UpdatedAt"     column="Modified"                />
+    <property name="Name"                                          />
+    <property name="Description"                                   />
+    <property name="Scale"         column="scale" type="StringClob" />
+    <many-to-one name="Patient"    class="Patient"                 />
+    <many-to-one name="Delegation" class="Taxon"                   />
     <bag name="Items" cascade="save-update" inverse="true">
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
@@ -557,13 +558,11 @@
       <key column="Observation" />
       <one-to-many class="Sequence" />
     </bag>
-    
-    <subclass name="DosageObservation" discriminator-value="DosageObservation">
-    </subclass>
-    <subclass name="MeasurementObservation" discriminator-value="MeasurementObservation">
-      <many-to-one name="Delegation" class="Taxon" />
-    </subclass>
-    <subclass name="TenaObservationPeriod" discriminator-value="TenaObservationPeriod">
+    <subclass name="WeightObservation"      discriminator-value="WeightObservation">      </subclass>
+    <subclass name="BristolObservation"     discriminator-value="BristolObservation">     </subclass>
+    <subclass name="FecesObservation"       discriminator-value="FecesObservation">       </subclass>
+    <subclass name="DosageObservation"      discriminator-value="DosageObservation">      </subclass>
+    <subclass name="TenaObservationPeriod"  discriminator-value="TenaObservationPeriod">
       <property name="StartDate" />
       <property name="EndDate" />
     </subclass>

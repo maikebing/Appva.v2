@@ -1,39 +1,50 @@
-﻿// <copyright file="AddMeasurementValueModel.cs" company="Appva AB">
+﻿// <copyright file="UpdateObservationModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
 
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using Appva.Mcss.Domain.Unit;
+    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
-    /// Class AddMeasurementValueModel.
+    /// Class UpdateObservationModel.
     /// </summary>
-    public class AddMeasurementValueModel : Identity<ListMeasurement>
+    /// <seealso cref="Appva.Mcss.Admin.Models.Identity{Appva.Mcss.Admin.Models.ListObservation}" />
+    public class UpdateObservationModel : Identity<ListObservation>
     {
-        #region Variables
+        #region Properties.
 
         /// <summary>
-        /// The measurement Id
+        /// The MeasurementObservation.
         /// </summary>
-        [Required]
-        public Guid MeasurementId
+        public Observation Observation
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The name
+        /// The observation id.
+        /// </summary>
+        public Guid ObservationId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The name.
         /// </summary>
         public string Name
         {
@@ -42,7 +53,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the instruction.
+        /// The instruction.
         /// </summary>
         public string Instruction
         {
@@ -51,58 +62,38 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// The delegation SelectList
+        /// </summary>
+        [DisplayName("Kräver delegation för")]
+        public IEnumerable<SelectListItem> SelectDelegationList
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected unit.
+        /// </summary>
+        public string SelectedUnit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected scale.
+        /// </summary>
+        public string SelectedScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected delegation.
         /// </summary>
         [Required]
-        public string Value
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the comment.
-        /// </summary>
-        public string Comment
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the unit.
-        /// </summary>
-        public string Unit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the scale.
-        /// </summary>
-        public string Scale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the long scale.
-        /// </summary>
-        public string LongScale
-        {
-            get;
-            set;
-        }
-
-        public FecesScale CommonScaleValues
-        {
-            get;
-            set;
-        }
-
-        public string SelectedScaleValue
+        public string SelectedDelegation
         {
             get;
             set;

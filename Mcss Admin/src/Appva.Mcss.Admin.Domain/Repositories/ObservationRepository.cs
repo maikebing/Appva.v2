@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -54,11 +55,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Observation> ListByPatient(Guid patientId)
         {
-            return this.Context
-                .QueryOver<Observation>()
-                    .Where(x => x.IsActive)
-                      .And(x => x.Patient.Id == patientId)
+            var m = this.Context.QueryOver<Observation>()
+                .Where(x => x.IsActive)
+                  .And(x => x.Patient.Id == patientId)
+                  .And(Restrictions.Disjunction()
+                    .Add(Restrictions.Eq("class", typeof(BristolObservation)))
+                    .Add(Restrictions.Eq("class", typeof(FecesObservation)))
+                    .Add(Restrictions.Eq("class", typeof(WeightObservation))))
                 .List();
+            return m;
         }
 
         #endregion

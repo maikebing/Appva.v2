@@ -22,15 +22,13 @@
 <p>
     @Model.Instructions
 </p>
-<dl>
-    <dt>Delegering</dt>
-    <dd>
-        @if (Model.Delegation != null)
-        {
-            @Model.Delegation.Name
-        }
-    </dd>
-</dl>
+@if (Model.Delegation.IsNotNull())
+{
+    <dl>
+        <dt>Delegering</dt>
+        <dd>@Model.Delegation.Name</dd>
+    </dl>
+}
 <div class="grid grid--align-bottom">
     <div data-size="xs:24 s:24 m:24 l:18 xl:20">
         <form action="@Url.Action("filter", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
@@ -79,19 +77,19 @@
         </thead>
         <tbody>
             @if (Model.ObservationItemList.IsNotEmpty())
-            {
-            
-                foreach (var item in Model.ObservationItemList)
                 {
-                    <tr>
-                        <td> </td>
-                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+
+                foreach (var item in Model.ObservationItemList)
+                    {
+                        <tr>
+                            <td> </td>
+                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
                         <td>@item.Measurement</td>
-                        <td>@item.Signature.Who.FullName</td>
-                        <td> </td>
-                    </tr>
+                            <td>@item.Signature.Who.FullName</td>
+                            <td> </td>
+                        </tr>
+                    }
                 }
-            }
         </tbody>
     </table>
 </div>

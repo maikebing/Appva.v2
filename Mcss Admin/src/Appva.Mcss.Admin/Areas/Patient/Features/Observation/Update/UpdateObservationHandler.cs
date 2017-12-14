@@ -69,7 +69,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Instruction          = observation.Description,
                 SelectedScale        = MeasurementScale.GetNameForScale(observation.Scale),
                 SelectedUnit         = MeasurementScale.GetUnitForScale(observation.Scale),
-                SelectDelegationList = this.delegationService.ListDelegationTaxons().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+                SelectDelegationList = this.delegationService.ListDelegationTaxons().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+                SelectedDelegation   = observation.Delegation != null? observation.Delegation.Id.ToString(): null
             };
         }
 

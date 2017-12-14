@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Create(Observation observation, Account account, IUnit value)
         {
-            var item = ObservationItem.New(observation, Measurement.New<string>(value.StringValue, value), null, Signature.New(account, SignedData.New(value)));
+            var item = ObservationItem.New(observation, Measurement.New<IUnit>(value), null, Signature.New(account, SignedData.New(value)));
             this.observationItemRepository.Save(item);
             this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }

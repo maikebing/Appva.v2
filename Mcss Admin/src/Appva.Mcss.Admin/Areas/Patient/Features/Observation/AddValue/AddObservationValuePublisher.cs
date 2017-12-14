@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
@@ -72,6 +73,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
             //// UNRESOLVED: Do more!!!
             //var value = Activator.CreateInstance(observation.ScaleType, message.Value) as IUnit;
 
+            //object value;
+
+
+            //switch(observation.GetType().Name)
+            //{
+            //    case "BristolObservation": value = Activator.CreateInstance() break;
+            //    case "FecesObservation": break;
+            //    case "WeightObservation": break;
+            //    default: throw new ArgumentOutOfRangeException();
+            //}
+
+            //// UNRESOLVED: 
             //this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), value);
 
             return new ListObservation

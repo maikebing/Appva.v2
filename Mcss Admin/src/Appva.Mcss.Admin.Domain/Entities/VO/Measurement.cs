@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A new <see cref="Measurement"/> instance.</returns>
-        public static Measurement New<T>(T value) where T : struct
+        public static Measurement New<T>(T value)
         {
             return new Measurement(value);
         }

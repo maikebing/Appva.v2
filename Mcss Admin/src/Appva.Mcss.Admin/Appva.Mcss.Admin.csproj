@@ -1620,7 +1620,6 @@
     <Content Include="Areas\Backoffice\Features\Scale\View\View.cshtml" />
     <Content Include="Areas\Patient\Features\Observation\List\Partials\_ObservationList.cshtml" />
     <Content Include="Areas\Patient\Features\Observation\List\Partials\_ObservationDetails.cshtml" />
-    <Content Include="AppSettings.Local.config" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

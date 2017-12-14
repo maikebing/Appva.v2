@@ -166,8 +166,9 @@ namespace Appva.Mcss.Domain.Unit
             return Enum.GetValues(typeof(FecesScale)).ToString().Cast<FecesScale>();
         }
 
-
         #endregion
+
+        #region IUnit Overrides.
 
         /// <inheritdoc />
         public override string ToString(IFormatProvider provider)
@@ -191,5 +192,7 @@ namespace Appva.Mcss.Domain.Unit
             }
             throw new InvalidOperationException();
         }
+
+        #endregion
     }
 }

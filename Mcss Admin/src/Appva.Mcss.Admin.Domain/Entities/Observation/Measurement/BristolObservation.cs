@@ -9,12 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Appva.Mcss.Domain.Unit;
-    using Validation;
 
     #endregion
 
@@ -71,6 +66,31 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set
             {
                 this.Scale = value.FullName;
+            }
+        }
+
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string ShortName
+        {
+            get
+            {
+                return "Bristol";
+            }
+        }
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string DescriptiveName
+        {
+            get
+            {
+                return "Bristol Stool Scale (Type 1-7)";
             }
         }
 

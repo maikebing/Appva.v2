@@ -72,11 +72,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient = this.patientService.Get(message.Id);
             if (patient == null)
             {
-                throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist", message.Id));
+                throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist.", message.Id));
             }
             if (message.ObservationId.IsNotEmpty())
             {
                 var observation = this.observationService.Get(message.ObservationId);
+                if (observation == null)
+                {
+                    throw new ArgumentNullException("observation", string.Format("Observation with ID: {0} does not exist.", message.ObservationId));
+                }
+                //// UNRESOLVED: TO DO!
+                var tName = "";
                 return new ListObservationModel
                 {
                     Id                      = observation.Patient.Id,
@@ -84,9 +90,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     PatientViewModel        = this.patientTransformer.ToPatient(observation.Patient),
                     ObservationList         = this.observationService.ListByPatient(observation.Patient.Id),
                     ObservationItemList     = this.observationItemService.List(observation.Id),
-                    Unit         = MeasurementScale.GetUnitForScale(observation.Scale),
-                    LongScale    = MeasurementScale.GetNameForScale(observation.Scale),
-                    Scale        = observation.Scale,
+                    Unit                    = MeasurementScale.GetUnitForScale(observation.Scale),
+                    LongScale               = MeasurementScale.GetNameForScale(observation.Scale),
+                    Scale                   = tName,
                     Delegation              = observation.Delegation,
                     Name                    = observation.Name,
                     Instructions            = observation.Description

@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) ////UNRESOLVED: custom scale used by DosageObservation
+        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) //// UNRESOLVED: custom scale used by DosageObservation
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
@@ -142,9 +142,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="instruction">The instruction.</param>
         public virtual void Update(string name, string instruction)
         {
-            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
-            this.Name = name;
+            this.Name        = name;
             this.Description = instruction;
         }
 
@@ -156,12 +156,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="delegation">The delegation.</param>
         public virtual void Update(string name, string instruction, Taxon delegation)
         {
-            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
-            Requires.NotNull(delegation, "delegation");
-            this.Name = name;
+            Requires.NotNull(            delegation,  "delegation");
+            this.Name        = name;
             this.Description = instruction;
-            this.Delegation = delegation;
+            this.Delegation  = delegation;
         }
 
         #endregion

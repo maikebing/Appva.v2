@@ -74,6 +74,31 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
         }
 
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string ShortName
+        {
+            get
+            {
+                return "Weight";
+            }
+        }
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string DescriptiveName
+        {
+            get
+            {
+                return "General Weight Scale (5-450 kg)";
+            }
+        }
+
         #endregion
 
         #region Members.

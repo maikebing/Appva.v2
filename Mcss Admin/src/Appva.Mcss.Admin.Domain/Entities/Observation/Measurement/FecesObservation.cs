@@ -75,6 +75,31 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
         }
 
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string ShortName
+        {
+            get
+            {
+                return "Feces";
+            }
+        }
+        //// UNRESOLVED: temporary solution
+
+        /// <summary>
+        /// The descriptive name of the scale in use.
+        /// </summary>
+        public virtual string DescriptiveName
+        {
+            get
+            {
+                return "General stool scale (Type AAA-d)";
+            }
+        }
+
         #endregion
 
         #region Members.

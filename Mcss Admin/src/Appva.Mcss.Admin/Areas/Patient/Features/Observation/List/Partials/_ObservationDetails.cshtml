@@ -19,21 +19,20 @@
         </div>
     </div>
 </div>
+
 <p>@Model.Instructions</p>
 <dl>
     <dt>Skala som används</dt>
     <dd>@Model.LongScale</dd>
 </dl>
+@if (Model.Delegation.IsNotNull())
+{
+    <dl>
+        <dt>Delegering</dt>
+        <dd>@Model.Delegation.Name</dd>
+    </dl>
+}
 
-<dl>
-    <dt>Delegering</dt>
-    <dd>
-        @if (Model.Delegation != null)
-        {
-            @Model.Delegation.Name
-        }
-    </dd>
-</dl>
 
 <figure class="figure">
     <svg class="figure__image graph" aria-labelledby="graph1" xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500">

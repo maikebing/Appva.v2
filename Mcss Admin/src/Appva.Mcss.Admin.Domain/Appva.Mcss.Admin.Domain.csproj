@@ -143,7 +143,6 @@
     <Compile Include="Entities\Log.cs" />
     <Compile Include="Entities\Observation\Measurement\BristolObservation.cs" />
     <Compile Include="Entities\Observation\Measurement\FecesObservation.cs" />
-    <Compile Include="Entities\Observation\Measurement\MeasurementObservation.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />

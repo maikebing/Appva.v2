@@ -17,17 +17,10 @@
     <div>
         <div class="grid">
             <div data-size="xs:24 s:10 m:8 l:6 xl:6">
-                @if (Model.ObservationList.IsNotNull())
-                {
-                    @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationList.cshtml", Model)
-                }
+                @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationList.cshtml", Model)
             </div>
             <div id="measurements" data-size="xs:24 s:14 m:16 l:18 xl:18">
-                @if (Model.ObservationList.IsNotNull())
-                {
-                    @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationDetails.cshtml", Model)
-
-                }
+                @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationDetails.cshtml", Model)
             </div>
         </div>
     </div>

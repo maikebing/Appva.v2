@@ -6,6 +6,12 @@
 // </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    #region Imports.
+
+    using Validation;
+
+    #endregion
+
     /// <summary>
     /// Class ObservationFactory.
     /// </summary>
@@ -22,12 +28,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <returns>Observation.</returns>
         public static Observation CreateNew(Patient patient, string name, string description, string scale, Taxon delegation = null)
         {
+            Requires.NotNullOrEmpty(scale, "scale");
             switch (scale.ToLower())
             {
+                case "feces"  :
+                case "common" : return new FecesObservation  (patient, name, description, delegation);
+                case "weight" : return new WeightObservation (patient, name, description, delegation);
                 case "bristol": return new BristolObservation(patient, name, description, delegation);
-                case "feces":
-                case "common": return new FecesObservation(patient, name, description, delegation);
-                case "weight": return new WeightObservation(patient, name, description, delegation);
                 default: return null;
             }
         }

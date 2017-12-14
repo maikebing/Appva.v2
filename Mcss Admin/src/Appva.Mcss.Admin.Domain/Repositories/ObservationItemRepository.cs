@@ -19,8 +19,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IRepository<ObservationItem>, 
         ISaveRepository<ObservationItem>
     {
-        #region Fields.
-
         /// <summary>
         /// Lists the specified observation identifier.
         /// </summary>
@@ -36,8 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="endDate">The end date.</param>
         /// <returns>IList&lt;ObservationItem&gt;<see cref="ObservationItem"/>.</returns>
         IList<ObservationItem> ListByDate(Guid observationId, DateTime startDate, DateTime endDate);
-
-        #endregion
     }
 
     /// <summary>
@@ -45,7 +41,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public sealed class ObservationItemRepository : Repository<ObservationItem>, IObservationItemRepository
     {
-        #region Constructor
+        #region Constructorw.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservationItemRepository"/> class.
@@ -58,27 +54,27 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        #region IObservationItemRepository Members
+        #region IObservationItemRepository Members.
 
         /// <inheritdoc />
         public IList<ObservationItem> List(Guid observationId)
         {
             return this.Context.QueryOver<ObservationItem>()
-                  .Where(x => x.IsActive)
-                    .And(x => x.Observation.Id == observationId)
+                .Where(x => x.IsActive)
+                  .And(x => x.Observation.Id == observationId)
                 .OrderBy(x => x.CreatedAt).Desc
-                   .List();
+                .List();
         }
 
         /// <inheritdoc />
         public IList<ObservationItem> ListByDate(Guid observationId, DateTime startDate, DateTime endDate)
         {
             return this.Context.QueryOver<ObservationItem>()
-                  .Where(x => x.IsActive)
-                    .And(x => x.Observation.Id == observationId)
-                    .And(x => x.CreatedAt > startDate && x.CreatedAt < endDate)
+                .Where(x => x.IsActive)
+                  .And(x => x.Observation.Id == observationId)
+                  .And(x => x.CreatedAt > startDate && x.CreatedAt < endDate)
                 .OrderBy(x => x.CreatedAt).Desc
-                   .List();
+                .List();
         }
 
         #endregion

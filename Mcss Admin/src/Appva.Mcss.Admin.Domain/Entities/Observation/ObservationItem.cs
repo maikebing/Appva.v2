@@ -34,16 +34,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNull(measurement, "measurement");
             this.Observation = observation;
             this.Measurement = measurement;
-            this.Task = task;
-            this.Signature = signature;
-            this.Comment = comment;
-        }
-
-        public ObservationItem(Measurement measurement, Signature signature = null)
-        {
-            Requires.NotNull(measurement, "measurement");
-            this.Measurement = measurement;
-            this.Signature = signature;
+            this.Task        = task;
+            this.Signature   = signature;
+            this.Comment     = comment;
         }
 
         /// <summary>
@@ -77,12 +70,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             internal protected set;
         }
-
-        /*public virtual Correction Correction
-        {
-            get;
-            internal protected set;
-        }*/
 
         /// <summary>
         /// The signature.

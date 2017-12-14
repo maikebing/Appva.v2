@@ -19,12 +19,9 @@
         </div>
     </div>
 </div>
-<p>@Model.Instructions</p>
-<dl>
-    <dt>Skala som används</dt>
-    <dd>@Model.LongScale</dd>
-</dl>
-
+<p>
+    @Model.Instructions
+</p>
 <dl>
     <dt>Delegering</dt>
     <dd>
@@ -34,120 +31,6 @@
         }
     </dd>
 </dl>
-
-<figure class="figure">
-    <svg class="figure__image graph" aria-labelledby="graph1" xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500">
-        <g class="grid">
-            <!-- Horizontal lines -->
-            <line y1="125" x2="1000" y2="125"></line>
-            <text x="0" y="125">75%</text>
-
-            <line y1="250" x2="1000" y2="250"></line>
-            <text x="0" y="250">50%</text>
-
-            <line y1="375" x2="1000" y2="375"></line>
-            <text x="0" y="375">25%</text>
-
-            <!-- Vertical lines -->
-            <line x1="100" x2="100" y2="500"></line>
-            <text dy="-1em" x="100" y="500">Måndag</text>
-
-            <line x1="200" x2="200" y2="500"></line>
-            <text dy="-1em" x="200" y="500">Tisdag</text>
-
-            <line x1="300" x2="300" y2="500"></line>
-            <text dy="-1em" x="300" y="500">Onsdag</text>
-
-            <line x1="400" x2="400" y2="500"></line>
-            <text dy="-1em" x="400" y="500">Torsdag</text>
-
-            <line x1="500" x2="500" y2="500"></line>
-            <text dy="-1em" x="500" y="500">Fredag</text>
-
-            <line x1="600" x2="600" y2="500"></line>
-            <text dy="-1em" x="600" y="500">Lördag</text>
-
-            <line x1="700" x2="700" y2="500"></line>
-            <text dy="-1em" x="700" y="500">Söndag</text>
-
-            <line x1="800" x2="800" y2="500"></line>
-            <text dy="-1em" x="800" y="500">Måndag</text>
-
-            <line x1="900" x2="900" y2="500"></line>
-            <text dy="-1em" x="900" y="500">Tisdag</text>
-
-        </g>
-        <polyline class="line" points="100,320 200,220 300,310 400,210 500,350 600,210 700,400 800,360 900,280" stroke-miterlimit="10"></polyline>
-        <!-- Circles -->
-        <g class="markers">
-            <a xlink:href="#">
-                <circle cx="100" cy="320" r="10"></circle>
-                <g class="info">
-                    <text x="100" y="320">I tid: 32%</text>
-                    <text x="100" y="320" dy="1.2em">2016-11-30</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="200" cy="220" r="10"></circle>
-                <g class="info">
-                    <text x="200" y="220">I tid: 22%</text>
-                    <text x="200" y="220" dy="1.2em">2016-12-01</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="300" cy="310" r="10"></circle>
-                <g class="info">
-                    <text x="300" y="310">I tid: 31%</text>
-                    <text x="300" y="310" dy="1.2em">2016-12-02</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="400" cy="210" r="10"></circle>
-                <g class="info">
-                    <text x="400" y="210">I tid: 21%</text>
-                    <text x="400" y="210" dy="1.2em">2016-12-03</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="500" cy="350" r="10"></circle>
-                <g class="info">
-                    <text x="500" y="350">I tid: 35%</text>
-                    <text x="500" y="350" dy="1.2em">2016-12-04</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="600" cy="210" r="10"></circle>
-                <g class="info">
-                    <text x="600" y="210">I tid: 21%</text>
-                    <text x="600" y="210" dy="1.2em">2016-12-05</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="700" cy="400" r="10"></circle>
-                <g class="info">
-                    <text x="700" y="400">I tid: 40%</text>
-                    <text x="700" y="400" dy="1.2em">2016-12-06</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="800" cy="360" r="10"></circle>
-                <g class="info">
-                    <text x="800" y="360">I tid: 36%</text>
-                    <text x="800" y="360" dy="1.2em">2016-12-07</text>
-                </g>
-            </a>
-            <a xlink:href="#">
-                <circle cx="900" cy="280" r="10"></circle>
-                <g class="info">
-                    <text x="900" y="280">I tid: 28%</text>
-                    <text x="900" y="280" dy="1.2em">2016-12-08</text>
-                </g>
-            </a>
-        </g>
-    </svg>
-    <figcaption class="figure__figcaption" id="graph1">Viktutveckling</figcaption>
-</figure>
-
 <div class="grid grid--align-bottom">
     <div data-size="xs:24 s:24 m:24 l:18 xl:20">
         <form action="@Url.Action("filter", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
@@ -195,64 +78,20 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.ObservationItemList.IsNotNull())
+            @if (Model.ObservationItemList.IsNotEmpty())
             {
+            
                 foreach (var item in Model.ObservationItemList)
                 {
                     <tr>
                         <td> </td>
                         <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                        <td>@item.Measurement.Value</td>
+                        <td>@item.Measurement</td>
                         <td>@item.Signature.Who.FullName</td>
                         <td> </td>
                     </tr>
                 }
             }
-
-            @*@if (Model.MeasurementValueList.IsNotNull())
-            {
-                if (Model.MeasurementScale.ToLower() == "common")
-                {
-                    foreach (var item in Model.MeasurementValueList)
-                    {
-                        <tr>
-                            <td> </td>
-                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                            <td>@Model.MeasurementUnit @item.Measurement.Value</td>
-                            <td>@item.Signature.Who.FullName</td>
-                            <td> </td>
-                        </tr>
-                    }
-                }
-                else if (Model.MeasurementScale.ToLower() == "bristol")
-                {
-                    foreach (var item in Model.MeasurementValueList)
-                    {
-                        <tr>
-                            <td> </td>
-                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                            <td>@item.Measurement.Value</td>
-                            <td>@item.Signature.Who.FullName</td>
-                            <td> </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    foreach (var item in Model.MeasurementValueList)
-                    {
-                        <tr>
-                            <td> </td>
-                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                            <td>@item.Measurement.Value @Model.MeasurementUnit</td>
-                            <td>@item.Signature.Who.FullName</td>
-                            <td> </td>
-                        </tr>
-                    }
-                }
-            }*@
-
-
         </tbody>
     </table>
 </div>

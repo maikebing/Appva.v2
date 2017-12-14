@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Domain.Unit;
 
     #endregion
@@ -84,8 +85,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Create(Observation observation, Account account, IUnit value)
         {
-            throw new NotImplementedException();
-            //// UNRESOLVED: Audit
+            var item = ObservationItem.New(observation, Measurement.New<string>(value.StringValue, value), null, Signature.New(account, SignedData.New(value)));
+            this.observationItemRepository.Save(item);
+            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }
 
         /// <inheritdoc />

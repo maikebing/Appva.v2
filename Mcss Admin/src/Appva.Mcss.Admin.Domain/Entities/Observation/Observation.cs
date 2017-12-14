@@ -144,7 +144,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             Requires.NotNullOrWhiteSpace(name, "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
-            this.Name = name;
+            this.Name        = name;
             this.Description = instruction;
         }
 

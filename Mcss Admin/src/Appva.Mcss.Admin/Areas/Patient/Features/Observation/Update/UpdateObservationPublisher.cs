@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Validation;
 
     #endregion
 
@@ -55,26 +56,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListObservation Handle(UpdateObservationModel message)
         {
             var observation = this.observationService.Get(message.ObservationId);
-            if (observation == null)
-            {
-                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.ObservationId));
-            }
-            var delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
-            if (delegation == null)
-            {
-                observation.Update(message.Name, message.Instruction);
-            }
-            else
-            {
-                observation.Update(message.Name, message.Instruction, delegation);
-            }
-            //// UNRESOLVED: Fix Me!!!
+            Requires.NotNull(observation, "observation");
+            observation.Update(message.Name, message.Instruction, this.taxonService.Get(Guid.Parse(message.SelectedDelegation)));
             this.observationService.Update(observation);
-            return new ListObservation
-            {
-                Id = message.Id,
-                ObservationId = message.ObservationId
-            };
+            return new ListObservation(message.Id, message.ObservationId);
         }
 
         #endregion

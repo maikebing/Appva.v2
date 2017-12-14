@@ -31,7 +31,7 @@
 }
 <div class="grid grid--align-bottom">
     <div data-size="xs:24 s:24 m:24 l:18 xl:20">
-        <form action="@Url.Action("filter", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+        <form action="@Url.Action("list", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
             <div class="grid grid--align-bottom">
                 <div data-size="xs:24 s:24 m:10 l:8 xl:6">
                     <div class="form-controls date-picker">

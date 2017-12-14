@@ -20,6 +20,47 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public class ListObservationModel
     {
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListObservationModel"/> class.
+        /// </summary>
+        public ListObservationModel()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListObservationModel"/> class.
+        /// </summary>
+        /// <param name="patientViewModel">The patient view model.</param>
+        /// <param name="observationList">The observation list.</param>
+        public ListObservationModel(PatientViewModel patientViewModel, IList<Observation> observationList)
+        {
+            this.PatientViewModel = patientViewModel;
+            this.ObservationList  = observationList;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListObservationModel"/> class.
+        /// </summary>
+        /// <param name="observation">The observation.</param>
+        /// <param name="patientViewModel">The patient view model.</param>
+        /// <param name="observationList">The observation list.</param>
+        /// <param name="observationItemList">The observation item list.</param>
+        public ListObservationModel(Observation observation, PatientViewModel patientViewModel, IList<Observation> observationList, IList<ObservationItem> observationItemList)
+        {
+            this.Id                  = observation.Patient.Id;
+            this.ObservationId       = observation.Id;
+            this.Name                = observation.Name;
+            this.Instructions        = observation.Description;
+            this.Delegation          = observation.Delegation;
+            this.PatientViewModel    = patientViewModel;
+            this.ObservationList     = observationList;
+            this.ObservationItemList = observationItemList;
+        }
+
+        #endregion
+
         #region Properties.
 
         /// <summary>

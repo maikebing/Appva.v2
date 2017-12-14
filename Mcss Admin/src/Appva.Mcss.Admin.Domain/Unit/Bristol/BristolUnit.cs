@@ -96,7 +96,7 @@ namespace Appva.Mcss.Domain.Unit
                 throw new ArgumentException("str cannot be an empty string or only contain whitespace", "str");
             }
             BristolScale result;
-            if (!Enum.TryParse(str, true, out result))
+            if (! (Enum.TryParse(str, true, out result) && Enum.IsDefined(typeof(BristolScale), result)))
             {
                 throw new ArgumentOutOfRangeException("str", str + "is not a valid bristol scale enumeration.");
             }

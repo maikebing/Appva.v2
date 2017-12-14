@@ -63,16 +63,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override CreateObservationModel Handle(CreateObservation message)
         {
-            var accountId   = this.identityService.PrincipalId;
-            var account     = this.accountService.Find(accountId);
-            var taxonFilter = account.Locations.Select(x => x.Taxon.Path).FirstOrDefault();
-            var delegations = this.delegationService.ListDelegationTaxons();
-            return new CreateObservationModel
-            {
-                PatientId            = message.Id,
-                SelectScaleList      = MeasurementScale.All().Select(x => new SelectListItem { Text = x.Name(), Value = x.ToString() }), //// UNRESOLVED: Get list from other source.
-                SelectDelegationList = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
-            };
+            var accountId            = this.identityService.PrincipalId;
+            var account              = this.accountService.Find(accountId);
+            var delegations          = this.delegationService.ListDelegationTaxons();
+            var selectScaleList      = MeasurementScale.All().Select(x => new SelectListItem { Text = x.Name(), Value = x.ToString() });
+            var selectDelegationList = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+
+            return new CreateObservationModel(message.Id, selectScaleList, selectDelegationList);
         }
 
         #endregion

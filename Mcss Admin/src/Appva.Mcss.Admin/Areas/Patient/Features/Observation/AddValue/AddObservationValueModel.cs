@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Domain.Unit;
 
     #endregion
@@ -19,7 +20,30 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public class AddObservationValueModel : Identity<ListObservation>
     {
-        #region Variables
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddObservationValueModel"/> class.
+        /// </summary>
+        public AddObservationValueModel()
+        {
+        }
+
+        /// <summary>
+        /// Creates an instance of AddObservationValueModel
+        /// </summary>
+        /// <param name="observation"></param>
+        public AddObservationValueModel(Observation observation)
+        {
+            this.ObservationId = observation.Id;
+            this.Name = observation.Name;
+            this.Instruction = observation.Description;
+            this.Scale = observation.GetType().Name;
+        }
+
+        #endregion
+
+        #region Properties.
 
         /// <summary>
         /// The Observation Id
@@ -95,7 +119,7 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        public FecesScale CommonScaleValues
+        public FecesScale FecesScaleValues
         {
             get;
             set;

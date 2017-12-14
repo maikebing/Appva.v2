@@ -40,11 +40,13 @@ namespace Appva.Mcss.Admin.Application.Services
         ObservationItem Get(Guid itemId);
 
         /// <summary>
-        /// Gets the value list.
+        /// Lists the specified observation identifier.
         /// </summary>
         /// <param name="observationId">The observation identifier.</param>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
         /// <returns>IList&lt;ObservationItem&gt;.</returns>
-        IList<ObservationItem> List(Guid observationId);
+        IList<ObservationItem> List(Guid observationId, DateTime? startDate, DateTime? endDate);
     }
 
     /// <summary>
@@ -97,8 +99,12 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<ObservationItem> List(Guid observationId)
+        public IList<ObservationItem> List(Guid observationId, DateTime? startDate, DateTime? endDate)
         {
+            if (startDate.HasValue)
+            {
+                return this.observationItemRepository.ListByDate(observationId, startDate.Value, endDate.HasValue ? endDate.Value: DateTime.UtcNow);
+            }
             return this.observationItemRepository.List(observationId);
         }
     }

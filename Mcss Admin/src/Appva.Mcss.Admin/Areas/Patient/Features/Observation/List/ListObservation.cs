@@ -19,6 +19,15 @@ namespace Appva.Mcss.Admin.Models
     /// <seealso cref="Appva.Cqrs.IRequest{Appva.Mcss.Admin.Models.ListObservationModel}" />
     public class ListObservation : IRequest<ListObservationModel>
     {
+        public ListObservation()
+        {
+        }
+        public ListObservation(Guid patientId, Guid observationId)
+        {
+            this.Id = patientId;
+            this.ObservationId = observationId;
+        }
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -32,6 +41,24 @@ namespace Appva.Mcss.Admin.Models
         /// Gets or sets the measurement identifier.
         /// </summary>
         public Guid ObservationId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the start date.
+        /// </summary>
+        public DateTime? StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the end date.
+        /// </summary>
+        public DateTime? EndDate
         {
             get;
             set;

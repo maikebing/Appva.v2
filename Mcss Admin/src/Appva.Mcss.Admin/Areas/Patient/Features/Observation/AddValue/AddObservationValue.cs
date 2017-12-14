@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion
 
@@ -22,6 +23,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The measurement observation id
         /// </summary>
+        [Required]
         public Guid ObservationId { get; set; }
 
         #endregion

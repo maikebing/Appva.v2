@@ -136,29 +136,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Public Methods.
 
         /// <summary>
-        /// Updates the current tena period.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="instruction">The instruction.</param>
-        public virtual void Update(string name, string instruction)
-        {
-            Requires.NotNullOrWhiteSpace(name,        "name");
-            Requires.NotNullOrWhiteSpace(instruction, "description");
-            this.Name        = name;
-            this.Description = instruction;
-        }
-
-        /// <summary>
         /// Updates the current measurement observation.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="instruction">The instruction.</param>
         /// <param name="delegation">The delegation.</param>
-        public virtual void Update(string name, string instruction, Taxon delegation)
+        public virtual void Update(string name, string instruction, Taxon delegation = null)
         {
             Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
-            Requires.NotNull(            delegation,  "delegation");
             this.Name        = name;
             this.Description = instruction;
             this.Delegation  = delegation;

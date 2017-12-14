@@ -11,7 +11,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Domain.Unit;
+    using Validation;
 
     #endregion
 
@@ -62,36 +64,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListObservation Handle(AddObservationValueModel message)
         {
             var observation = this.observationService.Get(message.ObservationId);
-            if (observation == null)
-            {
-                throw new ArgumentNullException("observation", string.Format("MesurementObservation with ID: {0} does not exist.", message.ObservationId));
-            }
+            Requires.NotNull(observation, "observation");
 
             //// UNRESOLVED: move validation to controller.
             //// UNRESOLVED: make sure to validate correctly.
 
-            //// UNRESOLVED: Do more!!!
-            //var value = Activator.CreateInstance(observation.ScaleType, message.Value) as IUnit;
-
-            //object value;
-
-
-            //switch(observation.GetType().Name)
-            //{
-            //    case "BristolObservation": value = Activator.CreateInstance() break;
-            //    case "FecesObservation": break;
-            //    case "WeightObservation": break;
-            //    default: throw new ArgumentOutOfRangeException();
-            //}
-
-            //// UNRESOLVED: 
-            //this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), value);
-
-            return new ListObservation
+            //// UNRESOLVED: move selection to service?
+            switch (observation.GetType().Name)
             {
-                Id            = observation.Patient.Id,
-                ObservationId = observation.Id
-            };
+                case "BristolObservation":
+                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new BristolUnit(message.Value));
+                    break;
+                case "FecesObservation":
+                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new FecesUnit(message.Value));
+                    break;
+                case "WeightObservation":
+                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new WeightUnit(message.Value));
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+            return new ListObservation(observation.Patient.Id, observation.Id);
         }
 
         #endregion

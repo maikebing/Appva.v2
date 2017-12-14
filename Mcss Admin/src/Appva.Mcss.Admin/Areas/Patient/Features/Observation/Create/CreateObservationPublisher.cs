@@ -66,27 +66,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListObservation Handle(CreateObservationModel message)
         {
             var patient = this.patientService.Get(message.Id);
-            if (patient == null)
-            {
-                throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist.", message.Id));
-            }
+            Requires.NotNull(patient, "patient");
             Taxon delegation = null;
             if (message.SelectedDelegation.IsNotEmpty())
             {
                 delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
-                //Requires.NotNull(delegation, "delegation"); // kolla på detta
-                if (delegation == null)
-                {
-                    throw new ArgumentNullException("delegation", string.Format("Delegation with ID: {0} does not exist.", message.SelectedDelegation));
-                }
+                Requires.NotNull(delegation, "delegation");
             }
             var observation = ObservationFactory.CreateNew(patient, message.Name, message.Description, message.SelectedScale, delegation);
             this.observationService.Create(observation);
-            return new ListObservation
-            {
-                Id            = patient.Id,
-                ObservationId = observation.Id
-            };
+            return new ListObservation(patient.Id, observation.Id);
         }
 
         #endregion

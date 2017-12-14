@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Validation;
 
     #endregion
 
@@ -58,20 +59,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateObservationModel Handle(UpdateObservation message)
         {
             var observation = this.observationService.Get(message.ObservationId);
-            if (observation == null)
-            {
-                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.ObservationId));
-            }
-            return new UpdateObservationModel
-            {
-                ObservationId        = observation.Id,
-                Name                 = observation.Name,
-                Instruction          = observation.Description,
-                SelectedScale        = MeasurementScale.GetNameForScale(observation.Scale),
-                SelectedUnit         = MeasurementScale.GetUnitForScale(observation.Scale),
-                SelectDelegationList = this.delegationService.ListDelegationTaxons().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                SelectedDelegation   = observation.Delegation != null? observation.Delegation.Id.ToString(): null
-            };
+            Requires.NotNull(observation, "observation");
+            var selectDelegationList = this.delegationService.ListDelegationTaxons().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            var selectedDelegation = observation.Delegation != null ? observation.Delegation.Id.ToString() : null;
+            return new UpdateObservationModel(observation, selectDelegationList, selectedDelegation);
         }
 
         #endregion

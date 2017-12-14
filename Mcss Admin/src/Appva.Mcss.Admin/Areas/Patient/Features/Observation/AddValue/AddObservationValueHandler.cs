@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Validation;
 
     #endregion
 
@@ -49,21 +50,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AddObservationValueModel Handle(AddObservationValue message)
         {
             var observation = this.observationService.Get(message.ObservationId);
-            if (observation == null)
-            {
-                throw new ArgumentNullException("observation", string.Format("Observation with ID: {0} does not exist.", message.ObservationId));
-            }
-
-            //// UNRESOLVAED: Stop using MeasurementScale
-            return new AddObservationValueModel
-            {
-                ObservationId = observation.Id,
-                Name          = observation.Name,
-                Instruction   = observation.Description,
-                Unit          = MeasurementScale.GetUnitForScale(observation.Scale), // observation.GetUnit()
-                Scale         = observation.Scale,
-                LongScale     = MeasurementScale.GetNameForScale(observation.Scale) // obsevation.GetName()
-            };
+            Requires.NotNull(observation, "observation");
+            return new AddObservationValueModel(observation);
         }
 
         #endregion

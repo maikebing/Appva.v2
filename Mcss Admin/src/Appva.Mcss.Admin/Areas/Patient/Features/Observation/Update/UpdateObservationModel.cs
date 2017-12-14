@@ -23,16 +23,33 @@ namespace Appva.Mcss.Admin.Models
     /// <seealso cref="Appva.Mcss.Admin.Models.Identity{Appva.Mcss.Admin.Models.ListObservation}" />
     public class UpdateObservationModel : Identity<ListObservation>
     {
-        #region Properties.
+        #region Constructors.
 
         /// <summary>
-        /// The MeasurementObservation.
+        /// Initializes a new instance of the <see cref="UpdateObservationModel"/> class.
         /// </summary>
-        public Observation Observation
+        public UpdateObservationModel()
         {
-            get;
-            set;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateObservationModel"/> class.
+        /// </summary>
+        /// <param name="observation">The observation.</param>
+        /// <param name="selectDelegationList">The select delegation list.</param>
+        /// <param name="selectedDelegation">The selected delegation.</param>
+        public UpdateObservationModel(Observation observation, IEnumerable<SelectListItem> selectDelegationList, string selectedDelegation = null)
+        {
+            this.ObservationId = observation.Id;
+            this.Name = observation.Name;
+            this.Instruction = observation.Description;
+            this.SelectedDelegation = selectedDelegation;
+            this.SelectDelegationList = selectDelegationList;
+        }
+
+        #endregion
+
+        #region Properties.
 
         /// <summary>
         /// The observation id.

@@ -9,11 +9,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
+    using Validation;
 
     #endregion
 
@@ -70,41 +73,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListObservationModel Handle(ListObservation message)
         {
             var patient = this.patientService.Get(message.Id);
-            if (patient == null)
+            Requires.NotNull(patient, "patient");
+            var patientViewModel = this.patientTransformer.ToPatient(patient);
+            var observationList = this.observationService.ListByPatient(patient.Id);
+            if (message.ObservationId.IsEmpty())
             {
-                throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist.", message.Id));
+                return new ListObservationModel(patientViewModel, observationList);
             }
-            if (message.ObservationId.IsNotEmpty())
-            {
-                var observation = this.observationService.Get(message.ObservationId);
-                if (observation == null)
-                {
-                    throw new ArgumentNullException("observation", string.Format("Observation with ID: {0} does not exist.", message.ObservationId));
-                }
-                //// UNRESOLVED: TO DO!
-                var tName = "";
-                return new ListObservationModel
-                {
-                    Id                      = observation.Patient.Id,
-                    ObservationId           = observation.Id,
-                    PatientViewModel        = this.patientTransformer.ToPatient(observation.Patient),
-                    ObservationList         = this.observationService.ListByPatient(observation.Patient.Id),
-                    ObservationItemList     = this.observationItemService.List(observation.Id),
-                    Unit                    = MeasurementScale.GetUnitForScale(observation.Scale),
-                    LongScale               = MeasurementScale.GetNameForScale(observation.Scale),
-                    Scale                   = tName,
-                    Delegation              = observation.Delegation,
-                    Name                    = observation.Name,
-                    Instructions            = observation.Description
-                };
-            }
-            return new ListObservationModel
-            {
-                PatientViewModel = this.patientTransformer.ToPatient(patient),
-                ObservationList  = this.observationService.ListByPatient(patient.Id)
-            };
+            var observation = this.observationService.Get(message.ObservationId);
+            Requires.NotNull(observation, "observation");
+            var observationItemList = this.observationItemService.List(observation.Id, message.StartDate, message.EndDate);
+            return new ListObservationModel(observation, patientViewModel, observationList, observationItemList);
         }
-
         #endregion
     }
 }

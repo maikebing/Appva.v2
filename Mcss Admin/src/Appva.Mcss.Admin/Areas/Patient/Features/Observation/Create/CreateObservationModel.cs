@@ -22,6 +22,30 @@ namespace Appva.Mcss.Admin.Models
     /// <seealso cref="Appva.Mcss.Admin.Models.Identity{Appva.Mcss.Admin.Models.ListObservation}" />
     public class CreateObservationModel : Identity<ListObservation>
     {
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateObservationModel"/> class.
+        /// </summary>
+        public CreateObservationModel()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateObservationModel"/> class.
+        /// </summary>
+        /// <param name="patientId">The patient identifier.</param>
+        /// <param name="selectScaleList">The select scale list.</param>
+        /// <param name="selectDelegationList">The select delegation list.</param>
+        public CreateObservationModel(Guid patientId, IEnumerable<SelectListItem> selectScaleList, IEnumerable<SelectListItem> selectDelegationList)
+        {
+            this.PatientId = patientId;
+            this.SelectScaleList = selectScaleList;
+            this.SelectDelegationList = selectDelegationList;
+        }
+
+        #endregion
+
         #region Properties.
 
         /// <summary>

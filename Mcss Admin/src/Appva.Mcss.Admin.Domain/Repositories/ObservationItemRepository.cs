@@ -41,7 +41,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public sealed class ObservationItemRepository : Repository<ObservationItem>, IObservationItemRepository
     {
-        #region Constructorw.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservationItemRepository"/> class.
@@ -60,8 +60,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public IList<ObservationItem> List(Guid observationId)
         {
             return this.Context.QueryOver<ObservationItem>()
-                .Where(x => x.IsActive)
-                  .And(x => x.Observation.Id == observationId)
+                  .Where(x => x.IsActive)
+                    .And(x => x.Observation.Id == observationId)
                 .OrderBy(x => x.CreatedAt).Desc
                 .List();
         }

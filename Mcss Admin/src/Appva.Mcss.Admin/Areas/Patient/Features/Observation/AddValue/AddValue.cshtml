@@ -1,4 +1,5 @@
 ﻿@using Appva.Mcss.Admin.Application.Models
+@using Appva.Mcss.Domain.Unit
 @model Appva.Mcss.Admin.Models.AddObservationValueModel
 
 <div class="section section--hspace">
@@ -15,21 +16,19 @@
                 <p>@Model.Instruction</p>
 
                 <div class="form-controls">
-
-                    @if (Model.Scale == "Weight")
+                    @if (Model.Scale == "WeightObservation")
                     {
                         @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator"}).TextBox("###", new { min = "5", max = "450", size = "3", required = "required", type = "number" }).Validate().Build()
                     }
-                    else if (Model.Scale == "Common")
+                    else if (Model.Scale == "FecesObservation")
                     {
                         @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator" }).Build()
-                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(MeasurementScale.CommonScaleValues)), new { required = "reguired" })
+                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(FecesScale)), new { required = "reguired" })
                     }
-                    else if (Model.Scale == "Bristol")
+                    else if (Model.Scale == "BristolObservation")
                     {
-                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
-                        @Html.TextBoxFor(x => x.Value, new { min = "1", max = "7", size = "3", required = "reguired", type = "number" })
-
+                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator" }).Build()
+                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(BristolScale)), new { required = "required" })
                     }
                     @Html.ValidationMessageFor(x => x.Value)
                 </div>

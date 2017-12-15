@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain.VO;
+    using Appva.Mcss.Domain.Unit;
     using Validation;
 
     #endregion
@@ -27,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) //// UNRESOLVED: custom scale used by DosageObservation
+        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) //// UNRESOLVED: custom scale only used by DosageObservation
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
@@ -148,6 +150,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Name        = name;
             this.Description = instruction;
             this.Delegation  = delegation;
+        }
+
+        /// <summary>
+        /// News the item.
+        /// </summary>
+        /// <param name="account">The account.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>ObservationItem.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual ObservationItem NewItem(Account account, string value)
+        {
+            object unitValue;
+            switch(this.GetType().Name)
+            {
+                case "BristolObservation": unitValue = new BristolUnit(value); break;                    
+                case "FecesObservation":   unitValue = new FecesUnit(value);   break;
+                case "WeightObservation":  unitValue = new WeightUnit(value);  break;
+                default: throw new NotImplementedException();
+            }
+            return ObservationItem.New(this, Measurement.New(unitValue), null, Signature.New(account, SignedData.New(unitValue)));
         }
 
         #endregion

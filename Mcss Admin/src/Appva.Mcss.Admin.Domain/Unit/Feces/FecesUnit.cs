@@ -98,7 +98,7 @@ namespace Appva.Mcss.Domain.Unit
                 throw new ArgumentException("str cannot be an empty string or only contain whitespace", "str");
             }
             FecesScale result;
-            if ((Enum.TryParse(str, true, out result)) && (Enum.IsDefined(typeof(FecesScale), result)) == false)
+            if ((Enum.TryParse(str, true, out result) && Enum.IsDefined(typeof(FecesScale), result)) == false)
             {
                 throw new ArgumentOutOfRangeException("str", str + "is not a valid feces enumeration.");
             }
@@ -191,6 +191,47 @@ namespace Appva.Mcss.Domain.Unit
                 case FecesScale.K: return "k";
             }
             throw new InvalidOperationException();
+        }
+
+        #endregion
+
+        #region Static Members.
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static string ToString(FecesScale value)
+        {
+            switch (value)
+            {
+                case FecesScale.BigTripleA: return "AAA";
+                case FecesScale.BigDoubleA: return "AA";
+                case FecesScale.BigA: return "A";
+                case FecesScale.SmallA: return "a";
+                case FecesScale.SmallTripleA: return "aaa";
+                case FecesScale.SmallD: return "d";
+                case FecesScale.BigD: return "D";
+                case FecesScale.K: return "k";
+            }
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Determines whether [has valid value] [the specified value].
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if [has valid value] [the specified value]; otherwise, <c>false</c>.</returns>
+        public static bool HasValidValue(string value)
+        {
+            FecesScale result;
+            if ((Enum.TryParse(value, true, out result) && Enum.IsDefined(typeof(FecesScale), result)) == false)
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion

@@ -109,33 +109,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the measurement unit.
-        /// </summary>
-        public string Unit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the measurement long scale.
-        /// </summary>
-        public string LongScale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the measurement scale.
-        /// </summary>
-        public string Scale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the delegation.
         /// </summary>
         public Taxon Delegation

@@ -1,4 +1,4 @@
-﻿// <copyright file="AddMeasurementValuePublisher.cs" company="Appva AB">
+﻿// <copyright file="AddObservationValuePublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,26 +8,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Domain.Unit;
     using Validation;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class AddMeasurementValuePublisher.
     /// </summary>
-    public class AddMeasurementValuePublisher : RequestHandler<AddObservationValueModel, ListObservation>
+    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.AddObservationValueModel, Appva.Mcss.Admin.Models.ListObservation}" />
+    public class AddObservationValuePublisher : RequestHandler<AddObservationValueModel, ListObservation>
     {
         #region Variables.
-
-        /// <summary>
-        /// The account service
-        /// </summary>
-        private readonly IAccountService accountService;
 
         /// <summary>
         /// The observation service
@@ -44,14 +37,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddMeasurementValuePublisher"/> class.
+        /// Initializes a new instance of the <see cref="AddObservationValuePublisher"/> class.
         /// </summary>
         /// <param name="accountService">The account service.</param>
         /// <param name="observationService">The observation service.</param>
         /// <param name="observationItemService">The observation item service.</param>
-        public AddMeasurementValuePublisher(IAccountService accountService, IObservationService observationService, IObservationItemService observationItemService)
+        public AddObservationValuePublisher(IObservationService observationService, IObservationItemService observationItemService)
         {
-            this.accountService         = accountService;
             this.observationService     = observationService;
             this.observationItemService = observationItemService;
         }
@@ -65,24 +57,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var observation = this.observationService.Get(message.ObservationId);
             Requires.NotNull(observation, "observation");
-
-            //// UNRESOLVED: move validation to controller.
-            //// UNRESOLVED: make sure to validate correctly.
-
-            //// UNRESOLVED: move selection to service?
-            switch (observation.GetType().Name)
-            {
-                case "BristolObservation":
-                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new BristolUnit(message.Value));
-                    break;
-                case "FecesObservation":
-                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new FecesUnit(message.Value));
-                    break;
-                case "WeightObservation":
-                    this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new WeightUnit(message.Value));
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-            }
+            this.observationItemService.Create(observation, message.Value);
             return new ListObservation(observation.Patient.Id, observation.Id);
         }
 

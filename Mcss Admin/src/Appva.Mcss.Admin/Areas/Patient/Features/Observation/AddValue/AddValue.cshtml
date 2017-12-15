@@ -1,5 +1,4 @@
 ﻿@using Appva.Mcss.Admin.Application.Models
-@using Appva.Mcss.Domain.Unit
 @model Appva.Mcss.Admin.Models.AddObservationValueModel
 
 <div class="section section--hspace">
@@ -12,24 +11,18 @@
                 @Html.ValidationSummary()
 
                 <h3>@Model.Name</h3>
-                <p>Använder skala: @Model.LongScale</p>
                 <p>@Model.Instruction</p>
 
                 <div class="form-controls">
-                    @if (Model.Scale == "WeightObservation")
+                    @if (Model.ValueSelectList.IsNotNull())
                     {
-                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator"}).TextBox("###", new { min = "5", max = "450", size = "3", required = "required", type = "number" }).Validate().Build()
+                        @Html.DropDownListFor(x => x.Value, Model.ValueSelectList, new { required = "reguired" })
                     }
-                    else if (Model.Scale == "FecesObservation")
+                    @if (Model.ValueSelectList.IsNull())
                     {
-                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator" }).Build()
-                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(FecesScale)), new { required = "reguired" })
+                        @Html.FormGroup(x => x.Value).Label("Kg", new { @class = "required-indicator" }).TextBox("###", new { min = "5", max = "450", size = "3", required = "required", type = "number" }).Validate().Build()
                     }
-                    else if (Model.Scale == "BristolObservation")
-                    {
-                        @Html.FormGroup(x => x.Value).Label(string.Format("{0}", Model.Unit), new { @class = "required-indicator" }).Build()
-                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(BristolScale)), new { required = "required" })
-                    }
+                    @Html.HiddenFor(x => x.Scale)
                     @Html.ValidationMessageFor(x => x.Value)
                 </div>
                 <div class="form-controls form-controls--align-end">

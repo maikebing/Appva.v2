@@ -87,7 +87,12 @@ namespace Appva.Mcss.Domain.Unit
         /// </exception>
         public static double Parse(string str)
         {
-            return double.Parse(str);
+            double result;
+            if ( (double.TryParse(str, out result)) == false || (result >= 5 && result <= 450) == false  )
+            {
+                throw new ArgumentOutOfRangeException(string.Format("'{0}' is not a valid value.", str));
+            }
+            return result;
         }
 
         #endregion
@@ -104,6 +109,20 @@ namespace Appva.Mcss.Domain.Unit
         public override string ToString(IFormatProvider provider)
         {
             return this.Value.ToString(provider);
+        }
+
+        #endregion
+
+        #region Public Static Members.
+
+        public static bool HasValidValue(string value)
+        {
+            double result;
+            if (double.TryParse(value, out result) == false || (result >= 5 && result <= 450) == false)
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion

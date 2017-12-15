@@ -25,12 +25,11 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IObservationItemService : IService
     {
         /// <summary>
-        /// Creates the value.
+        /// Creates the specified observation.
         /// </summary>
         /// <param name="observation">The observation.</param>
-        /// <param name="account">The account.</param>
         /// <param name="value">The value.</param>
-        void Create(Observation observation, Account account, IUnit value);
+        void Create(Observation observation, string value);
 
         /// <summary>
         /// Gets the specified item identifier.
@@ -63,6 +62,11 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IObservationItemRepository observationItemRepository;
 
         /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditService;
@@ -76,18 +80,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="observationItemRepository">The observation item repository.</param>
         /// <param name="auditService">The audit service.</param>
-        public ObservationItemService(IObservationItemRepository observationItemRepository, IAuditService auditService)
+        public ObservationItemService(IObservationItemRepository observationItemRepository, IAccountService accountService, IAuditService auditService)
         {
             this.observationItemRepository = observationItemRepository;
+            this.accountService = accountService;
             this.auditService = auditService;
         }
 
         #endregion
 
         /// <inheritdoc />
-        public void Create(Observation observation, Account account, IUnit value)
+        public void Create(Observation observation, string value)
         {
-            var item = ObservationItem.New(observation, Measurement.New<IUnit>(value), null, Signature.New(account, SignedData.New(value)));
+            var account = this.accountService.CurrentPrincipal();
+            var item    = observation.NewItem(account, value);
             this.observationItemRepository.Save(item);
             this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }

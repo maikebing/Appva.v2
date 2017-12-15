@@ -12,9 +12,20 @@ namespace Appva.Mcss.Admin.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Web.Mvc;
 
     #endregion
+
+    /// <summary>
+    /// Enum Observations
+    /// </summary>
+    public enum Scale
+    {
+        Bristol,
+        Feces,
+        Weight
+    }
 
     /// <summary>
     /// Class CreateObservationModel.
@@ -37,10 +48,9 @@ namespace Appva.Mcss.Admin.Models
         /// <param name="patientId">The patient identifier.</param>
         /// <param name="selectScaleList">The select scale list.</param>
         /// <param name="selectDelegationList">The select delegation list.</param>
-        public CreateObservationModel(Guid patientId, IEnumerable<SelectListItem> selectScaleList, IEnumerable<SelectListItem> selectDelegationList)
+        public CreateObservationModel(Guid patientId, IEnumerable<SelectListItem> selectDelegationList)
         {
             this.PatientId = patientId;
-            this.SelectScaleList = selectScaleList;
             this.SelectDelegationList = selectDelegationList;
         }
 
@@ -82,8 +92,10 @@ namespace Appva.Mcss.Admin.Models
         [DisplayName("Skala")]
         public IEnumerable<SelectListItem> SelectScaleList
         {
-            get;
-            set;
+            get
+            {
+                return Enum.GetValues(typeof(Scale)).Cast<Scale>().Select(x => new SelectListItem { Text = ToText(x), Value = x.ToString() });
+            }
         }
 
         /// <summary>
@@ -113,6 +125,21 @@ namespace Appva.Mcss.Admin.Models
         {
             get;
             set;
+        }
+
+        #endregion
+
+        #region Private Helpers.
+
+        private string ToText(Scale value)
+        {
+            switch (value)
+            {
+                case Scale.Bristol: return "Bristol (Typ 1-7)";
+                case Scale.Feces:   return "Generisk avföringsskala (Typ AAA-k)";
+                case Scale.Weight:  return "Vikt (kg)";
+                default: return null;
+            }
         }
 
         #endregion

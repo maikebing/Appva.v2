@@ -1,4 +1,4 @@
-﻿// <copyright file="UpdateMeasurementHandler.cs" company="Appva AB">
+﻿// <copyright file="UpdateObservationHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// Class UpdateMeasurementHandler.
     /// </summary>
     /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateObservation, Appva.Mcss.Admin.Models.UpdateObservationModel}" />
-    public class UpdateMeasurementHandler : RequestHandler<UpdateObservation, UpdateObservationModel>
+    public class UpdateObservationHandler : RequestHandler<UpdateObservation, UpdateObservationModel>
     {
         #region Variables.
 
@@ -41,11 +41,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateMeasurementHandler"/> class.
+        /// Initializes a new instance of the <see cref="UpdateObservationHandler"/> class.
         /// </summary>
         /// <param name="measurementService">The measurement service.</param>
         /// <param name="delegationService">The delegation service.</param>
-        public UpdateMeasurementHandler(IObservationService observationService, IDelegationService delegationService)
+        public UpdateObservationHandler(IObservationService observationService, IDelegationService delegationService)
         {
             this.observationService = observationService;
             this.delegationService  = delegationService;

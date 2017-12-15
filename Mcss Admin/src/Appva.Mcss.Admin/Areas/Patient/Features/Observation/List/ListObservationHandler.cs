@@ -1,4 +1,4 @@
-﻿// <copyright file="ListMeasurementHandler.cs" company="Appva AB">
+﻿// <copyright file="ListObservationHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -23,7 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListMeasurementHandler : RequestHandler<ListObservation, ListObservationModel>
+    public class ListObservationHandler : RequestHandler<ListObservation, ListObservationModel>
     {
         #region Variables.
 
@@ -52,12 +52,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListMeasurementHandler"/> class.
+        /// Initializes a new instance of the <see cref="ListObservationHandler"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="patientService">The patient service.</param>
         /// <param name="patientTransformer">The patient transformer.</param>
-        public ListMeasurementHandler(IObservationService observationService, IObservationItemService observationItemService, IPatientService patientService, IPatientTransformer patientTransformer)
+        public ListObservationHandler(IObservationService observationService, IObservationItemService observationItemService, IPatientService patientService, IPatientTransformer patientTransformer)
         {
             this.observationService     = observationService;
             this.observationItemService = observationItemService;

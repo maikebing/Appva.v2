@@ -68,7 +68,6 @@
     <table class="table-general table-general--descending" id="update-table" role="region">
         <thead>
             <tr>
-                <th></th>
                 <th scope="col">Datum</th>
                 <th scope="col">Värde</th>
                 <th scope="col">Signerad av</th>
@@ -77,19 +76,17 @@
         </thead>
         <tbody>
             @if (Model.ObservationItemList.IsNotEmpty())
-                {
-
+            {
                 foreach (var item in Model.ObservationItemList)
-                    {
-                        <tr>
-                            <td> </td>
-                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                {
+                    <tr>
+                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
                         <td>@item.Measurement</td>
-                            <td>@item.Signature.Who.FullName</td>
-                            <td> </td>
-                        </tr>
-                    }
+                        <td>@item.Signature.Who.FullName</td>
+                        <td> </td>
+                    </tr>
                 }
+            }
         </tbody>
     </table>
 </div>

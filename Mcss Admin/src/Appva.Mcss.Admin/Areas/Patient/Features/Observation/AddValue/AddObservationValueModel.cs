@@ -9,7 +9,10 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Domain.Unit;
 
@@ -77,6 +80,7 @@ namespace Appva.Mcss.Admin.Models
         /// Gets or sets the value.
         /// </summary>
         [Required]
+        [IsValidValue()]
         public string Value
         {
             get;
@@ -93,15 +97,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the unit.
-        /// </summary>
-        public string Unit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the scale.
         /// </summary>
         public string Scale
@@ -111,26 +106,36 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the long scale.
+        /// 
         /// </summary>
-        public string LongScale
+        public IEnumerable<SelectListItem> ValueSelectList
         {
-            get;
-            set;
-        }
-
-        public FecesScale FecesScaleValues
-        {
-            get;
-            set;
-        }
-
-        public string SelectedScaleValue
-        {
-            get;
-            set;
+            get
+            {
+                switch (this.Scale)
+                {
+                    case "FecesObservation":   return Enum.GetValues(typeof(FecesScale))  .Cast<FecesScale>()  .Select(x => new SelectListItem { Text = FecesUnit.ToString(x),   Value = x.ToString() });
+                    case "BristolObservation": return Enum.GetValues(typeof(BristolScale)).Cast<BristolScale>().Select(x => new SelectListItem { Text = BristolUnit.ToString(x), Value = x.ToString() });
+                    default: return null;
+                }
+            }
         }
 
         #endregion
+    }
+    //// UNRESOLVED: refactor this for a more suitable solution
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    internal sealed class IsValidValueAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            var testValue = value.ToString();
+            if ((BristolUnit.HasValidValue(testValue) || FecesUnit.HasValidValue(testValue) || WeightUnit.HasValidValue(testValue)) == false)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

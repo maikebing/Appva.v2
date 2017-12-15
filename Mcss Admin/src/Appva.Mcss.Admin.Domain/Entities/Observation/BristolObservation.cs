@@ -34,34 +34,5 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
-
-        #region Properties.
-
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string ShortName
-        {
-            get
-            {
-                return "Bristol";
-            }
-        }
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string DescriptiveName
-        {
-            get
-            {
-                return "Bristol Stool Scale (Type 1-7)";
-            }
-        }
-
-        #endregion
     }
 }

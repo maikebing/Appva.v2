@@ -1,4 +1,4 @@
-﻿// <copyright file="MeasurementType.cs" company="Appva AB">
+﻿// <copyright file="ArbitraryValueType.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -18,10 +18,10 @@ namespace Appva.Mcss.Admin.Domain.Common
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// An Nhibernate <see cref="ArbitraryValue"/> mapper.
     /// </summary>
     [Serializable]
-    internal sealed class MeasurementType : IUserType
+    internal sealed class ArbitraryValueType : IUserType
     {
         /// <inheritdoc />
         public bool IsMutable
@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Domain.Common
         {
             get
             {
-                return typeof(IArbituraryValue);
+                return typeof(ArbitraryValue);
             }
         }
 
@@ -47,11 +47,12 @@ namespace Appva.Mcss.Admin.Domain.Common
         {
             get
             {
-                return new[] { 
+                return new[] 
+                { 
                     NHibernateUtil.String.SqlType, //// Value
                     NHibernateUtil.String.SqlType, //// ValueType
                     NHibernateUtil.String.SqlType, //// Unit
-                    NHibernateUtil.String.SqlType, //// TypeOfMeasurement
+                    NHibernateUtil.String.SqlType, //// Level
                 };
             }
         }
@@ -93,7 +94,7 @@ namespace Appva.Mcss.Admin.Domain.Common
             var valueType   = NHibernateUtil.String.NullSafeGet(rs, names[1]) as string; 
             var unit        = NHibernateUtil.String.NullSafeGet(rs, names[2]) as string;
             var typeOfScale = NHibernateUtil.String.NullSafeGet(rs, names[3]) as string;
-            return ArbituraryMeasuredValue.Parse(value, valueType, unit, typeOfScale);
+            return ArbitraryValue.Parse(value, valueType, unit, typeOfScale);
         }
 
         /// <inheritdoc />
@@ -105,14 +106,15 @@ namespace Appva.Mcss.Admin.Domain.Common
                 NHibernateUtil.String.NullSafeSet(cmd, null, index    ); //// Value
                 NHibernateUtil.String.NullSafeSet(cmd, null, index + 1); //// ValueType
                 NHibernateUtil.String.NullSafeSet(cmd, null, index + 2); //// Unit
-                NHibernateUtil.String.NullSafeSet(cmd, null, index + 3); //// TypeOfMeasurement
+                NHibernateUtil.String.NullSafeSet(cmd, null, index + 3); //// Level
                 return;
             }
-            var measurement = value as ArbituraryMeasuredValue;
-            NHibernateUtil.String.NullSafeSet(cmd, measurement.Value,       index    ); //// Value
-            NHibernateUtil.String.NullSafeSet(cmd, measurement.ValueType,   index + 1); //// ValueType
-            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit == null?  null: measurement.Unit.Name,   index + 2); //// Unit
-            NHibernateUtil.String.NullSafeSet(cmd, Enum.GetName(typeof(LevelOfMeasurement), measurement.TypeOfScale), index + 3); //// TypeOfMeasurement
+            var measurement = value as ArbitraryValue;
+            var arbitraryValue = Convert.ChangeType(measurement.Value, typeof(string));
+            NHibernateUtil.String.NullSafeSet(cmd, arbitraryValue, index); //// Value
+            NHibernateUtil.String.NullSafeSet(cmd, measurement.ValueType,                                       index + 1); //// ValueType
+            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit == null ? null: measurement.Unit.Name,      index + 2);    //// Unit
+            NHibernateUtil.String.NullSafeSet(cmd, Enum.GetName(typeof(LevelOfMeasurement), measurement.Level), index + 3); //// Level
         }
 
         /// <inheritdoc />

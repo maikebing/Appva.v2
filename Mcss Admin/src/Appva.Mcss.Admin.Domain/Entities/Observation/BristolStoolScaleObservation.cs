@@ -14,11 +14,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #endregion
 
     /// <summary>
-    /// A bristol observation.
+    /// A Bristol stool scale <see cref="Observation"/> implementation.
     /// </summary>
     [DisplayName("Bristol")]
     [Description("Bristol Stool Scale (Type 1-7)")]
-    //// [AccessControl("...")]
     [Loinc("11029-6", " Consistency of Stool")]
     public class BristolStoolScaleObservation : Observation
     {
@@ -49,28 +48,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
             //// UNRESOLVED: VALIDATE value.
-            // 1. unit != null 
-            // 2. t != system.string || type.enum skiten
-            // 3. t ! parse till tena enum skiten
-            // samma i bristol och arbitrator skalan
-            // (t måste vara number på weight) system.double
-            // (t double.tryparse()
-            // min max och argumentoutofrangeexception eller overflowexception
-
-            //unit = unit ?? NonUnits.BristolStoolScale;
-
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
+            //// 1. unit != null 
+            //// 2. t != system.string || type.enum skiten
+            //// 3. t ! parse till tena enum skiten
+            //// samma i bristol och arbitrator skalan
+            //// (t måste vara number på weight) system.double
+            //// (t double.tryparse()
+            //// min max och argumentoutofrangeexception eller overflowexception
+            //// unit = unit ?? NonUnits.BristolStoolScale;
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            //unit = unit ?? NonUnits.BristolStoolScale;
+            //// unit = unit ?? NonUnits.BristolStoolScale;
             //// UNRESOLVED: Check value.
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
     }
 }

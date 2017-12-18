@@ -8,16 +8,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using System.Linq;
-    using System.Collections.Generic;
-    using Appva.Mcss.Admin.Domain.Common;
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Common;
 
     #endregion
 
     /// <summary>
-    /// A body weight observation.
+    /// A body weight <see cref="Observation"/> implementation.
     /// </summary>
+    [DisplayName("Body weight")]
+    [Description("General weight scale (5-450 kg)")]
     [Loinc("29463-7", "Body weight")]
     public class BodyWeightObservation : Observation
     {
@@ -26,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The valid units of measurement.
         /// </summary>
-        private readonly IReadOnlyList<IUnitOfMeasurement> Units = new List<IUnitOfMeasurement>
+        private static readonly IReadOnlyList<UnitOfMeasurement> Units = new List<UnitOfMeasurement>
         {
             MassUnits.Kilogram, MassUnits.Gram, MassUnits.Pound
         };
@@ -59,50 +62,30 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Properties.
-
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string ShortName
-        {
-            get
-            {
-                return "Weight";
-            }
-        }
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string DescriptiveName
-        {
-            get
-            {
-                return "General Weight Scale (5-450 kg)";
-            }
-        }
-
-        #endregion
-
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            unit = unit ?? MassUnits.Kilogram;
-            if (!this.Units.Any(valid => valid == unit))
+            //// Move this piece of validation to a separate private function ->
+            if (! (value is double))
             {
-                throw new OverflowException("The unit is not one of the ");
+                ///...
             }
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Quantitative, MassUnits.Kilogram);
+            if (unit != null && Units.Any(valid => valid == unit) == false)
+            {
+                throw new ArgumentOutOfRangeException("unit");
+            }
+            var quantity = (double)Convert.ChangeType(value, typeof(double));
+            return ArbitraryValue.New(quantity, LevelOfMeasurement.Quantitative, unit ?? MassUnits.Kilogram);
         }
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Quantitative, MassUnits.Kilogram);
+            //// Add validation (as separate method), TryParse, check unit as previous, within range (the value)
+            /// Just to make stuff work, parse and go to the method above -->
+            var quantity = 0.0;
+            double.TryParse(value, out quantity);
+            return this.NewMeasurement(quantity, unit);
         }
     }
 }

@@ -8,10 +8,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
 
     #endregion
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="ArbituraryMeasuredValue.cs" company="Appva AB">
+﻿// <copyright file="ArbitraryValue.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -12,21 +12,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.Collections.Generic;
     using System.Diagnostics;
     using Appva.Mcss.Admin.Domain.Common;
+    using Appva.Mcss.Domain.Unit;
     using Validation;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Represents the measured value, annotation, quantity or ratio for an 
+    /// <see cref="ObservationItem"/>.
     /// </summary>
-    public sealed class ArbituraryMeasuredValue : ValueObject<ArbituraryMeasuredValue>, IArbituraryValue
+    /// <remarks>
+    /// The value must be either a string or a primitive value.
+    /// </remarks>
+    public sealed class ArbitraryValue : ValueObject<ArbitraryValue>, IFormattable, IDeepCopyable<ArbitraryValue>
     {
         #region Variables.
 
         /// <summary>
         /// The string representation of the measured value.
         /// </summary>
-        private readonly string value;
+        private readonly object value;
 
         /// <summary>
         /// The underlying type of the measured value.
@@ -36,7 +41,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The unit of measurement, if any.
         /// </summary>
-        private readonly IUnitOfMeasurement unit;
+        private readonly UnitOfMeasurement unit;
 
         /// <summary>
         /// The level of measurement.
@@ -48,7 +53,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArbituraryMeasuredValue"/> class.
+        /// Initializes a new instance of the <see cref="ArbitraryValue"/> class.
         /// </summary>
         /// <param name="value">
         /// The string value, if <typeparamref name="valueType"/> is of type 
@@ -58,16 +63,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="valueType">The value type.</param>
         /// <param name="level">The level of measurement.</param>
         /// <param name="unit">The unit of measurement.</param>
-        private ArbituraryMeasuredValue(string value, Type valueType, LevelOfMeasurement level, IUnitOfMeasurement unit = null)
+        private ArbitraryValue(object value, Type valueType, LevelOfMeasurement level, UnitOfMeasurement unit = null)
         {
-            Requires.NotNullOrWhiteSpace(value, "value");
+            Requires.NotNull(value,     "value"    );
             Requires.NotNull(valueType, "valueType");
-            /*Requires.Argument(
+            Requires.Argument(
                 valueType == typeof(string) ||
-                valueType.IsValueType || 
+                valueType.IsPrimitive       ||
                 valueType.IsEnum, 
                 "valueType", 
-                "valueType must be one of: string, enumeration or struct");*/
+                "valueType must be one of: string, enumeration or struct");
             this.value     = value;
             this.valueType = valueType;
             this.level     = level;
@@ -83,9 +88,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get
             {
-                return this.valueType.IsEnum ?
-                    Enum.Parse(this.valueType, this.value) :
-                    Convert.ChangeType(this.value, this.valueType);
+                return this.value;
             }
         }
 
@@ -101,7 +104,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <inheritdoc />
-        public IUnitOfMeasurement Unit
+        public UnitOfMeasurement Unit
         {
             get
             {
@@ -110,7 +113,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <inheritdoc />
-        public LevelOfMeasurement TypeOfScale
+        public LevelOfMeasurement Level
         {
             get
             {
@@ -123,7 +126,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Public Static Builders.
 
         /// <summary>
-        /// Creates a new instance of the <see cref="ArbituraryMeasuredValue"/> class.
+        /// Creates a new instance of the <see cref="ArbitraryValue"/> class.
         /// </summary>
         /// <param name="value">
         /// The string value.
@@ -131,19 +134,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="level">The level of measurement.</param>
         /// <param name="unit">The unit of measurement.</param>
         /// <returns>
-        /// A new <see cref="ArbituraryMeasuredValue"/> instance.
+        /// A new <see cref="ArbitraryValue"/> instance.
         /// </returns>
         /// <exception cref="System.ArgumentException">
         /// <paramref name="value"/> is null, empty ("") or contains only whitespace 
         /// characters.
         /// </exception>
-        public static ArbituraryMeasuredValue New(string value, LevelOfMeasurement level, IUnitOfMeasurement unit)
+        public static ArbitraryValue New(string value, LevelOfMeasurement level, UnitOfMeasurement unit)
         {
-            return new ArbituraryMeasuredValue(value, typeof(string), level, unit);
+            return new ArbitraryValue(value, typeof(string), level, unit);
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="ArbituraryMeasuredValue"/> class.
+        /// Creates a new instance of the <see cref="ArbitraryValue"/> class.
         /// </summary>
         /// <typeparam name="T">The <paramref name="value"/> type.</typeparam>
         /// <param name="value">
@@ -152,20 +155,20 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="level">The level of measurement.</param>
         /// <param name="unit">The unit of measurement.</param>
         /// <returns>
-        /// A new <see cref="ArbituraryMeasuredValue"/> instance.
+        /// A new <see cref="ArbitraryValue"/> instance.
         /// </returns>
         /// <exception cref="System.ArgumentException">
         /// <paramref name="value"/> is null, empty ("") or contains only whitespace 
         /// characters.
         /// </exception>
-        public static ArbituraryMeasuredValue New<T>(T value, LevelOfMeasurement level, IUnitOfMeasurement unit) where T : struct
+        public static ArbitraryValue New<T>(T value, LevelOfMeasurement level, UnitOfMeasurement unit) where T : struct
         {
-            return new ArbituraryMeasuredValue(Convert.ChangeType(value, typeof(string)) as string, typeof(T), level, unit);
+            return new ArbitraryValue(Convert.ChangeType(value, typeof(string)) as string, typeof(T), level, unit);
         }
 
         /// <summary>
-        /// Converts the string representation of a <see cref="ArbituraryMeasuredValue"/> to 
-        /// its <see cref="ArbituraryMeasuredValue"/> equivalent.
+        /// Converts the string representation of a <see cref="ArbitraryValue"/> to 
+        /// its <see cref="ArbitraryValue"/> equivalent.
         /// </summary>
         /// <param name="value">
         /// A string that contains a value, quantity, ratio to convert.
@@ -180,12 +183,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// A string that contains a level of measurement code to convert.
         /// </param>
         /// <returns>
-        /// An new <see cref="ArbituraryMeasuredValue"/> that is equivalent to the 
-        /// <see cref="ArbituraryMeasuredValue"/> contained in <paramref name="value"/>,
+        /// An new <see cref="ArbitraryValue"/> that is equivalent to the 
+        /// <see cref="ArbitraryValue"/> contained in <paramref name="value"/>,
         /// <paramref name="valueType"/>, <paramref name="unit"/>, <paramref name="level"/>;
         /// or null otherwise.
         /// </returns>
-        public static ArbituraryMeasuredValue Parse(string value, string valueType, string unit, string level)
+        public static ArbitraryValue Parse(string value, string valueType, string unit, string level)
         {
             Debug.Assert(value     != null, "value is null"    );
             Debug.Assert(valueType != null, "valueType is null");
@@ -204,22 +207,40 @@ namespace Appva.Mcss.Admin.Domain.Entities
             {
                 return null;
             }
-            return new ArbituraryMeasuredValue(value, type, EnumHelper.IsParsable<LevelOfMeasurement>(level) ? EnumHelper.Parse<LevelOfMeasurement>(level) : LevelOfMeasurement.Undetermined, unit == null ? null : UnitOfMeasurement.Parse(unit));
+            var levelOfMeasurement = EnumHelper.IsParsable<LevelOfMeasurement>(level) ? EnumHelper.Parse<LevelOfMeasurement>(level) : LevelOfMeasurement.Undetermined; 
+            var unitOfMeasurement  = unit == null ? null : UnitOfMeasurement.Parse(unit);
+            if (type == typeof(string))
+            {
+                return new ArbitraryValue(value, type, levelOfMeasurement, unitOfMeasurement);
+            }
+            if (type.IsEnum)
+            {
+                return new ArbitraryValue(Enum.Parse(type, value), type, levelOfMeasurement, unitOfMeasurement);
+            }
+            if (type.IsPrimitive)
+            {
+                return new ArbitraryValue(Convert.ChangeType(value, type), type, levelOfMeasurement, unitOfMeasurement);
+            }
+            if (typeof(IUnit).IsAssignableFrom(type))
+            {
+                var enumType = type.BaseType.GetGenericArguments()[0];
+                return new ArbitraryValue(Enum.Parse(enumType, value), enumType, levelOfMeasurement, unitOfMeasurement);
+            }
+            return null;
         }
 
         #endregion
 
         /// <inheritdoc />
-        public IArbituraryValue DeepCopy()
+        public ArbitraryValue DeepCopy()
         {
-            //// A shallow copy is sufficient enough.
-            return (IArbituraryValue) this.MemberwiseClone();
+            return (ArbitraryValue) this.MemberwiseClone(/* A shallow copy will suffice. */);
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.value;
+            return this.value.ToString();
         }
 
         /// <inheritdoc />
@@ -229,7 +250,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             {
                 return this.value + " " + this.Unit.Symbol;
             }
-            return this.value;
+            return this.ToString();
         }
 
         /// <inheritdoc />

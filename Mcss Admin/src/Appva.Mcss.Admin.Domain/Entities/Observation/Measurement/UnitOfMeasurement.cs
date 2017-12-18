@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Validation;
 
@@ -19,7 +18,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// Represents a code system intended to include all units of measures being 
     /// contemporarily used in health care.
     /// </summary>
-    public class UnitOfMeasurement : IUnitOfMeasurement
+    public class UnitOfMeasurement
     {
         #region Variables.
 
@@ -50,8 +49,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="code">The case insensitive code.</param>
         public UnitOfMeasurement(string name, string symbol, string code)
         {
-            Requires.NotNullOrWhiteSpace(name,     "name");
-            Requires.NotNullOrWhiteSpace(code,     "code");
+            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(code, "code");
             this.name   = name;
             this.symbol = symbol;
             this.code   = code;
@@ -61,7 +60,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Properties.
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The official name of the unit.
+        /// </summary>
         public string Name
         {
             get
@@ -70,7 +71,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The official symbol used in print.
+        /// </summary>
         public string Symbol
         {
             get
@@ -79,7 +82,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The case insensitive code.
+        /// </summary>
         public string Code
         {
             get
@@ -121,7 +126,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <exception cref="System.FormatException">
         /// <paramref name="str"/> does not contain a valid string representation of a date.
         /// </exception>
-        public static IUnitOfMeasurement Parse(string str)
+        public static UnitOfMeasurement Parse(string str)
         {
             Requires.NotNullOrWhiteSpace(str, "str");
             var unit  = new[] 

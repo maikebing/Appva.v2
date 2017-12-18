@@ -14,7 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #endregion
 
     /// <summary>
-    /// An implementation of Observation for Dosage units.
+    /// An implementation of <see cref="Observation"/> for administered dosages.
     /// </summary>
     public class DosageObservation : Observation
     {
@@ -36,7 +36,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Initializes a new instance of the <see cref="DosageObservation"/> class.
         /// </summary>
         /// <remarks>An NHibernate visible no-argument constructor.</remarks>
-        internal protected DosageObservation()
+        protected internal DosageObservation()
         {
         }
 
@@ -56,12 +56,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        /// <inheritdoc />
+        protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        /// <inheritdoc />
+        protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
             throw new System.NotImplementedException();
         }

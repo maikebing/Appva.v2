@@ -24,16 +24,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Initializes a new instance of the <see cref="ObservationItem"/> class.
         /// </summary>
         /// <param name="observation">The observation.</param>
-        /// <param name="measurement">The measurement.</param>
-        /// <param name="task">The Task</param>
+        /// <param name="value">The measured value.</param>
         /// <param name="signature">The signature.</param>
+        /// <param name="task">The Task</param>
         /// <param name="comment">The comment.</param>
-        public ObservationItem(Observation observation, IArbituraryValue measurement, Task task = null, Signature signature = null, Comment comment = null)
+        public ObservationItem(Observation observation, ArbitraryValue value, Signature signature, Task task = null, Comment comment = null)
         {
             Requires.NotNull(observation, "observation");
-            Requires.NotNull(measurement, "measurement");
+            Requires.NotNull(value,       "value"      );
+            Requires.NotNull(signature,   "signature"  );
             this.Observation = observation;
-            this.Measurement = measurement;
+            this.Value       = value;
             this.Task        = task;
             this.Signature   = signature;
             this.Comment     = comment;
@@ -45,7 +46,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        internal protected ObservationItem()
+        protected internal ObservationItem()
         {
         }
 
@@ -59,16 +60,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Observation Observation
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// The measurement.
         /// </summary>
-        public virtual IArbituraryValue Measurement
+        public virtual ArbitraryValue Value
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Signature Signature
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Comment Comment
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Task Task
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         #endregion
@@ -106,14 +107,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Creates a new instance of the <see cref="ObservationItem"/> class.
         /// </summary>
         /// <param name="observation">The observation.</param>
-        /// <param name="measurement">The measurement.</param>
+        /// <param name="value">The measured value.</param>
         /// <param name="signature">The signature.</param>
         /// <param name="task">The task.</param>
         /// <param name="comment">The comment.</param>
         /// <returns>A new <see cref="ObservationItem"/> instance.</returns>
-        public static ObservationItem New(Observation observation, IArbituraryValue measurement, Task task = null, Signature signature = null, Comment comment = null)
+        public static ObservationItem New(Observation observation, ArbitraryValue value, Signature signature, Task task = null, Comment comment = null)
         {
-            return new ObservationItem(observation, measurement, task, signature, comment);
+            return new ObservationItem(observation, value, signature, task, comment);
         }
 
         #endregion

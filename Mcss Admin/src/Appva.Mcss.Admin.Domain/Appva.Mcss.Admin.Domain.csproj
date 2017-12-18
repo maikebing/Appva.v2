@@ -104,6 +104,7 @@
     <Compile Include="Common\Domain\IDomainEvent.cs" />
     <Compile Include="Common\Domain\IEventSourced.cs" />
     <Compile Include="Common\IDeepCopyable.cs" />
+    <Compile Include="Common\Introspective\CodeAttribute.cs" />
     <Compile Include="Common\Introspective\ImmutableAttribute.cs" />
     <Compile Include="Common\Introspective\LoincAttribute.cs" />
     <Compile Include="Common\Introspective\TrustedAttribute.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="Common\Repositories\StatelessRepository.cs" />
     <Compile Include="Common\Types\JsonType.cs" />
     <Compile Include="Common\Helpers\TypeNameHelper.cs" />
-    <Compile Include="Common\Types\MeasurementType.cs" />
+    <Compile Include="Common\Types\ArbitraryValueType.cs" />
     <Compile Include="Common\ValueObject.cs" />
     <Compile Include="Configurations\DosageConfiguration.cs" />
     <Compile Include="Configurations\IConfiguration.cs" />
@@ -151,11 +152,9 @@
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationReadByAccount.cs" />
-    <Compile Include="Entities\Observation\Measurement\IArbituraryValue.cs" />
     <Compile Include="Entities\Observation\BodyWeightObservation.cs" />
-    <Compile Include="Entities\Observation\Measurement\IUnitOfMeasurement.cs" />
-    <Compile Include="Entities\Observation\Measurement\ArbituraryMeasuredValue.cs" />
-    <Compile Include="Entities\Observation\Measurement\MeasurementExtensions.cs" />
+    <Compile Include="Entities\Observation\Measurement\ArbitraryValue.cs" />
+    <Compile Include="Entities\Observation\Measurement\ArbitraryValueExtensions.cs" />
     <Compile Include="Entities\Observation\Measurement\NonUnitOfMeasurement.cs" />
     <Compile Include="Entities\Observation\Measurement\LevelOfMeasurement.cs" />
     <Compile Include="Entities\Observation\Measurement\UnitOfMeasurement.cs" />

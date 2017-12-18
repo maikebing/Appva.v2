@@ -8,13 +8,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System.ComponentModel;
     using Appva.Mcss.Admin.Domain.Common;
 
     #endregion
 
     /// <summary>
-    /// A feces observation.
+    /// A arbitrary stool weight scale <see cref="Observation"/> implementation.
     /// </summary>
+    [DisplayName("Feces")]
+    [Description("General stool scale (Type AAA-d)")]
     [Loinc("17609-9", "Weight [Mass/time] of 72 hour Stool")]
     public class FecesObservation : Observation
     {
@@ -44,49 +47,20 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Properties.
-
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string ShortName
-        {
-            get
-            {
-                return "Feces";
-            }
-        }
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string DescriptiveName
-        {
-            get
-            {
-                return "General stool scale (Type AAA-d)";
-            }
-        }
-
-        #endregion
-
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
             unit = unit ?? NonUnits.ArbitraryStoolScale;
             //// UNRESOLVED: Check value.
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
             unit = unit ?? NonUnits.ArbitraryStoolScale;
             //// UNRESOLVED: Check value.
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
     }
 }

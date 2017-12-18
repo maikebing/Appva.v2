@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Domain.Unit;
@@ -16,8 +17,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// An abstract base observation.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
     public abstract class Observation : EventSourced
     {
         #region Constructors.
@@ -29,7 +31,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        public Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) //// UNRESOLVED: custom scale only used by DosageObservation
+        /// <param name="delegation">Optional delegation.</param>
+        protected internal Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) 
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
@@ -39,7 +42,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.Delegation  = delegation;
             this.Scale       = scale == null ? null : scale.ToString();
-            //// Code <-- 
+            //// UNRESOLVED: custom scale only used by DosageObservation
+            //// rename scale to something like valid values, overridden scale of values etc. <-- 
+            //// add unit (a list of ok units) to observation
+            //// create an nhibernate type for above list.
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        internal protected Observation()
+        protected internal Observation()
         {
         }
 
@@ -62,7 +68,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Patient Patient
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -71,7 +77,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Name
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -80,7 +86,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Description
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -89,7 +95,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Taxon Delegation
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -99,7 +105,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Scale
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual IList<ObservationItem> Items
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -121,7 +127,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual IList<Sequence> Sequences
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -148,7 +154,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="who">The practitioner who performed the measurement operation.</param>
         /// <param name="value">The struct value quantity.</param>
         /// <param name="unit">Optional unit, if the observation allows it.</param>
-        public virtual void TakeMeasurement<T>(Account who, T value, IUnitOfMeasurement unit = null) where T : struct
+        public virtual void TakeMeasurement<T>(Account who, T value, UnitOfMeasurement unit = null) where T : struct
         {
             this.AddObservationMeasurement(who, this.NewMeasurement(value, unit));
         }
@@ -156,44 +162,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Takes a measurement value, e.g. measures the length or weight, as a string.
         /// </summary>
-        /// <typeparam name="T">The value type.</typeparam>
         /// <param name="who">The practitioner who performed the measurement operation.</param>
         /// <param name="value">The struct value quantity.</param>
         /// <param name="unit">Optional unit, if the observation allows it.</param>
-        public virtual void TakeMeasurement(Account who, string value, IUnitOfMeasurement unit = null)
+        public virtual void TakeMeasurement(Account who, string value, UnitOfMeasurement unit = null)
         {
             this.AddObservationMeasurement(who, this.NewMeasurement(value, unit));
         }
-
-        /// <summary>
-        /// Creates and signs a new observation item.
-        /// </summary>
-        /// <param name="who">The practitioner who performed the measurement operation.</param>
-        /// <param name="measurement">The measured value.</param>
-        protected void AddObservationMeasurement(Account who, IArbituraryValue measurement)
-        {
-            var signature = Signature.New(who, measurement.ToSignedData());
-            var item      = ObservationItem.New(this, measurement, null, signature, null);
-            this.Items.Add(item);
-        }
-
-        /// <summary>
-        /// Creates a new measurement value.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <param name="unit">Optional unit, if allowed.</param>
-        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
-        protected abstract IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null) where T : struct;
-
-        /// <summary>
-        /// Creates a new measurement value.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <param name="unit">Optional unit, if allowed.</param>
-        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
-        protected abstract IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null);
 
         /// <summary>
         /// Updates the current measurement observation.
@@ -209,6 +184,35 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = instruction;
             this.Delegation  = delegation;
         }
+
+        /// <summary>
+        /// Creates and signs a new observation item.
+        /// </summary>
+        /// <param name="who">The practitioner who performed the measurement operation.</param>
+        /// <param name="measurement">The measured value.</param>
+        protected void AddObservationMeasurement(Account who, ArbitraryValue measurement)
+        {
+            var signature = Signature.New(who, measurement.ToSignedData());
+            var item      = ObservationItem.New(this, measurement, signature);
+            this.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Creates a new measurement value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">Optional unit, if allowed.</param>
+        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
+        protected abstract ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null) where T : struct;
+
+        /// <summary>
+        /// Creates a new measurement value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">Optional unit, if allowed.</param>
+        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
+        protected abstract ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null);
 
         #endregion
     }

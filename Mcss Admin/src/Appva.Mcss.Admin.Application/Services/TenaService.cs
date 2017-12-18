@@ -256,7 +256,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 tenaApiList.Add(new ManualEvent
                 {
                     Id         = item.Id.ToString(),
-                    EventType  = item.Measurement.ToString(),
+                    EventType  = item.Value.ToString(),
                     ResidentId = item.Observation.Patient.TenaId,
                     Timestamp  = createdAt.ToUtc(),
                     Active     = item.IsActive

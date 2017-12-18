@@ -9,14 +9,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
+    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using Validation;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// A TENA Identifi scale <see cref="Observation"/> implementation.
     /// </summary>
+    [DisplayName("TENA Identifi")]
+    [Description("Registration of bathroom behavior")]
     public class TenaObservation : Observation
     {
         #region Constructors.
@@ -44,7 +47,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaObservation"/> class.
         /// </summary>
-        /// <remarks>An NHibernate visible no-argument constructor.</remarks>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// </remarks>
         protected internal TenaObservation()
         {
         }
@@ -111,15 +116,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, null);
         }
 
         /// <inheritdoc />
-        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, null);
         }
 
         #endregion

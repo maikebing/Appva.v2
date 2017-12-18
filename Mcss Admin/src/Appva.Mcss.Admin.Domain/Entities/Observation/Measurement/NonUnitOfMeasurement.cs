@@ -7,7 +7,7 @@
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     /// <summary>
-    /// Represents non units.
+    /// A non unit implementation of <see cref="UnitOfMeasurement"/>.
     /// </summary>
     internal sealed class NonUnitOfMeasurement : UnitOfMeasurement
     {

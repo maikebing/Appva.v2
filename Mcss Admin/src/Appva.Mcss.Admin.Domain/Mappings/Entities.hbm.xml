@@ -2,8 +2,8 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Appva.Mcss.Admin.Domain" namespace="Appva.Mcss.Admin.Domain.Entities">
 
   <!-- Type definitions. -->
-  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType, Appva.Mcss.Admin.Domain"        name="json"        />
-  <typedef class="Appva.Mcss.Admin.Domain.Common.MeasurementType, Appva.Mcss.Admin.Domain" name="measurement" />
+  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType, Appva.Mcss.Admin.Domain"           name="json"        />
+  <typedef class="Appva.Mcss.Admin.Domain.Common.ArbitraryValueType, Appva.Mcss.Admin.Domain" name="ArbitraryValue" />
   
   <!-- System classes. -->
 
@@ -580,11 +580,11 @@
     <property name="UpdatedAt"    column="Modified"      />
     <many-to-one name="Observation" class="Observation"  />
     <many-to-one name="Task"        class="Task"         />
-    <property name="Measurement" type="measurement">
-      <column name="Value"                        />
-      <column name="Type"                         />
-      <column name="UnitOfMeasurement"            />
-      <column name="TypeOfMeasurement"            />
+    <property name="Value" type="ArbitraryValue">
+      <column name="Value" />
+      <column name="Type"  />
+      <column name="UnitOfMeasurement"  />
+      <column name="LevelOfMeasurement" />
     </property>
     <many-to-one name="Signature" class="Signature" cascade="save-update" />
     <many-to-one name="Comment"   class="Comment"                         />

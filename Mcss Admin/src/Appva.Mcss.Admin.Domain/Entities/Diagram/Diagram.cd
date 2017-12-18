@@ -10,8 +10,8 @@
       <FileName>Entities\Comment\Comment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Parent" />
       <Property Name="Signature" />
+      <Property Name="Parent" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.Observation">
@@ -21,7 +21,7 @@
       <Compartment Name="Events" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AASAEAAAAAAgCAAAAAIAAAQAAAAAAAAAAAABAAEACAA=</HashCode>
+      <HashCode>AASAEAAAAAQgCAAAAAIAAAQAIAAAAAAAAAABAAEACAA=</HashCode>
       <FileName>Entities\Observation\Observation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -36,9 +36,9 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Observation" />
+      <Property Name="Measurement" />
       <Property Name="Signature" />
       <Property Name="Comment" />
-      <Property Name="Measurement" />
       <Property Name="Task" />
     </ShowAsAssociation>
   </Class>
@@ -73,9 +73,6 @@
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.SignedData">
     <Position X="0.5" Y="7.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAE=</HashCode>
       <FileName>Entities\Signature\SignedData.cs</FileName>
@@ -126,13 +123,6 @@
       <Property Name="ObservationItem" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Appva.Mcss.Admin.Domain.Entities.BristolObservation" Collapsed="true">
-    <Position X="6.5" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\Observation\BristolObservation.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.FecesObservation" Collapsed="true">
     <Position X="6.5" Y="2" Width="1.5" />
     <TypeIdentifier>
@@ -140,26 +130,51 @@
       <FileName>Entities\Observation\FecesObservation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Appva.Mcss.Admin.Domain.Entities.TenaObservationPeriod" Collapsed="true">
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.TenaObservation" Collapsed="true">
     <Position X="2.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAEAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAQAAAAEAAAAAAAAAAAAAAAgIAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Entities\Observation\TenaObservation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Appva.Mcss.Admin.Domain.Entities.WeightObservation" Collapsed="true">
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.BodyWeightObservation" Collapsed="true">
     <Position X="2.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\Observation\WeightObservation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAEAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\BodyWeightObservation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Appva.Mcss.Admin.Domain.Entities.IMeasurement">
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.BristolStoolScaleObservation" Collapsed="true">
+    <Position X="6.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\BristolStoolScaleObservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Appva.Mcss.Admin.Domain.Entities.IArbituraryValue">
     <Position X="6.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAQAAA=</HashCode>
-      <FileName>Entities\Observation\Measurement\IMeasurement.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAQAAA=</HashCode>
+      <FileName>Entities\Observation\Measurement\IArbituraryValue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TypeOfScale" />
+      <Property Name="Unit" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Appva.Mcss.Admin.Domain.Entities.IUnitOfMeasurement">
+    <Position X="6.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Entities\Observation\Measurement\IUnitOfMeasurement.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="Appva.Mcss.Admin.Domain.Entities.LevelOfMeasurement">
+    <Position X="4.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAABAAAEQAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\Measurement\LevelOfMeasurement.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

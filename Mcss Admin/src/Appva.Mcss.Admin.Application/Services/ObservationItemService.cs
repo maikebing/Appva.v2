@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="observation">The observation.</param>
         /// <param name="value">The value.</param>
-        void Create(Observation observation, Account account, IUnitOfMeasurement value);
+        void Create(Observation observation, string value);
 
         /// <summary>
         /// Gets the specified item identifier.
@@ -92,10 +92,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Create(Observation observation, string value)
         {
-            var account = this.accountService.CurrentPrincipal();
-            var item    = observation.NewItem(account, value);
-            this.observationItemRepository.Save(item);
-            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
+            //var account = this.accountService.CurrentPrincipal();
+            //var item    = observation.NewItem(account, value);
+            //this.observationItemRepository.Save(item);
+            //this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }
 
         /// <inheritdoc />

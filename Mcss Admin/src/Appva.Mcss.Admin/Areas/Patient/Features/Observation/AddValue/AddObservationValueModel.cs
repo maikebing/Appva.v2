@@ -131,10 +131,10 @@ namespace Appva.Mcss.Admin.Models
         public override bool IsValid(object value)
         {
             var testValue = value.ToString();
-            if ((BristolUnit.HasValidValue(testValue) || FecesUnit.HasValidValue(testValue) || WeightUnit.HasValidValue(testValue)) == false)
+            /*if ((BristolUnit.HasValidValue(testValue) || FecesUnit.HasValidValue(testValue) || WeightUnit.HasValidValue(testValue)) == false)
             {
                 return false;
-            }
+            }*/
             return true;
         }
     }

@@ -210,26 +210,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Delegation  = delegation;
         }
 
-        /// <summary>
-        /// News the item.
-        /// </summary>
-        /// <param name="account">The account.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>ObservationItem.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual ObservationItem NewItem(Account account, string value)
-        {
-            object unitValue;
-            switch(this.GetType().Name)
-            {
-                case "BristolObservation": unitValue = new BristolUnit(value); break;                    
-                case "FecesObservation":   unitValue = new FecesUnit(value);   break;
-                case "WeightObservation":  unitValue = new WeightUnit(value);  break;
-                default: throw new NotImplementedException();
-            }
-            return ObservationItem.New(this, Measurement.New(unitValue), null, Signature.New(account, SignedData.New(unitValue)));
-        }
-
         #endregion
     }
 }

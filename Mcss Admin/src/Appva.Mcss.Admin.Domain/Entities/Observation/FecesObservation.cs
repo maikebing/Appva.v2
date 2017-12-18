@@ -76,13 +76,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            unit = unit ?? NonUnits.ArbitraryStoolScale;
+            //// UNRESOLVED: Check value.
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
         protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            unit = unit ?? NonUnits.ArbitraryStoolScale;
+            //// UNRESOLVED: Check value.
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
     }
 }

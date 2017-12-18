@@ -51,13 +51,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            //// UNRESOLVED: VALIDATE value.
+            // 1. unit != null 
+            // 2. t != system.string || type.enum skiten
+            // 3. t ! parse till tena enum skiten
+            // samma i bristol och arbitrator skalan
+            // (t måste vara number på weight) system.double
+            // (t double.tryparse()
+            // min max och argumentoutofrangeexception eller overflowexception
+
+            //unit = unit ?? NonUnits.BristolStoolScale;
+
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
         protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
         {
-            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+            //unit = unit ?? NonUnits.BristolStoolScale;
+            //// UNRESOLVED: Check value.
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, unit);
         }
     }
 }

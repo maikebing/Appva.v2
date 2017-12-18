@@ -114,8 +114,8 @@ namespace Appva.Mcss.Admin.Models
             {
                 switch (this.Scale)
                 {
-                    case "FecesObservation":   return Enum.GetValues(typeof(FecesScale))  .Cast<FecesScale>()  .Select(x => new SelectListItem { Text = FecesUnit.ToString(x),   Value = x.ToString() });
-                    case "BristolObservation": return Enum.GetValues(typeof(BristolScale)).Cast<BristolScale>().Select(x => new SelectListItem { Text = BristolUnit.ToString(x), Value = x.ToString() });
+                    case "FecesObservation": return Enum.GetValues(typeof(FecesScale)).Cast<FecesScale>().Select(x => new SelectListItem { Text = FecesUnit.ToString(x), Value = x.ToString() });
+                    case "BristolStoolScaleObservation": return Enum.GetValues(typeof(BristolScale)).Cast<BristolScale>().Select(x => new SelectListItem { Text = BristolUnit.ToString(x), Value = x.ToString() });
                     default: return null;
                 }
             }
@@ -130,11 +130,12 @@ namespace Appva.Mcss.Admin.Models
     {
         public override bool IsValid(object value)
         {
-            var testValue = value.ToString();
-            /*if ((BristolUnit.HasValidValue(testValue) || FecesUnit.HasValidValue(testValue) || WeightUnit.HasValidValue(testValue)) == false)
-            {
-                return false;
-            }*/
+            //// UNRESOLVED: work around this. Model needs to know Observation and from there make a proper validation.
+            var value_to_test = value.ToString();
+            //if (( BristolUnit.HasValidValue(value_to_test) || FecesUnit.HasValidValue(value_to_test) || WeightUnit.HasValidValue(value_to_test)) == false)
+            //{
+            //    return false;
+            //}
             return true;
         }
     }

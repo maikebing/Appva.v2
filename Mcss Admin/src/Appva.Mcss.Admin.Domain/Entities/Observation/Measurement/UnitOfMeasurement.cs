@@ -128,7 +128,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
                 { 
                     MassUnits.Kilogram, MassUnits.Gram, MassUnits.Pound,
                     NonUnits.ArbitraryStoolScale, NonUnits.BristolStoolScale, NonUnits.TenaIdentifiScale
-                }.Where(x => x.Code == str).FirstOrDefault();
+                }.Where(x => x.Name == str).FirstOrDefault();
             if (unit != null)
             {
                 return unit;

@@ -11,41 +11,41 @@ namespace Appva.Mcss.Domain.Unit
         /// <summary>
         /// Big Triple A, AAA
         /// </summary>
-        BigTripleA,
+        AAA,
 
         /// <summary>
         /// Big Double A, AA
         /// </summary>
-        BigDoubleA,
+        AA,
 
         /// <summary>
         /// Big A, A
         /// </summary>
-        BigA,
+        A,
 
         /// <summary>
         /// Small A, a
         /// </summary>
-        SmallA,
+        a,
 
         /// <summary>
         /// Small Triple A, aaa
         /// </summary>
-        SmallTripleA,
+        aaa,
 
         /// <summary>
         /// Small D, d
         /// </summary>
-        SmallD,
+        d,
 
         /// <summary>
         /// Big D, D
         /// </summary>
-        BigD,
+        D,
 
         /// <summary>
         /// K, k
         /// </summary>
-        K
+        k
     }
 }

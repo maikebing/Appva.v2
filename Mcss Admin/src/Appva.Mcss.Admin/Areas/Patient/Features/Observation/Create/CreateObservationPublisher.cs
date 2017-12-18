@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateMeasurementPublisher.cs" company="Appva AB">
+﻿// <copyright file="CreateObservationPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// Class CreateMeasurementPublisher.
     /// </summary>
     /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.CreateObservationModel, Appva.Mcss.Admin.Models.ListObservation}" />
-    public class CreateMeasurementPublisher : RequestHandler<CreateObservationModel, ListObservation>
+    public class CreateObservationPublisher : RequestHandler<CreateObservationModel, ListObservation>
     {
         #region Variables.
 
@@ -40,18 +40,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientService patientService;
 
-
         #endregion
 
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateMeasurementPublisher"/> class.
+        /// Initializes a new instance of the <see cref="CreateObservationPublisher"/> class.
         /// </summary>
         /// <param name="measurementService">The measurement service.</param>
         /// <param name="taxonService">The taxon service.</param>
         /// <param name="patientService">The patient service.</param>
-        public CreateMeasurementPublisher(IObservationService observationService, ITaxonomyService taxonService, IPatientService patientService)
+        public CreateObservationPublisher(IObservationService observationService, ITaxonomyService taxonService, IPatientService patientService)
         {
             this.observationService = observationService;
             this.taxonService       = taxonService;

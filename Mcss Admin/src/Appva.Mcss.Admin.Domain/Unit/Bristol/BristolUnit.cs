@@ -110,13 +110,63 @@ namespace Appva.Mcss.Domain.Unit
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.Value.ToString();
+            switch (this.Value)
+            {
+                case BristolScale.Type1: return "Typ 1";
+                case BristolScale.Type2: return "Typ 2";
+                case BristolScale.Type3: return "Typ 3";
+                case BristolScale.Type4: return "Typ 4";
+                case BristolScale.Type5: return "Typ 5";
+                case BristolScale.Type6: return "Typ 6";
+                case BristolScale.Type7: return "Typ 7";
+            }
+            throw new InvalidOperationException();
         }
 
         /// <inheritdoc />
         public override string ToString(IFormatProvider provider)
         {
             return this.Value.ToString(/* provider is deprecated for enum */);
+        }
+
+        #endregion
+
+        #region Static Members.
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static string ToString(BristolScale value)
+        {
+            switch (value)
+            {
+                case BristolScale.Type1: return "Typ 1";
+                case BristolScale.Type2: return "Typ 2";
+                case BristolScale.Type3: return "Typ 3";
+                case BristolScale.Type4: return "Typ 4";
+                case BristolScale.Type5: return "Typ 5";
+                case BristolScale.Type6: return "Typ 6";
+                case BristolScale.Type7: return "Typ 7";
+            }
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Determines whether [has valid value] [the specified value].
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if [has valid value] [the specified value]; otherwise, <c>false</c>.</returns>
+        public static bool HasValidValue(string value)
+        {
+            BristolScale result;
+            if ((Enum.TryParse(value, true, out result) && Enum.IsDefined(typeof(BristolScale), result)) == false)
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion

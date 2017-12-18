@@ -89,24 +89,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The selected unit.
-        /// </summary>
-        public string SelectedUnit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The selected scale.
-        /// </summary>
-        public string SelectedScale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The selected delegation.
         /// </summary>
         [Required]

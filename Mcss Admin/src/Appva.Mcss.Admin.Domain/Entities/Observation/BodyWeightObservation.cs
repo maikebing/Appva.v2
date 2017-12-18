@@ -14,7 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
 
     #endregion
-    
+
     /// <summary>
     /// A body weight observation.
     /// </summary>
@@ -92,7 +92,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
         {
             unit = unit ?? MassUnits.Kilogram;
-            if (! this.Units.Any(valid => valid == unit))
+            if (!this.Units.Any(valid => valid == unit))
             {
                 throw new OverflowException("The unit is not one of the ");
             }

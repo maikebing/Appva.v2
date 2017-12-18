@@ -1,4 +1,4 @@
-﻿// <copyright file="UpdateMeasurementPublisher.cs" company="Appva AB">
+﻿// <copyright file="UpdateObservationPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// Class UpdateMeasurementPublisher.
     /// </summary>
     /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateObservationModel, Appva.Mcss.Admin.Models.ListObservation}" />
-    public class UpdateMeasurementPublisher : RequestHandler<UpdateObservationModel, ListObservation>
+    public class UpdateObservationPublisher : RequestHandler<UpdateObservationModel, ListObservation>
     {
         #region Variables.
 
@@ -38,11 +38,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateMeasurementPublisher"/> class.
+        /// Initializes a new instance of the <see cref="UpdateObservationPublisher"/> class.
         /// </summary>
         /// <param name="measurementService">The measurement service.</param>
         /// <param name="taxonService">The taxon service.</param>
-        public UpdateMeasurementPublisher(IObservationService observationService, ITaxonomyService taxonService)
+        public UpdateObservationPublisher(IObservationService observationService, ITaxonomyService taxonService)
         {
             this.observationService = observationService;
             this.taxonService       = taxonService;

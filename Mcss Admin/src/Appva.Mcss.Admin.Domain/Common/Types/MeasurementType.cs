@@ -111,7 +111,7 @@ namespace Appva.Mcss.Admin.Domain.Common
             var measurement = value as ArbituraryMeasuredValue;
             NHibernateUtil.String.NullSafeSet(cmd, measurement.Value,       index    ); //// Value
             NHibernateUtil.String.NullSafeSet(cmd, measurement.ValueType,   index + 1); //// ValueType
-            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit.Name,   index + 2); //// Unit
+            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit == null?  null: measurement.Unit.Name,   index + 2); //// Unit
             NHibernateUtil.String.NullSafeSet(cmd, Enum.GetName(typeof(LevelOfMeasurement), measurement.TypeOfScale), index + 3); //// TypeOfMeasurement
         }
 

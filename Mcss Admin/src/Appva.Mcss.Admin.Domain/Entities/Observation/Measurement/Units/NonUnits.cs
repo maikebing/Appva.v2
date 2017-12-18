@@ -29,11 +29,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The non unit for toilet activity.
         /// </summary>
-        public static readonly UnitOfMeasurement TenaIdentifiScale = new NonUnitOfMeasurement("Bristol stool scale", "bristol_stool_scale");
+        public static readonly UnitOfMeasurement TenaIdentifiScale = new NonUnitOfMeasurement("Tena Identifi scale", "tena_identifi_scale");
 
         /// <summary>
         /// The non unit for classification (weight) of human feces.
         /// </summary>
-        public static readonly UnitOfMeasurement ArbitraryStoolScale = new NonUnitOfMeasurement("Bristol stool scale", "custom_size_stool_scale_sv");
+        public static readonly UnitOfMeasurement ArbitraryStoolScale = new NonUnitOfMeasurement("Arbitrary stool scale", "custom_stool_scale_sv");
     }
 }

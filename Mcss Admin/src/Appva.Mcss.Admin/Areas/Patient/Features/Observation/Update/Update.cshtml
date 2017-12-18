@@ -10,13 +10,6 @@
             @Html.ValidationSummary()
             <div class="width-limiter width-limiter--s">
                 <div class="form-controls">
-                    <p>
-                        Använder skala: @Model.SelectedScale
-                    </p>
-
-                </div>
-
-                <div class="form-controls">
                     @Html.LabelFor(x => x.Name, new { @class = "required-indicator" })
                     @Html.TextBoxFor(x => x.Name, new { @required = "required" })
                 </div>

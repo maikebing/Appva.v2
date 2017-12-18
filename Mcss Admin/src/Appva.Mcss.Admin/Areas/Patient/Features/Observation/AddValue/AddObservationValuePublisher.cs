@@ -27,11 +27,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IObservationService observationService;
 
-        /// <summary>
-        /// The observation item service
-        /// </summary>
-        private readonly IObservationItemService observationItemService;
-
         #endregion
 
         #region Constructors.
@@ -45,7 +40,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public AddObservationValuePublisher(IObservationService observationService, IObservationItemService observationItemService)
         {
             this.observationService     = observationService;
-            this.observationItemService = observationItemService;
         }
 
         #endregion
@@ -57,7 +51,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var observation = this.observationService.Get(message.ObservationId);
             Requires.NotNull(observation, "observation");
-            this.observationItemService.Create(observation, message.Value);
+            this.observationService.CreateItem(observation, message.Value);
             return new ListObservation(observation.Patient.Id, observation.Id);
         }
 

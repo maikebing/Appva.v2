@@ -126,29 +126,29 @@ namespace Appva.Mcss.Domain.Unit
         {
             switch (str)
             {
-                case "AAA":
-                    result = FecesScale.BigTripleA;
+                case "BigTripleA":
+                    result = FecesScale.AAA;
                     return true;
-                case "AA":
-                    result = FecesScale.BigDoubleA;
+                case "BigDoubleA":
+                    result = FecesScale.AA;
                     return true;
-                case "A":
-                    result = FecesScale.BigA;
+                case "BigA":
+                    result = FecesScale.A;
                     return true;
-                case "a":
-                    result = FecesScale.SmallA;
+                case "SmallA":
+                    result = FecesScale.a;
                     return true;
-                case "aaa":
-                    result = FecesScale.SmallTripleA;
+                case "SmallTripleA":
+                    result = FecesScale.aaa;
                     return true;
-                case "d":
-                    result = FecesScale.SmallD;
+                case "SmallD":
+                    result = FecesScale.d;
                     return true;
-                case "D":
-                    result = FecesScale.BigD;
+                case "BigD":
+                    result = FecesScale.D;
                     return true;
-                case "k":
-                    result = FecesScale.K;
+                case "K":
+                    result = FecesScale.k;
                     return true;
                 default:
                     result = (FecesScale)0;
@@ -181,14 +181,14 @@ namespace Appva.Mcss.Domain.Unit
         {
             switch (this.Value)
             {
-                case FecesScale.BigTripleA: return "AAA";
-                case FecesScale.BigDoubleA: return "AA";
-                case FecesScale.BigA: return "A";
-                case FecesScale.SmallA: return "a";
-                case FecesScale.SmallTripleA: return "aaa";
-                case FecesScale.SmallD: return "d";
-                case FecesScale.BigD: return "D";
-                case FecesScale.K: return "k";
+                case FecesScale.AAA: return "BigTripleA";
+                case FecesScale.AA: return "BigDoubleA";
+                case FecesScale.A: return "BigA";
+                case FecesScale.a: return "SmallA";
+                case FecesScale.aaa: return "SmallTripleA";
+                case FecesScale.d: return "SmallD";
+                case FecesScale.D: return "BigD";
+                case FecesScale.k: return "K";
             }
             throw new InvalidOperationException();
         }
@@ -207,14 +207,14 @@ namespace Appva.Mcss.Domain.Unit
         {
             switch (value)
             {
-                case FecesScale.BigTripleA: return "AAA";
-                case FecesScale.BigDoubleA: return "AA";
-                case FecesScale.BigA: return "A";
-                case FecesScale.SmallA: return "a";
-                case FecesScale.SmallTripleA: return "aaa";
-                case FecesScale.SmallD: return "d";
-                case FecesScale.BigD: return "D";
-                case FecesScale.K: return "k";
+                case FecesScale.AAA: return "BigTripleA";
+                case FecesScale.AA: return "BigDoubleA";
+                case FecesScale.A: return "BigA";
+                case FecesScale.a: return "SmallA";
+                case FecesScale.aaa: return "SmallTripleA";
+                case FecesScale.d: return "SmallD";
+                case FecesScale.D: return "BigD";
+                case FecesScale.k: return "K";
             }
             throw new InvalidOperationException();
         }

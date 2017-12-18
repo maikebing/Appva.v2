@@ -48,6 +48,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id">The identifier.</param>
         /// <returns>IList&lt;Observation&gt;.</returns>
         IList<Observation> ListByPatient(Guid id);
+
+        /// <summary>
+        /// Creates the item.
+        /// </summary>
+        /// <param name="observation">The observation.</param>
+        /// <param name="value">The value.</param>
+        void CreateItem(Observation observation, string value);
     }
 
     /// <summary>
@@ -68,6 +75,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IAuditService auditService;
 
+        /// <summary>
+        /// The account service
+        /// </summary>
+        private readonly IAccountService accountService;
+
         #endregion
 
         #region Constructors.
@@ -77,10 +89,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="observationRepository">The <see cref="IObservationRepository"/>.</param>
         /// <param name="auditService">The <see cref="IAuditService"/>.</param>
-        public ObservationService(IObservationRepository observationRepository, IAuditService auditService)
+        public ObservationService(IObservationRepository observationRepository, IAuditService auditService, IAccountService accountService)
         {
             this.observationRepository = observationRepository;
             this.auditService = auditService;
+            this.accountService = accountService;
         }
 
         /// <inheritdoc />
@@ -88,6 +101,12 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             this.observationRepository.Save(observation);
             this.auditService.Create(observation.Patient, "skapade mätning (ref, {0})", observation.Id);
+        }
+
+        public void CreateItem(Observation observation, string value)
+        {
+            observation.TakeMeasurement(this.accountService.CurrentPrincipal(), value);
+            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", observation.Items.Last().Id);
         }
 
         /// <inheritdoc />

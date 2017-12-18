@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Observation : EventSourced
+    public abstract class Observation : EventSourced
     {
         #region Constructors.
 
@@ -37,6 +37,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.Delegation  = delegation;
             this.Scale       = scale == null ? null : scale.ToString();
+            //// Code <-- 
         }
 
         /// <summary>
@@ -102,7 +103,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The collection of observation items.
         /// </summary>
-        /// <remarks>Populated by NHibernate.</remarks>
+        /// <remarks>
+        /// Populated by NHibernate.
+        /// </remarks>
         public virtual IList<ObservationItem> Items
         {
             get;
@@ -134,6 +137,61 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Public Methods.
+
+        /// <summary>
+        /// Takes a measurement value, e.g. measures the length or weight, as either
+        /// structs or enumerations.
+        /// </summary>
+        /// <typeparam name="T">The value type.</typeparam>
+        /// <param name="who">The practitioner who performed the measurement operation.</param>
+        /// <param name="value">The struct value quantity.</param>
+        /// <param name="unit">Optional unit, if the observation allows it.</param>
+        public virtual void TakeMeasurement<T>(Account who, T value, IUnitOfMeasurement unit = null) where T : struct
+        {
+            this.AddObservationMeasurement(who, this.NewMeasurement(value, unit));
+        }
+
+        /// <summary>
+        /// Takes a measurement value, e.g. measures the length or weight, as a string.
+        /// </summary>
+        /// <typeparam name="T">The value type.</typeparam>
+        /// <param name="who">The practitioner who performed the measurement operation.</param>
+        /// <param name="value">The struct value quantity.</param>
+        /// <param name="unit">Optional unit, if the observation allows it.</param>
+        public virtual void TakeMeasurement(Account who, string value, IUnitOfMeasurement unit = null)
+        {
+            this.AddObservationMeasurement(who, this.NewMeasurement(value, unit));
+        }
+
+        /// <summary>
+        /// Creates and signs a new observation item.
+        /// </summary>
+        /// <param name="who">The practitioner who performed the measurement operation.</param>
+        /// <param name="measurement">The measured value.</param>
+        protected void AddObservationMeasurement(Account who, IArbituraryValue measurement)
+        {
+            var signature = Signature.New(who, measurement.ToSignedData());
+            var item      = ObservationItem.New(this, measurement, null, signature, null);
+            this.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Creates a new measurement value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">Optional unit, if allowed.</param>
+        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
+        protected abstract IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null) where T : struct;
+
+        /// <summary>
+        /// Creates a new measurement value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">Optional unit, if allowed.</param>
+        /// <returns>A new <see cref="IArbituraryValue"/> instance.</returns>
+        protected abstract IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null);
 
         /// <summary>
         /// Updates the current measurement observation.

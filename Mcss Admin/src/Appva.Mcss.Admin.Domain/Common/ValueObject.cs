@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:johan.sall.larsson@appva.com">Johan Säll Larsson</a>
 // </author>
 namespace Appva.Mcss.Admin.Domain
 {
@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain.Common;
 
     #endregion
 
@@ -23,16 +24,13 @@ namespace Appva.Mcss.Admin.Domain
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    /// <typeparam name="T">The value object type</typeparam>
-    public abstract class ValueObject<T> : IEquatable<ValueObject<T>>, IValueObject, IImmutable where T : class
+    /// <typeparam name="T">The value object type.</typeparam>
+    [Immutable]
+    public abstract class ValueObject<T> : IEquatable<ValueObject<T>>, IValueObject where T : class
     {
         /// <inheritdoc />
         public static bool operator ==(ValueObject<T> left, ValueObject<T> right)
         {
-            if (ReferenceEquals(left, right))
-            {
-                return true;
-            }
             if (((object) left == null) || ((object) right == null))
             {
                 return false;
@@ -49,16 +47,24 @@ namespace Appva.Mcss.Admin.Domain
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (! (obj is T))
+            if (obj.IsNot<T>())
             {
                 return false;
             }
-            return this.Equals(((T) obj));
+            return this.Equals(obj.Cast<T>());
         }
 
         /// <inheritdoc />
         public bool Equals(ValueObject<T> other)
         {
+            if (ReferenceEquals(other, null /* the other is null */))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other /* the other is same reference */))
+            {
+                return true;
+            }
             return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 

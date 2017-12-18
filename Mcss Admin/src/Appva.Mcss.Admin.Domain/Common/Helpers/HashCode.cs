@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:johan.sall.larsson@appva.com">Johan Säll Larsson</a>
 // </author>
 namespace Appva.Mcss.Admin.Domain
 {
@@ -18,6 +18,16 @@ namespace Appva.Mcss.Admin.Domain
     internal static class HashCode
     {
         /// <summary>
+        /// The multiplier for each value.
+        /// </summary>
+        private const int HashCodeMultiplier = 37;
+
+        /// <summary>
+        /// The initial hash value.
+        /// </summary>
+        private const int HashCodeInitializer = 17;
+
+        /// <summary>
         /// Combines the hash codes for the list of objects.
         /// </summary>
         /// <param name="objects">
@@ -26,15 +36,17 @@ namespace Appva.Mcss.Admin.Domain
         /// <returns>
         /// A new combined hash code.
         /// </returns>
-        public static int Combine(IEnumerable<object> objects)
+        public static int Combine<T>(IEnumerable<T> objects)
         {
-            var hash = 17;
-            foreach (var obj in objects)
+            unchecked
             {
-                hash = hash * 23 + (obj != null ? obj.GetHashCode() : 0);
+                int hash = HashCodeInitializer;
+                foreach (var obj in objects)
+                {
+                    hash = hash * HashCodeMultiplier + (obj != null ? obj.GetHashCode() : 0);
+                }
+                return hash;
             }
-            return hash;
         }
     }
-
 }

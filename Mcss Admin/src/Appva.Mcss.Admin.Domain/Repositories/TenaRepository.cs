@@ -24,9 +24,9 @@ using System.Collections.Generic;
     /// The <see cref="TenaObservationPeriodRepository"/> repository.
     /// </summary>
     public interface ITenaObservationPeriodRepository : 
-        ISaveRepository<TenaObservationPeriod>,
-        IUpdateRepository<TenaObservationPeriod>,
-        IRepository<TenaObservationPeriod>
+        ISaveRepository<TenaObservation>,
+        IUpdateRepository<TenaObservation>,
+        IRepository<TenaObservation>
     {
         /// <summary>
         /// Checks if externalId is Unique
@@ -39,15 +39,15 @@ using System.Collections.Generic;
         /// Get a specific Tena Observation Period from DB
         /// </summary>
         /// <param name="periodId">The selected Observation Period.</param>
-        /// <returns>Returns a <see cref="TenaObservationPeriod"/>.</returns>
-        TenaObservationPeriod GetTenaPeriod(Guid periodId);
+        /// <returns>Returns a <see cref="TenaObservation"/>.</returns>
+        TenaObservation GetTenaPeriod(Guid periodId);
         
         /// <summary>
         /// Lists the tena periods.
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns></returns>
-        IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId);
+        IList<TenaObservation> ListTenaPeriods(Guid patientId);
 
         /// <summary>
         /// Get the TenaId from DB
@@ -74,7 +74,7 @@ using System.Collections.Generic;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaObservationPeriodRepository : Repository<TenaObservationPeriod>, ITenaObservationPeriodRepository
+    public sealed class TenaObservationPeriodRepository : Repository<TenaObservation>, ITenaObservationPeriodRepository
     {
         #region Variables.
 
@@ -111,7 +111,7 @@ using System.Collections.Generic;
         /// <inheritdoc />
         public bool HasConflictingDate(Guid patientId, DateTime startdate)
         {
-            if (this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Patient.Id == patientId).Where(y => y.EndDate > startdate).RowCount() > 0)
+            if (this.persistence.QueryOver<TenaObservation>().Where(x => x.Patient.Id == patientId).Where(y => y.EndDate > startdate).RowCount() > 0)
             {
                 return true;
             }
@@ -119,9 +119,9 @@ using System.Collections.Generic;
         }
 
         /// <inheritdoc />
-        public TenaObservationPeriod GetTenaPeriod(Guid periodId)
+        public TenaObservation GetTenaPeriod(Guid periodId)
         {
-            return this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Id == periodId).SingleOrDefault();
+            return this.persistence.QueryOver<TenaObservation>().Where(x => x.Id == periodId).SingleOrDefault();
         }
 
         /// <inheritdoc />
@@ -132,9 +132,9 @@ using System.Collections.Generic;
         }
 
         /// <inheritdoc /> 
-        public IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId)
+        public IList<TenaObservation> ListTenaPeriods(Guid patientId)
         {
-            return this.persistence.QueryOver<TenaObservationPeriod>()
+            return this.persistence.QueryOver<TenaObservation>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.Patient.Id == patientId)
                 .List();
@@ -143,7 +143,7 @@ using System.Collections.Generic;
         /// <inheritdoc />
         public bool IsUnique(Guid patientId, DateTime startsAt, DateTime endsAt, Guid? ignorePeriodId)
         {
-            var query = this.persistence.QueryOver<TenaObservationPeriod>()
+            var query = this.persistence.QueryOver<TenaObservation>()
                 .Where(x => x.IsActive)
                 .And(x => x.Patient.Id == patientId)
                 .And(x => (startsAt >= x.StartDate && startsAt <= x.EndDate) || (endsAt >= x.StartDate && endsAt <= x.EndDate));

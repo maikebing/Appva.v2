@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="observation">The observation.</param>
         /// <param name="account">The account.</param>
         /// <param name="value">The value.</param>
-        void Create(Observation observation, Account account, IUnit value);
+        void Create(Observation observation, Account account, IUnitOfMeasurement value);
 
         /// <summary>
         /// Gets the specified item identifier.
@@ -85,11 +85,11 @@ namespace Appva.Mcss.Admin.Application.Services
         #endregion
 
         /// <inheritdoc />
-        public void Create(Observation observation, Account account, IUnit value)
+        public void Create(Observation observation, Account account, IUnitOfMeasurement value)
         {
-            var item = ObservationItem.New(observation, Measurement.New<IUnit>(value), null, Signature.New(account, SignedData.New(value)));
-            this.observationItemRepository.Save(item);
-            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
+            //var item = ObservationItem.New(observation, Measurement.New<IUnitOfMeasurement>(value), null, Signature.New(account, SignedData.New(value)));
+            //this.observationItemRepository.Save(item);
+            //this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }
 
         /// <inheritdoc />

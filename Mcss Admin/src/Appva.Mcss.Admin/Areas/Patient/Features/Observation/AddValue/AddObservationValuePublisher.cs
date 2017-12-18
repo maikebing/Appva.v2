@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             //// UNRESOLVED: make sure to validate correctly.
 
             //// UNRESOLVED: move selection to service?
-            switch (observation.GetType().Name)
+            /*switch (observation.GetType().Name)
             {
                 case "BristolObservation":
                     this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new BristolUnit(message.Value));
@@ -82,7 +82,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     this.observationItemService.Create(observation, this.accountService.CurrentPrincipal(), new WeightUnit(message.Value));
                     break;
                 default: throw new ArgumentOutOfRangeException();
-            }
+            }*/
             return new ListObservation(observation.Patient.Id, observation.Id);
         }
 

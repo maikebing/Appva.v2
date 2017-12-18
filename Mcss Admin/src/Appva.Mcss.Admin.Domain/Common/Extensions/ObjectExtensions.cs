@@ -6,15 +6,47 @@
 // </author>
 namespace Appva.Mcss.Admin.Domain
 {
+    #region Imports.
+
+    using System;
+
+    #endregion
+
     /// <summary>
     /// Object extension helpers.
     /// </summary>
     internal static class ObjectExtensions
     {
         /// <summary>
-        /// Checks if an object is compatible with a given type. For example, the following 
-        /// code can determine if an object is an instance of the MyObject type, or a type 
-        /// that derives from MyObject.
+        /// Returns if <paramref name="obj"/> is null.
+        /// </summary>
+        /// <param name="obj">The object to check.</param>
+        /// <returns>True if null; false otherwise.</returns>
+        public static bool IsNull(this object obj)
+        {
+            return obj == null;
+        }
+
+        /// <summary>
+        /// Casts the <paramref name="obj"/> to a <paramref name="T"/> instance.
+        /// </summary>
+        /// <typeparam name="T">The type to cast to.</typeparam>
+        /// <param name="obj">The object to cast.</param>
+        /// <returns>T or null.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// <paramref name="obj"/> is not compatible or of the same type as the given type.
+        /// </exception>
+        public static T Cast<T>(this object obj)
+        {
+            if (obj.IsNot<T>())
+            {
+                throw new ArgumentException("obj is not the same type as this instance.", "obj");
+            }
+            return (T)obj;
+        }
+
+        /// <summary>
+        /// Checks if an object is compatible with a given type.
         /// </summary>
         /// <typeparam name="T">The type to check compatibilty.</typeparam>
         /// <param name="obj">The object to check.</param>
@@ -25,9 +57,7 @@ namespace Appva.Mcss.Admin.Domain
         }
 
         /// <summary>
-        /// Checks if an object is compatible with a given type. For example, the following 
-        /// code can determine if an object is an instance of the MyObject type, or a type 
-        /// that derives from MyObject.
+        /// Checks if an object is not compatible with a given type.
         /// </summary>
         /// <typeparam name="T">The type to check compatibilty.</typeparam>
         /// <param name="obj">The object to check.</param>

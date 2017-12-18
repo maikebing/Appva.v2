@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Domain
     /// A domain object that defines an event. Where a domain event is something that 
     /// happened that domain experts care about.
     /// </summary>
-    public interface IDomainEvent : IMessage
+    public interface IDomainEvent
     {
     }
 }

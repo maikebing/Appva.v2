@@ -1,4 +1,4 @@
-﻿// <copyright file="FecesObservation.cs" company="Appva AB">
+﻿// <copyright file="BristolStoolScaleObservation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,67 +8,42 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System.ComponentModel;
     using Appva.Mcss.Admin.Domain.Common;
 
     #endregion
 
     /// <summary>
-    /// A feces observation.
+    /// A bristol observation.
     /// </summary>
-    [Loinc("17609-9", "Weight [Mass/time] of 72 hour Stool")]
-    public class FecesObservation : Observation
+    [DisplayName("Bristol")]
+    [Description("Bristol Stool Scale (Type 1-7)")]
+    //// [AccessControl("...")]
+    [Loinc("11029-6", " Consistency of Stool")]
+    public class BristolStoolScaleObservation : Observation
     {
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FecesObservation"/> class.
+        /// Initializes a new instance of the <see cref="BristolStoolScaleObservation"/> class.
         /// </summary>
         /// <param name="patient">The patient.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         /// <param name="delegation">The delegation.</param>
-        public FecesObservation(Patient patient, string name, string description, Taxon delegation = null)
+        public BristolStoolScaleObservation(Patient patient, string name, string description, Taxon delegation = null)
             : base(patient, name, description, null, delegation)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FecesObservation"/> class.
+        /// Initializes a new instance of the <see cref="BristolStoolScaleObservation"/> class.
         /// </summary>
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        protected internal FecesObservation()
+        protected internal BristolStoolScaleObservation()
         {
-        }
-
-        #endregion
-
-        #region Properties.
-
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string ShortName
-        {
-            get
-            {
-                return "Feces";
-            }
-        }
-        //// UNRESOLVED: temporary solution
-
-        /// <summary>
-        /// The descriptive name of the scale in use.
-        /// </summary>
-        public virtual string DescriptiveName
-        {
-            get
-            {
-                return "General stool scale (Type AAA-d)";
-            }
         }
 
         #endregion

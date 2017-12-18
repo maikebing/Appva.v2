@@ -33,9 +33,9 @@ namespace Appva.Mcss.Admin.Domain.VO
         [JsonConstructor]
         private TenaConfiguration(string clientId, string clientSecret, bool isInstalled) 
         {
-            this.ClientId = clientId;
+            this.ClientId     = clientId;
             this.ClientSecret = clientSecret;
-            this.IsInstalled = isInstalled;
+            this.IsInstalled  = isInstalled;
         }
 
         #endregion
@@ -91,14 +91,6 @@ namespace Appva.Mcss.Admin.Domain.VO
         #endregion
 
         #region ValueObject Overrides.
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return this.ClientId.GetHashCode() +
-                   this.ClientSecret.GetHashCode() +
-                   this.IsInstalled.GetHashCode();
-        }
 
         /// <inheritdoc />
         protected override IEnumerable<object> GetEqualityComponents()

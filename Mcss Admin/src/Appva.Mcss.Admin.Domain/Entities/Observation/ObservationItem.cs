@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="task">The Task</param>
         /// <param name="signature">The signature.</param>
         /// <param name="comment">The comment.</param>
-        public ObservationItem(Observation observation, Measurement measurement, Task task = null, Signature signature = null, Comment comment = null)
+        public ObservationItem(Observation observation, IArbituraryValue measurement, Task task = null, Signature signature = null, Comment comment = null)
         {
             Requires.NotNull(observation, "observation");
             Requires.NotNull(measurement, "measurement");
@@ -65,7 +65,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The measurement.
         /// </summary>
-        public virtual Measurement Measurement
+        public virtual IArbituraryValue Measurement
         {
             get;
             internal protected set;
@@ -111,7 +111,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="task">The task.</param>
         /// <param name="comment">The comment.</param>
         /// <returns>A new <see cref="ObservationItem"/> instance.</returns>
-        public static ObservationItem New(Observation observation, Measurement measurement, Task task = null, Signature signature = null, Comment comment = null)
+        public static ObservationItem New(Observation observation, IArbituraryValue measurement, Task task = null, Signature signature = null, Comment comment = null)
         {
             return new ObservationItem(observation, measurement, task, signature, comment);
         }

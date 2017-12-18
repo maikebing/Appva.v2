@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns></returns>
-        IList<TenaObservationPeriod> ListTenaObservationPeriod(Guid patientId);
+        IList<TenaObservation> ListTenaObservationPeriod(Guid patientId);
 
         /// <summary>
         /// Creates a new ObserverPeriod.
@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="startdate">Starting date for the period</param>
         /// <param name="enddate">Ending date for the period</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
-        TenaObservationPeriod CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
+        TenaObservation CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
 
         /// <summary>
         /// Updates the tena pbservation period.
@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="endsAt">The ends at.</param>
         /// <param name="instruction">The instruction.</param>
         /// <returns></returns>
-        TenaObservationPeriod UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction);
+        TenaObservation UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction);
 
         /// <summary>
         /// Determines whether the specified patient identifier is unique.
@@ -79,8 +79,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Get a specific Period from Database
         /// </summary>
         /// <param name="periodId">Period ID</param>
-        /// <returns>Returns a <see cref="TenaObservationPeriod"/>observation period</returns>
-        TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
+        /// <returns>Returns a <see cref="TenaObservation"/>observation period</returns>
+        TenaObservation GetTenaObservationPeriod(Guid periodId);
 
         /// <summary>
         /// Get data from the TENA API.
@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="period">The period.</param>
         /// <returns></returns>
-        Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservationPeriod period);
+        Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservation period);
     }
 
     /// <summary>
@@ -163,27 +163,27 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.HasUniqueExternalId(externalId);
         }
 
-        public IList<TenaObservationPeriod> ListTenaObservationPeriod(Guid patientId)
+        public IList<TenaObservation> ListTenaObservationPeriod(Guid patientId)
         {
             return this.repository.ListTenaPeriods(patientId);
         }
 
         /// <inheritdoc />
-        public TenaObservationPeriod CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        public TenaObservation CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
             /*if ( ! this.IsUnique(patient.Id, startdate, enddate, null))
             {
                 throw new NotUniqueException("The given date is not unique");
             }*/
-            var period = new TenaObservationPeriod(startdate, enddate, patient, "TENA Identifi", "För registrering av toalettbesök, läckage utanför produkten och ev avföring i produkten");
+            var period = new TenaObservation(startdate, enddate, patient, "TENA Identifi", "För registrering av toalettbesök, läckage utanför produkten och ev avföring i produkten");
             this.repository.Save(period);
 
             this.audit.Create(patient, "skapade TENA Identifi mätperiod {0} - {1} (ref, {2})", startdate, enddate, period.Id);
-            return period;            
+            return period;
         }
 
         /// <inheritdoc />
-        public TenaObservationPeriod UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction)
+        public TenaObservation UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction)
         {
             var period = this.repository.Get(id);
             period.Update(period.Name, instruction, startsAt, endsAt);
@@ -193,7 +193,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public TenaObservationPeriod GetTenaObservationPeriod(Guid periodId)
+        public TenaObservation GetTenaObservationPeriod(Guid periodId)
         {
             return this.repository.GetTenaPeriod(periodId);
         }
@@ -231,7 +231,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservationPeriod period)
+        public async Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservation period)
         {
             var measurements = period.Items;
             if (measurements.IsEmpty())
@@ -256,7 +256,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 tenaApiList.Add(new ManualEvent
                 {
                     Id         = item.Id.ToString(),
-                    EventType  = item.Measurement.Value,
+                    EventType  = item.Measurement.ToString(),
                     ResidentId = item.Observation.Patient.TenaId,
                     Timestamp  = createdAt.ToUtc(),
                     Active     = item.IsActive

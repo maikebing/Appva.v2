@@ -9,6 +9,10 @@
       <HashCode>AAAAAAAAAgAAADAAAAAAQAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
       <FileName>Entities\Comment\Comment.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parent" />
+      <Property Name="Signature" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.Observation">
     <Position X="4.5" Y="1" Width="1.5" />
@@ -17,10 +21,9 @@
       <Compartment Name="Events" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgCCAAAAAAAAQAgAAAAAAAAAAAAAAACAE=</HashCode>
+      <HashCode>AASAEAAAAAAgCAAAAAIAAAQAAAAAAAAAAAABAAEACAA=</HashCode>
       <FileName>Entities\Observation\Observation.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.ObservationItem">
     <Position X="4.5" Y="4.75" Width="1.5" />
@@ -28,13 +31,15 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAACAAAAAQAAAAAAAAAAAAAAAQAAAAAAE=</HashCode>
+      <HashCode>AAAAAAAEAAAAACAAAAAQAAAAAAAAAAAAAEAQAAAAAAE=</HashCode>
       <FileName>Entities\Observation\ObservationItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Observation" />
       <Property Name="Signature" />
+      <Property Name="Comment" />
       <Property Name="Measurement" />
+      <Property Name="Task" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.SubSequence" Collapsed="true">
@@ -43,11 +48,10 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAA=</HashCode>
       <FileName>Entities\Sequence\SubSequence.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Observation" />
       <Property Name="Sequence" />
     </ShowAsAssociation>
   </Class>
@@ -57,7 +61,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACAAAAAAAgAAgAAAABAAAQAIAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAgAAgAAAABAAAAAIAAAAAAA=</HashCode>
       <FileName>Entities\Signature\Signature.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -80,18 +84,8 @@
       <Property Name="Signature" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Appva.Mcss.Admin.Domain.VO.Measurement" Collapsed="true">
-    <Position X="4.5" Y="6.75" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAACAEoAAgAAAAAAAAAIAAAQAgAAAAAAA=</HashCode>
-      <FileName>VO\Measurement.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.Account" Collapsed="true">
-    <Position X="0.5" Y="1.25" Width="1.5" />
+    <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABAAAQAAOiogEIwAAIAAABAAhAkCAAAAQAmAgCCASA=</HashCode>
       <FileName>Entities\Account.cs</FileName>
@@ -104,22 +98,19 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AABBAIAiQAAgYAAAMIAASAQgAEAAByYAAAkAAkACC0A=</HashCode>
+      <HashCode>AABBAIAiQAAgYAAAMIAQSAQgAEAAByYAAAkAAkACC0A=</HashCode>
       <FileName>Entities\Sequence.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.Task" Collapsed="true">
     <Position X="8.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAhAAAGCAIAAAEAAAAQAAQgAEAABx4EACEAIkEACYo=</HashCode>
+      <HashCode>AAAhAAAGCAIACAEAAAAQAAQgAEAABx4EAAEAIkEACYo=</HashCode>
       <FileName>Entities\Task.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Sequence" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="SubTasks" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Appva.Mcss.Admin.Domain.Entities.SubTask" Collapsed="true">
     <Position X="8.75" Y="9" Width="1.5" />
@@ -135,5 +126,40 @@
       <Property Name="ObservationItem" />
     </ShowAsAssociation>
   </Class>
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.BristolObservation" Collapsed="true">
+    <Position X="6.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\BristolObservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.FecesObservation" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\FecesObservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.TenaObservationPeriod" Collapsed="true">
+    <Position X="2.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Entities\Observation\TenaObservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.Admin.Domain.Entities.WeightObservation" Collapsed="true">
+    <Position X="2.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Observation\WeightObservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Appva.Mcss.Admin.Domain.Entities.IMeasurement">
+    <Position X="6.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAQAAA=</HashCode>
+      <FileName>Entities\Observation\Measurement\IMeasurement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

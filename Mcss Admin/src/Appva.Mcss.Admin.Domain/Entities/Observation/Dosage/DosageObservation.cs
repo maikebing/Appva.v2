@@ -55,5 +55,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

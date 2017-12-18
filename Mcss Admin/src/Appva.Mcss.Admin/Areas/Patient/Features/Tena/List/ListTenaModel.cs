@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The periods.
         /// </value>
-        public IList<TenaObservationPeriod> Periods 
+        public IList<TenaObservation> Periods 
         {
             get;
             set;
@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The period.
         /// </value>
-        public TenaObservationPeriod Period
+        public TenaObservation Period
         {
             get
             {

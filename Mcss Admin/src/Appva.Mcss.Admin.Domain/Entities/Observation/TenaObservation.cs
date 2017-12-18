@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaObservationPeriod.cs" company="Appva AB">
+﻿// <copyright file="TenaObservation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Validation;
 
     #endregion
@@ -16,20 +17,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class TenaObservationPeriod : Observation
+    public class TenaObservation : Observation
     {
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
+        /// Initializes a new instance of the <see cref="TenaObservation"/> class.
         /// </summary>
-        /// <param name="startDate">The start date.</param>
-        /// <param name="endDate">The end date.</param>
+        /// <param name="startAt">The start date.</param>
+        /// <param name="endAt">The end date.</param>
         /// <param name="patient">The patient.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        /// <param name="category">The category.</param>
-        public TenaObservationPeriod(DateTime startDate, DateTime endDate, Patient patient, string name, string description) 
+        public TenaObservation(DateTime startAt, DateTime endAt, Patient patient, string name, string description) 
         {
             Requires.NotNull(patient,                 "patient");
             Requires.NotNullOrWhiteSpace(name,        "name");
@@ -37,15 +37,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Patient     = patient;
             this.Name        = name;
             this.Description = description;
-            this.StartDate   = startDate;
-            this.EndDate     = endDate;
+            this.StartDate   = startAt;
+            this.EndDate     = endAt;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
+        /// Initializes a new instance of the <see cref="TenaObservation"/> class.
         /// </summary>
         /// <remarks>An NHibernate visible no-argument constructor.</remarks>
-        internal protected TenaObservationPeriod()
+        protected internal TenaObservation()
         {
         }
 
@@ -78,19 +78,20 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <value>
         /// The current status.
         /// </value>
+        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1501:StatementMustNotBeOnSingleLine", Justification = "Reviewed.")]
         public virtual string Status
         {
             get
             {
-                if (DateTime.Now > EndDate  ) { return "completed"; }
-                if (DateTime.Now < StartDate) { return "pending";   }
+                if (DateTime.Now > this.EndDate  ) { return "completed"; }
+                if (DateTime.Now < this.StartDate) { return "pending";   }
                 return "in-progress";
             }
         }
 
         #endregion
 
-        #region Public Methods.
+        #region Mehtods.
 
         /// <summary>
         /// Updates the current tena period.
@@ -101,12 +102,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="endsAt">The ends at.</param>
         public virtual void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)
         {
-            Requires.NotNullOrWhiteSpace(name,        "name");
+            Requires.NotNullOrWhiteSpace(name, "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
             this.Name        = name;
             this.Description = instruction;
             this.StartDate   = startsAt;
             this.EndDate     = endsAt;
+        }
+
+        /// <inheritdoc />
+        protected override IArbituraryValue NewMeasurement<T>(T value, IUnitOfMeasurement unit = null)
+        {
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
+        }
+
+        /// <inheritdoc />
+        protected override IArbituraryValue NewMeasurement(string value, IUnitOfMeasurement unit = null)
+        {
+            return ArbituraryMeasuredValue.New(value, LevelOfMeasurement.Nominal, null);
         }
 
         #endregion

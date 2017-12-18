@@ -59,9 +59,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Where(x => x.IsActive)
                   .And(x => x.Patient.Id == patientId)
                   .And(Restrictions.Disjunction()
-                    .Add(Restrictions.Eq("class", typeof(BristolObservation)))
+                    .Add(Restrictions.Eq("class", typeof(BristolStoolScaleObservation)))
                     .Add(Restrictions.Eq("class", typeof(FecesObservation)))
-                    .Add(Restrictions.Eq("class", typeof(WeightObservation))))
+                    .Add(Restrictions.Eq("class", typeof(BodyWeightObservation))))
                 .List();
             return m;
         }

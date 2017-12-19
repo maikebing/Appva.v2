@@ -72,7 +72,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             return this.Context.QueryOver<ObservationItem>()
                 .Where(x => x.IsActive)
                   .And(x => x.Observation.Id == observationId)
-                  .And(x => x.CreatedAt > startDate && x.CreatedAt < endDate)
+                  .And(x => x.CreatedAt >= startDate && x.CreatedAt <= endDate)
                 .OrderBy(x => x.CreatedAt).Desc
                 .List();
         }

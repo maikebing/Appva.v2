@@ -51,6 +51,16 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<Observation> ListByPatient(Guid id);
 
         /// <summary>
+        /// Lists the measurement in a specific observation.
+        /// Optional, filter by date
+        /// </summary>
+        /// <param name="observationId">The observation identifier.</param>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <returns>IList&lt;ObservationItem&gt;.</returns>
+        IList<ObservationItem> GetItemList(Guid observationId, DateTime? startDate, DateTime? endDate);
+
+        /// <summary>
         /// Creates the item.
         /// </summary>
         /// <param name="observation">The observation.</param>
@@ -72,6 +82,11 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IObservationRepository observationRepository;
 
         /// <summary>
+        /// The <see cref="IObservationItemRepository"/>.
+        /// </summary>
+        private readonly IObservationItemRepository observationItemRepository;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditService;
@@ -90,9 +105,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="observationRepository">The <see cref="IObservationRepository"/>.</param>
         /// <param name="auditService">The <see cref="IAuditService"/>.</param>
-        public ObservationService(IObservationRepository observationRepository, IAuditService auditService, IAccountService accountService)
+        public ObservationService(IObservationRepository observationRepository, IObservationItemRepository observationItemRepository, IAuditService auditService, IAccountService accountService)
         {
             this.observationRepository = observationRepository;
+            this.observationItemRepository = observationItemRepository;
             this.auditService = auditService;
             this.accountService = accountService;
         }
@@ -132,6 +148,16 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             observation.TakeMeasurement(this.accountService.CurrentPrincipal(), value);
             this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", observation.Items.Last().Id);
+        }
+
+        /// <inheritdoc />
+        public IList<ObservationItem> GetItemList(Guid observationId, DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate.HasValue)
+            {
+                return this.observationItemRepository.ListByDate(observationId, startDate.Value, endDate.HasValue ? endDate.Value : DateTime.UtcNow);
+            }
+            return this.observationItemRepository.List(observationId);
         }
 
         #endregion

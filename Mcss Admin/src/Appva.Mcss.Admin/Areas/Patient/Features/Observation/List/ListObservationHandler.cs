@@ -28,22 +28,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The observation service
+        /// The <see cref="IObservationService"/>.
         /// </summary>
         private readonly IObservationService observationService;
 
         /// <summary>
-        /// The observation item service
-        /// </summary>
-        private readonly IObservationItemService observationItemService;
-
-        /// <summary>
-        /// The patient service.
+        /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
 
         /// <summary>
-        /// The patient transformer.
+        /// The <see cref="IPatientTransformer"/>.
         /// </summary>
         private readonly IPatientTransformer patientTransformer;
 
@@ -57,10 +52,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="service">The service.</param>
         /// <param name="patientService">The patient service.</param>
         /// <param name="patientTransformer">The patient transformer.</param>
-        public ListObservationHandler(IObservationService observationService, IObservationItemService observationItemService, IPatientService patientService, IPatientTransformer patientTransformer)
+        public ListObservationHandler(IObservationService observationService, IPatientService patientService, IPatientTransformer patientTransformer)
         {
             this.observationService     = observationService;
-            this.observationItemService = observationItemService;
             this.patientService         = patientService;
             this.patientTransformer     = patientTransformer;
         }
@@ -82,7 +76,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var observation = this.observationService.Get(message.ObservationId);
             Requires.NotNull(observation, "observation");
-            var observationItemList = this.observationItemService.List(observation.Id, message.StartDate, message.EndDate);
+            var observationItemList = this.observationService.GetItemList(observation.Id, message.StartDate, message.EndDate);
             return new ListObservationModel(observation, patientViewModel, observationList, observationItemList);
         }
         #endregion

@@ -256,7 +256,6 @@
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
-    <Compile Include="Services\ObservationItemService.cs" />
     <Compile Include="Services\ObservationService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\PermissionService.cs" />

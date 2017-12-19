@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="accountService">The account service.</param>
         /// <param name="observationService">The observation service.</param>
         /// <param name="observationItemService">The observation item service.</param>
-        public AddObservationValuePublisher(IObservationService observationService, IObservationItemService observationItemService)
+        public AddObservationValuePublisher(IObservationService observationService)
         {
             this.observationService     = observationService;
         }

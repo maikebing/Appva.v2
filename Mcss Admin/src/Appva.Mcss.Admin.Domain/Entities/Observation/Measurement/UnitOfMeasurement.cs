@@ -117,7 +117,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// A string that contains a unit of measurement code to convert.
         /// </param>
         /// <returns>
-        /// An new date that is equivalent to the date contained in <paramref name="str"/>.
+        /// A new unit of measurement that is equivalent to the unit of measurement
+        /// contained in <paramref name="str"/>.
         /// </returns>
         /// <exception cref="System.ArgumentException">
         /// <paramref name="str"/> is null, empty ("") or contains only whitespace 
@@ -133,7 +134,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
                 { 
                     MassUnits.Kilogram, MassUnits.Gram, MassUnits.Pound,
                     NonUnits.ArbitraryStoolScale, NonUnits.BristolStoolScale, NonUnits.TenaIdentifiScale
-                }.Where(x => x.Name == str).FirstOrDefault();
+                }.Where(x => x.Code == str).FirstOrDefault();
             if (unit != null)
             {
                 return unit;

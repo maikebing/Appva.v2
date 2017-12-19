@@ -113,7 +113,7 @@ namespace Appva.Mcss.Admin.Domain.Common
             var arbitraryValue = Convert.ChangeType(measurement.Value, typeof(string));
             NHibernateUtil.String.NullSafeSet(cmd, arbitraryValue, index); //// Value
             NHibernateUtil.String.NullSafeSet(cmd, measurement.ValueType,                                       index + 1); //// ValueType
-            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit == null ? null: measurement.Unit.Name,      index + 2);    //// Unit
+            NHibernateUtil.String.NullSafeSet(cmd, measurement.Unit == null ? null: measurement.Unit.Code,      index + 2); //// Unit
             NHibernateUtil.String.NullSafeSet(cmd, Enum.GetName(typeof(LevelOfMeasurement), measurement.Level), index + 3); //// Level
         }
 

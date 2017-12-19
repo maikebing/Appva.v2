@@ -163,7 +163,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </exception>
         public static ArbitraryValue New<T>(T value, LevelOfMeasurement level, UnitOfMeasurement unit) where T : struct
         {
-            return new ArbitraryValue(Convert.ChangeType(value, typeof(string)) as string, typeof(T), level, unit);
+            return new ArbitraryValue(value, typeof(T), level, unit);
         }
 
         /// <summary>

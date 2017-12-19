@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Domain.Unit;
 
     #endregion
 
@@ -76,7 +77,7 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IAuditService auditService;
 
         /// <summary>
-        /// The account service
+        /// The <see cref="IAccountService"/>.
         /// </summary>
         private readonly IAccountService accountService;
 
@@ -96,17 +97,15 @@ namespace Appva.Mcss.Admin.Application.Services
             this.accountService = accountService;
         }
 
+        #endregion
+
+        #region IObservationRepository Members.
+
         /// <inheritdoc />
         public void Create(Observation observation)
         {
             this.observationRepository.Save(observation);
             this.auditService.Create(observation.Patient, "skapade mätning (ref, {0})", observation.Id);
-        }
-
-        public void CreateItem(Observation observation, string value)
-        {
-            observation.TakeMeasurement(this.accountService.CurrentPrincipal(), value);
-            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", observation.Items.Last().Id);
         }
 
         /// <inheritdoc />
@@ -126,6 +125,13 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             this.observationRepository.Update(observation);
             this.auditService.Update(observation.Patient, "ändrade mätning (ref, {0})", observation.Id);
+        }
+
+        /// <inheritdoc />
+        public void CreateItem(Observation observation, string value)
+        {
+            observation.TakeMeasurement(this.accountService.CurrentPrincipal(), value);
+            this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", observation.Items.Last().Id);
         }
 
         #endregion

@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.ComponentModel;
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Common;
+    using Validation;
 
     #endregion
 
@@ -65,27 +66,43 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            //// Move this piece of validation to a separate private function ->
-            if (! (value is double))
-            {
-                ///...
-            }
             if (unit != null && Units.Any(valid => valid == unit) == false)
             {
                 throw new ArgumentOutOfRangeException("unit");
             }
-            var quantity = (double)Convert.ChangeType(value, typeof(double));
+            var quantity = Validate(value);
             return ArbitraryValue.New(quantity, LevelOfMeasurement.Quantitative, unit ?? MassUnits.Kilogram);
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            //// Add validation (as separate method), TryParse, check unit as previous, within range (the value)
-            /// Just to make stuff work, parse and go to the method above -->
+            Requires.NotNullOrWhiteSpace(value, "value");
+            //// Locale differences in double datatype. Replaces '.' with ','
+            value = value.Replace('.', ',');
             var quantity = 0.0;
             double.TryParse(value, out quantity);
             return this.NewMeasurement(quantity, unit);
+        }
+
+        /// <summary>
+        /// Validate BodyWeight Value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns>quantity as <double>double</double> if valid.</returns>
+        private double Validate<T>(T value)
+        {
+            if (value.IsNot<double>())
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is not a number.");
+            }
+            var quantity = (double) Convert.ChangeType(value, typeof(double));
+            if (quantity < 5 || quantity > 450)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is out of range.");
+            }
+            return quantity;
         }
     }
 }

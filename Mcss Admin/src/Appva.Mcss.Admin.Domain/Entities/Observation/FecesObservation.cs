@@ -8,8 +8,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Appva.Mcss.Admin.Domain.Common;
+    using Validation;
 
     #endregion
 
@@ -21,6 +24,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
     [Loinc("17609-9", "Weight [Mass/time] of 72 hour Stool")]
     public class FecesObservation : Observation
     {
+        /// <summary>
+        /// A list of valid feces values.
+        /// </summary>
+        private readonly List<string> valueList = new List<string> { "AAA", "AA", "A", "aaa", "a", "d", "D", "k" };
+
         #region Constructors.
 
         /// <summary>
@@ -50,17 +58,36 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
+            Requires.ValidState(value.IsNull() == false, "value");
             unit = unit ?? NonUnits.ArbitraryStoolScale;
-            //// UNRESOLVED: Check value.
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
+            Requires.NotNullOrWhiteSpace(value, "value");
             unit = unit ?? NonUnits.ArbitraryStoolScale;
-            //// UNRESOLVED: Check value.
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+        }
+
+        /// <summary>
+        /// Validates 'value' against a list with valid values.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns>value if valid.</returns>
+        private T Validate<T>(T value)
+        {
+            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
+            }
+            if (this.valueList.Contains(value.ToString()) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
+            }
+            return value;
         }
     }
 }

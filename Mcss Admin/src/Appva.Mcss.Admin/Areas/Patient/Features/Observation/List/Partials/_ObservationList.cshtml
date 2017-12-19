@@ -2,9 +2,6 @@
 <div class="tabs tabs--vertical tabs--dynamic" role="navigation" data-tab-target="measurements">
     <h2 class="visually-hidden">Huvudnavigering</h2>
     <ul>
-        <li class="tabs__item @(Model.ObservationId.IsEmpty() ? "tabs__item--selected" : string.Empty)">
-            <a href="@Url.Action("list", "observation")">Alla</a>
-        </li>
         @foreach (var item in Model.ObservationList)
         {
         <li class="tabs__item @(Model.ObservationId == item.Id ? "tabs__item--selected" : string.Empty)">

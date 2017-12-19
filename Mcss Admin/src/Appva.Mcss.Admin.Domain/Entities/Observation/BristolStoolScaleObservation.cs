@@ -8,8 +8,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Appva.Mcss.Admin.Domain.Common;
+    using Validation;
 
     #endregion
 
@@ -21,6 +24,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
     [Loinc("11029-6", " Consistency of Stool")]
     public class BristolStoolScaleObservation : Observation
     {
+        /// <summary>
+        /// A list of valid bristol values.
+        /// </summary>
+        private readonly List<string> valueList = new List<string> {  "type1", "type2", "type3", "type4", "type5", "type6", "type7" };
+
         #region Constructors.
 
         /// <summary>
@@ -50,24 +58,36 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            //// UNRESOLVED: VALIDATE value.
-            //// 1. unit != null 
-            //// 2. t != system.string || type.enum skiten
-            //// 3. t ! parse till tena enum skiten
-            //// samma i bristol och arbitrator skalan
-            //// (t måste vara number på weight) system.double
-            //// (t double.tryparse()
-            //// min max och argumentoutofrangeexception eller overflowexception
-            //// unit = unit ?? NonUnits.BristolStoolScale;
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
+            Requires.ValidState(value.IsNull() == false, "value");
+            unit = unit ?? NonUnits.BristolStoolScale;
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            //// unit = unit ?? NonUnits.BristolStoolScale;
-            //// UNRESOLVED: Check value.
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, unit);
+            Requires.NotNullOrWhiteSpace(value, "value");
+            unit = unit ?? NonUnits.BristolStoolScale;
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+        }
+
+        /// <summary>
+        /// Validates 'value' against a list with valid values.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns>value if valid.</returns>
+        private T Validate<T>(T value)
+        {
+            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
+            }
+            if (this.valueList.Contains(value.ToString().ToLower()) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
+            }
+            return value;
         }
     }
 }

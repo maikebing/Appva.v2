@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using Validation;
@@ -22,6 +23,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
     [Description("Registration of bathroom behavior")]
     public class TenaObservation : Observation
     {
+        /// <summary>
+        /// A list of valid tena values.
+        /// </summary>
+        private readonly List<string> valueList = new List<string> { "Toilet", "ToiletUnsuccessful", "Leakage", "Feces" };
+
         #region Constructors.
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Mehtods.
+        #region Methods.
 
         /// <summary>
         /// Updates the current tena period.
@@ -118,13 +124,36 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, null);
+            Requires.ValidState(value.IsNull() == false, "value");
+            unit = unit ?? NonUnits.TenaIdentifiScale;
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, null);
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, null);
+            Requires.NotNullOrWhiteSpace(value, "value");
+            unit = unit ?? NonUnits.TenaIdentifiScale;
+            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, null);
+        }
+
+        /// <summary>
+        /// Validates 'value' against a list with valid values.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns>value if valid.</returns>
+        private T Validate<T>(T value)
+        {
+            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
+            }
+            if (this.valueList.Contains(value.ToString()) == false)
+            {
+                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
+            }
+            return value;
         }
 
         #endregion

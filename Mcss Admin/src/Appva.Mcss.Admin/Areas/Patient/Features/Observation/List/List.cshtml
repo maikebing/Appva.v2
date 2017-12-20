@@ -18,7 +18,7 @@
                 <div class="section section--card section--vspace">
                     <div class="section section--header section--hspace">
                         <div class="form-controls text-align--center">
-                            <a class="button button--ml open-in-dialog" href="@Url.Action("create", "observation")#add-observation" data-dialog-title="Ny mätning" data-dialog-symbol="+">
+                            <a class="button button--primary open-in-dialog" href="@Url.Action("create", "observation")#add-observation" data-dialog-title="Ny mätning" data-dialog-symbol="+">
                                 <svg class="icon icon--mr" aria-hidden="true">
                                     <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
                                 </svg>
@@ -69,54 +69,53 @@
                             </dl>
                         </div>
                     </div>
+                    <div class="section section--hspace section--vspace">
+                        <div class="distributor distributor--justified">
 
-                    if (Model.ObservationItemList.IsNotNull() && Model.ObservationItemList.IsNotEmpty())
-                    {
-                        <div class="section section--hspace section--vspace">
-                            <div class="distributor distributor--justified">
-
-                                <form action="@Url.Action("list", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
-                                    <div class="grid grid--align-middle">
-                                        <div data-size="xs:24 s:24 m:10 l:8 xl:6">
-                                            <div class="form-controls date-picker">
-                                                @Html.FormGroup(x => x.StartDate, "form-controls date-picker").Label("Från").TextBox(htmlAttributes: new
-                                                   {
-                                                        @class = "datepicker",
-                                                        data_datepicker_limit = "past",
-                                                        data_rule_date = "true"                                                        
-                                                   }).Build()
-                                            </div>
-                                        </div>
-                                        <div data-size="xs:24 s:24 m:10 l:8 xl:6">
-                                            <div class="form-controls date-picker">
-                                                @Html.FormGroup(x => x.EndDate, "form-controls date-picker").Label("Till").TextBox(htmlAttributes: new
-                                                   {
-                                                       @class = "datepicker",
-                                                       data_datepicker_limit = "past",
-                                                       data_rule_date = "true",
-                                                       data_rule_greaterthan = "#StartDate",
-                                                       data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
-                                                   }).Build()
-                                            </div>
-                                        </div>
-                                        <div data-size="xs:24 s:24 m:4 l:2 xl:1">
-                                            <div class="form-controls js-hidden">
-                                                <button type="submit" class="button">Visa</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div data-size="xs:24 s:24 m:24 l:6 xl:11">
-                                            <div class="form-controls form-controls--align-end">
-                                                <a class="button open-in-dialog" href="@Url.Action("addvalue", "observation", new { ObservationId = Model.ObservationId })#add-observation-value" data-dialog-title="Lägg till mätvärde">
-                                                    <svg class="icon icon--mr"><use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use></svg>
-                                                    Nytt mätvärde
-                                                </a>
-                                            </div>
+                            <form action="@Url.Action("list", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+                                <div class="grid grid--align-middle">
+                                    <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                        <div class="form-controls date-picker">
+                                            @Html.FormGroup(x => x.StartDate, "form-controls date-picker").Label("Från").TextBox(htmlAttributes: new
+                                                {
+                                                    @class = "datepicker",
+                                                    data_datepicker_limit = "past",
+                                                    data_rule_date = "true"                                                        
+                                                }).Build()
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                    <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                        <div class="form-controls date-picker">
+                                            @Html.FormGroup(x => x.EndDate, "form-controls date-picker").Label("Till").TextBox(htmlAttributes: new
+                                                {
+                                                    @class = "datepicker",
+                                                    data_datepicker_limit = "past",
+                                                    data_rule_date = "true",
+                                                    data_rule_greaterthan = "#StartDate",
+                                                    data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
+                                                }).Build()
+                                        </div>
+                                    </div>
+                                    <div data-size="xs:24 s:24 m:4 l:2 xl:1">
+                                        <div class="form-controls js-hidden">
+                                            <button type="submit" class="button">Visa</button>
+                                        </div>
+                                    </div>
+                                        
+                                    <div data-size="xs:24 s:24 m:24 l:6 xl:11">
+                                        <div class="form-controls form-controls--align-end">
+                                            <a class="button open-in-dialog" href="@Url.Action("addvalue", "observation", new { ObservationId = Model.ObservationId })#add-observation-value" data-dialog-title="Lägg till mätvärde">
+                                                <svg class="icon icon--mr"><use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use></svg>
+                                                Nytt mätvärde
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
+                    if (Model.ObservationItemList.IsNotNull() && Model.ObservationItemList.IsNotEmpty())
+                    {
                         <table class="table-general table-general--descending" id="update-table" role="region">
                             <thead>
                                 <tr>

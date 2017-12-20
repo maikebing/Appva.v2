@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var observation = this.observationService.Get(message.ObservationId);
             Requires.NotNull(observation, "observation");
-            var observationItemList = this.observationService.GetItemList(observation.Id, message.StartDate, message.EndDate);
+            var observationItemList = this.observationService.ListMeasurements(observation.Id, message.StartDate, message.EndDate);
             return new ListObservationModel(observation, patientViewModel, observationList, observationItemList);
         }
         #endregion

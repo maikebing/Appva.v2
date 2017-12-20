@@ -58,14 +58,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="startDate">The start date.</param>
         /// <param name="endDate">The end date.</param>
         /// <returns>IList&lt;ObservationItem&gt;.</returns>
-        IList<ObservationItem> GetItemList(Guid observationId, DateTime? startDate, DateTime? endDate);
+        IList<ObservationItem> ListMeasurements(Guid observationId, DateTime? startDate, DateTime? endDate);
 
         /// <summary>
         /// Creates the item.
         /// </summary>
         /// <param name="observation">The observation.</param>
         /// <param name="value">The value.</param>
-        void CreateItem(Observation observation, string value);
+        void NewMeasurement(Observation observation, string value);
     }
 
     /// <summary>
@@ -144,14 +144,14 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateItem(Observation observation, string value)
+        public void NewMeasurement(Observation observation, string value)
         {
             observation.TakeMeasurement(this.accountService.CurrentPrincipal(), value);
             this.auditService.Create(observation.Patient, "skapade mätvärde (ref, {0})", observation.Items.Last().Id);
         }
 
         /// <inheritdoc />
-        public IList<ObservationItem> GetItemList(Guid observationId, DateTime? startDate, DateTime? endDate)
+        public IList<ObservationItem> ListMeasurements(Guid observationId, DateTime? startDate, DateTime? endDate)
         {
             if (startDate.HasValue)
             {

@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Appva.Mcss.Admin.Domain.Common;
     using Validation;
 
@@ -27,7 +28,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// A list of valid bristol values.
         /// </summary>
-        private readonly List<string> valueList = new List<string> {  "type1", "type2", "type3", "type4", "type5", "type6", "type7" };
+        private readonly IReadOnlyList<string> valueList = new List<string> {  "type1", "type2", "type3", "type4", "type5", "type6", "type7" };
 
         #region Constructors.
 
@@ -55,39 +56,23 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
+        #region Observation Overrides.
+
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            Requires.ValidState(value.IsNull() == false, "value");
-            unit = unit ?? NonUnits.BristolStoolScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+            throw new InvalidOperationException("Value must be of a type 'string'.");
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
             Requires.NotNullOrWhiteSpace(value, "value");
-            unit = unit ?? NonUnits.BristolStoolScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+            Requires.ValidState(this.valueList.Any(x => x.Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase)), "value");
+            Requires.ValidState(unit == null || unit == NonUnits.BristolStoolScale, "unit must be a bristol stool scale unit.");
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, NonUnits.BristolStoolScale);
         }
 
-        /// <summary>
-        /// Validates 'value' against a list with valid values.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns>value if valid.</returns>
-        private T Validate<T>(T value)
-        {
-            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
-            {
-                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
-            }
-            if (this.valueList.Contains(value.ToString().ToLower()) == false)
-            {
-                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
-            }
-            return value;
-        }
+        #endregion
     }
 }

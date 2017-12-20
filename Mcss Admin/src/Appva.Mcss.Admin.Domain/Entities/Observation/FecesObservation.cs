@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Appva.Mcss.Admin.Domain.Common;
     using Validation;
 
@@ -25,9 +26,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
     public class FecesObservation : Observation
     {
         /// <summary>
-        /// A list of valid feces values.
+        /// A list of valid arbitrary stool scale values.
         /// </summary>
-        private readonly List<string> valueList = new List<string> { "AAA", "AA", "A", "aaa", "a", "d", "D", "k" };
+        private readonly IReadOnlyList<string> valueList = new List<string> { "AAA", "AA", "A", "aaa", "a", "d", "D", "k" };
 
         #region Constructors.
 
@@ -55,39 +56,23 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
+        #region Observation Overrides.
+
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            Requires.ValidState(value.IsNull() == false, "value");
-            unit = unit ?? NonUnits.ArbitraryStoolScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+            throw new InvalidOperationException("Value must be of type 'string'.");
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
             Requires.NotNullOrWhiteSpace(value, "value");
-            unit = unit ?? NonUnits.ArbitraryStoolScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, unit);
+            Requires.ValidState(this.valueList.Any(x => x.Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase)), "value");
+            Requires.ValidState(unit == null || unit == NonUnits.ArbitraryStoolScale, "unit must be a arbitrary stool scale unit.");
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, NonUnits.ArbitraryStoolScale);
         }
 
-        /// <summary>
-        /// Validates 'value' against a list with valid values.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns>value if valid.</returns>
-        private T Validate<T>(T value)
-        {
-            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
-            {
-                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
-            }
-            if (this.valueList.Contains(value.ToString()) == false)
-            {
-                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
-            }
-            return value;
-        }
+        #endregion
     }
 }

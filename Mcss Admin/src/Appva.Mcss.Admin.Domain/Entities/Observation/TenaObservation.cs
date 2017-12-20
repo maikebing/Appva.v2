@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using Appva.Mcss.Domain.Unit;
     using Validation;
 
     #endregion
@@ -23,11 +25,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
     [Description("Registration of bathroom behavior")]
     public class TenaObservation : Observation
     {
-        /// <summary>
-        /// A list of valid tena values.
-        /// </summary>
-        private readonly List<string> valueList = new List<string> { "Toilet", "ToiletUnsuccessful", "Leakage", "Feces" };
-
         #region Constructors.
 
         /// <summary>
@@ -124,36 +121,46 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement<T>(T value, UnitOfMeasurement unit = null)
         {
-            Requires.ValidState(value.IsNull() == false, "value");
-            unit = unit ?? NonUnits.TenaIdentifiScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, null);
+            Requires.ValidState(this.Validate(value), "value");
+            Requires.ValidState(unit == null || unit == NonUnits.TenaIdentifiScale, "unit must be a tena identifi scale unit");
+            return ArbitraryValue.New(value, LevelOfMeasurement.Nominal, NonUnits.TenaIdentifiScale);
         }
 
         /// <inheritdoc />
         protected override ArbitraryValue NewMeasurement(string value, UnitOfMeasurement unit = null)
         {
-            Requires.NotNullOrWhiteSpace(value, "value");
-            unit = unit ?? NonUnits.TenaIdentifiScale;
-            return ArbitraryValue.New(this.Validate(value), LevelOfMeasurement.Nominal, null);
+            Requires.ValidState(EnumHelper.IsParsable<TenaIdentifiScale>(value), "value");
+            return this.NewMeasurement(EnumHelper.Parse<TenaIdentifiScale>(value), unit);
         }
 
+        #endregion
+
+        #region Private Methods.
+
         /// <summary>
-        /// Validates 'value' against a list with valid values.
+        /// Validates a tena identifi value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns>value if valid.</returns>
-        private T Validate<T>(T value)
+        /// <exception cref="ArgumentNullException">if value is null.</exception>
+        /// <exception cref="InvalidOperationException">if value is not a string or enum.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">if value is not valid.</exception>
+        private bool Validate<T>(T value)
         {
-            if (((value.Is<string>()) || (value.GetType().IsEnum)) == false)
+            if (value.IsNull())
             {
-                throw new ArgumentOutOfRangeException("value", value, " is an invalid value.");
+                throw new ArgumentNullException("value is null.");
             }
-            if (this.valueList.Contains(value.ToString()) == false)
+            if (! (value.GetType().IsEnum))
             {
-                throw new ArgumentOutOfRangeException("value", value, " is not a valid value.");
+                throw new InvalidOperationException("value is not type of 'enum'.");
             }
-            return value;
+            if (! Enum.IsDefined(typeof(TenaIdentifiScale), value))
+            {
+                throw new ArgumentOutOfRangeException("value", value, "is not a valid value.");
+            }
+            return true;
         }
 
         #endregion

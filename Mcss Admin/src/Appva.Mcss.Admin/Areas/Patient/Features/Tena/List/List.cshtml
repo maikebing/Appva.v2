@@ -127,11 +127,12 @@
                             <tbody>
                                 @foreach (var item in Model.Period.Items.OrderByDescending(x => x.CreatedAt))
                                 {
-                                    <tr>
-                                        <td>@TimeSpanDifference.ToShortDateTime(item.CreatedAt, "Idag", "Igår") @item.CreatedAt.ToShortTimeString()</td>
-                                        <td>@(item.Measurement.GetValue<TenaIdentifiUnit>().Value.ToReadableString())</td>
-                                        <td>@item.Signature.Who.FullName</td>
-                                    </tr>
+                                <tr>
+                                    <td>@TimeSpanDifference.ToShortDateTime(item.CreatedAt, "Idag", "Igår") @item.CreatedAt.ToShortTimeString()</td>
+                                    <td>@(item.Value)</td>
+                                    @*<td>@(item.Measurement.GetValue<TenaIdentifiUnit>().Value.ToReadableString())</td>*@
+                                    <td>@item.Signature.Who.FullName</td>
+                                </tr>
                                 }
                             </tbody>
                         </table>

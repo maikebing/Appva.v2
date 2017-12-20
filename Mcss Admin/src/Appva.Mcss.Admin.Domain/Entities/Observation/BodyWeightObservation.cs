@@ -79,15 +79,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNullOrWhiteSpace(value, "value");
             ////TODO: Locale differences in double datatype. Replaces '.' with ','
             value = value.Replace('.', ',');
-            ////TODO: Break out TryParse
-            var mass = 0.0;
-            double.TryParse(value, out mass);
-            return this.NewMeasurement(mass, unit?? MassUnits.Kilogram);
+            return this.NewMeasurement(this.TryParseToDouble(value), unit?? MassUnits.Kilogram);
         }
 
         #endregion
 
         #region Private Methods.
+
+        /// <summary>
+        /// Tries to parse the value type string to a result type double.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>Result as type <double>double</double>.</returns>
+        private double TryParseToDouble(string value)
+        {
+            double result = 0.0;
+            double.TryParse(value, out result);
+            return result;
+        }
 
         /// <summary>
         /// Validates a body weight value.
@@ -106,7 +115,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
             if (value.IsNot<double>())
             {
-                throw new NotFiniteNumberException("value is not a number.");
+                throw new NotFiniteNumberException("value is not of type 'double'.");
             }
             var mass = (double) Convert.ChangeType(value, typeof(double));
             if (mass < 5 || mass > 450)

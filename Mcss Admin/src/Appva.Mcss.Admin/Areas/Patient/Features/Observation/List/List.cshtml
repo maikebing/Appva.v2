@@ -1,26 +1,155 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Admin.Models.ListObservationModel
-@{ SetTitle("Mätvärden"); }
+@{ 
+    SetTitle("Mätvärden");
+}
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
-<div class="section section--hspace">
-    <div class="inliner">
-        <h2>Mätvärden</h2>
-        <div>
-            <a class="button button--ml open-in-dialog" href="@Url.Action("create", "observation")#add-observation" data-dialog-title="Lägg till mätvärde" data-dialog-symbol="+">
-                <svg class="icon icon--mr" aria-hidden="true">
-                    <use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use>
-                </svg>Lägg till
-            </a>
+
+<div class="tena-list section--hspace section--vspace section--bluetone">
+    <div class="distributor distributor--justified">
+        <div class="distributor__inline-children">
+            <h2>Mätvärden</h2>
         </div>
     </div>
     <div>
         <div class="grid">
             <div data-size="xs:24 s:10 m:8 l:6 xl:6">
-                @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationList.cshtml", Model)
+                <div class="section section--card section--vspace">
+                    <div class="section section--header section--hspace">
+                        <div class="form-controls text-align--center">
+                            <a class="button button--ml open-in-dialog" href="@Url.Action("create", "observation")#add-observation" data-dialog-title="Ny mätning" data-dialog-symbol="+">
+                                <svg class="icon icon--mr" aria-hidden="true">
+                                    <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                                </svg>
+                                Ny mätning
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sub-nav" role="navigation" data-tab-target="measurements">
+                        <h2>Mätningar</h2>
+                        <ul>
+                            @foreach (var item in Model.ObservationList)
+                            {
+                                <li class="@(Model.ObservationId == item.Id ? "sub-nav__item sub-nav__item--selected" : "sub-nav__item")">
+                                    <a href="@Url.Action("list","observation", new { ObservationId = item.Id })#measurements">@item.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div id="measurements" data-size="xs:24 s:14 m:16 l:18 xl:18">
-                @Html.Partial("~/Areas/Patient/Features/Observation/List/Partials/_ObservationDetails.cshtml", Model)
+            <div id="measurements" class="section section--vspace section--card" data-size="xs:24 s:14 m:16 l:18 xl:18">
+                @if (Model.ObservationId.IsNotEmpty())
+                {
+                    <div class="section section--header section--hspace">
+                        <div class="distributor distributor--justified">
+                            <h3>@Model.Name</h3>
+                            <div class="form-controls form-controls--inliner">
+                                <a class="button button--right" href="#">
+                                    <svg class="icon icon--mr" aria-hidden="true">
+                                        <use xlink:href="/assets/images/icons/icon.sprite.svg#pdf-icon"></use>
+                                    </svg>skapa PDF
+                                </a>
+                                <a class="button open-in-dialog" href="@Url.Action("update", "observation", new { ObservationId = Model.ObservationId })#add-observation" data-dialog-title="Ändra mätning">
+                                    <svg class="icon icon--mr" aria-hidden="true">
+                                        <use xlink:href="/assets/images/icons/icon.sprite.svg#pencil-icon"></use>
+                                    </svg>Ändra
+                                </a>
+                            </div>
+                        </div>
+                        <div class="section section--vspace inliner">
+                            <dl>
+                                <dd>@Model.Instructions</dd>
+                                @if (Model.Delegation.IsNotNull())
+                                {
+                                    <dt>Delegering</dt>
+                                    <dd>@Model.Delegation.Name</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    if (Model.ObservationItemList.IsNotNull() && Model.ObservationItemList.IsNotEmpty())
+                    {
+                        <div class="section section--hspace section--vspace">
+                            <div class="distributor distributor--justified">
+
+                                <form action="@Url.Action("list", "observation", new { ObservationId = Model.ObservationId })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+                                    <div class="grid grid--align-middle">
+                                        <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                            <div class="form-controls date-picker">
+                                                @Html.FormGroup(x => x.StartDate, "form-controls date-picker").Label("Från").TextBox(htmlAttributes: new
+                                                   {
+                                                        @class = "datepicker",
+                                                        data_datepicker_limit = "past",
+                                                        data_rule_date = "true"                                                        
+                                                   }).Build()
+                                            </div>
+                                        </div>
+                                        <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                            <div class="form-controls date-picker">
+                                                @Html.FormGroup(x => x.EndDate, "form-controls date-picker").Label("Till").TextBox(htmlAttributes: new
+                                                   {
+                                                       @class = "datepicker",
+                                                       data_datepicker_limit = "past",
+                                                       data_rule_date = "true",
+                                                       data_rule_greaterthan = "#StartDate",
+                                                       data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
+                                                   }).Build()
+                                            </div>
+                                        </div>
+                                        <div data-size="xs:24 s:24 m:4 l:2 xl:1">
+                                            <div class="form-controls js-hidden">
+                                                <button type="submit" class="button">Visa</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div data-size="xs:24 s:24 m:24 l:6 xl:11">
+                                            <div class="form-controls form-controls--align-end">
+                                                <a class="button open-in-dialog" href="@Url.Action("addvalue", "observation", new { ObservationId = Model.ObservationId })#add-observation-value" data-dialog-title="Lägg till mätvärde">
+                                                    <svg class="icon icon--mr"><use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use></svg>
+                                                    Nytt mätvärde
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table-general table-general--descending" id="update-table" role="region">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Datum</th>
+                                    <th scope="col">Värde</th>
+                                    <th scope="col">Signerad av</th>
+                                    <th scope="col"><span class="visually-hidden">Åtgärder</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ObservationItemList)
+                                {
+                                    <tr>
+                                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                                        <td>@item.Value.ToString("g") </td>
+                                        <td>@item.Signature.Who.FullName</td>
+                                        <td> </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="section section--hspace section--vspace" data-size="xs:24 s:24 m:24 l:6 xl:4">
+                            <div class="empty-list section section--hspace section--vspace text-align--center">
+                                <div class="section section--vspace">
+                                    <span class="h4">Det finns inga registrerade mätvärden för denna mätning.</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>

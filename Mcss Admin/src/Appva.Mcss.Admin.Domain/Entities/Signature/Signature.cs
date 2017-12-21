@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Security.Cryptography;
     using Appva.Core.Extensions;
@@ -28,6 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="signator">The signator.</param>
         /// <param name="data">The signed data.</param>
+        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
         public Signature(Account signator, IList<SignedData> data)
         {
             Requires.NotNull(signator,       "signator"  );
@@ -44,7 +46,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        protected Signature()
+        protected internal Signature()
         {
         }
 
@@ -58,16 +60,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Account Who
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// The data which is signed.
         /// </summary>
-        public virtual IList<SignedData> Data
+        public virtual IEnumerable<SignedData> Data
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Checksum
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         #endregion
@@ -87,7 +89,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Creates a new instance of the <see cref="Signature"/> class.
         /// </summary>
-        /// <param name="type">The signature type.</param>
         /// <param name="signator">The signator.</param>
         /// <param name="data">The signed data.</param>
         /// <returns>A new <see cref="Signature"/> instance.</returns>

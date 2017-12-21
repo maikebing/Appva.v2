@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var observation = this.observationService.Get(message.ObservationId);
             Requires.NotNull(observation, "observation");
-            this.observationService.CreateItem(observation, message.Value);
+            this.observationService.NewMeasurement(observation, message.Value);
             return new ListObservation(observation.Patient.Id, observation.Id);
         }
 

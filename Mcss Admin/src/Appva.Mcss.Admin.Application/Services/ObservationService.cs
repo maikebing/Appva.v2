@@ -155,7 +155,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             if (startDate.HasValue)
             {
-                return this.observationItemRepository.ListByDate(observationId, startDate.Value, endDate.HasValue ? endDate.Value : DateTime.UtcNow);
+                return this.observationItemRepository.ListByDate(observationId, startDate.Value, endDate ?? DateTime.Now);
             }
             return this.observationItemRepository.List(observationId);
         }

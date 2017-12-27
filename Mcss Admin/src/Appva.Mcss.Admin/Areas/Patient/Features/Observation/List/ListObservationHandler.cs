@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var observation = message.ObservationId.IsEmpty() ? observationList.First() : observationList.Where(x => x.Id == message.ObservationId).SingleOrDefault();
             Requires.NotNull(observation, "observation");
             var observationItemList = this.observationService.ListMeasurements(observation.Id, message.StartDate, message.EndDate);
-            return new ListObservationModel(observation, patientViewModel, observationList, observationItemList);
+            return new ListObservationModel(patientViewModel, observationList, observationItemList, observation);
         }
         #endregion
     }

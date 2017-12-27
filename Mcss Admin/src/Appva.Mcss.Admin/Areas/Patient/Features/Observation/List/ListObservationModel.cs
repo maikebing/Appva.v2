@@ -47,16 +47,16 @@ namespace Appva.Mcss.Admin.Models
         /// <param name="patientViewModel">The patient view model.</param>
         /// <param name="observationList">The observation list.</param>
         /// <param name="observationItemList">The observation item list.</param>
-        public ListObservationModel(Observation observation, PatientViewModel patientViewModel, IList<Observation> observationList, IList<ObservationItem> observationItemList)
+        public ListObservationModel(PatientViewModel patientViewModel, IList<Observation> observationList = null, IList<ObservationItem> observationItemList = null, Observation observation = null)
         {
-            this.Id                  = observation.Patient.Id;
+            this.Id                  = patientViewModel.Id;
+            this.PatientViewModel    = patientViewModel;
+            this.ObservationList     = observationList;
+            this.ObservationItemList = observationItemList;
             this.ObservationId       = observation.Id;
             this.Name                = observation.Name;
             this.Instructions        = observation.Description;
             this.Delegation          = observation.Delegation;
-            this.PatientViewModel    = patientViewModel;
-            this.ObservationList     = observationList;
-            this.ObservationItemList = observationItemList;
         }
 
         #endregion

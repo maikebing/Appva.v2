@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System.Diagnostics.CodeAnalysis;
     using Appva.Mcss.Admin.Domain.VO;
     using Validation;
 
@@ -24,10 +25,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Initializes a new instance of the <see cref="SignedData"/> class.
         /// </summary>
         /// <param name="data">The base64 data which is signed.</param>
+        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
         public SignedData(Base64Binary data)
         {
-            Requires.NotNull(data,                         "data");
-            Requires.NotNullOrWhiteSpace(data.Value, "data.value");
+            Requires.NotNull(data, "data");
             this.Data = data.Value;
         }
 
@@ -37,7 +38,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        protected SignedData()
+        protected internal SignedData()
         {
         }
 
@@ -51,7 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Data
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -61,12 +62,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Signature Signature
         {
             get;
-            internal protected set;
+            protected internal set;
         }
 
         #endregion
 
-        #region Static Builders.
+        #region Public Static Builders.
 
         /// <summary>
         /// Creates a new instance of the <see cref="SignedData"/> class.
@@ -81,6 +82,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Creates a new instance of the <see cref="SignedData"/> class.
         /// </summary>
+        /// <typeparam name="T">The type of data which is to be signed.</typeparam>
         /// <param name="data">The base64 data which is signed.</param>
         /// <returns>A new <see cref="SignedData"/> instance.</returns>
         public static SignedData New<T>(T data) where T : class

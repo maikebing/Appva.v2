@@ -542,15 +542,15 @@
       <generator class="guid.comb" />
     </id>
     <discriminator column="ObservationType" />
-    <version  name="Version"                                       />
+    <version  name="Version"                                        />
     <property name="IsActive"      column="Active"                  />
     <property name="CreatedAt"     column="Created"  update="false" />
     <property name="UpdatedAt"     column="Modified"                />
-    <property name="Name"                                          />
-    <property name="Description"                                   />
+    <property name="Name"                                           />
+    <property name="Description"                                    />
     <property name="Scale"         column="scale" type="StringClob" />
-    <many-to-one name="Patient"    class="Patient"                 />
-    <many-to-one name="Delegation" class="Taxon"                   />
+    <many-to-one name="Patient"    class="Patient"                  />
+    <many-to-one name="Delegation" class="Taxon"                    />
     <bag name="Items" cascade="save-update" inverse="true">
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
@@ -612,8 +612,8 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <property name="Data"                           update="false" />
-    <many-to-one name="Signature" class="Signature"                />
+    <property name="Data" update="false"            />
+    <many-to-one name="Signature" class="Signature" />
   </class>
 
   <!-- Comment -->

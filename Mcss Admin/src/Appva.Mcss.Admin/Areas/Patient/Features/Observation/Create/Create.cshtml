@@ -10,13 +10,11 @@
             @Html.ValidationSummary()
             <div class="width-limiter width-limiter--s">
                 <div class="form-controls">
-                    @Html.LabelFor(x => x.Name, new { @class = "required-indicator" })
-                    @Html.TextBoxFor(x => x.Name, new { @required = "required", aria_required = "true" })
+                    @Html.FormGroup(x => x.Name).Label("Namn").TextBox(htmlAttributes: new { @class="required-indicator", @required = "required" }).Validate().Build()
                 </div>
 
                 <div class="form-controls form-controls--text">
-                    @Html.LabelFor(x => x.Description)
-                    @Html.TextAreaFor(x => x.Description, new { @cols = "30", @rows = "5" })
+                    @Html.FormGroup(x => x.Description).Label("Instruktion").TextArea(null, new { @cols = "30", @rows = "5" }).Validate().Build()
                 </div>
 
                 <div class="form-controls form-controls--select">

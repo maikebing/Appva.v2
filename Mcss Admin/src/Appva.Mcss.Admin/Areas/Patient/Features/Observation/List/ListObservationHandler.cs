@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
@@ -70,11 +71,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             Requires.NotNull(patient, "patient");
             var patientViewModel = this.patientTransformer.ToPatient(patient);
             var observationList = this.observationService.ListByPatient(patient.Id);
-            if (message.ObservationId.IsEmpty())
+            if (message.ObservationId.IsEmpty() && observationList.IsEmpty())
             {
                 return new ListObservationModel(patientViewModel, observationList);
             }
-            var observation = this.observationService.Get(message.ObservationId);
+            var observation = message.ObservationId.IsEmpty() ? observationList.First() : observationList.Where(x => x.Id == message.ObservationId).SingleOrDefault();
             Requires.NotNull(observation, "observation");
             var observationItemList = this.observationService.ListMeasurements(observation.Id, message.StartDate, message.EndDate);
             return new ListObservationModel(observation, patientViewModel, observationList, observationItemList);

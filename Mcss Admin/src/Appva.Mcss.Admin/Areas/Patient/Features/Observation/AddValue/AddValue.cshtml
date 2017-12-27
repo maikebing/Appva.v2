@@ -20,7 +20,7 @@
                     }
                     @if (Model.ValueSelectList.IsNull())
                     {
-                        @Html.FormGroup(x => x.Value).Label("Kg", new { @class = "required-indicator" }).TextBox("###", new { min = "5", max = "450", size = "3", required = "required", type = "text" }).Validate().Build()
+                        @Html.FormGroup(x => x.Value).Label("Vikt (kg)").TextBox(null, new { placeholder = "###", size = "3", required = "required", type = "text" }).Validate().Build()
                     }
                     @Html.HiddenFor(x => x.Scale)
                     @Html.ValidationMessageFor(x => x.Value)

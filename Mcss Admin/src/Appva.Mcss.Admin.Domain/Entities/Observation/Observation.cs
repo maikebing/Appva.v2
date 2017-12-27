@@ -5,13 +5,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Mcss.Domain.Unit;
+    using Newtonsoft.Json;
     using Validation;
 
     #endregion
@@ -41,7 +37,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Name        = name;
             this.Description = description;
             this.Delegation  = delegation;
-            this.Scale       = scale == null ? null : scale.ToString();
+            this.Scale       = scale == null ? null : JsonConvert.SerializeObject(scale);
             //// UNRESOLVED: custom scale only used by DosageObservation
             //// rename scale to something like valid values, overridden scale of values etc. <-- 
             //// add unit (a list of ok units) to observation

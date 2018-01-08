@@ -72,7 +72,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             int lastRow;
 
-            model.FileId = file.Id;
+            model.Id = file.Id;
             model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
             model.ReadFromRow = settings.ImportPractitionerSettings.ReadFromRow;
             model.Data = ExcelReader.ReadPractitioners(

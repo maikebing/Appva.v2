@@ -9,37 +9,43 @@
     <div id="fileimport">
         @if (true)
         {
-            <h3 style="padding-bottom:10px">Validera organisationsnoder</h3>
-            <div id="progress-container">
-                <div style="width:19%" class="progress-bar"></div>
-                <div class="progress-section">
-                    <div class="progress-section-completed">1</div>
+            using (Html.BeginForm())
+            {
+                <h3 style="padding-bottom:10px">Validera organisationsnoder</h3>
+                <div id="progress-container">
+                    <div style="width:19%" class="progress-bar"></div>
+                    <div class="progress-section">
+                        <div class="progress-section-completed">1</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted progress-section-animation">2</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted">3</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted">4</div>
+                    </div>
                 </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted progress-section-animation">2</div>
+                <div id="fileinfo">
+                    <table class="device-table fileinfo">
+                        @for (var i = 0; i < Model.Nodes.Count; i++)
+                        {
+                            <tr>
+                                <td style="width:50%!important">@(string.IsNullOrWhiteSpace(Model.Nodes[i]) ? "[Tomt fält]" : Model.Nodes[i])</td>
+                                <td>@Html.Raw(Model.SelectedNodeNames[i])</td>
+                                @Html.Hidden(string.Format("Nodes[{0}]", i), Model.Nodes[i])
+                            </tr>
+                        }
+                    </table>
                 </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted">3</div>
+                <div style="margin-top:20px;float:right">
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.AntiForgeryToken()
+                    @Html.ActionLink("Föregående", "PractitionerSelection", "Import", new { Id = Model.Id, style = "padding-right:8px" })
+                    @Html.Submit("Spara och fortsätt", new { @class = "btn-green" })
                 </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted">4</div>
-                </div>
-            </div>
-            <div id="fileinfo">
-                <table class="device-table fileinfo">
-                    @foreach (var node in Model.UniqueNodes)
-                    {
-                        <tr>
-                            <td style="width:auto!important">@(string.IsNullOrWhiteSpace(node) ? "[Tomt fält]" : node)</td>
-                            <td><select><option>Välj organisationsnod</option></select></td>
-                        </tr>
-                    }
-                </table>
-            </div>
-            <div style="margin-top:20px;float:right">
-                @Html.ActionLink("Föregående", "PractitionerSelection", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
-                @Html.ActionLink("Fortsätt", "PractitionerRoles", "Import", null, new { @class = "btn-green" })
-            </div>
+            }
         }
         else
         {
@@ -50,8 +56,8 @@
 <script>
     $(document).ready(function () {
         $('.progress-bar').animate({ width: "39%" }, 600);
-        setTimeout(function () {
+            setTimeout(function () {
             $('.progress-section-animation').css({ backgroundColor: "#5ac24f", color: "#fff" });
-        }, 400);
-    });
+            }, 400);
+        });
 </script>

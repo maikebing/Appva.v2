@@ -468,6 +468,7 @@
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportModel.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganizationHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganizationModel.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganizationPublisher.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewModel.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerImportValidationTemp.cs" />

@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The file id.
         /// </summary>
-        public Guid FileId
+        public Guid Id
         {
             get;
             set;

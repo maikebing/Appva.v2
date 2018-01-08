@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override Guid Handle(PractitionerSelectionModel message)
         {
-            var file = this.fileService.Get(message.FileId);
+            var file = this.fileService.Get(message.Id);
 
             if (file == null || message == null)
             {

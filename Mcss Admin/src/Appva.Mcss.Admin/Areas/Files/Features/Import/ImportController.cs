@@ -28,25 +28,12 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
         #region Practitioners.
 
-        /*
-        /// <summary>
-        /// Handles the import practitioner request.
-        /// </summary>
-        /// <param name="request">The <see cref="UploadFileModel"/>.</param>
-        /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("{id:guid}/practitioner")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("practitionerstatus", "import")]
-        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult Practitioner(ImportPractitionerModel request)
-        {
-            return this.View();
-        }
-        */
+        #region Preview.
 
         /// <summary>
-        /// Start the import practitioners wizard.
+        /// Starts the import practitioners wizard.
         /// </summary>
-        /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
+        /// <param name="request">The <see cref="Identity{PractitionerPreviewModel}"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("practitioners/{id:guid}/preview")]
         [HttpGet, Hydrate, Dispatch]
@@ -59,7 +46,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <summary>
         /// Handles the practitioner preview request.
         /// </summary>
-        /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
+        /// <param name="request">The <see cref="PractitionerPreviewModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("practitioners/{id:guid}/preview")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PractitionerSelection", "Import")]
@@ -69,10 +56,14 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
+        #endregion
+
+        #region Selection.
+
         /// <summary>
-        /// Import practitioners, step 1: row selection.
+        /// Row selection.
         /// </summary>
-        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
+        /// <param name="request">The <see cref="Identity{PractitionerSelectionModel}"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("practitioners/{id:guid}/selection")]
         [HttpGet, Hydrate, Dispatch]
@@ -95,8 +86,12 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
+        #endregion
+
+        #region Organization.
+
         /// <summary>
-        /// Import practitioners, step 2: validate organization nodes.
+        /// Validate organization nodes.
         /// </summary>
         /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
@@ -108,6 +103,22 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
+        /// <summary>
+        /// Handles the organization nodes request.
+        /// </summary>
+        /// <param name="request">The <see cref="PractitionerOrganizationModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/organization")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PractitionerRoles", "Import")]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerOrganization(PractitionerOrganizationModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Roles.
         /// <summary>
         /// Import practitioners, step 3: validate roles.
         /// </summary>
@@ -121,6 +132,10 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
+        #endregion
+
+        #region Import.
+
         /// <summary>
         /// Import practitioners, step 4: import and save.
         /// </summary>
@@ -133,6 +148,8 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         {
             return this.View();
         }
+
+        #endregion
 
         #endregion
 

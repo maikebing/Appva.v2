@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             );
             File.Delete(path);
 
-            model.FileId = message.Id;
+            model.Id = message.Id;
             model.Title = file.Title;
             model.Description = file.Description;
             model.Name = file.Name;

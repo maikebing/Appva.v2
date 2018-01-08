@@ -78,7 +78,7 @@
                 <div style="margin-top:20px;float:right">
                     @using (Html.BeginForm())
                     {
-                        @Html.HiddenFor(x => x.FileId)
+                        @Html.HiddenFor(x => x.Id)
                         @Html.HiddenFor(x => x.IsImportable)
                         @Html.AntiForgeryToken()
                         @Html.Submit("Starta importguiden", new { @class = "btn-green" })

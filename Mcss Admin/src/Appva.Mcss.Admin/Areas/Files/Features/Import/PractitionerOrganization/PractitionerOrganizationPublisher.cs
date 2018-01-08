@@ -1,4 +1,4 @@
-﻿// <copyright file="PractitionerPreviewPublisher.cs" company="Appva AB">
+﻿// <copyright file="PractitionerOrganizationPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class PractitionerPreviewPublisher : RequestHandler<PractitionerPreviewModel, Guid>
+    internal sealed class PractitionerOrganizationPublisher : RequestHandler<PractitionerOrganizationModel, Guid>
     {
         #region Fields.
 
@@ -34,10 +34,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PractitionerPreviewPublisher"/> class.
+        /// Initializes a new instance of the <see cref="PractitionerOrganizationPublisher"/> class.
         /// </summary>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
-        public PractitionerPreviewPublisher(IFileService fileService)
+        public PractitionerOrganizationPublisher(IFileService fileService)
         {
             this.fileService = fileService;
         }
@@ -47,26 +47,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override Guid Handle(PractitionerPreviewModel message)
+        public override Guid Handle(PractitionerOrganizationModel message)
         {
             var file = this.fileService.Get(message.Id);
 
-            if (file == null)
+            if (file == null || message == null)
             {
                 return Guid.Empty;
-            }
-
-            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
-
-            if(properties.PractitionerImportProperties == null)
-            {
-                properties.PractitionerImportProperties = new PractitionerImportProperties
-                {
-                    IsImportable = message.IsImportable
-                };
-
-                file.Properties = JsonConvert.SerializeObject(properties);
-                this.fileService.Save(file);
             }
 
             return file.Id;

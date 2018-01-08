@@ -1546,6 +1546,20 @@ td.rights {
     font-size:10px;
     color:#888;
 }
+#fileimport .fileinfo .selected-node {
+    color:#222;
+    font-size:1em;
+    background:#f1f5ff;
+    display:inline-block!important;
+    padding:3px 6px!important;
+    border:1px solid #cad9ff!important;
+    border-radius:3px;
+}
+#fileimport .fileinfo .node-not-found {
+    color:#fff;
+    background:#666;
+    border:1px solid #333!important;
+}
 #fileimport .emptyrow {
     text-align:center;
     padding:12px 0!important;

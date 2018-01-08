@@ -92,10 +92,10 @@
                     </tbody>
                 </table>
                 <div style="margin-top:20px;float:right">
-                    @Html.HiddenFor(x => x.FileId)
+                    @Html.HiddenFor(x => x.Id)
                     @Html.AntiForgeryToken()
-                    @Html.ActionLink("Föregående", "PractitionerPreview", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
-                    @Html.Submit("Fortsätt", new { @class = "btn-green" })
+                    @Html.ActionLink("Föregående", "PractitionerPreview", "Import", new { Id = Model.Id, style = "padding-right:8px" })
+                    @Html.Submit("Spara och fortsätt", new { @class = "btn-green" })
                 </div>
             }
         }
@@ -133,30 +133,37 @@
         function setSelectedRow(input, isStartValue) {
             var next = isStartValue ? end : start;
             var value = parseInt(input.val()), nextValue = parseInt(next.val());
+            var bgColorStart = '#d7f5d5', bgColorStartRow = '#f6fff6', textColorStart = '#008908';
+            var bgColorEnd = '#f7d9d9', bgColorEndRow = '#fff6f6', textColorEnd = '#871717';
             $('#row-selection.device-table tbody tr').each(function () {
                 var cell = $(this).children(':first');
                 var dataRow = $(this).attr('data-row');
                 if (value == nextValue && dataRow != -1) {
                     lastValue = value;
-                    setColor(cell, '#e2f9e0', '#008908');
+                    setColor($(this), bgColorStartRow, '#444');
+                    setColor(cell, bgColorStart, textColorStart);
                 }
                 if (dataRow == input.val()) {
                     if (isStartValue && value <= nextValue) {
-                        setColor(cell, '#e2f9e0', '#008908');
+                        setColor($(this), bgColorStartRow, '#444');
+                        setColor(cell, bgColorStart, textColorStart);
                         if (typeof lastValue != 'undefined') {
                             var row = $('#row-selection.device-table tbody').children('[data-row="' + lastValue + '"]');
-                            if (row.children(':first').css('background-color') == 'rgb(226, 249, 224)' && value != nextValue) {
+                            if (row.children(':first').css('background-color') == 'rgb(215, 245, 213)' && value != nextValue) {
                                 var isNext = lastValue == nextValue;
-                                setColor(row.children(':first'), isNext ? '#ffe9e9' : '#eee', isNext ? '#871717' : '#444');
+                                setColor(row, isNext ? bgColorEndRow : '#fff', '#444');
+                                setColor(row.children(':first'), isNext ? bgColorEnd : '#eee', isNext ? textColorEnd : '#444');
+                                lastValue = (function () {
+                                    return;
+                                })();
                             }
-                            lastValue = (function () {
-                                return;
-                            })();
                         }
                     } else if (!isStartValue && value > nextValue) {
-                        setColor(cell, '#ffe9e9', '#871717');
+                        setColor($(this), bgColorEndRow, '#444');
+                        setColor(cell, bgColorEnd, textColorEnd);
                     }
                 } else if (dataRow != -1 && dataRow != next.val()) {
+                    setColor($(this), '#fff', '#444');
                     setColor(cell, '#eee', '#444');
                 }
             });
@@ -165,7 +172,7 @@
             cell.css({ 'background-color': bgColor, 'color': textColor });
         }
         function setInputValue(sel, next, isStartVal) {
-            var min = @Model.SelectedFirstRow, max = @Model.SelectedLastRow;
+            var min = @(Model.ReadFromRow + 1), max = @(Model.LastRow + Model.SkipRows + Model.ValidateAtRow);
             if (sel.val() > max) {
                 sel.val(max);
             }

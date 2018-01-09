@@ -64,18 +64,38 @@ namespace Appva.Mcss.Admin.Application.Transformers
         {
             return new ArticleModel
             {
-                Id = article.Id,
-                Name = article.Name,
-                Description = article.Description,
-                Category = article.Category,
-                OrderedBy = article.RefillOrderedBy,
-                OrderDate = article.RefillOrderDate,
-                FormattedOrderDate = article.RefillOrderDate.Value.Day == DateTime.Now.Day ? "idag" : (article.RefillOrderDate.Value.Day == DateTime.Now.Day - 1 ? "igår" : article.RefillOrderDate.Value.ToString("d MMM yyyy")),
-                Status = article.Status,
-                Patient = article.Patient
+                Id                 = article.Id,
+                Name               = article.Name,
+                Description        = article.Description,
+                Category           = article.Category,
+                OrderedBy          = article.RefillOrderedBy,
+                OrderDate          = article.RefillOrderDate,
+                FormattedOrderDate = article.RefillOrderDate.ToReadableFormattedDate(),  
+                Status             = article.Status,
+                Patient            = article.Patient
             };
         }
 
         #endregion
+    }
+
+    public static class TemporaryDateTimeExtensions
+    {
+        public static string ToReadableFormattedDate(this DateTime? dateTime)
+        {
+            if (! dateTime.HasValue)
+            {
+                return string.Empty;
+            }
+            if (dateTime.Value.Date == DateTime.Now.Date)
+            {
+                return "idag";
+            }
+            if (dateTime.Value.Date == DateTime.Now.AddDays(-1).Date)
+            {
+                return "igår";
+            }
+            return dateTime.Value.ToString("d MMM yyyy");
+        }
     }
 }

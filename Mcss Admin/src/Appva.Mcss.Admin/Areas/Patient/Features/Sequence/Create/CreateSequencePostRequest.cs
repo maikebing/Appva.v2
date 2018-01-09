@@ -16,7 +16,6 @@ namespace Appva.Mcss.Admin.Models
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Domain;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
 
@@ -69,7 +68,7 @@ namespace Appva.Mcss.Admin.Models
         [Required(ErrorMessage="Insats måste anges")]
         public string Name 
         { 
-            get; 
+            get;
             set;
         }
 
@@ -122,7 +121,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// If a new inventory should be created for this sequence
         /// </summary>
-        public bool CreateNewInventory
+        public bool CreateNewInventory /* ENUM??? */
         {
             get;
             set;
@@ -209,7 +208,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// If occures on specific dates, the dates
         /// </summary>
-        public IList<Date> Dates 
+        public IList<CheckBoxViewModel> Dates 
         { 
             get; 
             set;
@@ -347,7 +346,7 @@ namespace Appva.Mcss.Admin.Models
 
         public IEnumerable<Date> GetSelectedDates()
         {
-            this.Dates.Where(x => x.Checked == true);
+            return null;//this.Dates.Where(x => x.Checked == true).Select(x => Date.Parse(x.));
         }
 
         public IEnumerable<TimeOfDay> GetSelectedTimesOfDay()

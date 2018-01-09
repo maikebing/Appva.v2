@@ -17,7 +17,7 @@ namespace Appva.Html.Security
     /// <summary>
     /// An implementation of <see cref="IPermission"/>.
     /// </summary>
-    internal sealed class Permission : IPermission/*, KeyValuePair<string, string>*/
+    internal sealed class Permission : IPermission
     {
         #region Variables.
 
@@ -38,8 +38,27 @@ namespace Appva.Html.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="Permission"/> class.
         /// </summary>
+        /// <param name="keyValue">The permission key and value.</param>
+        public Permission(KeyValuePair<string, string> keyValue)
+            : this(keyValue.Key, keyValue.Value)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Permission"/> class.
+        /// </summary>
         /// <param name="value">The permission value.</param>
         public Permission(string value)
+            : this(ClaimTypes.Permission, value)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Permission"/> class.
+        /// </summary>
+        /// <param name="key">The permission key.</param>
+        /// <param name="value">The permission value.</param>
+        internal Permission(string key, string value)
         {
             this.key   = ClaimTypes.Permission;
             this.value = value;

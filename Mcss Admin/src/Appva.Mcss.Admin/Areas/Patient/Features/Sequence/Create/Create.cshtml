@@ -1,5 +1,7 @@
-﻿@model CreateSequenceForm
+﻿@model CreateSequencePostRequest
 @using System.Linq.Expressions
+@using Appva.Html.Elements
+@using Appva.Mcss.Admin.Areas.Patient.Features
 @{ 
     SetTitle("Skapa");
     Layout = "~/Areas/Patient/Features/Shared/_NewCssLayout.cshtml";   
@@ -19,6 +21,13 @@
 <div class="section section--hspace section--vspace section--bluetone">
     <h2>Lägg till insats</h2>
 	<div>
+        @(Html.Put<SequenceController>("Create").Content(
+            @<text>
+                @Html.File().Title("Choose a file?").Label("herro?").Autocomplete(true)
+                @Html.Button().Data("toggle-by-input", "key")
+            </text>
+        ))
+
         @using (Html.BeginForm("Create", "Sequence", FormMethod.Post, new { @class = "validate" }))
         {
             @Html.AntiForgeryToken()
@@ -75,7 +84,7 @@
 							</div>
 							<div class="form-controls form-controls--radio-tab">
                                 @Html.RadioButtonFor(x => x.Type, SequenceType.DateRange, new { id = "id-choose-dates-" + SequenceType.DateRange.GetHashCode() })
-                                @Html.Label("id-choose-dates-" + +SequenceType.DateRange.GetHashCode(), "Specifika datum")
+                                @Html.Label("id-choose-dates-" + SequenceType.DateRange.GetHashCode(), "Specifika datum")
 							</div>
 							<div class="form-controls form-controls--radio-tab">
                                 @Html.RadioButtonFor(x => x.Type, SequenceType.NeedBased, new { id = "id-when-needed-" + SequenceType.NeedBased.GetHashCode() })
@@ -150,6 +159,7 @@
 							<div id="exact-interval" data-toggle-by-input="show" class="section section--blue section--narrow section--bubble section--hspace section--vspace">
 								<fieldset class="timepicker">
 									<legend>Start:</legend>
+                                        @Html.Number().Class("form-controls").Label("Timmar").Max(23).Min(0).Data("direction", "vertical").Required()
                                     <!--<div class="form-controls">-->
                                         @Html.FormGroup(x => x.StartHour, "form-controls").AsteriskLabel("Timmar", new
                                         {
@@ -252,26 +262,28 @@
 			                            type="submit"
 			                            id="button-56237BDFD292"
 			                            data-soft-post="chosen-date">
-				                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Lägg till
+				                            <svg class="icon icon--mr" aria-hidden="true">
+                                                <use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use>
+                                            </svg>Lägg till
 			                            </button>
 		                            </div>
 	                            </div>
                             </div>
                             <ul class="input-value-list" id="choose-date-value-list-12312">
-	                            <li>
+	                            <!--<li>
 		                            2017-04-18<button class="button button--small" type="submit" value="remove-2017-04-12">
 			                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>
 			                            Ta bort
 		                            </button>
 		                            <input value="2017-04-18" id="choose-date-value-list-12312_hidden-input_0" name="choose-date-value-list-12312_hidden-input_0" type="hidden" data-input-value-list-added-by="chosen-date" />
-	                            </li>
+	                            </li>-->
                             </ul>
 						</div>
                     </div>
                 </div>
                 <div data-size="s:24">
 					<div id="repeating" class="section section--hspace section--vspace section--card" data-toggle-values="@SequenceType.Scheduled" data-toggle-by-input="show">
-						 @NewFormHeader("Repetera", "Ange om insatsen ska upprepas med ett visst dags- eller veckointervall.")
+						@NewFormHeader("Repetera", "Ange om insatsen ska upprepas med ett visst dags- eller veckointervall.")
 						<fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["by-week", "by-day"]'>
 							<div class="form-controls form-controls--radio-tab">
                                 @Html.RadioButtonFor(x => x.Type, Repetition.Daily, new { @checked = "checked", id = "id-repetition-" + Repetition.Daily.GetHashCode() })
@@ -352,20 +364,16 @@
 					</div>
 				</div>
                 <div data-size="s:24">
-					<div
-						id="times"
-						data-toggle-values="when-needed"
-						data-toggle-by-input="hide"
-						>
+					<div id="times" data-toggle-values="when-needed" data-toggle-by-input="hide">
 						<div class="section section--hspace section--vspace section--card">
-							<div class="form-section-header">
-								<div class="form-section-header__number">
-								</div>
+                            @NewFormHeader("Ange klockslag för insatsen", "Ange vid vilka tider som insatsen ska utföras.")
+							<!--<div class="form-section-header">
+								<div class="form-section-header__number"></div>
 								<div class="form-section-header__text">
  									<h2 class="form-section-header__heading">Ange klockslag för insatsen</h2>
 									<div class="form-section-header__description">Ange vid vilka tider som insatsen ska utföras.</div>
 								</div>
-							</div>
+							</div>-->
 							<fieldset class="form-controls form-controls--inline-children">
 								<legend>Klockslag, dag</legend>
 								<div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
@@ -574,14 +582,16 @@
 				</div>
 				<div data-size="s:24">
 					<div class="section section--hspace section--vspace section--card">
-						<div class="form-section-header">
-							<div class="form-section-header__number">
-							</div>
+                        @NewFormHeader("Ges inom", "Ange vilket tidsintervall som insatsen får utföras inom.")
+						<!--
+                        <div class="form-section-header">
+							<div class="form-section-header__number"></div>
 							<div class="form-section-header__text">
 								<h2 class="form-section-header__heading">Ges inom</h2>
 								<div class="form-section-header__description">Ange vilket tidsintervall som insatsen får utföras inom.</div>
 							</div>
 						</div>
+                        -->
 						<fieldset>
 							<div class="flex flex flex--align-middle flex--align-center flex--margin-bottom">
 								<div class="flex flex flex--align-middle flex--margin-left">

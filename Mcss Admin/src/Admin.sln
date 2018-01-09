@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.BetaMvc", "Appva.Mvc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Ehm", "Appva.Ehm\Appva.Ehm.csproj", "{0E392CD0-2967-4706-975C-881FFE9EAFEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Html", "Appva.Html\Appva.Html.csproj", "{40459229-0D42-4916-96F0-17BC28556584}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Html.Temp", "Appva.Html\Appva.Html.Temp.csproj", "{40459229-0D42-4916-96F0-17BC28556584}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

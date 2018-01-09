@@ -601,6 +601,7 @@
     <Content Include="Areas\Backoffice\Features\Ehm\Index\Index.cshtml" />
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributes.cshtml" />
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMock.cshtml" />
+    <Content Include="App_Code\Form.cshtml" />
     <None Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
@@ -1434,7 +1435,7 @@
       <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
       <Name>Appva.Ehm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Appva.Html\Appva.Html.csproj">
+    <ProjectReference Include="..\Appva.Html\Appva.Html.Temp.csproj">
       <Project>{40459229-0d42-4916-96f0-17bc28556584}</Project>
       <Name>Appva.Html</Name>
     </ProjectReference>
@@ -1467,6 +1468,7 @@
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />

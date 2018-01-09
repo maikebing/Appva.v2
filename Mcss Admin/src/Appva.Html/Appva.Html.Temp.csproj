@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{40459229-0D42-4916-96F0-17BC28556584}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Appva.Html.Temp</RootNamespace>
+    <AssemblyName>Appva.Html.Temp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Cryptography, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Mvc, Version=0.7.2.21183, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Appva.Mvc.0.7.2\lib\net45\Appva.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\RazorEngine.3.7.7\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Elements\Forms\IFormMethodDelete.cs" />
+    <Compile Include="Elements\Forms\IFormMethodGet.cs" />
+    <Compile Include="Elements\Forms\IFormMethodPost.cs" />
+    <Compile Include="Elements\Forms\IFormMethodPut.cs" />
+    <Compile Include="Elements\Forms\Implementations\FormMethodDeleteElement.cs" />
+    <Compile Include="Elements\Forms\Implementations\TextAreaElement.cs" />
+    <Compile Include="Elements\Forms\Input\InputType.cs" />
+    <Compile Include="Elements\Forms\ITextArea.cs" />
+    <Compile Include="Elements\HtmlAttributes\IColsHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IRowsHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IWrapHtmlAttribute.cs" />
+    <Compile Include="Elements\PositionHtmlElementDictionary.cs" />
+    <Compile Include="Elements\ValueTypes\TextWrapType.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\NonElementExtensions.cs" />
+    <Compile Include="Extensions\TimeExtensions.cs" />
+    <Compile Include="Elements\Forms\IForm.cs" />
+    <Compile Include="Elements\Forms\ILabel.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAcceptCharsetHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAccessKeyHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAriaHtmlElement.cs" />
+    <Compile Include="Elements\HtmlAttributes\IClassHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IContentEditableHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IContextMenuHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IDataHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IDirHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IDraggableHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IDropzoneHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IEncTypeHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IForHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IHiddenHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IIdHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ILangHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\INoValidateHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IOnEventHtmlAttribtue.cs" />
+    <Compile Include="Elements\HtmlAttributes\IRoleHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IStyleHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ITabIndexHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ITargetHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ITitleHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ITranslateHtmlAttribute.cs" />
+    <Compile Include="Elements\ValueTypes\DropzoneType.cs" />
+    <Compile Include="Elements\ValueTypes\OnEventHandler.cs" />
+    <Compile Include="Elements\ValueTypes\TextDirection.cs" />
+    <Compile Include="Elements\IHtmlElement.cs" />
+    <Compile Include="Helpers\TegBuilderExtensions.cs" />
+    <Compile Include="Internal\CodeAttribute.cs" />
+    <Compile Include="Internal\IgnoreAttribute.cs" />
+    <Compile Include="Elements\ValueTypes\FormCharset.cs" />
+    <Compile Include="Elements\ValueTypes\FormEncoding.cs" />
+    <Compile Include="Elements\Forms\Implementations\FormMethodGetElement.cs" />
+    <Compile Include="Elements\Forms\Implementations\FormMethodPutElement.cs" />
+    <Compile Include="Elements\ValueTypes\FormTarget.cs" />
+    <Compile Include="Elements\HtmlAttributes\IHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAcceptHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAltHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAutocompleteHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IAutofocusHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ICaptureHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ICheckedHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IDisabledHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormActionHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormEncTypeHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormMethodHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormNoValidateHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IFormTargetHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IHeightHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IListHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IMaxHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IMaxLengthHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IMinHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IMinLengthHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IMultipleHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\INameHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IPatternHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IPlaceholderHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IReadonlyHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IRequiredHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISelectionDirectionHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISelectionEndHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISelectionStartHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISizeHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISpellcheckHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\ISrcHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IStepHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IValueHtmlAttribute.cs" />
+    <Compile Include="Elements\HtmlAttributes\IWidthHtmlAttribute.cs" />
+    <Compile Include="Elements\Forms\Input\Button.cs" />
+    <Compile Include="Elements\Forms\Input\Checkbox.cs" />
+    <Compile Include="Elements\Forms\Input\Color.cs" />
+    <Compile Include="Elements\Forms\Input\Date.cs" />
+    <Compile Include="Elements\Forms\Input\DateTimeLocal.cs" />
+    <Compile Include="Elements\Forms\Input\Email.cs" />
+    <Compile Include="Elements\Forms\Input\File.cs" />
+    <Compile Include="Elements\Forms\Input\Hidden.cs" />
+    <Compile Include="Elements\Forms\Input\Image.cs" />
+    <Compile Include="Elements\Forms\Input\Month.cs" />
+    <Compile Include="Elements\Forms\Input\Number.cs" />
+    <Compile Include="Elements\Forms\Input\Password.cs" />
+    <Compile Include="Elements\Forms\Input\Range.cs" />
+    <Compile Include="Elements\Forms\Input\Reset.cs" />
+    <Compile Include="Elements\Forms\Input\Search.cs" />
+    <Compile Include="Elements\Forms\Input\Submit.cs" />
+    <Compile Include="Elements\Forms\Input\Tel.cs" />
+    <Compile Include="Elements\Forms\Input\Text.cs" />
+    <Compile Include="Elements\Forms\Input\Time.cs" />
+    <Compile Include="Elements\Forms\Input\Url.cs" />
+    <Compile Include="Elements\Forms\Input\Week.cs" />
+    <Compile Include="Elements\Forms\Input\Input.cs" />
+    <Compile Include="Elements\Forms\Input\Radio.cs" />
+    <Compile Include="Extensions\InputExtensions.cs" />
+    <Compile Include="Elements\Forms\Implementations\LabelElement.cs" />
+    <Compile Include="Elements\HtmlElement.cs" />
+    <Compile Include="Elements\Forms\Implementations\FormElement.cs" />
+    <Compile Include="Extensions\FormExtensions.cs" />
+    <Compile Include="Elements\Forms\Implementations\FormMethodPostElement.cs" />
+    <Compile Include="Infrastructure\AuthorizedBlock.cs" />
+    <Compile Include="Infrastructure\Block.cs" />
+    <Compile Include="Infrastructure\Grid.cs" />
+    <Compile Include="Internal\Argument.cs" />
+    <Compile Include="Internal\CachedExpressionCompiler.cs" />
+    <Compile Include="Internal\Helpers\AreaHelper.cs" />
+    <Compile Include="Internal\Helpers\ExpressionHelper.cs" />
+    <Compile Include="Internal\Helpers\PermissionHelper.cs" />
+    <Compile Include="Internal\Route.cs" />
+    <Compile Include="Internal\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Infrastructure\Tag.cs" />
+    <Compile Include="Internal\Annotations.cs" />
+    <Compile Include="Permissions\Permission.cs" />
+    <Compile Include="Permissions\PermissionManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

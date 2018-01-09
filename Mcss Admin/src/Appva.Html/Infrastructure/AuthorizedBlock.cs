@@ -4,18 +4,14 @@
 // <author>
 //     <a href="mailto:johan.sall.larsson@appva.com">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Html.Infrastructure
+namespace Appva.Html.Elements
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
     using Appva.Core.Contracts.Permissions;
+    using Appva.Html.Infrastructure;
     using Appva.Html.Infrastructure.Internal;
 
     #endregion
@@ -23,20 +19,15 @@ namespace Appva.Html.Infrastructure
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public abstract class AuthorizedBlock<T> : Block<T> where T : class
+    public abstract class AuthorizedBlock<T> : Block<T> where T : class, IHtmlElement<T>
     {
         #region Variables.
 
-        private readonly IRoute route;
-
-        /// <summary>
-        /// The saved state of the view context writer.
-        /// </summary>
-        private StringBuilder saved;
+        private readonly AuthorizationState state;
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizedBlock{T}"/> class.
@@ -49,35 +40,62 @@ namespace Appva.Html.Infrastructure
         /// <exception cref="ArgumentNullException">
         /// <typeparamref name="tag"/> is null.
         /// </exception>
-        public AuthorizedBlock(IRoute route, HtmlHelper htmlHelper, Tag tag)
+        protected AuthorizedBlock(HtmlHelper htmlHelper, Tag tag)
             : base(htmlHelper, tag)
         {
-            this.route = route;
+            this.state = AuthorizationState.Authorized;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizedBlock{T}"/> class.
+        /// </summary>
+        /// <param name="permission">The permission.</param>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/>.</param>
+        /// <param name="tag">The <see cref="Tag"/>.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="route"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="htmlHelper"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="tag"/> is null.
+        /// </exception>
+        protected AuthorizedBlock(IPermission permission, HtmlHelper htmlHelper, Tag tag)
+            : base(htmlHelper, tag)
+        {
+            Argument.Guard.NotNull("permission", permission);
+            this.state = htmlHelper.HasPermissionFor(permission) ? AuthorizationState.Authorized : AuthorizationState.UnAuthorized;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizedBlock{T}"/> class.
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/>.</param>
+        /// <param name="tag">The <see cref="Tag"/>.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="route"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="htmlHelper"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <typeparamref name="tag"/> is null.
+        /// </exception>
+        protected AuthorizedBlock(IRoute route, HtmlHelper htmlHelper, Tag tag)
+            : base(htmlHelper, tag)
+        {
+            Argument.Guard.NotNull("route", route);
+            this.state = route.State;
         }
 
         #endregion
 
-        protected override void Initialize()
+        /// <inheritdoc />
+        protected override bool IsAuthorized()
         {
-            if (this.route.State == State.UnAuthorized)
-            {
-                this.saved = new StringBuilder();
-                this.saved.Append(((StringWriter) this.Html.ViewContext.Writer).GetStringBuilder());
-                return;
-            }
-            base.Initialize();
-        }
-
-        protected override void Finalize()
-        {
-            if (this.route.State == State.UnAuthorized)
-            {
-                var writer = (StringWriter) this.Html.ViewContext.Writer;
-                writer.GetStringBuilder().Length = 0;
-                writer.GetStringBuilder().Append(this.saved);
-                return;
-            }
-            base.Finalize();
+            return this.state == AuthorizationState.Authorized; 
         }
     }
 }

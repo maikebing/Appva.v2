@@ -1,3 +1,0 @@
-﻿1. skapa Route input objekt med viewcontext och expression and html params
-2. fixa expression help f;r url action
-3. fixa permission expression route attribute

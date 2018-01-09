@@ -13,8 +13,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Core.Logging;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
@@ -84,12 +82,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
-        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        [Permissions(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequencePostRequest request)
         {
             var response = this.mediator.Send(request);
             ///Dispatch("Details", "Schedule")
-            return this.View(response);
+            return this.RedirectToAction("Details", response);
         }
 
         #endregion

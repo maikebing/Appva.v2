@@ -6,16 +6,20 @@
 // </author>
 namespace Appva.Html.Elements
 {
-    #region Imports.
-
-    using Infrastructure;
-
-    #endregion
-
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Represents a form element.
     /// </summary>
-    public interface IForm<T> : IBlock<T>, IFormAttributes<T>
+    public interface IForm<T> : IBlock<T>, /* global */ IAutocompleteHtmlAttribute<T>,
+        IAcceptCharsetHtmlAttribute<T>, INoValidateHtmlAttribute<T>, IEncTypeHtmlAttribute<T>,
+        INameHtmlAttribute<T>, ITargetHtmlAttribute<T>
     {
+        /// <summary>
+        /// The fragment identifier (optional last part of a URL separated by a hash mark 
+        /// '#') for the form action URI.
+        /// </summary>
+        /// <param name="id">The identifier without the hash mark.</param>
+        /// <returns>The T.</returns>
+        [Ignore]
+        T Fragment(string id);
     }
 }

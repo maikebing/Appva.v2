@@ -16,6 +16,10 @@ namespace Appva.Mcss.Admin
     using Appva.Core.Contracts.Permissions;
     using Appva.Html.Security;
     using Appva.Mvc.Security;
+    using Appva.Html.Elements;
+    using Appva.Html.Infrastructure.Internal;
+    using Appva.Html.Infrastructure;
+    using Appva.Html;
 
     #endregion
 
@@ -90,6 +94,18 @@ namespace Appva.Mcss.Admin
             var x = xstring + "";
         }
 
+
+        public bool IsAuthorized(HtmlHelper htmlHelper, RouteKey key)
+        {
+            IEnumerable<IPermission> permissions = null;
+            if (! RoutePermissions.TryGetValue(key.Value, out permissions))
+            {
+                return true;
+            }
+            return permissions.Count() == permissions.Count(x => htmlHelper.HasPermissionFor(x) == true);
+        }
+
+
         private IEnumerable<Type> Controllers(Assembly assembly)
         {
             return assembly.GetTypes().Where(x => typeof(Controller).IsAssignableFrom(x) && x.IsAbstract == false);
@@ -162,7 +178,7 @@ namespace Appva.Mcss.Admin
             var attributes = element.GetCustomAttributes<T>(inherit);
             if (attributes.Any())
             {
-                action(attributes.First());;
+                action(attributes.First());
             }
         }
     }
@@ -239,7 +255,8 @@ namespace Appva.Mcss.Admin
     {
         public static string GetValue(this PermissionsAttribute attribute)
         {
-            var value = typeof(PermissionsAttribute).GetField("permission", BindingFlags.NonPublic | BindingFlags.Instance)
+            var value = typeof(PermissionsAttribute)
+                .GetField("permission", BindingFlags.NonPublic | BindingFlags.Instance)
                 .GetValue(attribute) as string;
             return value;
         }

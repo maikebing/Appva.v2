@@ -1,9 +1,9 @@
 TODOs:
-MeasurementObservation, borttagna metoder för Save, Create, Find med mera. Fixa omgående.
-Kolla på Observation relaterad repositorys
+- MeasurementObservation, borttagna metoder för Save, Create, Find med mera. Fixa omgående.
+- Kolla på Observation relaterad repositorys
 Kolla på att göra ObservationRepository generisk för MeasurementObservation, DosageObservation samt TenaObservation.
 - UpdateHandlers och Publishers
-Separera MeasurementObservationRepository från ObservationItemRepository
+Separera MeasurementObservationRepository från ObservationItemRepository i MeasurementService
 
 
 ChangeMe och Unresolved, lös dessa kommentarer
@@ -12,7 +12,7 @@ ChangeMe och Unresolved, lös dessa kommentarer
 
 Uppdatera Vyerna. 
 - Loggning på Create/Update i services
-NHibernate mapping SignedData i table under ObservationItem (signature, measurement)
+- NHibernate mapping SignedData i table under ObservationItem (signature, measurement)
 
 DONEs:
 

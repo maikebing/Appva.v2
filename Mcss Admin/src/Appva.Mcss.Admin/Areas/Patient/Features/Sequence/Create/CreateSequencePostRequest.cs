@@ -63,6 +63,15 @@ namespace Appva.Mcss.Admin.Models
         #region Properties.
 
         /// <summary>
+        /// The patient view model.
+        /// </summary>
+        public PatientViewModel PatientViewModel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The Sequence name.
         /// </summary>
         [Required(ErrorMessage="Insats måste anges")]

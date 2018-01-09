@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.UseCdn = true;
-            BundleTable.EnableOptimizations = true;
+            //BundleTable.EnableOptimizations = true;
 
             bundles.Add(new ScriptBundle("~/Assets/js/bundle").Include(
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/jquery/jquery-ui-{version}.custom.js",
@@ -57,9 +57,9 @@ namespace Appva.Mcss.Admin
             ));
 
             // New design
-            bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
-                "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/hotfixes/general.css", "~/Assets/css/new/main.prefixed.css"
-            ));
+            //bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
+            //    "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/hotfixes/general.css", "~/Assets/css/new/main.prefixed.css"
+            //));
 
             ////Exit-Confirmation
             //bundles.Add(new ScriptBundle("~/Assets/js/utilities/exit-confirmation").Include(

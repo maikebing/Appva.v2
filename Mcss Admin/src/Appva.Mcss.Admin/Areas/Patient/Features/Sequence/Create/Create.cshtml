@@ -1,11 +1,6 @@
 ﻿@model CreateSequencePostRequest
-@using System.Linq.Expressions
 @using Appva.Html.Elements
 @using Appva.Mcss.Admin.Areas.Patient.Features
-@{ 
-    SetTitle("Skapa");
-    Layout = "~/Areas/Patient/Features/Shared/_NewCssLayout.cshtml";   
-}
 
 @helper NewFormHeader(string title, string description) {
     <div class="form-section-header">
@@ -17,6 +12,8 @@
     </div>
 }
 
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
 
 <div class="section section--hspace section--vspace section--bluetone">
     <h2>Lägg till insats</h2>
@@ -109,7 +106,7 @@
 								</div>
 								<div>
 								<svg class="icon icon--e icon--separator icon--separator-offset">
-									<use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon" />
+									<use xlink:href="/assets/images/icons/icon.sprite.svg#arrow--fat-icon" />
 								</svg>
 								</div>
 								<div data-size="xs:24 s:10 m:8 l:10 xl:8">
@@ -117,7 +114,7 @@
 										<label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Slutdatum 
                                             <span class="tooltip" tabindex="0" aria-describedby="no-end-date">
 											    <svg class="icon icon--round icon--info" aria-hidden="true">
-												    <use xlink:href="/project/images/icons/icon.sprite.svg#questionmark-icon" />
+												    <use xlink:href="/assets/images/icons/icon.sprite.svg#questionmark-icon" />
 											    </svg>
 											    <span id="no-end-date" class="tooltip__text">
 												    Ska insatsen ske tills vidare, lämna fältet tomt
@@ -159,7 +156,7 @@
 							<div id="exact-interval" data-toggle-by-input="show" class="section section--blue section--narrow section--bubble section--hspace section--vspace">
 								<fieldset class="timepicker">
 									<legend>Start:</legend>
-                                        @Html.Number().Class("form-controls").Label("Timmar").Max(23).Min(0).Data("direction", "vertical").Required()
+                                        
                                     <!--<div class="form-controls">-->
                                         @Html.FormGroup(x => x.StartHour, "form-controls").AsteriskLabel("Timmar", new
                                         {
@@ -177,7 +174,7 @@
                                         <input type="number" id="id5a281574b6560" name="id5a281574b6560" value="0" data-direction="vertical" max="23" min="0" size="2" required="required" />
                                     </div>-->
 									<svg class="icon" aria-hidden="true">
-										<use xlink:href="/project/images/icons/icon.sprite.svg#colon-icon" />
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#colon-icon" />
 									</svg>
                                     @Html.FormGroup(x => x.StartMinute, "form-controls").AsteriskLabel("Minuter", new
                                         {
@@ -216,7 +213,7 @@
                                         <input type="number" id="id5a281574b970b" name="id5a281574b970b" value="23" data-direction="vertical" max="23" min="0" size="2" required="required" />
                                     </div>-->
 									<svg class="icon" aria-hidden="true">
-										<use xlink:href="/project/images/icons/icon.sprite.svg#colon-icon" />
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#colon-icon" />
 									</svg>	
                                     @Html.FormGroup(x => x.EndMinute, "form-controls").AsteriskLabel("Minuter", new
                                         {
@@ -263,7 +260,7 @@
 			                            id="button-56237BDFD292"
 			                            data-soft-post="chosen-date">
 				                            <svg class="icon icon--mr" aria-hidden="true">
-                                                <use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use>
+                                                <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
                                             </svg>Lägg till
 			                            </button>
 		                            </div>
@@ -272,7 +269,7 @@
                             <ul class="input-value-list" id="choose-date-value-list-12312">
 	                            <!--<li>
 		                            2017-04-18<button class="button button--small" type="submit" value="remove-2017-04-12">
-			                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>
+			                            <svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/assets/images/icons/icon.sprite.svg#x-icon"></use></svg>
 			                            Ta bort
 		                            </button>
 		                            <input value="2017-04-18" id="choose-date-value-list-12312_hidden-input_0" name="choose-date-value-list-12312_hidden-input_0" type="hidden" data-input-value-list-added-by="chosen-date" />
@@ -318,7 +315,7 @@
 							<span class="label" aria-hidden="true">:e dag</span>
 							<span class="tooltip" tabindex="0" aria-describedby="every-day">
 									<svg class="icon icon--round icon--info" aria-hidden="true">
-										<use xlink:href="/project/images/icons/icon.sprite.svg#questionmark-icon" />
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#questionmark-icon" />
 									</svg>
 									<span id="every-day" class="tooltip__text">
 										Ska en insats ske varje dag: Välj 1.
@@ -343,7 +340,7 @@
 								<span class="label" aria-hidden="true">:e vecka</span>
 								<span class="tooltip" tabindex="0">
 									<svg class="icon icon--round icon--info" aria-hidden="true">
-										<use xlink:href="/project/images/icons/icon.sprite.svg#alert-icon" />
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#alert-icon" />
 									</svg>
 									<span id="tooltip2" class="tooltip__text">
 										Ska en insats ske varje vecka: Välj 1.
@@ -604,7 +601,7 @@
 								</div>
 								<div>
 									<svg class="icon icon--e icon--separator">
-										<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+										<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
 									</svg>
 								</div>
 								<div class="flex flex flex--align-middle flex--margin-left">

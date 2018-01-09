@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
 
@@ -56,6 +57,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The <see cref="IPatientTransformer"/>.
+        /// </summary>
+        private readonly IPatientTransformer patientTransformer;
+
         #endregion
 
         #region Constructor.
@@ -63,13 +69,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, ISettingsService settingsService, IRoleService roleService)
+        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, ISettingsService settingsService, IRoleService roleService, IPatientTransformer patientTransformer)
         {
             this.context = context;
             this.delegations = delegations;
             this.inventories = inventories;
             this.roleService = roleService;
             this.settingsService = settingsService;
+            this.patientTransformer = patientTransformer;
         }
 
         #endregion
@@ -94,6 +101,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             return new CreateSequencePostRequest
             {
+                PatientViewModel = patientTransformer.ToPatient(patient),
                 StartDate   = Date.Today,
                 StartHour   = TimeOfDay.Now.Hour,
                 StartMinute = TimeOfDay.Now.Minute,

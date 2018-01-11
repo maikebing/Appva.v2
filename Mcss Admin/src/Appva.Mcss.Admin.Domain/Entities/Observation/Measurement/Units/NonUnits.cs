@@ -32,5 +32,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// The non unit for classification (weight) of human feces.
         /// </summary>
         public static readonly UnitOfMeasurement ArbitraryStoolScale = new NonUnitOfMeasurement("Arbitrary stool scale", "custom_stool_scale_sv");
+
+        /// <summary>
+        /// The non unit for number of tablets.
+        /// </summary>
+        public static readonly UnitOfMeasurement Tablets = new NonUnitOfMeasurement("tabletter", "tbl");
     }
 }

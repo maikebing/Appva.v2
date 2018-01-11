@@ -32,6 +32,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public static readonly UnitOfMeasurement Gram = UnitOfMeasurement.New("gram", "g", "g");
 
         /// <summary>
+        /// The mass unit for milligram
+        /// </summary>
+        /// <remarks>
+        /// UCUM uses gram as the mass base value.
+        /// </remarks>
+        public static readonly UnitOfMeasurement Milligram = UnitOfMeasurement.New("milligram", "mg", "mg");
+
+        /// <summary>
         ///  The mass unit for pound.
         /// </summary>
         /// <remarks>

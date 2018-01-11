@@ -132,8 +132,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNullOrWhiteSpace(str, "str");
             var unit  = new[] 
                 { 
-                    MassUnits.Kilogram, MassUnits.Gram, MassUnits.Pound,
-                    NonUnits.ArbitraryStoolScale, NonUnits.BristolStoolScale, NonUnits.TenaIdentifiScale
+                    MassUnits.Kilogram, MassUnits.Gram, MassUnits.Milligram, MassUnits.Pound,
+                    VolumeUnits.Liter, VolumeUnits.Deciliter, VolumeUnits.Centiliter, VolumeUnits.Milliliter,
+                    NonUnits.ArbitraryStoolScale, NonUnits.BristolStoolScale, NonUnits.TenaIdentifiScale, NonUnits.Tablets
                 }.Where(x => x.Code == str).FirstOrDefault();
             if (unit != null)
             {

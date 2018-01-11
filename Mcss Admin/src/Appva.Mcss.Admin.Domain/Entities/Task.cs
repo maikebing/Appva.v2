@@ -338,6 +338,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
+        /// Administered items for this task.
+        /// </summary>
+        public virtual IList<AdministeredItem> AdministeredItems
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The collection of sub tasks.
         /// </summary>
         /// <remarks>Populated by NHibernate.</remarks>

@@ -127,10 +127,15 @@
     <Compile Include="Common\Types\JsonType.cs" />
     <Compile Include="Common\Helpers\TypeNameHelper.cs" />
     <Compile Include="Common\Types\ArbitraryValueType.cs" />
+    <Compile Include="Common\Types\UnitOfMeasurementType.cs" />
     <Compile Include="Common\ValueObject.cs" />
     <Compile Include="Configurations\DosageConfiguration.cs" />
     <Compile Include="Configurations\IConfiguration.cs" />
     <Compile Include="Entities\Account.cs" />
+    <Compile Include="Entities\Administration\AdministeredItem.cs" />
+    <Compile Include="Entities\Administration\Administration.cs" />
+    <Compile Include="Entities\Administration\AdministrationFactory.cs" />
+    <Compile Include="Entities\Administration\MedicationAdministration.cs" />
     <Compile Include="Entities\Change.cs" />
     <Compile Include="Entities\ChangeSet.cs" />
     <Compile Include="Entities\Comment\Comment.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="Entities\Observation\Measurement\UnitOfMeasurement.cs" />
     <Compile Include="Entities\Observation\Measurement\Units\MassUnits.cs" />
     <Compile Include="Entities\Observation\Measurement\Units\NonUnits.cs" />
+    <Compile Include="Entities\Observation\Measurement\Units\VolumeUnits.cs" />
     <Compile Include="Entities\Observation\Observation.cs" />
     <Compile Include="Entities\Observation\ObservationFactory.cs" />
     <Compile Include="Entities\Observation\ObservationItem.cs" />
@@ -179,6 +185,7 @@
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Models\SearchProfileModel.cs" />
+    <Compile Include="Repositories\AdministrationRepository.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\DosageObservationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />

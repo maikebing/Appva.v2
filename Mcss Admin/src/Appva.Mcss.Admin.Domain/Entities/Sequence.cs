@@ -346,6 +346,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The <see cref="Administration"/>.
+        /// </summary>
+        /// <value>The administration.</value>
+        public virtual Administration Administration
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Methods.

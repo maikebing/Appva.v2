@@ -2,8 +2,9 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Appva.Mcss.Admin.Domain" namespace="Appva.Mcss.Admin.Domain.Entities">
 
   <!-- Type definitions. -->
-  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType, Appva.Mcss.Admin.Domain"           name="json"        />
-  <typedef class="Appva.Mcss.Admin.Domain.Common.ArbitraryValueType, Appva.Mcss.Admin.Domain" name="ArbitraryValue" />
+  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType,              Appva.Mcss.Admin.Domain" name="json"              />
+  <typedef class="Appva.Mcss.Admin.Domain.Common.ArbitraryValueType,    Appva.Mcss.Admin.Domain" name="ArbitraryValue"    />
+  <typedef class="Appva.Mcss.Admin.Domain.Common.UnitOfMeasurementType, Appva.Mcss.Admin.Domain" name="UnitOfMeasurement" />
   
   <!-- System classes. -->
 
@@ -526,6 +527,8 @@
     <many-to-one name="Role"  class="Role" />
     <many-to-one name="Inventory"  class="Inventory" />
     <many-to-one name="Observation"  class="Observation" />
+    <many-to-one name="Administration" class="Administration" />
+
     <component name="RefillInfo" class="RefillModel">
       <property name="Refill" />
       <property name="RefillOrderedDate" />
@@ -700,6 +703,7 @@
       <key column="Task" />
       <one-to-many class="ObservationItem" />
     </bag>
+
   </class>
 
   <!-- Inventory -->
@@ -751,6 +755,48 @@
     <many-to-one name="PreparedBy" class="Account" lazy="false" />
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
-  </class>
+  </class> 
 
+  <!-- Administration -->
+  <class name="Administration">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <discriminator column="AdministrationType" />
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Route" />
+    <property name="Method" />
+    <property name="Unit" type="UnitOfMeasurement">
+      <column name="Unit" />
+    </property>
+    <many-to-one name="Patient" class="Patient" />
+    <many-to-one name="Sequence" class="Sequence" />
+    <property name="CustomValues" type="StringClob" />
+    <subclass name="MedicationAdministration" discriminator-value="MedicationAdministration"></subclass>
+  </class>
+  
+  <!-- Administered Item -->
+  <class name="AdministeredItem">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Value" type="ArbitraryValue">
+      <column name="Value" />
+      <column name="Type"  />
+      <column name="UnitOfMeasurement"  />
+      <column name="LevelOfMeasurement" />
+    </property>
+    <many-to-one name="Administration" class="Administration"  />
+    <many-to-one name="Task"        class="Task"         />
+    <many-to-one name="Signature" class="Signature" cascade="save-update" />
+    <many-to-one name="Comment"   class="Comment"                         />
+  </class>
 </hibernate-mapping>

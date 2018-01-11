@@ -10,9 +10,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Core.Resources;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -80,7 +82,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override CreateSequenceForm Handle(CreateSequence message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            var dosageScaleList = new List<SelectListItem>();
             //// Temporary mapping
             Role requiredRole = null;
             var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
@@ -92,26 +93,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
-            {
-                var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Feature == InventoryDefaults.Feature.dosage);
-                foreach (var item in scales)
-                {
-                    dosageScaleList.Add(
-                        new SelectListItem {
-                            Text = String.Format("{0} ({1})", item.Name, item.Unit),
-                            Value = item.Id.ToString()
-                        });
-                }
-            }
             return new CreateSequenceForm
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
                 IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage,
-                DosageScales = dosageScaleList,
-                Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
+                DosageScales = schedule.ScheduleSettings.IsCollectingGivenDosage? MedicationAdministration.Units.Select(x => new SelectListItem { Text = string.Format("{0} ({1})", CultureInfo.CurrentCulture.TextInfo.ToTitleCase(x.Name), x.Code), Value = x.Code }) : null,
+                Delegations = schedule.ScheduleSettings.DelegationTaxon != null? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,
                         Value = x.Id.ToString() })
@@ -123,8 +111,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }).ToList(),
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory = true,
-                RequiredRoleText   = requiredRole.Name.ToLower()
-                
+                RequiredRoleText   = requiredRole.Name.ToLower()                
             };
         }
 

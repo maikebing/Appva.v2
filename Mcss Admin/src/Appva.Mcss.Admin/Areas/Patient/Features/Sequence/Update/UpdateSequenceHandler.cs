@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Globalization;
 
     #endregion
 
@@ -120,14 +121,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 RequiredRoleText = requiredRole.Name.ToLower()
             };
-
             if (updateSequenceForm.IsCollectingGivenDosage == true)
             {
-                updateSequenceForm.DosageScales = GetDosageScales();
+                updateSequenceForm.DosageScales = MedicationAdministration.Units.Select(x => new SelectListItem { Text = string.Format("{0} ({1})", CultureInfo.CurrentCulture.TextInfo.ToTitleCase(x.Name), x.Code) , Value = x.Code });
+                updateSequenceForm.SelectedDosageScale = sequence.Administration != null ? sequence.Administration.Unit.Code : string.Empty;
             }
-
             return updateSequenceForm;
-            
         }
 
         #endregion

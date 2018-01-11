@@ -65,6 +65,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IDosageObservationService dosageService;
 
+        /// <summary>
+        /// The <see cref="IAdministrationService"/>.
+        /// </summary>
+        private readonly IAdministrationService administrationService;
+
         #endregion
 
         #region Constructor.
@@ -72,14 +77,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IDosageObservationService dosageService)
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IDosageObservationService dosageService, IAdministrationService administrationService)
         {
-            this.context            = context;
-            this.roleService        = roleService;
-            this.sequenceService    = sequenceService;
-            this.inventoryService   = inventoryService;
-            this.settingsService    = settingsService;
-            this.dosageService      = dosageService;
+            this.context               = context;
+            this.roleService           = roleService;
+            this.sequenceService       = sequenceService;
+            this.inventoryService      = inventoryService;
+            this.settingsService       = settingsService;
+            this.dosageService         = dosageService;
+            this.administrationService = administrationService;
         }
 
         #endregion
@@ -99,10 +105,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
 
-            Guid dosageScale;
-            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out dosageScale) == true)
+            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage && MedicationAdministration.Units.Any(x => x.Code == message.SelectedDosageScale))
             {
-                this.CreateOrUpdateDosageObservation(sequence, dosageScale);
+                var unit = MedicationAdministration.Units.Where(x => x.Code == message.SelectedDosageScale).FirstOrDefault();
+                this.CreateOrUpdateDosageObservation(sequence, unit);
             }
 
             this.sequenceService.Update(sequence);
@@ -119,18 +125,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Updates the dosage observation.
         /// </summary>
-        /// <param name="sequence">The sequence<see cref="Sequence"/>.</param>
-        /// <param name="dosageScale">The dosage scale.</param>
-        /// <returns>Sequence<see cref="Sequence"/>.</returns>
-        private void CreateOrUpdateDosageObservation(Sequence sequence, Guid dosageScale)
+        /// <param name="sequence">The sequence<see cref="Sequence" />.</param>
+        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
+        /// <param name="customValues">A list of custom values (optional).</param>
+        private void CreateOrUpdateDosageObservation(Sequence sequence, UnitOfMeasurement unit, IList<double> customValues = null)
         {
-            if (sequence.Observation == null)
+            if (sequence.Administration == null)
             {
-                sequence.Observation = this.dosageService.Create(sequence.Patient, dosageScale);
+                //// UNRESOLVED: Figure out a better way to handle customValues.
+                var administration = AdministrationFactory.CreateNew(sequence, unit, customValues);
+                this.administrationService.Save(administration);
+                sequence.Administration = administration;
                 return;
             }
             //// UNRESOLVED: Not the best way to solve this, make it look better
-            this.dosageService.Update((DosageObservation)sequence.Observation.UnProxied, dosageScale);
+            this.administrationService.Update(((MedicationAdministration)sequence.Administration.Unproxied).Update(unit, customValues));
         }
 
         #endregion

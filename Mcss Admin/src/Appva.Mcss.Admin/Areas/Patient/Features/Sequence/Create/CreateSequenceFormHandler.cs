@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using Validation;
 
     #endregion
 
@@ -57,7 +58,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IInventoryService inventories;
 
-        private readonly IDosageObservationService dosageService;
+        private readonly IAdministrationService administrationService;
 
         #endregion
 
@@ -70,14 +71,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="inventories"></param>
         /// <param name="roleService"></param>
         /// <param name="auditing"></param>
-        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing, IDosageObservationService dosageService)
+        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing, IAdministrationService administrationService)
         {
             this.context         = context;
             this.inventories     = inventories;
             this.roleService     = roleService;
             this.auditing        = auditing;
             this.settingsService = settingsService;
-            this.dosageService   = dosageService;
+            this.administrationService = administrationService;
         }
 
         #endregion
@@ -88,18 +89,25 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override DetailsSchedule Handle(CreateSequenceForm message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
+            Requires.NotNull(schedule, "schedule");
             Taxon delegation = null;
             if (message.Delegation.HasValue && ! message.Nurse)
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-            Guid dosageScale;
-            DosageObservation dosageObservation = null;
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out dosageScale) == true)
+
+            var sequence = this.CreateOrUpdate(message, schedule, delegation);
+
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && message.SelectedDosageScale.IsNotEmpty())
             {
-                dosageObservation = this.dosageService.Create(schedule.Patient, dosageScale);
+                //// UNRESOLVED: Temporary solution
+                var unit = MedicationAdministration.Units.Where(x => x.Code == message.SelectedDosageScale).FirstOrDefault();
+                var customValues = new List<double>();
+                var administration = AdministrationFactory.CreateNew(sequence, unit, customValues);
+                this.administrationService.Save(administration);
+                sequence.Administration = administration;
             }
-            var sequence = this.CreateOrUpdate(message, schedule, delegation, dosageObservation);
+
             this.context.Save(sequence);
 
             this.auditing.Create(
@@ -127,7 +135,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation, DosageObservation dosageObservation = null)
+        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
@@ -209,7 +217,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Taxon = delegation,
                 Role = requiredRole,
                 Inventory = inventory,
-                Observation = dosageObservation
             };
 
             return sequence;

@@ -45,14 +45,6 @@ namespace Appva.Mcss.Admin.Models
                 new SelectListItem { Text = "Annan ...",        Value = "0" }
             };
 
-        // Store these scales in the database, right now mocked data.
-        private static readonly List<SelectListItem> AllScales = new List<SelectListItem>()
-            {
-                new SelectListItem { Text = "Antal (st)", Value = "st" },
-                new SelectListItem { Text = "Mängd (ml)", Value = "ml" },
-                new SelectListItem { Text = "Mängd (mg)", Value = "mg" }
-            };
-
         #endregion
 
         #region Constructor.
@@ -63,7 +55,6 @@ namespace Appva.Mcss.Admin.Models
         public CreateOrUpdateSequence()
         {
             Intervals = AllIntervals;
-            DosageScales = AllScales;
         }
 
         #endregion
@@ -355,7 +346,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A list of available scales
         /// </summary>
-        [DisplayName("Enhet för given mängd")]
         public IEnumerable<SelectListItem> DosageScales
         {
             get;

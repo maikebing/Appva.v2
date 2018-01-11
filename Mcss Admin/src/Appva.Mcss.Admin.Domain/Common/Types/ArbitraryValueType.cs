@@ -101,6 +101,7 @@ namespace Appva.Mcss.Admin.Domain.Common
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
             var parameter = (IDataParameter) cmd.Parameters[index];
+            var parameter = (IDataParameter) cmd.Parameters[index]; //// REMINDER: Not in use.
             if (value == null)
             {
                 NHibernateUtil.String.NullSafeSet(cmd, null, index    ); //// Value

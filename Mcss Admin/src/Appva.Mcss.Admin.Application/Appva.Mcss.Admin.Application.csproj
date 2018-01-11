@@ -243,6 +243,7 @@
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
+    <Compile Include="Services\AdministrationService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\DosageObservationService.cs" />

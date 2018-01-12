@@ -24,6 +24,11 @@ namespace Appva.Html.Elements
         {
             get;
         }
+
+        string NameOf
+        {
+            get;
+        }
     }
 
     /// <summary>

@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Models
 
         #region Properties.
 
-        public Guid Id { get; set; }
+        public Guid PatientId { get; set; }
 
         public Guid ScheduleId { get; set; }
 

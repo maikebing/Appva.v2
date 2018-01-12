@@ -108,10 +108,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\Forms\IButtonElement.cs" />
     <Compile Include="Elements\Forms\IFormMethodDelete.cs" />
     <Compile Include="Elements\Forms\IFormMethodGet.cs" />
     <Compile Include="Elements\Forms\IFormMethodPost.cs" />
     <Compile Include="Elements\Forms\IFormMethodPut.cs" />
+    <Compile Include="Elements\Forms\Implementations\ButtonElement.cs" />
     <Compile Include="Elements\Forms\Implementations\FormMethodDeleteElement.cs" />
     <Compile Include="Elements\Forms\Implementations\TextAreaElement.cs" />
     <Compile Include="Elements\Forms\Input\InputType.cs" />
@@ -217,7 +219,7 @@
     <Compile Include="Elements\Forms\Input\Time.cs" />
     <Compile Include="Elements\Forms\Input\Url.cs" />
     <Compile Include="Elements\Forms\Input\Week.cs" />
-    <Compile Include="Elements\Forms\Input\Input.cs" />
+    <Compile Include="Elements\Forms\Input\AbstractInputElement.cs" />
     <Compile Include="Elements\Forms\Input\Radio.cs" />
     <Compile Include="Extensions\InputExtensions.cs" />
     <Compile Include="Elements\Forms\Implementations\LabelElement.cs" />

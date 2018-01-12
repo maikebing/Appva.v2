@@ -25,8 +25,14 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="ICheckbox"/> implementation.
     /// </summary>
-    internal sealed class Checkbox : Input<ICheckbox>, ICheckbox
+    internal sealed class Checkbox : AbstractInputElement<ICheckbox>, ICheckbox
     {
+        #region Variables.
+
+        //private readonly Hidden hidden;
+
+        #endregion
+
         #region Constructors.
 
         /// <summary>
@@ -36,9 +42,14 @@ namespace Appva.Html.Elements
         /// <exception cref="ArgumentNullException">
         /// <typeparamref name="htmlHelper"/> is null.
         /// </exception>
-        public Checkbox(HtmlHelper htmlHelper)
+        public Checkbox(HtmlHelper htmlHelper, bool value)
             : base(InputType.Checkbox, htmlHelper)
         {
+            //this.hidden = new Hidden(htmlHelper);
+            //this.hidden.Value("false");
+            //PropertyChanged += hidden.OnNameChangedListener;
+            //this.AddElement(Position.After, hidden);
+            //this.Value(value ? "true" : "false");
         }
 
         #endregion

@@ -1,105 +1,363 @@
 ﻿@model Appva.Mcss.Admin.Models.UpdateSequenceForm
-@{ ViewBag.Title = "Ändra"; }
-
-<div class="lb-panel lb-validate-form" data-valclass="SequenceEdit">
-	<div class="std-panel activity-edit std-form">
-    @using (Html.BeginForm()) {
-        <div class="row cf">
-            <div class="form-section col">
-                <h3 class="section-title">Ange insats</h3>
-                @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
-                @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
-                @if (Model.IsOrderableArticleEnabled)
-                {
-                    @Html.FormGroup(x => x.IsOrderable, "checkbox").Checkbox("Är beställningsbar").Validate().Build()
-                }
-                @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
-                @if (Model.Delegations.Count() > 0) { 
-                    <div class="select">
-                        @Html.LabelFor(m => m.Delegation)
-                        @Html.DropDownListFor(
-                            m => m.Delegation,
-                            new SelectList(Model.Delegations, "Value", "Text", Model.Delegation),
-                            "Välj delegering ...",
-                            new { @class = "delegation" }
-                        )
-                        @Html.ValidationMessageFor(m => m.Delegation)
-	                </div>
-                }
-                @if (Model.Inventories != null)
-                {
-                    <div class="sequence-inventory">
-                        <h3 class="section-title">Ange saldo</h3>
-                        <div class="">
-                            @Html.DropDownListFor(
-                                        m => m.Inventory,
-                                        new SelectList(Model.Inventories, "Value", "Text", Model.Inventory),
-                                        "Välj saldo ...",
-                                        new { @class = "inventories" })
+@{ 
+   SetTitle("Ändra insats");
+}
+@using Appva.Html.Elements
+@using Appva.Mcss.Admin.Areas.Patient.Features
+@helper NewFormHeader(string title, string description) {
+    <div class="form-section-header">
+        <div class="form-section-header__number"></div>
+        <div class="form-section-header__text">
+            <h2 class="form-section-header__heading">@title</h2>
+            <div class="form-section-header__description">@description</div>
+        </div>
+    </div>
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div class="section section--hspace section--vspace section--bluetone">
+    <h2>Lägg till insats</h2>
+	<div>
+        @(Html.Post<SequenceController>("Update").Autocomplete(false).Content(
+            @<text>
+            <div class="grid grid--flowing grid--align-top" data-columns="m:1 l:2">
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Om insatsen", "Beskriv insatsen och vilka som är behöriga att ge den.")
+                        <div class="form-controls">
+                            @Html.Text(x => x.Name).Label(Html.Label(x => x.Name, "Insats")).Placeholder("T.ex. dosett, insulin, smörjning").Autocomplete(false)
+                        </div>
+                        <div class="form-controls form-controls--text">
+                            @Html.TextArea(x => x.Instruction).Label(Html.Label(x => x.Instruction, "Instruktion")).Columns(30).Rows(6).Autocomplete(false).DisableResize()
+                        </div>
+                        @if (Model.Delegations != null && Model.Delegations.Count() > 0)
+                        {
+                        <div class="form-controls form-controls--select form-controls--full-margin" id="required-delegation-container" data-toggle-by-input="disable">
+                            @Html.LabelFor(x => x.DelegationId, "Kräver delegering för")
+                            @Html.DropDownListFor(x => x.DelegationId, new SelectList(Model.Delegations, "Value", "Text", Model.DelegationId), "Välj delegering ...", new {  @class = "delegation" })
+                        </div>
+                        }
+                        <div class="form-controls form-controls--checkbox">
+                            @Html.Checkbox(x => x.IsRequiredRole, true).Label(Html.Label(x => x.IsRequiredRole, "Får endast ges av legitimerad" + " " + Model.RequiredRoleText), Position.After).Class("toggle-target").Data("toggle-targets", "[\"required-delegation-container\"]")
                         </div>
                     </div>
+                </div>
+                @if (Model.Inventories != null && Model.Inventories.Count() > 0)
+                {
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Förbrukningsjournal", "...")
+                        <fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["create-new-inventory-panel", "choose-inventory-panel"]' aria-controls="@InventoryState.New @InventoryState.Use">
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.InventoryType, InventoryState.New).Id("create-new-inventory").Label(Html.Label(x => x.InventoryType, "Skapa ny"), Position.After)
+                            </div>
+                            <div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.InventoryType, InventoryState.Use).Id("choose-inventory").Label(Html.Label(x => x.InventoryType, "Välj befintlig"), Position.After)
+                            </div>
+                        </fieldset>
+                        <div id="create-new-inventory-panel" data-toggle-values="@InventoryState.New" data-toggle-by-input="show" class="section" style="display: none;"></div>
+                        <div id="choose-inventory-panel"     data-toggle-values="@InventoryState.Use" data-toggle-by-input="show" class="section" style="display: none;">
+                            <div class="form-controls form-controls--select form-controls--full-margin">
+                                @Html.DropDownListFor(x => x.InventoryId, new SelectList(Model.Inventories, "Value", "Text", Model.InventoryId), "Välj förbrukningsjournal ...", new { @class = "inventories" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 }
-            </div>
-            <div class="form-section wide-section col">
-                <h3 class="section-title">Ange när det ska ges</h3>
-				<div class="row toggle-group cf">
-					<div class="radio col">
-                        @Html.RadioButtonFor(m => m.OnNeedBasis, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-1">Stående</label>
-					</div>
-					<div class="radio col">
-                        @Html.RadioButtonFor(m => m.OnNeedBasis, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-2">Vid behov</label>
+                <div data-size="s:24">
+                    <div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Insatsens start och slut", "Ange om insatsen ska ges vid behov eller under en viss tidsperiod.")
+                        <fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["date-range", "repeating", "times", "choose-dates"]'>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.Type, SequenceType.Scheduled).Label(Html.Label(x => x.Type, "Stående"), Position.After)
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.Type, SequenceType.DateRange).Label(Html.Label(x => x.Type, "Specifika datum"), Position.After)
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.Type, SequenceType.NeedBased).Label(Html.Label(x => x.Type, "Vid behov"), Position.After)
+							</div>
+						</fieldset>
+                        <div id="date-range" data-toggle-values="@SequenceType.DateRange" data-toggle-by-input="hide" class="section">
+							<div class="grid grid--align-center">
+								<div data-size="xs:24 s:10 m:8 l:10 xl:8">
+                                    <div class="form-controls date-picker">
+                                        @Html.Text(x => x.StartDate).Id("start-date").Label(Html.Label(x => x.StartDate, "Startdatum").Class("required-indicator")).Placeholder("ÅÅÅÅ-MM-DD").Class("datepicker").Data("date-picker-limit", "future").Data("rule-datelimit", "future").Data("rule-date", "true").Autocomplete(false)
+									</div>
+								</div>
+								<div>
+								    <svg class="icon icon--e icon--separator icon--separator-offset">
+									    <use xlink:href="/assets/images/icons/icon.sprite.svg#arrow--fat-icon" />
+								    </svg>
+								</div>
+								<div data-size="xs:24 s:10 m:8 l:10 xl:8">
+									<div class="form-controls date-picker">
+										<label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Slutdatum 
+                                            <span class="tooltip" tabindex="0" aria-describedby="no-end-date">
+											    <svg class="icon icon--round icon--info" aria-hidden="true">
+												    <use xlink:href="/assets/images/icons/icon.sprite.svg#questionmark-icon" />
+											    </svg>
+											    <span id="no-end-date" class="tooltip__text">
+												    Ska insatsen ske tills vidare, lämna fältet tomt
+											    </span>
+										    </span>
+                                        </label>
+                                        @(Html.Text(x => x.EndDate).Placeholder("Tills vidare")
+                                            .Class("datepicker")
+                                            .Data("date-picker-limit", "future")
+                                            .Data("rule-datelimit", "future")
+                                            .Data("rule-date", "true")
+                                            .Data("rule-greaterthan", "#start-date")
+                                            .Data("msg-greaterthan", "Slutdatum måste vara senare än startdatumet")
+                                            .Aria("describedby", "no-end-date").Autocomplete(false))
+									</div>
+								</div>
+							</div>
+							<div class="form-controls form-controls--checkbox inliner inliner--align-center">
+                                @Html.Checkbox(x => x.IsPeriodWithTimeOfDay, true).Label(Html.Label(x => x.IsPeriodWithTimeOfDay, "Ange klockslag för start och slut?"), Position.After).Class("toggle-target").Data("toggle-targets", "[\"exact-interval\"]")
+							</div>
+							<div id="exact-interval" data-toggle-by-input="show" class="section section--blue section--narrow section--bubble section--hspace section--vspace">
+								<fieldset class="timepicker">
+									<legend>Start:</legend>
+                                    <div class="form-controls">
+                                        @(Html.Number(x => x.StartHour)
+                                              .Label(Html.Label(x => x.StartHour, "Timmar").Class("visually-hidden")) /* <b class="required-indicator">*</b> */
+                                              .Data("direction", "vertical")
+                                              .Max(23).Min(0).Size(2)
+                                              .Required()
+                                        )
+                                    </div>
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#colon-icon" />
+									</svg>
+                                    <div class="form-controls">
+                                        @(Html.Number(x => x.StartMinute)
+                                              .Label(Html.Label(x => x.StartMinute, "Minuter").Class("visually-hidden")) /* <b class="required-indicator">*</b> */
+                                              .Data("direction", "vertical")
+                                              .Max(59).Min(0).Step("1").Size(2)
+                                              .Required()
+                                        )
+                                    </div>
+								</fieldset>
+								<fieldset class="timepicker">
+									<legend>Slut:</legend>	
+                                    <div class="form-controls">
+                                        @(Html.Number(x => x.EndHour)
+                                              .Label(Html.Label(x => x.EndHour, "Timmar").Class("visually-hidden")) /* <b class="required-indicator">*</b> */
+                                              .Data("direction", "vertical")
+                                              .Max(23).Min(0).Size(2)
+                                              .Required()
+                                        )
+                                    </div>
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#colon-icon" />
+									</svg>
+                                    <div class="form-controls">
+                                        @(Html.Number(x => x.EndMinute)
+                                              .Label(Html.Label(x => x.EndMinute, "Minuter").Class("visually-hidden")) /* <b class="required-indicator">*</b> */
+                                              .Data("direction", "vertical")
+                                              .Max(59).Min(0).Step("1").Size(2)
+                                              .Required()
+                                        )
+                                    </div>
+								</fieldset>
+							</div>
+						</div>
+                        <div id="choose-dates" data-toggle-values="@SequenceType.DateRange" data-toggle-by-input="show" class="section">
+                            <div class="grid grid--align-bottom">
+	                            <div data-size="xs:24 s:10 m:8 l:12 xl:8">
+		                            <div class="form-controls date-picker">
+                                        @(Html.Text(x => x.Dates)
+                                              .Label(Html.Label(x => x.Dates, "Datum att lägga till"))
+                                              .Class("datepicker")
+                                              .Data("datepicker-limit", "future")
+                                              .Data("datepicker-selected-dates", "["+ string.Join(",", Model.Dates) +"]") /* the array of selected dates, ['2025-01-01'] */
+                                              .Data("input-value-list", "id-choose-date-value-list-panel")
+                                              .Data("input-value-list-button", "id-chosen-date-button")
+                                              .Autocomplete(false)
+                                        )
+                                        @Html.Hidden().Data("soft-post", "Dates")
+		                            </div>
+	                            </div>
+	                            <div data-size="xs:24 s:10 m:8 l:10 xl:8">
+		                            <div class="form-controls">
+                                        <button id="id-chosen-date-button" class="button" type="submit" data-soft-post="Dates">
+				                            <svg class="icon icon--mr" aria-hidden="true">
+                                                <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                                            </svg>Lägg till
+			                            </button>
+		                            </div>
+	                            </div>
+                            </div>
+                            <ul class="input-value-list" id="id-choose-date-value-list-panel"></ul>
+						</div>
+                    </div>
+                </div>
+                <div data-size="s:24">
+					<div id="repeating" class="section section--hspace section--vspace section--card" data-toggle-values="@SequenceType.Scheduled" data-toggle-by-input="show">
+						@NewFormHeader("Repetera", "Ange om insatsen ska upprepas med ett visst dags- eller veckointervall.")
+						<fieldset class="form-controls form-controls--inline-children inliner inliner--align-center toggle-target" data-toggle-targets='["by-week", "by-day"]'>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.Repetition, Repetition.Daily).Label(Html.Label(x => x.Repetition, "Dagligen"), Position.After)
+							</div>
+							<div class="form-controls form-controls--radio-tab">
+                                @Html.Radio(x => x.Repetition, Repetition.Weekly).Label(Html.Label(x => x.Repetition, "Veckovis"), Position.After)
+							</div>
+						</fieldset>
+						<div id="by-day" data-toggle-values="@Repetition.Daily" data-toggle-by-input="show" class="flex flex flex--align-center flex--align-middle flex--margin-bottom">
+							<span class="label" aria-hidden="true">Var</span>
+							<div class="form-controls form-controls--no-margin">
+                                @(Html.Number(x => x.EverydayFrequency)
+                                      .Label(Html.Label(x => x.EverydayFrequency, "Dagligen").Class("visually-hidden"))
+                                      .Data("direction", "vertical")
+                                      .Aria("required", "true")
+                                      .Aria("described-by", "every-day")
+                                      .Required()
+                                      .Min(1).Max(28)
+                                      .Size(3))
+							</div>
+							<span class="label" aria-hidden="true">:e dag</span>
+							<span class="tooltip" tabindex="0" aria-describedby="every-day">
+									<svg class="icon icon--round icon--info" aria-hidden="true">
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#questionmark-icon" />
+									</svg>
+									<span id="every-day" class="tooltip__text">
+										Ska en insats ske varje dag: Välj 1.
+								</span>
+							</span>
+						</div>
+						<div id="by-week" data-toggle-values="@Repetition.Weekly" data-toggle-by-input="show">
+							<div class="flex flex flex--align-center flex--align-middle flex--margin-bottom">
+								<span class="label" aria-hidden="true">Var</span>
+								<div class="form-controls form-controls--no-margin">
+                                    @(Html.Number(x => x.WeeklyFrequency)
+                                          .Label(Html.Label(x => x.WeeklyFrequency, "Veckovis").Class("visually-hidden"))
+                                          .Data("direction", "vertical")
+                                          .Aria("required", "true")
+                                          .Required()
+                                          .Min(1)
+                                          .Size(2))
+								</div>
+								<span class="label" aria-hidden="true">:e vecka</span>
+								<span class="tooltip" tabindex="0">
+									<svg class="icon icon--round icon--info" aria-hidden="true">
+										<use xlink:href="/assets/images/icons/icon.sprite.svg#alert-icon" />
+									</svg>
+									<span id="tooltip2" class="tooltip__text">
+										Ska en insats ske varje vecka: Välj 1.
+									</span>
+								</span>
+							</div>		
+                            <fieldset class="form-controls inliner inliner--align-center">
+                                <legend class="checkbox-tab--legend">Välj veckodagar<span class="required-indicator">*</span></legend>
+                                
+                                @for (var i = 0; i < Model.DaysOfWeek.Count(); i++ )
+                                {
+                                    <div class="form-controls form-controls--checkbox-tab">
+                                        @Html.Hidden().Name("DaysOfWeek[" + i + "].Code").Value(Model.DaysOfWeek[i].Code)
+                                        @(Html.Checkbox(x => x.DaysOfWeek, true, Model.DaysOfWeek[i].IsChecked)
+                                              .Name("DaysOfWeek[" + i + "].IsChecked")
+                                              .Label(Html.Label(x => x.DaysOfWeek, Appva.Domain.DayOfWeek.DaysOfWeek[i].ToString()), Position.After))
+                                    </div>
+                                }
+                            </fieldset>
+						</div>
 					</div>
 				</div>
-                <div class="toggle-target toggle-target-1 toggle-in-need-based">
-                    <div class="row cf">
-                        <div class="select col">
-                            @Html.LabelFor(m => m.Interval)
-                            @Html.DropDownListFor(
-                                m => m.Interval,
-                                new SelectList(Model.Intervals, "Value", "Text", Model.Interval),
-                                "Välj frekvens ...",
-                                new { @class = "freq-select check-datetime-update" }
-                            )
-                            @Html.ValidationMessageFor(m => m.Interval)
-                        </div>
-                        <div class="text freq-show col">
-                            <a class="btn btn-mdatepick check-datetime-update" href="#">Välj dagar</a>
-                            @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
-                        </div>
-                        @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-update").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                        @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                    </div>
-                    <div class="checkbox-grid">
-                        <strong class="label">Klockslag:</strong>
-                        @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList(new { @class = "checkbox-grid check-datetime-update" }).Validate().Build()
-                        <input id="TestTimes" name="TestTimes" type="hidden" />
-
-                    </div>
-                    <div class="text mini label-group">
-                        <strong class="label">Ges inom:</strong>
-                        <label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off", @class = "check-datetime-update" }) minuter innan</label>
-                        @Html.ValidationMessageFor(m => m.RangeInMinutesBefore)
-                        <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off", @class = "check-datetime-update" }) minuter efter</label>
-                        @Html.ValidationMessageFor(m => m.RangeInMinutesAfter)
-                    </div>
-                </div>
-                <div class="toggle-target toggle-target-2 toggle-in-need-based">
-                    <div class="row cf">
-                        <div class="row cf">
-                            @Html.FormGroup(x => x.OnNeedBasisStartDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                            @Html.FormGroup(x => x.OnNeedBasisEndDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                        </div>
-                    </div>
-                </div>
+                <div data-size="s:24">
+					<div id="times" data-toggle-values="@SequenceType.NeedBased" data-toggle-by-input="hide">
+						<div class="section section--hspace section--vspace section--card">
+                            @NewFormHeader("Ange klockslag för insatsen", "Ange vid vilka tider som insatsen ska utföras.")
+							<fieldset class="form-controls form-controls--inline-children">
+								<legend>Klockslag, dag</legend>
+                                @for (var i = 0; i < 12; i++)
+                                {
+                                    <div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+                                        @Html.Hidden().Name("Times[" + i + "].Hour").Value(Model.Times[i].Hour.ToString())
+                                        @(Html.Checkbox(x => x.DaysOfWeek, true, Model.Times[i].IsChecked)
+                                                  .Name("Times[" + i + "].IsChecked")
+                                                  .Label(Html.Label(x => x.DaysOfWeek, Model.Times[i].Hour.ToString("D2")), Position.After)
+                                                  .Class("toggle-target")
+                                                  .Data("toggle-targets", "[\"fine-tune-container-" + Model.Times[i].Hour + "\"]"))
+                                    </div>
+                                }
+							</fieldset>
+							<fieldset class="form-controls form-controls--inline-children">
+								<legend>Klockslag, kväll och natt</legend>
+                                @for (var i = 12; i < 24; i++)
+                                {
+                                    <div class="form-controls form-controls--checkbox form-controls--checkbox-narrow">
+                                        @Html.Hidden().Name("Times[" + i + "].Hour").Value(Model.Times[i].Hour.ToString())
+                                        @(Html.Checkbox(x => x.DaysOfWeek, true, Model.Times[i].IsChecked)
+                                              .Name("Times[" + i + "].IsChecked")
+                                              .Label(Html.Label(x => x.DaysOfWeek, Model.Times[i].Hour.ToString("D2")), Position.After)
+                                              .Class("toggle-target")
+                                              .Data("toggle-targets", "[\"fine-tune-container-" + Model.Times[i].Hour + "\"]"))
+                                    </div>
+                                }
+							</fieldset>
+							<div class="collapsable-section collapsed">
+								<h2 class="collapsable-section-trigger">Finjustera tider</h2>
+								<div class="collapsable-section-content" data-show-message-if-empty="Inga valda tider" data-show-message-if-empty-class="system-message system-message--warning">
+									@for (var i = 0; i < Model.Times.Count; i++)
+                                    {
+                                        <div id="fine-tune-container-@Model.Times[i].Hour" class="form-controls inline-label-input">
+                                        @(Html.Number(x => x.DaysOfWeek)
+                                              .Value(@Model.Times[i].Minute.ToString())
+                                              .Id("fine-tune-container-" + Model.Times[i].Hour)
+                                              .Name("Times[" + i + "].Minute")
+                                              .Label(Html.Label(x => x.DaysOfWeek, Model.Times[i].Hour.ToString("D2")))
+                                              .Min(0).Max(59).Size(2)
+                                              .Data("direction", "vertical"))
+                                        </div>
+                                    }
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-size="s:24">
+					<div class="section section--hspace section--vspace section--card">
+                        @NewFormHeader("Ges inom", "Ange vilket tidsintervall som insatsen får utföras inom.")
+						<fieldset>
+							<div class="flex flex flex--align-middle flex--align-center flex--margin-bottom">
+								<div class="flex flex flex--align-middle flex--margin-left">
+									<span class="label" aria-hidden="true">Får ges</span>
+										<div class="form-controls form-controls--no-margin">
+                                            @(Html.Number(x => x.RangeInMinutesBefore)
+                                                  .Label(Html.Label(x => x.RangeInMinutesBefore, "Minuter innan").Class("visually-hidden"))
+                                                  .Data("direction", "vertical")
+                                                  .Max(60).Min(0).Size(2))
+										</div>
+									<span class="label" aria-hidden="true">minuter innan</span>
+								</div>
+								<div>
+									<svg class="icon icon--e icon--separator">
+										<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+									</svg>
+								</div>
+								<div class="flex flex flex--align-middle flex--margin-left">
+									<span class="label" aria-hidden="true">och</span>
+									<div class="form-controls form-controls--no-margin">
+                                        @(Html.Number(x => x.RangeInMinutesAfter)
+                                              .Label(Html.Label(x => x.RangeInMinutesAfter, "Minuter efter").Class("visually-hidden"))
+                                              .Data("direction", "vertical")
+                                              .Max(60).Min(0).Size(2))
+									</div>
+									<span class="label" aria-hidden="true">minuter efter</span>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div data-size="s:24">
+					<div class="form-controls form-controls--align-end">
+                        <a class="button button--secondary" href="@Url.Action("Details", "Schedule", new { Id = Model.PatientId, ScheduleId = Model.ScheduleId })">Avbryt</a>
+                        @Html.Button("Spara").Type(ButtonType.Submit).Class("button button--primary")
+					</div>
+				</div>    
             </div>
-        </div>
-	    <div class="submit">
-            @Html.AntiForgeryToken()
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
-	    </div>
-    }
-	</div>
+            </text>
+        ))
+    </div>
 </div>

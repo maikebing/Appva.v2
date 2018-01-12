@@ -26,7 +26,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IPassword"/> implementation.
     /// </summary>
-    internal sealed class Password : Input<IPassword>, IPassword
+    internal sealed class Password : AbstractInputElement<IPassword>, IPassword
     {
         #region Constructors.
 

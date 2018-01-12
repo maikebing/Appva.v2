@@ -19,6 +19,15 @@ namespace Appva.Mcss.Admin.Models
     public class InactivateSequence : Identity<DetailsSchedule>
     {
         /// <summary>
+        /// The patient ID.
+        /// </summary>
+        public Guid PatientId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The sequence ID.
         /// </summary>
         public Guid SequenceId

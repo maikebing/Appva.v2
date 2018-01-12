@@ -79,6 +79,8 @@ namespace Appva.Mcss.Admin.Areas.Handlers
         /// <inheritdoc />
         public override async Task<UpdateMedicationModel> Handle(UpdateMedicationRequest message)
         {
+            throw new NotImplementedException();
+            /*
             var medication   = await this.medicationService.Find(message.OrdinationId, message.Id);
             var sequence     = this.sequenceService.Find(message.SequenceId);
              var delegations = sequence.Schedule.ScheduleSettings.DelegationTaxon != null ?
@@ -112,6 +114,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
                 StartDate            = ! sequence.Repeat.IsNeedBased ? medication.OrdinationStartsAt : (DateTime?) null,
                 EndDate              = ! sequence.Repeat.IsNeedBased ? medication.EndsAt : (DateTime?) null,
             };
+            */
         }
       
         #endregion

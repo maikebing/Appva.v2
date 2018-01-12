@@ -102,6 +102,8 @@ namespace Appva.Mcss.Admin.Areas.Handlers
         /// <inheritdoc/>
         public override async Task<DetailsMedicationRequest> Handle(UpdateMedicationModel message)
         {
+            throw new NotImplementedException();
+            /*
             var medication       = await this.medicationService.Find(message.OrdinationId, message.Id);
             var previousSequence = this.sequenceService.Find(message.PreviousSequenceId);
 
@@ -184,6 +186,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
                 Id = message.Id,
                 OrdinationId = message.OrdinationId
             };
+            */ 
         }
       
         #endregion

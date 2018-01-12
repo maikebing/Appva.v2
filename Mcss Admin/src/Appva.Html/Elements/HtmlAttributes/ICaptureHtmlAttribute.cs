@@ -18,7 +18,7 @@ namespace Appva.Html.Elements
         /// using a media capture mechanism is preferred.
         /// </summary>
         /// <returns>The {T}.</returns>
-        [Code("capture")]
+        [Code("capture", IsNoValue = true)]
         T Capture();
     }
 }

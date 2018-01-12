@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
         /// on a button or input element belonging to the form.
         /// </note>
         /// </remarks>
-        [Code("novalidate")]
+        [Code("novalidate", IsNoValue = true)]
         T EnableValidation();
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Appva.Html.Elements
         /// on a button or input element belonging to the form.
         /// </note>
         /// </remarks>
-        [Code("novalidate")]
+        [Code("novalidate", IsNoValue = true)]
         T DisableValidation();
     }
 }

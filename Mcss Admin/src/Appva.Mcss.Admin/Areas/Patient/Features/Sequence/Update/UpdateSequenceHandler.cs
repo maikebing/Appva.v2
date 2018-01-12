@@ -22,6 +22,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Domain;
+    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -35,12 +37,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IAuditService auditService;
+        private readonly IAuditService auditService; /* NOT USED! */
 
         /// <summary>
         /// The <see cref="IRoleService"/>.
         /// </summary>
         private readonly IRoleService roleService;
+
+        /// <summary>
+        /// The <see cref="IDelegationService"/>.
+        /// </summary>
+        private readonly IDelegationService delegationService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -50,12 +57,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IInventoryService inventories;
+        private readonly IInventoryService inventoryService;
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
+
+        private readonly IPatientTransformer patientTransformer;
 
         #endregion
 
@@ -64,12 +73,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler( IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IPersistenceContext context)
+        public UpdateSequenceHandler(
+            ISettingsService settingsService, IRoleService roleService, IDelegationService delegationService,
+            IInventoryService inventoryService, IPatientTransformer patientTransformer,
+            IPersistenceContext context)
         {
-            this.inventories     = inventories;
-            this.roleService     = roleService;
-            this.settingsService = settingsService;
-            this.context         = context;
+            this.settingsService    = settingsService;
+            this.roleService        = roleService;
+            this.delegationService  = delegationService;
+            this.inventoryService   = inventoryService;
+            this.patientTransformer = patientTransformer;
+            this.context            = context;
         }
 
         #endregion
@@ -80,49 +94,108 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence     = this.context.Get<Sequence>(message.SequenceId);
-            var schedule     = this.context.Get<Schedule>(sequence.Schedule.Id);
-            //// Temporary mapping
-            Role requiredRole = null;
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
-            var temp  = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+            Role role = null;
+            var sequence      = this.context.Get<Sequence>(message.SequenceId);
+            var patient       = sequence.Patient;
+            var schedule      = sequence.Schedule;
+            var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
             if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
             {
-                requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+                role = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
             }
-            if (requiredRole == null)
+            if (role == null)
             {
-                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+                role = this.roleService.Find(RoleTypes.Nurse);
             }
             return new UpdateSequenceForm
             {
-                Id                          = message.Id,
-                Name                        = sequence.Name,
-                Description                 = sequence.Description,
-                StartDate                   = sequence.Repeat.IsNeedBased ? (DateTime?) null : sequence.Repeat.BoundsRange.IsNull() ? sequence.Repeat.StartAt : (DateTime?) null,
-                EndDate                     = sequence.Repeat.IsNeedBased ? (DateTime?) null : sequence.Repeat.BoundsRange.IsNull() ? sequence.Repeat.EndAt : (DateTime?) null,
-                RangeInMinutesBefore        = sequence.Repeat.OffsetBefore,
-                RangeInMinutesAfter         = sequence.Repeat.OffsetAfter,
-                Delegation                  = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
-                Delegations                 = this.GetDelegations(schedule),
-                Dates                       = string.Join(",", sequence.Repeat.BoundsRange.Select(x => x.ToString()).ToArray()),
-                Interval                    = sequence.Repeat.Interval,
-                Times                       = this.CreateTimes(sequence),
-                OnNeedBasis                 = sequence.Repeat.IsNeedBased,
-                OnNeedBasisStartDate        = sequence.Repeat.IsNeedBased ? sequence.Repeat.StartAt : (DateTime?) null,
-                OnNeedBasisEndDate          = sequence.Repeat.IsNeedBased ? sequence.Repeat.EndAt   : (DateTime?) null,
-                //// WTF: This is Deprecated?
-                ////Reminder                    = sequence.Reminder,
-                ////ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
-                Patient                     = sequence.Patient,
-                Schedule                    = sequence.Schedule,
-                Nurse                       = sequence.Role != null,
-                Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
-                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                RequiredRoleText            = requiredRole.Name.ToLower(),
-                IsOrderable                 = sequence.Article != null,
-                IsOrderableArticleEnabled   = orderListConfiguration.HasMigratedArticles && schedule.ScheduleSettings.ArticleCategory != null
+                PatientId             = sequence.Patient.Id,
+                ScheduleId            = sequence.Schedule.Id,
+                Patient               = patientTransformer.ToPatient(sequence.Patient),
+                Name                  = sequence.Name,
+                Instruction           = sequence.Description,
+                DelegationId          = sequence.Taxon == null ? (Guid?) null : sequence.Taxon.Id,
+                Delegations           = sequence.Schedule.ScheduleSettings.DelegationTaxon != null ? this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false).Select(x => new SelectListItem { Text  = x.Name, Value = x.Id.ToString() }) : new List<SelectListItem>(),
+                IsRequiredRole        = sequence.Role != null,
+                RequiredRoleText      = sequence.Role != null ? sequence.Role.Name.ToLower() : role.Name.ToLower(),
+                InventoryType         = sequence.Inventory == null ? InventoryState.New : InventoryState.Use,
+                InventoryId           = sequence.Inventory == null ? (Guid?) null : sequence.Inventory.Id,
+                Inventories           = sequence.Schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(patient.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                Type                  = sequence.Repeat.IsNeedBased ? SequenceType.NeedBased : sequence.Repeat.BoundsRange.Count() > 0 ? SequenceType.DateRange : SequenceType.Scheduled,
+                StartDate             = (Date)  sequence.Repeat.StartAt,
+                EndDate               = (Date?) sequence.Repeat.EndAt,
+                IsPeriodWithTimeOfDay = (sequence.Repeat.StartAt.Hour > 0 || sequence.Repeat.StartAt.Minute > 0) || (sequence.Repeat.EndAt.HasValue && (sequence.Repeat.EndAt.Value.Hour > 0 || sequence.Repeat.EndAt.Value.Minute > 0)),
+                StartHour             = sequence.Repeat.StartAt.Hour,
+                StartMinute           = sequence.Repeat.StartAt.Minute,
+                EndHour               = sequence.Repeat.EndAt.HasValue ? sequence.Repeat.EndAt.Value.Hour   : 23,
+                EndMinute             = sequence.Repeat.EndAt.HasValue ? sequence.Repeat.EndAt.Value.Minute : 59,
+                Dates                 = sequence.Repeat.BoundsRange.ToList(),
+                Repetition            = sequence.Repeat.PeriodUnit.HasValue && sequence.Repeat.PeriodUnit.Value == UnitOfTime.Week ? Repetition.Weekly : Repetition.Daily,
+                EverydayFrequency     = sequence.Repeat.PeriodUnit.HasValue && sequence.Repeat.PeriodUnit.Value == UnitOfTime.Day  ? sequence.Repeat.Period : 1, /* Check from interoperability */
+                WeeklyFrequency       = sequence.Repeat.PeriodUnit.HasValue && sequence.Repeat.PeriodUnit.Value == UnitOfTime.Week ? sequence.Repeat.Period : 1, /* Check from interoperability */
+                DaysOfWeek            = this.ToDaysOfWeek(sequence).ToList(),
+                Times                 = this.ToTimesOfDay(sequence).OrderBy(x => (x.Hour < 6) ? x.Hour + 25 : x.Hour).ToList(), /* re-order to start with 06 ... 23, 00, 01, 02 */
+                RangeInMinutesBefore  = sequence.Repeat.OffsetBefore,
+                RangeInMinutesAfter   = sequence.Repeat.OffsetAfter
+                //// IsOrderable               = sequence.Article != null,
+                //// IsOrderableArticleEnabled = orderListConfiguration.HasMigratedArticles && schedule.ScheduleSettings.ArticleCategory != null
             };
+        }
+
+        private IEnumerable<DaysOfWeekModel> ToDaysOfWeek(Sequence sequence)
+        {
+            var retval = new List<DaysOfWeekModel>();
+            foreach (var dayOfWeek in Appva.Domain.DayOfWeek.DaysOfWeek)
+            {
+                var selected = this.FindDayOfWeek(sequence, dayOfWeek.Code);
+                if (selected == null)
+                {
+                    retval.Add(new DaysOfWeekModel { Code = dayOfWeek.Code });    
+                    continue;
+                }
+                retval.Add(new DaysOfWeekModel { Code = selected.Value.Code, IsChecked = true });
+            }
+            return retval;
+        }
+
+        private Appva.Domain.DayOfWeek? FindDayOfWeek(Sequence sequence, string code)
+        {
+            foreach (var dayOfWeek in sequence.Repeat.DaysOfWeek)
+            {
+                if (dayOfWeek.Code == code)
+                {
+                    return dayOfWeek;
+                }
+            }
+            return null;
+        }
+
+        private IEnumerable<TimeModel> ToTimesOfDay(Sequence sequence)
+        {
+            var retval = new List<TimeModel>();
+            foreach (var timeOfDay in Appva.Domain.TimeOfDay.Hours)
+            {
+                var selected = this.FindTimeOfDay(sequence, timeOfDay.Hour);
+                if (selected == null)
+                {
+                    retval.Add(new TimeModel { Hour = timeOfDay.Hour, Minute = 0 });
+                    continue;
+                }
+                retval.Add(new TimeModel { Hour = selected.Value.Hour, Minute = selected.Value.Minute, IsChecked = true });
+            }
+            return retval;
+        }
+
+        private Appva.Domain.TimeOfDay? FindTimeOfDay(Sequence sequence, int hour)
+        {
+            foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
+            {
+                if (timeOfDay.Hour == hour)
+                {
+                    return timeOfDay;
+                }
+            }
+            return null;
         }
 
         #endregion
@@ -150,56 +223,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Text  = x.Name,
                 Value = x.Id.ToString()
             });
-        }
-
-        /// <summary>
-        /// TODO: REFACTOR?
-        /// </summary>
-        /// <returns></returns>
-        private IList<CheckBoxViewModel> CreateTimes(Sequence sequence)
-        {
-            var checkBoxList = new List<CheckBoxViewModel>
-            {
-                new CheckBoxViewModel(6),
-                new CheckBoxViewModel(7),
-                new CheckBoxViewModel(8),
-                new CheckBoxViewModel(9),
-                new CheckBoxViewModel(10),
-                new CheckBoxViewModel(11),
-                new CheckBoxViewModel(12),
-                new CheckBoxViewModel(13),
-                new CheckBoxViewModel(14),
-                new CheckBoxViewModel(15),
-                new CheckBoxViewModel(16),
-                new CheckBoxViewModel(17),
-                new CheckBoxViewModel(18),
-                new CheckBoxViewModel(19),
-                new CheckBoxViewModel(20),
-                new CheckBoxViewModel(21),
-                new CheckBoxViewModel(22),
-                new CheckBoxViewModel(23),
-                new CheckBoxViewModel(24),
-                new CheckBoxViewModel(1),
-                new CheckBoxViewModel(2),
-                new CheckBoxViewModel(3),
-                new CheckBoxViewModel(4),
-                new CheckBoxViewModel(5),
-            };
-
-            if (sequence.Repeat.TimesOfDay.IsNotNull())
-            {
-                foreach (var time in sequence.Repeat.TimesOfDay)
-                {
-                    foreach (var checkbox in checkBoxList)
-                    {
-                        if (checkbox.Id == time.Hour)
-                        {
-                            checkbox.Checked = true;
-                        }
-                    }
-                }
-            }
-            return checkBoxList;
         }
 
         #endregion

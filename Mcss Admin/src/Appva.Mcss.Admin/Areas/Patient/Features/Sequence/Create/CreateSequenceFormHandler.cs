@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Domain;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion
 
@@ -93,33 +94,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(CreateSequencePostRequest message)
         {
-            var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            Taxon delegation = null;
-            if (message.DelegationId.HasValue && ! message.IsRequiredRole)
-            {
-                delegation = this.context.Get<Taxon>(message.DelegationId.Value);
-            }
-            if (message.Dates.IsNotEmpty())
-            {
-                TimingSchedule.New(message.GetSelectedDates(), message.GetSelectedTimesOfDay());
-            }
-            if (message.IsNeedBased)
-            {
-                TimingSchedule.New(message.GetSelectedPeriod(), message.GetSelectedFrequency(), message.GetSelectedTimesOfDay());
-                //// do all need based stuff first.
-            }
+            ////////////////////////////////////////////////////////////////////
+            //// FIXME: Should we have article stuff here??? -> see history (?) 
+            ////////////////////////////////////////////////////////////////////
 
-            this.CreateOrUpdateSequence(message, schedule, delegation);
-            //this.context.Save(sequence);
-
-            //this.auditing.Create(
-            //    sequence.Patient,
-            //    "skapade {0} (REF: {1}) i {2} (REF: {3}).",
-            //    sequence.Name, 
-            //    sequence.Id, 
-            //    schedule.ScheduleSettings.Name, 
-            //    sequence.Schedule.Id);
-
+            var sequence = this.CreateOrUpdate(message);
+            var hm = sequence.Repeat.TakeNumberOfNextValid(Date.Today, 5);
+            this.context.Save(sequence);
+            this.auditing.Create(sequence.Patient, "skapade {0} (REF: {1}) i {2} (REF: {3}).", sequence.Name, sequence.Id, sequence.Schedule.ScheduleSettings.Name, sequence.Schedule.Id);
             return new DetailsSchedule
                 {
                     Id = message.PatientId,
@@ -131,168 +113,45 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region Private Methods.
 
-        private void CreateOrUpdateSequence(CreateSequencePostRequest message, Schedule schedule, Taxon delegation)
-        {
-            DateTime startDate = DateTimeUtilities.Now();
-            DateTime? endDate = null;
-            Role requiredRole = null;
-            
-            if (message.Dates.IsNotEmpty())
-            {
-                TimingSchedule.New(message.GetSelectedDates(), message.GetSelectedTimesOfDay());
-            }
-            //// Start with need based.
-            if (message.IsNeedBased)
-            {
-                //TimingSchedule.New();
-                ////TimingSchedule.New(Period.New())
-                //// do all need based stuff first.
-            }
-
-
-            IEnumerable<TimeOfDay> timesOfDay = new List<TimeOfDay>();
-            //// WTF? This is not an if, but is required! 
-            if (message.Times.Count(x => x.Checked == true) > 0)
-            {
-                timesOfDay = message.Times.Where(x => x.Checked == true).Select(x => TimeOfDay.Parse(x.Id + ":00"));
-            }
-
-            if (message.IsRequiredRole)
-            {
-                //// Temporary mapping
-                var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
-                if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
-                {
-                    requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
-                }
-                if (requiredRole == null)
-                {
-                    requiredRole = this.roleService.Find(RoleTypes.Nurse);
-                }
-            }
-
-            Inventory inventory = null;
-            if (schedule.ScheduleSettings.HasInventory)
-            {
-                if (message.CreateNewInventory)
-                {
-                    message.InventoryId = this.inventories.Create(message.Name, null, null, schedule.Patient);
-                }
-                inventory = this.inventories.Find(message.InventoryId.GetValueOrDefault());
-            }
-
-            if (message.IsNeedBased == true)
-            {
-                //startDate = message.OnNeedBasisStartDate.HasValue ? message.OnNeedBasisStartDate.Value : startDate;
-                //endDate = message.OnNeedBasisEndDate.HasValue ? message.OnNeedBasisEndDate.Value : endDate;
-
-                //this.sequenceService.CreateNeedBasedSequence(schedule, message.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
-            }
-            else if (message.Interval.HasValue && message.Interval.Value > 0 && message.Dates.IsNull())
-            {
-                startDate = message.StartDate.HasValue ? message.StartDate.Value : startDate;
-                endDate = message.EndDate.HasValue ? message.EndDate.Value : endDate;
-                //this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, timesOfDay, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
-            }
-            else
-            {
-                //DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
-                //this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, timesOfDay, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
-            }
-        }
-
         /// <summary>
         /// TODO: MOVE?
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private void CreateOrUpdate(CreateSequencePostRequest message, Schedule schedule, Taxon delegation)
+        private Sequence CreateOrUpdate(CreateSequencePostRequest message)
         {
-            DateTime startDate = DateTimeUtilities.Now();
-            DateTime? endDate = null;
-            Role requiredRole = null;
-            if (message.Dates.IsNotEmpty() && message.Interval == 0)
+            Schedule schedule   = null;
+            Taxon delegation    = null;
+            Role role           = null;
+            Inventory inventory = null;
+            schedule = this.context.Get<Schedule>(message.ScheduleId);
+            var type = message.GetTypeOfSchedule();
+            if (message.DelegationId.IsNotEmpty() && message.IsRequiredRole == false)
             {
-                //DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
-            }
-            if (message.Interval > 0)
-            {
-                message.Dates = null;
+                delegation = this.context.Get<Taxon>(message.DelegationId.Value); /* unable to combine role and delegation */
             }
             if (message.IsRequiredRole)
             {
-                //// Temporary mapping
-                var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
-                if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
+                var temporary = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+                if (temporary != null && temporary.ContainsKey(schedule.ScheduleSettings.Id))
                 {
-                    requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+                    role = this.roleService.Find(temporary[schedule.ScheduleSettings.Id]);
                 }
-                if (requiredRole == null)
+                if (role == null)
                 {
-                    requiredRole = this.roleService.Find(RoleTypes.Nurse);
-                }
-            }
-
-            if (message.IsNeedBased == true)
-            {
-                /*if (message.OnNeedBasisStartDate.HasValue)
-                {
-                    startDate = message.OnNeedBasisStartDate.Value;
-                }
-                if (message.OnNeedBasisEndDate.HasValue)
-                {
-                    endDate = message.OnNeedBasisEndDate.Value;
-                }*/
-            }
-            else
-            {
-                if (message.StartDate.HasValue)
-                {
-                    startDate = message.StartDate.Value;
-                }
-                if (message.EndDate.HasValue)
-                {
-                    endDate = message.EndDate.Value;
+                    role = this.roleService.Find(RoleTypes.Nurse);
                 }
             }
-
-            Inventory inventory = null;
             if (schedule.ScheduleSettings.HasInventory)
             {
-                if (message.CreateNewInventory)
+                if (message.InventoryType == InventoryState.New)
                 {
                     message.InventoryId = this.inventories.Create(message.Name, null, null, schedule.Patient);
                 }
-                inventory = this.inventories.Find(message.InventoryId.GetValueOrDefault());
+                inventory = this.inventories.Find(message.InventoryId.Value);
             }
-            
-            //return new Sequence()
-            //{
-            //    CreatedAt = DateTime.Now,
-            //    UpdatedAt = DateTime.Now,
-            //    IsActive = true,
-            //    Name = message.Name,
-            //    Description = message.Description,
-            //    StartDate = startDate,
-            //    EndDate = endDate,
-            //    RangeInMinutesBefore = message.RangeInMinutesBefore,
-            //    RangeInMinutesAfter = message.RangeInMinutesAfter,
-            //    Times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
-            //    Dates = message.Dates,
-            //    Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
-            //    OnNeedBasis = message.OnNeedBasis,
-            //    Reminder = message.Reminder,
-            //    ReminderInMinutesBefore = message.ReminderInMinutesBefore,
-            //    /*ReminderRecipient = recipient,*/
-            //    Patient = schedule.Patient,
-            //    Schedule = schedule,
-            //    Taxon = delegation,
-            //    Role = requiredRole,
-            //    Inventory = inventory
-            //};
+            return new Sequence(schedule, message.Name, message.Instruction, Repeat.New(type), delegation, role, inventory);
         }
-
-   
 
         #endregion
     }

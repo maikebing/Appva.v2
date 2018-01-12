@@ -27,7 +27,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="ISearch"/> implementation.
     /// </summary>
-    internal sealed class Search : Input<ISearch>, ISearch
+    internal sealed class Search : AbstractInputElement<ISearch>, ISearch
     {
         #region Constructors.
 

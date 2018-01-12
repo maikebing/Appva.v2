@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IEmail"/> implementation.
     /// </summary>
-    internal sealed class Email : Input<IEmail>, IEmail   
+    internal sealed class Email : AbstractInputElement<IEmail>, IEmail   
     {
         #region Constructors.
 

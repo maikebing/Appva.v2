@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IReset"/> implementation.
     /// </summary>
-    internal sealed class Reset : Input<IReset>, IReset
+    internal sealed class Reset : AbstractInputElement<IReset>, IReset
     {
         #region Constructors.
 

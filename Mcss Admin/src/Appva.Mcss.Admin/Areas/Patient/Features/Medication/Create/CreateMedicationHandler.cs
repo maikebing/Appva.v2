@@ -87,6 +87,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         /// <inheritdoc />
         public override async Task<CreateMedicationModel> Handle(CreateMedicationRequest message)
         {
+            throw new NotImplementedException();
+            /*
             var schedule    = this.scheduleService.Find(message.Schedule);
             var delegations = schedule.ScheduleSettings.DelegationTaxon != null ?
                 this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
@@ -129,6 +131,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory = true
             };
+             */
         }
 
         #endregion

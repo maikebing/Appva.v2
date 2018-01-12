@@ -187,32 +187,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         public string RepetionText
         {
-            get
-            {
-                if (this.Interval == 7)
-                {
-                    return string.Format("{1:dddd} {2} vecka",
-                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
-                        this.StartTime,
-                        NumberToNaturalLanguage(this.IntervalFactor)
-                        ).FirstToUpper();
-                }
-                else if (this.RepeatAtGivenDate)
-                {
-                    return string.Format("Den {0:D} {1} månad",
-                        this.StartTime,
-                        NumberToNaturalLanguage(this.IntervalFactor)
-                        );
-                }
-                else
-                {
-                    return string.Format("Den {0} {1:dddd}en {2} månad",
-                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
-                        this.StartTime,
-                        NumberToNaturalLanguage(this.IntervalFactor)
-                        );
-                }
-            }
+            get;
+            set;
         }
 
         /// <summary>

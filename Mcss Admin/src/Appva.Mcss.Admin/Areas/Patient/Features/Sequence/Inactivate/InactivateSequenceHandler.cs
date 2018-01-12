@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.auditing.Delete(sequence.Patient, "inaktiverade insats {0} (REF: {1}).", sequence.Name, sequence.Id);
             return new DetailsSchedule
             {
-                Id         = message.Id,
+                Id         = sequence.Patient.Id,
                 ScheduleId = sequence.Schedule.Id
             };
         }

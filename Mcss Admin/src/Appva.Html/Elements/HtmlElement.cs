@@ -48,6 +48,11 @@ namespace Appva.Html.Elements
         /// </summary>
         private string uniqueId;
 
+        /// <summary>
+        /// An input name.
+        /// </summary>
+        private string name;
+
         #endregion
 
         #region Constructors.
@@ -74,7 +79,7 @@ namespace Appva.Html.Elements
             this.htmlHelper = htmlHelper;
             this.builder    = new TagBuilder(tag.Name);
             this.elements   = new PositionHtmlElementDictionary();
-            this.UniqueId   = this.GenerateId();
+            this.Id(this.GenerateId());
         }
 
         #endregion
@@ -94,6 +99,22 @@ namespace Appva.Html.Elements
             {
                 this.uniqueId = value;
                 this.OnPropertyChanged("uniqueId");
+            }
+        }
+
+        /// <summary>
+        /// The name.
+        /// </summary>
+        public string NameOf
+        {
+            get
+            {
+                return this.name;
+            }
+            protected internal set
+            {
+                this.name = value;
+                this.OnPropertyChanged("name");
             }
         }
 
@@ -337,6 +358,7 @@ namespace Appva.Html.Elements
         /// <returns>The {T}.</returns>
         public T Name(string value)
         {
+            this.NameOf = value;
             this.AddAttribute<INameHtmlAttribute<T>>(x => x.Name(value), null, value);
             return this as T;
         }
@@ -852,7 +874,7 @@ namespace Appva.Html.Elements
             handler(this, new PropertyChangedEventArgs(name));
         }
 
-        protected void AddElement(Position position, IHtmlElement element)
+        public void AddElement(Position position, IHtmlElement element)
         {
             if (! this.elements.ContainsKey(position))
             {

@@ -8,7 +8,9 @@ namespace Appva.Mcss.Admin.Infrastructure
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using System.Web.Mvc;
+    using Appva.Domain;
     using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
@@ -29,6 +31,53 @@ namespace Appva.Mcss.Admin.Infrastructure
                 Value = result
             });
             return new PersonalIdentityNumber(result.AttemptedValue);
+        }
+
+        #endregion
+    }
+
+    public class DateModelBinder : IModelBinder
+    {
+        #region IModelBinder Members.
+
+        /// <inheritdoc />
+        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            var result = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            bindingContext.ModelState.Add(bindingContext.ModelName, new ModelState
+            {
+                Value = result
+            });
+            Date date;
+            if (Date.TryParse(result.AttemptedValue, out date))
+            {
+                return date;
+            }
+            return null;
+        }
+
+        #endregion
+    }
+
+    public class OnModelBinder : IModelBinder
+    {
+        private static readonly IList<string> ValuesOfTruthness = new List<string> { "on",  "true",  "1" };
+
+        #region IModelBinder Members.
+
+        /// <inheritdoc />
+        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            var result = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            bindingContext.ModelState.Add(bindingContext.ModelName, new ModelState
+            {
+                Value = result
+            });
+            if (string.IsNullOrWhiteSpace(result.AttemptedValue) == false && ValuesOfTruthness.Contains(result.AttemptedValue.ToLowerInvariant()))
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion

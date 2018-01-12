@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IColor"/> implementation.
     /// </summary>
-    internal sealed class Color : Input<IColor>, IColor
+    internal sealed class Color : AbstractInputElement<IColor>, IColor
     {
         #region Constructors.
 

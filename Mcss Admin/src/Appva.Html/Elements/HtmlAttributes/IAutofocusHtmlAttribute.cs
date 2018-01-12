@@ -20,7 +20,7 @@ namespace Appva.Html.Elements
         /// to hidden (that is, you cannot automatically set focus to a hidden control).
         /// </summary>
         /// <returns>The {T}.</returns>
-        [Code("autofocus")]
+        [Code("autofocus", IsNoValue = true)]
         T Autofocus();
     }
 }

@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IDateTimeLocal"/> implementation.
     /// </summary>
-    internal sealed class DateTimeLocal : Input<IDateTimeLocal>, IDateTimeLocal 
+    internal sealed class DateTimeLocal : AbstractInputElement<IDateTimeLocal>, IDateTimeLocal 
     {
         #region Constructors.
 

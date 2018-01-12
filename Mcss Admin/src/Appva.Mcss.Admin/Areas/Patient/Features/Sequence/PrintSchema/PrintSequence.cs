@@ -19,6 +19,15 @@ namespace Appva.Mcss.Admin.Models
     public sealed class PrintSequence : Identity<FileContentResult>
     {
         /// <summary>
+        /// The patient ID.
+        /// </summary>
+        public Guid PatientId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The schedule ID.
         /// </summary>
         public Guid ScheduleId

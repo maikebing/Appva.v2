@@ -1,4 +1,4 @@
-﻿// <copyright file="TextAreaElement.cs" company="Appva AB">
+﻿// <copyright file="ButtonElement.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,35 +9,36 @@ namespace Appva.Html.Elements
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
-    using System.Web.WebPages;
 
     #endregion
 
     /// <summary>
-    /// Implementation of an <see cref="ITextArea"/>.
+    /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class TextAreaElement : Block<ITextArea>, ITextArea
+    internal sealed class ButtonElement : Block<IButtonElement>, IButtonElement
     {
         #region Variables.
 
         /// <summary>
         /// The tag.
         /// </summary>
-        private static readonly Tag Tag = Tag.New("textarea");
+        private static readonly Tag Tag = Tag.New("button");
 
         #endregion
 
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextAreaElement"/> class.
+        /// Initializes a new instance of the <see cref="ButtonElement"/> class.
         /// </summary>
         /// <param name="htmlHelper">The <see cref="HtmlHelper"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// <typeparamref name="htmlHelper"/> is null.
         /// </exception>
-        public TextAreaElement(HtmlHelper htmlHelper, object text = null)
+        public ButtonElement(HtmlHelper htmlHelper, object text = null)
             : base(htmlHelper, Tag)
         {
             if (text == null)
@@ -49,19 +50,12 @@ namespace Appva.Html.Elements
 
         #endregion
 
-        #region ITextArea Members.
+        #region IButtonElement Members.
 
         /// <inheritdoc />
-        public ITextArea Label(ILabel label)
+        public IButtonElement Type(ButtonType value)
         {
-            this.AddElement(Position.Before, label);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public ITextArea DisableResize()
-        {
-            this.Builder.AddStyle("resize: none;");
+            this.AddAttribute<ButtonElement>(x => x.Type(value), null, value);
             return this;
         }
 

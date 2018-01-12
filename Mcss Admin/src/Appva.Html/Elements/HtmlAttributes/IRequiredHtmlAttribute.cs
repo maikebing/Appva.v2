@@ -19,7 +19,7 @@ namespace Appva.Html.Elements
         /// will be applied to the field as appropriate.
         /// </summary>
         /// <returns>The {T}.</returns>
-        [Code("required")]
+        [Code("required", IsNoValue = true)]
         T Required();
     }
 }

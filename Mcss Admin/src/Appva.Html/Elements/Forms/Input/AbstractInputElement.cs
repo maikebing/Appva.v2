@@ -1,4 +1,4 @@
-﻿// <copyright file="Input.cs" company="Appva AB">
+﻿// <copyright file="AbstractInputElement.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -37,12 +37,16 @@ using Appva.Html.Infrastructure.Internal;
         IFormHtmlAttribute<T>,
         INameHtmlAttribute<T>,
         IPlaceholderHtmlAttribute<T>,
+        IReadonlyHtmlAttribute<T>,
+        IRequiredHtmlAttribute<T>,
         ISelectionDirectionHtmlAttribute<T>,
         ISelectionEndHtmlAttribute<T>,
         ISelectionStartHtmlAttribute<T>,
+        ISizeHtmlAttribute<T>, /* not correct to be on all elements - but its used like this :( */
         IValueHtmlAttribute<T>
     {
         T Label(string text);
+        T Label(ILabel label, Position position = Position.Before);
         /*T Label(Position position = Position.Before);
 
         T Label(string text, Position position = Position.Before);
@@ -51,7 +55,7 @@ using Appva.Html.Infrastructure.Internal;
 
         T Description(string text, Position position = Position.After);*/
 
-        /// <summary>
+        /// <summary> 
         /// Constructs the element.
         /// </summary>
         /// <returns>An mvc html string representation of the element.</returns>
@@ -61,9 +65,14 @@ using Appva.Html.Infrastructure.Internal;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public abstract class Input<T> : HtmlElement<T>, IInputElement<T> where T : class, IHtmlElement<T>
+    public abstract class AbstractInputElement<T> : HtmlElement<T>, IInputElement<T> where T : class, IHtmlElement<T>
     {
         #region Variables.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static readonly Tag Tag = Tag.New("input");
 
         /// <summary>
         /// The input type.
@@ -75,15 +84,15 @@ using Appva.Html.Infrastructure.Internal;
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Input"/> class.
+        /// Initializes a new instance of the <see cref="AbstractInputElement"/> class.
         /// </summary>
         /// <param name="type">The input type.</param>
         /// <param name="htmlHelper">The <see cref="HtmlHelper"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// <typeparamref name="htmlHelper"/> is null.
         /// </exception>
-        protected Input(InputType type, HtmlHelper htmlHelper)
-            : base(htmlHelper, Tag.New("input"))
+        protected AbstractInputElement(InputType type, HtmlHelper htmlHelper)
+            : base(htmlHelper, Tag)
         {
             this.type   = type;
             base.AddAttribute("type", type.ToString().ToLower());
@@ -99,6 +108,14 @@ using Appva.Html.Infrastructure.Internal;
             var label = new LabelElement(this.Html, text);
             PropertyChanged += label.OnIdChangedListener;
             this.AddElement(Position.Before, label.For(this.UniqueId));
+            return this as T;
+        }
+
+        /// <inheritdoc />
+        public T Label(ILabel label, Position position = Position.Before)
+        {
+            PropertyChanged += ((LabelElement) label).OnIdChangedListener;
+            this.AddElement(position, label.For(this.UniqueId));
             return this as T;
         }
 

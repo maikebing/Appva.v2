@@ -26,7 +26,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="ITel"/> implementation.
     /// </summary>
-    internal sealed class Tel : Input<ITel>, ITel
+    internal sealed class Tel : AbstractInputElement<ITel>, ITel
     {
         #region Constructors.
 

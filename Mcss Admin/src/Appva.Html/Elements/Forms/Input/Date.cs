@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IDate"/> implementation.
     /// </summary>
-    public sealed class Date : Input<IDate>, IDate
+    public sealed class Date : AbstractInputElement<IDate>, IDate
     {
         #region Constructors.
 

@@ -27,7 +27,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IText"/> implementation.
     /// </summary>
-    internal sealed class Text : Input<IText>, IText
+    internal sealed class Text : AbstractInputElement<IText>, IText
     {
         #region Constructors.
 

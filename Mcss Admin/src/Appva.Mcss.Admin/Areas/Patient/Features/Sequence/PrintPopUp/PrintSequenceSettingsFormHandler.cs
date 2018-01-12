@@ -60,11 +60,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new PrintSequence
             {
-                Id = message.Id,
-                ScheduleId = message.ScheduleId,
-                StartDate = message.StartDate,
-                EndDate = message.EndDate,
-                OnNeedBasis = message.OnNeedBasis,
+                PatientId         = message.PatientId,
+                ScheduleId        = message.ScheduleId,
+                StartDate         = message.StartDate,
+                EndDate           = message.EndDate,
+                OnNeedBasis       = message.OnNeedBasis,
                 StandardSequences = message.StandardSequneces
             };
         }

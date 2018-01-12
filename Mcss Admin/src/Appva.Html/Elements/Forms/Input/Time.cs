@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="ITime"/> implementation.
     /// </summary>
-    internal sealed class Time : Input<ITime>, ITime
+    internal sealed class Time : AbstractInputElement<ITime>, ITime
     {
         #region Constructors.
 

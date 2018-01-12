@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IMonth"/> implementation.
     /// </summary>
-    internal sealed class Month : Input<IMonth>, IMonth   
+    internal sealed class Month : AbstractInputElement<IMonth>, IMonth   
     {
         #region Constructors.
 

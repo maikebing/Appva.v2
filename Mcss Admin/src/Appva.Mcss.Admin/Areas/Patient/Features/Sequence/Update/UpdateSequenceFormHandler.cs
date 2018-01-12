@@ -83,22 +83,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(UpdateSequenceForm message)
         {
-            var sequence = this.sequenceService.Find(message.SequenceId);
-            var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
-            Taxon delegation  = null;
-            if (message.Delegation.HasValue && !message.Nurse)
-            {
-                delegation = this.context.Get<Taxon>(message.Delegation.Value);
-            }
-            this.CreateOrUpdate(message, sequence, schedule, delegation, null);
+            var sequence = this.CreateOrUpdate(message);
             this.sequenceService.Update(sequence);
-            
-            schedule.UpdatedAt = DateTime.Now;
-            this.context.Update(schedule);
+
+            sequence.Schedule.UpdatedAt = DateTime.Now;
+            this.context.Update(sequence.Schedule);
             return new DetailsSchedule
             {
-                Id         = message.Id,
-                ScheduleId = schedule.Id
+                Id         = sequence.Patient.Id,
+                ScheduleId = sequence.Schedule.Id
             };
         }
 
@@ -107,101 +100,50 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Methods.
 
         /// <summary>
-        /// 
+        /// TODO: MOVE?
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="sequence"></param>
         /// <param name="schedule"></param>
-        /// <param name="delegation"></param>
-        /// <param name="recipient"></param>
         /// <returns></returns>
-        private Sequence CreateOrUpdate(UpdateSequenceForm model, Sequence sequence, Schedule schedule, Taxon delegation, Account recipient)
+        private Sequence CreateOrUpdate(UpdateSequenceForm message)
         {
-            DateTime startDate = Date.Today.ToDateTime(); ////DateTimeUtilities.Now(); WTF: Double check this.
-            DateTime? endDate  = null;
-            Role requiredRole  = null;
-            if (model.Dates.IsNotEmpty() && model.Interval == 0)
+            Sequence sequence   = null;
+            Schedule schedule   = null;
+            Taxon delegation    = null;
+            Role role           = null;
+            Inventory inventory = null;
+            sequence = this.sequenceService.Find(message.SequenceId);
+            schedule = sequence.Schedule;
+            var type = message.GetTypeOfSchedule();
+            if (message.DelegationId.IsNotEmpty() && message.IsRequiredRole == false)
             {
-                var dates = model.Dates.Split(',').Select(x => Date.Parse(x));
-                startDate = dates.Min();
-                endDate   = dates.Max();
+                delegation = this.context.Get<Taxon>(message.DelegationId.Value); /* unable to combine role and delegation */
             }
-            if (model.Interval > 0)
+            if (message.IsRequiredRole)
             {
-                model.Dates = null;
-            }
-            if (model.Nurse)
-            {
-                //// Temporary mapping
-                var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
-                if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
+                var temporary = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+                if (temporary != null && temporary.ContainsKey(schedule.ScheduleSettings.Id))
                 {
-                    requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+                    role = this.roleService.Find(temporary[schedule.ScheduleSettings.Id]);
                 }
-                if (requiredRole == null)
+                if (role == null)
                 {
-                    requiredRole = this.roleService.Find(RoleTypes.Nurse);
-                }
-            }
-            if (model.OnNeedBasis)
-            {
-                if (model.OnNeedBasisStartDate.HasValue)
-                {
-                    startDate = model.OnNeedBasisStartDate.Value;
-                }
-                if (model.OnNeedBasisEndDate.HasValue)
-                {
-                    endDate = model.OnNeedBasisEndDate.Value;
-                }
-            }
-            else
-            {
-                if (model.StartDate.HasValue)
-                {
-                    startDate = model.StartDate.Value;
-                }
-                if (model.EndDate.HasValue)
-                {
-                    endDate = model.EndDate.Value;
+                    role = this.roleService.Find(RoleTypes.Nurse);
                 }
             }
             if (schedule.ScheduleSettings.HasInventory)
             {
-                sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
+                if (message.InventoryType == InventoryState.New)
+                {
+                    message.InventoryId = this.inventoryService.Create(message.Name, null, null, schedule.Patient);
+                }
+                inventory = this.inventoryService.Find(message.InventoryId.Value);
             }
-
-            var repeat = new Repeat(
-                startDate,
-                endDate,
-                model.OnNeedBasis? 1 : model.Interval.Value, //// WTF: Move logic to Repeat constructor.
-                1,
-                model.RangeInMinutesBefore,
-                model.RangeInMinutesAfter,
-                model.Times.Where(x => x.Checked == true).Select(x => new TimeOfDay(x.Id, 00)).ToList(),
-                model.Dates.IsNotEmpty() ? model.Dates.Split(',').Select(x => Date.Parse(x)).ToList() : null,
-                model.OnNeedBasis,
-                false,
-                false
-            );
-
-            sequence.Name = model.Name;
-            sequence.Description = model.Description;
-            sequence.Repeat = repeat;
-            //sequence.StartDate = startDate;
-            //sequence.EndDate = endDate;
-            //sequence.RangeInMinutesBefore = model.RangeInMinutesBefore;
-            //sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
-            //sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
-            //sequence.Dates = model.Dates;
-            //sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
-            //sequence.OnNeedBasis = model.OnNeedBasis;
-            //// WTF: This is deprecated?
-            ////sequence.Reminder = model.Reminder;
-            ////sequence.ReminderInMinutesBefore = model.ReminderInMinutesBefore;
-            ////sequence.ReminderRecipient = recipient; //// FIXME: This is always NULL why is it here at all? 
-            sequence.Schedule = schedule;
-            sequence.Taxon    = delegation;
-            sequence.Role     = requiredRole;
+            sequence.Name        = message.Name;
+            sequence.Description = message.Instruction;
+            sequence.Repeat      = Repeat.New(type);
+            sequence.Taxon       = delegation;
+            sequence.Role        = role;
+            sequence.Inventory   = inventory;
             return sequence;
         }
 

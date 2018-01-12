@@ -5,21 +5,6 @@
 
 @{
     ViewBag.Title = "Ordinationer";
-    var intervalMap = new Dictionary<int, string>();
-    intervalMap.Add(0, "Annan");
-    intervalMap.Add(1, "Varje dag");
-    intervalMap.Add(2, "Varannan dag");
-    intervalMap.Add(3, "Var tredje dag");
-    intervalMap.Add(4, "Var fjärde dag");
-    intervalMap.Add(5, "Var femte dag");
-    intervalMap.Add(6, "Var sjätte dag");
-    intervalMap.Add(7, "Varje vecka");
-    intervalMap.Add(14, "Varannan vecka");
-    intervalMap.Add(21, "Var tredje vecka");
-    intervalMap.Add(28, "Var fjärde vecka");
-    intervalMap.Add(35, "Var femte vecka");
-    intervalMap.Add(56, "Var åttonde vecka");
-    intervalMap.Add(84, "Var tolfte vecka");
     List<int> times = new List<int>();
     foreach (var item in Model.ScheduleItems) 
     {
@@ -40,30 +25,24 @@
     }
     times.Sort();
 }
-
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
-    @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
-    @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { patientId = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn" })
+    @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { PatientId = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
+    @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { PatientId = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn" })
     @if (Appva.Core.Environment.ApplicationEnvironment.Is.Development || Appva.Core.Environment.ApplicationEnvironment.Is.Staging)
     {
         <a href="@Url.Action("view", "testcalendar", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id})" class="btn">Signeringskalender</a>
     }
 </div>
-
 <div id="content" class="cf">
-	
     <div id="content-primary" class="signlist-collection">
-		
         <div id="signlist">
-			
             <div class="h cf">
 				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
 				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
-			
             <ul class="nav cf">
                 
 				@Html.MenuLink("Insatser", "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
@@ -109,14 +88,7 @@
                             </span>
                         </td>
                         <td class="freq">
-                            @if (item.Repeat.IsNeedBased)
-                            {
-                                @:Vid behov
-                            }
-                            else
-                            {
-                                @intervalMap[item.Repeat.Interval]
-                            }
+                            @item.Repeat.ToLongString().FirstToUpper()
                         </td>
                         <td class="frame">
                             @if (item.Repeat.IsNeedBased)
@@ -192,15 +164,15 @@
 
                         }
                         <td class="edit">
-                            @Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            @Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { PatientId = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit", @title = "Ändra raden" })
+                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { PatientId = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
                         </td>
                     </tr>
                 }
                 </tbody>
 			</table>
             <div id="add-sign" class="cf">
-				@Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+				@Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { PatientId = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn" })
 			</div>
 		</div>
 	</div>

@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IRadio"/> implementation.
     /// </summary>
-    internal sealed class Radio : Input<IRadio>, IRadio
+    internal sealed class Radio : AbstractInputElement<IRadio>, IRadio
     {
         #region Constructors.
 

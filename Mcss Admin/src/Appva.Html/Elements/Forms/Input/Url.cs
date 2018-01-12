@@ -26,7 +26,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IUrl"/> implementation.
     /// </summary>
-    internal sealed class Url : Input<IUrl>, IUrl
+    internal sealed class Url : AbstractInputElement<IUrl>, IUrl
     {
         #region Constructors.
 

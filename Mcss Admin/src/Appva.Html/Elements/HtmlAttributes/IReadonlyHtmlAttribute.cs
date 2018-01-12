@@ -20,7 +20,7 @@ namespace Appva.Html.Elements
         /// type (such as button or submit).
         /// </summary>
         /// <returns>The {T}.</returns>
-        [Code("readonly")]
+        [Code("readonly", IsNoValue = true)]
         T Readonly();
     }
 }

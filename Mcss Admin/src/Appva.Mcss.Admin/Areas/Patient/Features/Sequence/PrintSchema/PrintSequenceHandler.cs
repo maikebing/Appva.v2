@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
             var fileName = string.Format("Signeringslista-{0}-{1}.pdf", tenant.Name.ToUrlFriendly(), DateTime.Now.ToFileTimeUtc());
-            var bytes = this.pdfService.CreateBySchedule(fileName, message.StartDate, message.EndDate, message.Id, message.ScheduleId, message.OnNeedBasis, message.StandardSequences);
+            var bytes = this.pdfService.CreateBySchedule(fileName, message.StartDate, message.EndDate, message.PatientId, message.ScheduleId, message.OnNeedBasis, message.StandardSequences);
             return new FileContentResult(bytes, "application/pdf")
             {
                 FileDownloadName = fileName

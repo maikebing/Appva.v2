@@ -55,7 +55,7 @@ namespace Appva.Html.Elements
             Argument.Guard.NotNull("route", route);
             this.route  = route;
             this.method = method;
-            this.Id(this.GenerateId());
+            //this.Id(this.GenerateId());
             this.Method(this.method);
             this.Name(this.Builder.TagName + "-" + this.route.Key.Value.Replace(".", "-"));
             this.Action(this.route);

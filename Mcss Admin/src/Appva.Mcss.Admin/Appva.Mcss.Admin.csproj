@@ -700,6 +700,7 @@
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequencePostRequest.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceFormHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Shared\TimeModel.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettingsFormHandler.cs" />
@@ -1468,7 +1469,6 @@
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
-    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />

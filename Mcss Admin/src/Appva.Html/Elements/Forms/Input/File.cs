@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IFile"/> implementation.
     /// </summary>
-    internal sealed class File : Input<IFile>, IFile
+    internal sealed class File : AbstractInputElement<IFile>, IFile
     {
         #region Constructors.
 

@@ -30,7 +30,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IImage"/> implementation.
     /// </summary>
-    internal sealed class Image : Input<IImage>, IImage    
+    internal sealed class Image : AbstractInputElement<IImage>, IImage    
     {
         #region Constructors.
 

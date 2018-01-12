@@ -124,45 +124,48 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     /* hur skall vi presentera IsNeedBased sequences? */
                     retval.Add(this.SequenceToEvent(sequence, sequence.Repeat.StartAt, sequence.Repeat.EndAt));
+                    continue;
                 }
-                else
+
+                var before = new TimeSpan(0, sequence.Repeat.OffsetBefore, 0);
+                var after  = new TimeSpan(0, sequence.Repeat.OffsetAfter,  0);
+                var sequenceTimes = sequence.Repeat.TimesOfDay;
+
+                if (sequence.Repeat.BoundsRange.Count() > 0)
                 {
-                    var before = new TimeSpan(0, sequence.Repeat.OffsetBefore, 0);
-                    var after = new TimeSpan(0, sequence.Repeat.OffsetAfter, 0);
-                    var sequenceTimes = sequence.Repeat.TimesOfDay;
-
-                    if (sequence.Repeat.BoundsRange.Count() > 0)
+                    foreach (var dayInRange in sequence.Repeat.BoundsRange)
                     {
-                        foreach (var dayInRange in sequence.Repeat.BoundsRange)
+                        if (dayInRange >= firstInMonth && dayInRange <= lastInMonth)
                         {
-                            if (dayInRange >= firstInMonth && dayInRange <= lastInMonth)
+                            foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
                             {
-                                foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
-                                {
-                                    var dayAndTime = new DateTime(dayInRange.Year, dayInRange.Month, dayInRange.Day, timeOfDay.Hour, timeOfDay.Minute, 0);
-                                    retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
-                                }
+                                var dayAndTime = new DateTime(dayInRange.Year, dayInRange.Month, dayInRange.Day, timeOfDay.Hour, timeOfDay.Minute, 0);
+                                retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                             }
                         }
                     }
-                    else
-                    {
-                        var intervalDate = sequence.Repeat.StartAt;
-
-                        while (intervalDate <= lastInMonth)
-                        {
-                            if (intervalDate.Subtract(before) >= firstInMonth && intervalDate.Add(after) <= lastInMonth)
-                            {
-                                foreach (var time in sequence.Repeat.TimesOfDay)
-                                {
-                                    var dayAndTime = new DateTime(intervalDate.Year, intervalDate.Month, intervalDate.Day, time.Hour, time.Minute, 0);
-                                    retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
-                                }
-                            }
-                            intervalDate = sequence.Repeat.Next((Date) intervalDate).Value; //// HACK: Handle this correctly
-                        }
-                    }
+                    continue;
                 }
+                var intervalDate = sequence.Repeat.NextValid((Date)sequence.Repeat.StartAt) ?? lastInMonth;
+                while (intervalDate <= lastInMonth)
+                {
+                    if (intervalDate.Subtract(before) >= firstInMonth && intervalDate.Add(after) <= lastInMonth)
+                    {
+                        foreach (var time in sequence.Repeat.TimesOfDay)
+                        {
+                            var dayAndTime = new DateTime(intervalDate.Year, intervalDate.Month, intervalDate.Day, time.Hour, time.Minute, 0);
+                            retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
+                        }
+                    }
+                    var next = sequence.Repeat.NextValid((Date) intervalDate); //// HACK: Handle this correctly
+                    if (next == null)
+                    {
+                        break;
+                    }
+                    intervalDate = next.Value;
+                }
+                
+                
             }
             return retval;
         }
@@ -199,7 +202,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 IntervalFactor = sequence.Repeat.IntervalFactor != 0 ? sequence.Repeat.IntervalFactor : 1,
                 RepeatAtGivenDate = sequence.Repeat.IsIntervalDate,
                 PatientId = sequence.Patient.Id,
-                PatientName = sequence.Patient.FullName
+                PatientName = sequence.Patient.FullName,
+                RepetionText = sequence.Repeat.ToLongString()
             };
         }
 

@@ -23,6 +23,14 @@ namespace Appva.Html.Elements
         IMinLengthHtmlAttribute<ITextArea>, INameHtmlAttribute<ITextArea>, IPlaceholderHtmlAttribute<ITextArea>,
         IReadonlyHtmlAttribute<ITextArea>, IRequiredHtmlAttribute<ITextArea>, IRowsHtmlAttribute<ITextArea>, IWrapHtmlAttribute<ITextArea>
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        ITextArea Label(ILabel label);
+
         /// <summary>
         /// Gecko 2.0 introduced support for resizable textareas. This is controlled by the 
         /// resize CSS property. Resizing of textareas is enabled by default, but you can 

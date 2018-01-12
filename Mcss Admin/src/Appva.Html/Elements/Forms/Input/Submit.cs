@@ -26,7 +26,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="ISubmit"/> implementation.
     /// </summary>
-    internal sealed class Submit : Input<ISubmit>, ISubmit
+    internal sealed class Submit : AbstractInputElement<ISubmit>, ISubmit
     {
         #region Constructors.
 

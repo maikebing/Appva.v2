@@ -26,7 +26,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IWeek"/> implementation.
     /// </summary>
-    internal sealed class Week : Input<IWeek>, IWeek
+    internal sealed class Week : AbstractInputElement<IWeek>, IWeek
     {
         #region Constructors.
 

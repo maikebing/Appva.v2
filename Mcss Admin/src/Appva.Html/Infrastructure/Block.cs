@@ -24,6 +24,8 @@ namespace Appva.Html.Elements
         /// <param name="content"></param>
         /// <returns></returns>
         MvcHtmlString Content(Func<T, HelperResult> content);
+
+        MvcHtmlString Content(object value);
     }
 
     /// <summary>
@@ -63,6 +65,22 @@ namespace Appva.Html.Elements
                 this.Write(this.Render(TagRenderMode.StartTag));
                 this.OnBegin();
                 this.Write(content(null).ToHtmlString());
+                this.OnBeforeEnd();
+                this.Write(this.Render(TagRenderMode.EndTag));
+                this.OnEnd();
+            }
+            return MvcHtmlString.Empty;
+        }
+
+        /// <inheritdoc />
+        public MvcHtmlString Content(object value)
+        {
+            if (IsAuthorized())
+            {
+                this.OnBeforeBegin();
+                this.Write(this.Render(TagRenderMode.StartTag));
+                this.OnBegin();
+                this.Write(value.ToString());
                 this.OnBeforeEnd();
                 this.Write(this.Render(TagRenderMode.EndTag));
                 this.OnEnd();

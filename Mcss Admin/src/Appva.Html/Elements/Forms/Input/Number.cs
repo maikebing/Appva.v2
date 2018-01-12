@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="INumber"/> implementation.
     /// </summary>
-    internal sealed class Number : Input<INumber>, INumber
+    internal sealed class Number : AbstractInputElement<INumber>, INumber
     {
         #region Constructors.
 

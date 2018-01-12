@@ -40,12 +40,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IDelegationService"/>.
         /// </summary>
-        private readonly IDelegationService delegations;
+        private readonly IDelegationService delegationService;
 
         /// <summary>
         /// The <see cref="IInventoryService"/>
         /// </summary>
-        private readonly IInventoryService inventories;
+        private readonly IInventoryService inventoryService;
 
         /// <summary>
         /// The <see cref="IRoleService"/>
@@ -64,19 +64,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, ISettingsService settingsService, IRoleService roleService, IPatientTransformer patientTransformer)
+        public CreateSequenceHandler(
+            ISettingsService settingsService,   IRoleService roleService, IDelegationService delegationService,
+            IInventoryService inventoryService, IPatientTransformer patientTransformer, IPersistenceContext context)
         {
-            this.context = context;
-            this.delegations = delegations;
-            this.inventories = inventories;
-            this.roleService = roleService;
-            this.settingsService = settingsService;
+            this.settingsService    = settingsService;
+            this.roleService        = roleService;
+            this.delegationService  = delegationService;
+            this.inventoryService   = inventoryService;
             this.patientTransformer = patientTransformer;
+            this.context            = context;
         }
 
         #endregion
@@ -86,10 +88,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override CreateSequencePostRequest Handle(CreateSequence message)
         {
-            var patient  = this.context.Get<Patient>(message.PatientId);
-            var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            //// Temporary mapping
+            /* LOG */
             Role requiredRole = null;
+            var patient       = this.context.Get<Patient>(message.PatientId);
+            var schedule      = this.context.Get<Schedule>(message.ScheduleId);
             var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
             if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
             {
@@ -101,24 +103,34 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             return new CreateSequencePostRequest
             {
-                PatientViewModel = patientTransformer.ToPatient(patient),
-                StartDate   = Date.Today,
-                StartHour   = TimeOfDay.Now.Hour,
-                StartMinute = TimeOfDay.Now.Minute,
-                EndDate     = null,
-                EndHour     = 23,
-                EndMinute   = 59,
-                PatientId   = patient.Id,
-                ScheduleId  = schedule.Id,
-                Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
-                    .Select(x => new SelectListItem { 
-                        Text = x.Name,
-                        Value = x.Id.ToString() })
-                        : new List<SelectListItem>(),
-                Times              = TimeOfDay.Hours.Select(x => new CheckBoxViewModel { Id = x.Hour, Checked = false }),
-                Inventories        = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(patient.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                CreateNewInventory = schedule.ScheduleSettings.HasInventory,
-                RequiredRoleText   = requiredRole.Name.ToLower()
+                PatientId             = patient.Id,
+                ScheduleId            = schedule.Id,
+                Patient               = patientTransformer.ToPatient(patient),
+                Name                  = null,
+                Instruction           = null,
+                DelegationId          = null,
+                Delegations           = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false).Select(x => new SelectListItem { Text  = x.Name, Value = x.Id.ToString() }) : new List<SelectListItem>(),
+                IsRequiredRole        = false,
+                RequiredRoleText      = requiredRole.Name.ToLower(),
+                InventoryType         = InventoryState.New,
+                InventoryId           = null,
+                Inventories           = schedule.ScheduleSettings.HasInventory ? this.inventoryService.Search(patient.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                Type                  = SequenceType.Scheduled,
+                StartDate             = Date.Today,
+                EndDate               = null,
+                IsPeriodWithTimeOfDay = false,
+                StartHour             = TimeOfDay.Now.Hour,
+                StartMinute           = TimeOfDay.Now.Minute,
+                EndHour               = 23,
+                EndMinute             = 59,
+                Dates                 = null, /*new List<Date>(),*/
+                Repetition            = Repetition.Daily,
+                EverydayFrequency     = 1,
+                WeeklyFrequency       = 1,
+                DaysOfWeek            = Appva.Domain.DayOfWeek.DaysOfWeek.Select(x => new DaysOfWeekModel { Code = x.Code }).ToList(),
+                Times                 = TimeOfDay.Hours.Select(x => new TimeModel { Hour = x.Hour, Minute = 0 }).OrderBy(x => (x.Hour < 6) ? x.Hour + 25 : x.Hour).ToList(), /* re-order to start with 06 ... 23, 00, 01, 02 */
+                RangeInMinutesBefore  = 0,
+                RangeInMinutesAfter   = 0
             };
         }
 

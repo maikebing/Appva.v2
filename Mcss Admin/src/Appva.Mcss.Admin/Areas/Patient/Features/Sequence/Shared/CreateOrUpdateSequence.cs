@@ -10,120 +10,45 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Web.Mvc;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Cqrs;
+    using Appva.Domain;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
-    using DataAnnotationsExtensions;
 
     #endregion
+
+    public enum SequenceType
+    {
+        Scheduled = 0,
+        DateRange = 1,
+        NeedBased = 2
+    }
+
+    public enum InventoryState
+    {
+        New = 0,
+        Use = 1
+    }
+
+    public enum Repetition
+    {
+        Daily = 0,
+        Weekly = 1
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public class CreateOrUpdateSequence
     {
-        #region Variables.
+        ////////////////////////////////////////////////////////////////////
+        //// FIXME: Should we have article stuff here??? -> see history (?) 
+        ////////////////////////////////////////////////////////////////////
 
-        private static readonly List<SelectListItem> AllIntervals = new List<SelectListItem>()
-            {
-                new SelectListItem { Text = "Varje dag",        Value = "1" },
-                new SelectListItem { Text = "Varannan dag",     Value = "2" },
-                new SelectListItem { Text = "Var 3:e dag",      Value = "3" },
-                new SelectListItem { Text = "Var 4:e dag",      Value = "4" },
-                new SelectListItem { Text = "Var 5:e dag",      Value = "5" },
-                new SelectListItem { Text = "Var 6:e dag",      Value = "6" },
-                new SelectListItem { Text = "Varje vecka",      Value = "7" },
-                new SelectListItem { Text = "Varannan vecka",   Value = "14" },
-                new SelectListItem { Text = "Var tredje vecka", Value = "21" },
-                new SelectListItem { Text = "Var fjärde vecka", Value = "28" },
-                new SelectListItem { Text = "Var femte vecka",  Value = "35" },
-                new SelectListItem { Text = "Var åttonde vecka",  Value = "56" },
-                new SelectListItem { Text = "Var tolfte vecka",  Value = "84" },
-                new SelectListItem { Text = "Annan ...",        Value = "0" }
-            };
-
-        #endregion
-
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateOrUpdateSequence"/> class.
-        /// </summary>
-        public CreateOrUpdateSequence()
-        {
-            Intervals = AllIntervals;
-        }
-
-        #endregion
-
-        #region Properties.
-
-        #region Structural
-
-        /// <summary>
-        /// The patient id
-        /// </summary>
-        public Guid PatientId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The schedule id
-        /// </summary>
-        public Guid ScheduleId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The Patient
-        /// </summary>
-        public Patient Patient 
-        {
-            get; 
-            set;
-        }
-
-        /// <summary>
-        /// The Schedule
-        /// </summary>
-        public Schedule Schedule 
-        { 
-            get; 
-            set; 
-        }
-
-        #endregion
-
-        #region Form
-
-        /// <summary>
-        /// The Sequence name
-        /// </summary>
-        [Required(ErrorMessage="Insats måste anges")]
-        [DisplayName("Insats")]
-        public string Name 
-        { 
-            get; 
-            set;
-        }
-
-        /// <summary>
-        /// The sequence description
-        /// </summary>
-        [DisplayName("Instruktion")]
-        public string Description 
-        { 
-            get;
-            set; 
-        }
-
+        /*
         /// <summary>
         /// If the sequence is orderable
         /// </summary>
@@ -141,14 +66,82 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+        */
 
         /// <summary>
-        /// If the sequence only can be completed by a nurse
+        /// The form collection.
         /// </summary>
-        public bool Nurse 
+        public FormCollection Collection
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The patient view model.
+        /// </summary>
+        public PatientViewModel Patient
+        {
+            get;
+            set;
+        }
+
+        public Guid PatientId
+        {
+            get;
+            set;
+        }
+
+        public Guid ScheduleId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Sequence name.
+        /// </summary>
+        [Required(ErrorMessage="Insats måste anges")]
+        public string Name 
         { 
-            get; 
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The sequence 'description'.
+        /// </summary>
+        public string Instruction 
+        { 
+            get;
             set; 
+        }
+
+        /// <summary>
+        /// If sequence needs delegation, the delegation
+        /// </summary>
+        public Guid? DelegationId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// All available delegations
+        /// </summary>
+        public IEnumerable<SelectListItem> Delegations
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the sequence only can be completed by a specific role.
+        /// </summary>
+        public bool IsRequiredRole
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -161,80 +154,154 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// If sequence needs delegation, the delegation
+        /// The inventory type, either create new or use current.
         /// </summary>
-        [DisplayName("Kräver delegering för")]
-        public Guid? Delegation 
-        { 
-            get;
-            set; 
-        }
-
-        /// <summary>
-        /// If a new inventory should be created for this sequence
-        /// </summary>
-        public bool CreateNewInventory
+        public InventoryState InventoryType
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The inventory
+        /// The selected inventory ID.
         /// </summary>
-        [RequiredIf(Target = "CreateNewInventory", Value = false, ErrorMessage = "Saldo måste väljas")]
-        public Guid? Inventory
+        [RequiredIf(Target = "InventoryType", Value = InventoryState.Use, ErrorMessage = "Saldo måste väljas")]
+        public Guid? InventoryId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The repeat interval
+        /// All available inventories.
         /// </summary>
-        [DisplayName("Skall ges")]
-        public int? Interval 
-        { 
-            get;
-            set; 
-        }
-
-        /// <summary>
-        /// The startdate, if scheduled
-        /// </summary>
-        [Date]
-        [DisplayName("Fr.o.m.")]
-        public virtual DateTime? StartDate 
-        { 
-            get; 
-            set;
-        }
-
-        /// <summary>
-        /// The enddate, if scheduled
-        /// </summary>
-        [Date]
-        [DisplayName("T.o.m.")]
-        public DateTime? EndDate 
+        public IEnumerable<SelectListItem> Inventories
         {
             get;
             set;
         }
 
         /// <summary>
-        /// If occures on specific dates, the dates
+        /// The sequence type.
         /// </summary>
-        public string Dates 
-        { 
-            get; 
+        public SequenceType Type
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The start date, if <see cref="SequenceType.Scheduled"/>.
+        /// </summary>
+        public Date? StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The end date, if <see cref="SequenceType.Scheduled"/>.
+        /// </summary>
+        public Date? EndDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If to set start hour and minute, as well as end hour and minute.
+        /// </summary>
+        public bool IsPeriodWithTimeOfDay
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The start hour.
+        /// </summary>
+        public int? StartHour
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The start minute.
+        /// </summary>
+        public int? StartMinute
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The end hour.
+        /// </summary>
+        public int? EndHour
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The end minute.
+        /// </summary>
+        public int? EndMinute
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If occures on specific dates, the collection of dates.
+        /// </summary>
+        public IList<Date> Dates
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The type of repeat.
+        /// </summary>
+        public Repetition Repetition
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The period or frequency when <see cref="Repetition.Daily"/>.
+        /// </summary>
+        public int? EverydayFrequency
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The period or frequency when <see cref="Repetition.Weekly"/>.
+        /// </summary>
+        public int? WeeklyFrequency
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The days of week to choose from.
+        /// </summary>
+        public IList<DaysOfWeekModel> DaysOfWeek
+        {
+            get;
             set;
         }
 
         /// <summary>
         /// The hours which the sequence shall occur
         /// </summary>
-        [DisplayName("Klockslag")]
-        public IEnumerable<CheckBoxViewModel> Times 
+        public IList<TimeModel> Times 
         { 
             get; 
             set; 
@@ -262,98 +329,65 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        /// <summary>
-        /// If the sequence is needs-based
-        /// </summary>
-        public bool OnNeedBasis 
-        { 
-            get; 
-            set; 
-        }
-
-        /// <summary>
-        /// If the sequence should have a specific reminder
-        /// </summary>
-        [DisplayName("Lägg till påminnelse")]
-        public bool Reminder 
+        public Frequency GetSelectedFrequency()
         {
-            get;
-            set; 
+            return Frequency.New(
+                this.Repetition == Models.Repetition.Daily ? this.EverydayFrequency.GetValueOrDefault(0) : this.WeeklyFrequency.GetValueOrDefault(0), 
+                this.Repetition == Models.Repetition.Daily ? UnitOfTime.Day : UnitOfTime.Week);
         }
 
-        /// <summary>
-        /// When the specific reminder shall be sent
-        /// </summary>
-        [Range(0, 120, ErrorMessage = "Måste vara mellan 0-120")]
-        [RequiredIf(Target = "Reminder", Value = true, ErrorMessage = "Påminnelse måste väljas.")]
-        [DisplayName("Tid för påminnelse")]
-        public int ReminderInMinutesBefore 
-        { 
-            get; 
-            set; 
-        }
-
-        /// <summary>
-        /// The startdate, if needs-based
-        /// </summary>
-        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
-        [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum än slutdatum.")]
-        [DisplayName("Fr.o.m.")]
-        public DateTime? OnNeedBasisStartDate 
+        public Period GetSelectedPeriod()
         {
-            get;
-            set; 
+            Date start = this.StartDate ?? Date.Today;
+            Date? end  = this.EndDate;
+            DateTime startDateTime = start == Date.Today ? 
+                start.ToDateTime(TimeOfDay.New(this.StartHour.GetValueOrDefault(TimeOfDay.Now.Hour), this.StartMinute.GetValueOrDefault(TimeOfDay.Now.Minute))) :
+                start.ToDateTime(TimeOfDay.New(this.StartHour.GetValueOrDefault(0), this.StartMinute.GetValueOrDefault(0)));
+            DateTime? endDateTime = end == null ? 
+                (DateTime?) null : 
+                end.Value.ToDateTime(TimeOfDay.New(this.EndHour.GetValueOrDefault(23), this.EndMinute.GetValueOrDefault(59)));
+            return Period.New(startDateTime, endDateTime);
         }
 
-        /// <summary>
-        /// The enddate, if needs-based
-        /// </summary>
-        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
-        [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum än startdatum.")]
-        [DisplayName("T.o.m.")]
-        public DateTime? OnNeedBasisEndDate
+        public List<Date> GetSelectedDates()
         {
-            get;
-            set;
+            return this.Collection
+                    .AllKeys
+                    .Where (x => x.StartsWith("id-choose-date-value-list-panel"))
+                    .Select(x => Date.Parse(x))
+                    .ToList();
         }
 
-        #endregion
-
-        #region Lists.
-
-        /// <summary>
-        /// All available delegations
-        /// </summary>
-        public IEnumerable<SelectListItem> Delegations 
-        { 
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// All availabel inventories
-        /// </summary>
-        public IEnumerable<SelectListItem> Inventories
+        public List<TimeOfDay> GetSelectedTimesOfDay()
         {
-            get;
-            set;
+            return this.Times
+                .Where (x => x.IsChecked == true)
+                .Select(x => new TimeOfDay(x.Hour, x.Minute))
+                .ToList();
         }
 
-        /// <summary>
-        /// All available intervals
-        /// </summary>
-        public IEnumerable<SelectListItem> Intervals
-        { 
-            get; 
-            set; 
+        public List<Appva.Domain.DayOfWeek> GetSelectedDaysOfWeek()
+        {
+            return this.DaysOfWeek
+                .Where(x => x.IsChecked == true)
+                .Select(x => new Appva.Domain.DayOfWeek(x.Code))
+                .ToList();
         }
 
-        #endregion
+        public Offset GetSelectedOffset()
+        {
+            return Offset.New(this.RangeInMinutesBefore, this.RangeInMinutesAfter);
+        }
 
-
-        #endregion
+        public TimingSchedule GetTypeOfSchedule()
+        {
+            switch (this.Type)
+            {
+                case SequenceType.Scheduled: return TimingSchedule.New(this.GetSelectedPeriod(), this.GetSelectedFrequency(), this.GetSelectedTimesOfDay(), this.GetSelectedDaysOfWeek(), this.GetSelectedOffset());
+                case SequenceType.DateRange: return TimingSchedule.New(this.GetSelectedDates(), this.GetSelectedTimesOfDay(), this.GetSelectedOffset());
+                case SequenceType.NeedBased: return TimingSchedule.New(this.GetSelectedPeriod(), this.GetSelectedFrequency(), this.GetSelectedTimesOfDay(), this.GetSelectedDaysOfWeek(), this.GetSelectedOffset(), true);
+            }
+            throw new ValidationException("Type is not one of scheduled, date-range or need-based");
+        }
     }
-
 }

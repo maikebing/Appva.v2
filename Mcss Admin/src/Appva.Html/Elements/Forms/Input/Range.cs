@@ -25,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IRange"/> implementation.
     /// </summary>
-    internal sealed class Range : Input<IRange>, IRange
+    internal sealed class Range : AbstractInputElement<IRange>, IRange
     {
         #region Constructors.
 

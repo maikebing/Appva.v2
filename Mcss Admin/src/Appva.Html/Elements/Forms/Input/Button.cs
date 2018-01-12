@@ -24,7 +24,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IButton"/> implementation.
     /// </summary>
-    internal sealed class Button : Input<IButton>, IButton
+    internal sealed class Button : AbstractInputElement<IButton>, IButton
     {
         #region Constructors.
 

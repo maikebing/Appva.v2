@@ -9,24 +9,63 @@ namespace Appva.Html.Elements
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
     #endregion
+
+    public static class OtherExtensions
+    {
+        public static ILabel Label<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression, string text = null)
+        {
+            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            var metadata      = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var labelText     = text ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
+            return new LabelElement(htmlHelper, labelText);
+        }
+
+        public static ITextArea TextArea<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression)
+        {
+            var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            var area = new TextAreaElement(htmlHelper, metadata.Model).Name(htmlFieldName);
+            return area;
+        }
+
+        public static IButtonElement Button(this HtmlHelper htmlHelper, string text = null)
+        {
+            return new ButtonElement(htmlHelper, text);
+        }
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public static class InputExtensions
     {
-        public static IButton Button(this HtmlHelper htmlHelper)
+        public static IButton InputButton(this HtmlHelper htmlHelper)
         {
             return new Button(htmlHelper);
         }
 
-        public static ICheckbox Checkbox(this HtmlHelper htmlHelper)
+        public static ICheckbox Checkbox<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression, object value, bool isSelected = false)
         {
-            return new Checkbox(htmlHelper);
+            var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var checkbox = SetMetadata(htmlHelper, new Checkbox(htmlHelper, true) as ICheckbox, expression);
+            if (value != null && value.Equals(metadata.Model))
+            {
+                checkbox.Checked();
+            }
+            if (isSelected)
+            {
+                checkbox.Checked();
+            }
+            /*var hidden = new Hidden(htmlHelper).Name(ExpressionHelper.GetExpressionText(expression)).Value("false");
+            hidden.On
+            ((Checkbox) checkbox).AddElement(Position.Before, 
+               );*/
+            return checkbox;
         }
 
         public static IColor Color(this HtmlHelper htmlHelper)
@@ -69,9 +108,11 @@ namespace Appva.Html.Elements
             return new Month(htmlHelper);
         }
 
-        public static INumber Number(this HtmlHelper htmlHelper)
+        public static INumber Number<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression)
         {
-            return new Number(htmlHelper);
+            var meta    = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var element = SetMetadata(htmlHelper, new Number(htmlHelper) as INumber, expression);
+            return element;
         }
 
         public static IPassword Password(this HtmlHelper htmlHelper)
@@ -79,9 +120,36 @@ namespace Appva.Html.Elements
             return new Password(htmlHelper);
         }
 
-        public static IRadio Radio(this HtmlHelper htmlHelper)
+        public static IRadio Radio<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression, object value)
         {
-            return new Radio(htmlHelper);
+            var meta  = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var radio = SetMetadata(htmlHelper, new Radio(htmlHelper) as IRadio, expression);
+            if (value != null && value.ToString() == meta.Model.ToString())
+            {
+                radio.Checked();
+            }
+            radio.Value(value.ToString());
+            return radio;
+        }
+
+        public static C SetMetadata<T, C, V>(HtmlHelper<T> htmlHelper, C element, Expression<Func<T, V>> expression) where C : IInputElement<C>
+        {
+            var metadata      = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            element.Name(htmlFieldName);
+            if (metadata.Model != null && (element is INumber || element is IText))
+            {
+                element.Value(metadata.Model.ToString());
+            }
+            /*if (metadata.IsRequired)
+            {
+                element.Required();
+            }
+            if (metadata.IsReadOnly)
+            {
+                element.Readonly();
+            }*/
+            return element;
         }
 
         public static IRange Range(this HtmlHelper htmlHelper)
@@ -111,9 +179,13 @@ namespace Appva.Html.Elements
 
         public static IText Text<T, V>(this HtmlHelper<T> htmlHelper, Expression<Func<T, V>> expression)
         {
-            //Text(null, x => x.Something).Label("", LabelPosition.Wrap).Required()
-            ExpressionHelper.GetExpressionText(expression);
-            return new Text(htmlHelper);
+            var meta = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var text = SetMetadata(htmlHelper, new Text(htmlHelper) as IText, expression);
+            if (meta.Model != null)
+            {
+                text.Value(meta.Model.ToString());
+            }
+            return text;
         }
 
         public static ITime Time(this HtmlHelper htmlHelper)

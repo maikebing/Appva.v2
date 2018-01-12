@@ -18,7 +18,7 @@ namespace Appva.Html.Elements
         /// it is ignored.
         /// </summary>
         /// <returns>The {T}.</returns>
-        [Code("checked")]
+        [Code("checked", IsNoValue = true)]
         T Checked();
     }
 }

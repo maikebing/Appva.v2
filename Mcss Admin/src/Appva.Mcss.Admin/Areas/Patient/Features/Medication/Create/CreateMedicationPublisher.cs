@@ -99,6 +99,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
         /// <inheritdoc/>
         public override async Task<DetailsMedicationRequest> Handle(CreateMedicationModel message)
         {
+            throw new NotImplementedException();
+            /*
             var patient = this.patientService.Get(message.Id);
             var schedule = this.scheduleService.Find(message.ScheduleId);
             var delegation = this.taxonService.Load(message.Delegation.GetValueOrDefault());
@@ -187,8 +189,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 dates: message.Dates,
                 inventory: inventory);
 
-
             return new DetailsMedicationRequest { Id = patient.Id, OrdinationId = medications.FirstOrDefault().OrdinationId };
+            */
         }
 
         #endregion

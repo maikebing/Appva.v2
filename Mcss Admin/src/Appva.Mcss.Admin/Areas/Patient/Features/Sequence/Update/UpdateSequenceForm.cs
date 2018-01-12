@@ -10,7 +10,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
-using Appva.Cqrs;
+    using Appva.Cqrs;
 
     #endregion
 
@@ -19,15 +19,6 @@ using Appva.Cqrs;
     /// </summary>
     public sealed class UpdateSequenceForm : CreateOrUpdateSequence, IRequest<DetailsSchedule>
     {
-        /// <summary>
-        /// The patient ID.
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The sequence ID.
         /// </summary>

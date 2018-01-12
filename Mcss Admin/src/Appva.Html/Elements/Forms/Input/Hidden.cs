@@ -9,6 +9,7 @@ namespace Appva.Html.Elements
     #region Imports.
 
     using System;
+    using System.ComponentModel;
     using System.Web.Mvc;
     using Appva.Html.Infrastructure;
 
@@ -24,7 +25,7 @@ namespace Appva.Html.Elements
     /// <summary>
     /// An <see cref="IHidden"/> implementation.
     /// </summary>
-    internal sealed class Hidden : Input<IHidden>, IHidden
+    internal sealed class Hidden : AbstractInputElement<IHidden>, IHidden
     {
         #region Constructors.
 
@@ -38,6 +39,26 @@ namespace Appva.Html.Elements
         public Hidden(HtmlHelper htmlHelper)
             : base(InputType.Hidden, htmlHelper)
         {
+        }
+
+        #endregion
+
+        #region Internal Members.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        internal void OnNameChangedListener(object sender, PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if (propertyName != "name")
+            {
+                return;
+            }
+            this.AddAttribute<INameHtmlAttribute<ILabel>>(x => x.Name(null), null, (sender as IHtmlElement).NameOf);
         }
 
         #endregion

@@ -100,7 +100,6 @@ namespace Appva.Mcss.Admin.Domain.Common
         /// <inheritdoc />
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            var parameter = (IDataParameter) cmd.Parameters[index];
             var parameter = (IDataParameter) cmd.Parameters[index]; //// REMINDER: Not in use.
             if (value == null)
             {

@@ -7,6 +7,13 @@
 
 namespace Appva.Mcss.Admin.Models
 {
+    #region Imports.
+
+    using System;
+    using System.Collections.Generic;
+
+    #endregion
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -27,6 +34,12 @@ namespace Appva.Mcss.Admin.Models
         /// Read practitioner data to the specified row.
         /// </summary>
         public int? SelectedLastRow
+        {
+            get;
+            set;
+        }
+
+        public IList<KeyValuePair<string, Guid>> Nodes
         {
             get;
             set;

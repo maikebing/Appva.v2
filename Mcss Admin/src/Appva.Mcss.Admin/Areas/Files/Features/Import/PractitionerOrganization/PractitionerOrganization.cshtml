@@ -7,7 +7,7 @@
 </div>
 <div id="content" class="log cf">
     <div id="fileimport">
-        @if (true)
+        @if (Model.Taxons != null)
         {
             using (Html.BeginForm())
             {
@@ -29,13 +29,38 @@
                 </div>
                 <div id="fileinfo">
                     <table class="device-table fileinfo">
-                        @for (var i = 0; i < Model.Nodes.Count; i++)
+                        @{ 
+                            int i = 0;
+                        }
+                        @foreach (var parsedNode in Model.ParsedNodes)
                         {
-                            <tr>
-                                <td style="width:50%!important">@(string.IsNullOrWhiteSpace(Model.Nodes[i]) ? "[Tomt fält]" : Model.Nodes[i])</td>
-                                <td>@Html.Raw(Model.SelectedNodeNames[i])</td>
-                                @Html.Hidden(string.Format("Nodes[{0}]", i), Model.Nodes[i])
+                            <tr class="node-selection-row-@i">
+                                <td style="width:36%!important">@(string.IsNullOrWhiteSpace(Model.ImportedNodes[i]) ? "[Tomt fält]" : Model.ImportedNodes[i])</td>
+                                <td class="node-selection-cell" data-attr="@i">
+                                    <div class="node-selection-preview-@i">@(Html.Raw(parsedNode.Value))</div>
+                                    <div class="node-selection-@i" style="display:none">
+                                        @if (Model.Taxons.IsNotNull())
+                                        {
+                                            foreach (var taxon in Model.Taxons)
+                                            {
+                                                <div class="select">
+                                                    @Html.DropDownList(taxon.Id,
+                                                    new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                                    string.Format("Välj {0}...", taxon.OptionLabel),
+                                                    new { @class = "dropdown" }
+                                                )
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <div class="node-id node-id-@i">Id: @(parsedNode.Key == Guid.Empty ? "null" : parsedNode.Key.ToString())</div>
+                                </td>
+                                <td style="width:48px;text-align:center;color:#aaa"><a class="node-selection-link" data-attr="@i" href="#">Ändra</a></td>
+                                @Html.Hidden(string.Format("ImportedNodes[{0}]", i), Model.ImportedNodes[i])
+                                @Html.Hidden(string.Format("SelectedNodes[{0}]", i), parsedNode.Key, new { id = "Taxon-" + i })
                             </tr>
+                            i++;
                         }
                     </table>
                 </div>
@@ -56,8 +81,32 @@
 <script>
     $(document).ready(function () {
         $('.progress-bar').animate({ width: "39%" }, 600);
-            setTimeout(function () {
+        setTimeout(function () {
             $('.progress-section-animation').css({ backgroundColor: "#5ac24f", color: "#fff" });
-            }, 400);
+        }, 400);
+        $('.node-selection-link').bind('click', function () {
+            var id = $(this).attr('data-attr');
+            var selection = '.node-selection-' + id;
+            var preview = '.node-selection-preview-' + id;
+            $(preview).fadeOut('fast', function () {
+                $(selection).fadeIn('fast');
+            });
+            $(this).parent().html('Ändra');
         });
+        $('select').live('change', function () {
+            var id = $(this).parents('td').first().attr('data-attr');
+            var taxon = $('#Taxon-' + id);
+            if ($(this).val() == -1 || !$(this).val()) {
+                var guid = $(this).parent().prev().children('select').first().val();
+                if (typeof guid == 'undefined') {
+                    guid = 'null';
+                }
+                $(taxon).val(guid);
+                $('.node-id-' + id).html('Id: ' + guid);
+            } else {
+                $(taxon).val($(this).val());
+                $('.node-id-' + id).html('Id: ' + $(this).val());
+            }
+        });
+    });
 </script>

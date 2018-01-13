@@ -18,10 +18,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Web;
     using Appva.Persistence;
     using Newtonsoft.Json;
 
@@ -45,6 +47,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ISettingsService settingsService;
 
         /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -58,12 +75,24 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
+        /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public PractitionerOrganizationHandler(IFileService fileService, ISettingsService settingsService, IPersistenceContext persistence)
+        public PractitionerOrganizationHandler(
+            IFileService fileService, 
+            ISettingsService settingsService,
+            ITaxonomyService taxonomyService,
+            IIdentityService identityService,
+            IAccountService accountService,
+            IPersistenceContext persistence)
         {
-            this.fileService = fileService;
+            this.fileService     = fileService;
             this.settingsService = settingsService;
-            this.persistence = persistence;
+            this.taxonomyService = taxonomyService;
+            this.identityService = identityService;
+            this.accountService  = accountService;
+            this.persistence     = persistence;
         }
 
         #endregion
@@ -73,37 +102,42 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override PractitionerOrganizationModel Handle(Identity<PractitionerOrganizationModel> message)
         {
-            var file = this.fileService.Get(message.Id);
-            var model = new PractitionerOrganizationModel();
+            var file       = this.fileService.Get(message.Id);
+            var model      = new PractitionerOrganizationModel();
             var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
 
             if (file == null ||
                 properties.PractitionerImportProperties == null ||
+                properties.PractitionerImportProperties.SelectedFirstRow.HasValue == false ||
+                properties.PractitionerImportProperties.SelectedLastRow.HasValue == false ||
                 properties.PractitionerImportProperties.IsImportable == false)
             {
                 return model;
             }
 
+            var id       = this.identityService.PrincipalId;
+            var user     = this.accountService.Find(id);
             var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
-            var path = this.fileService.SaveToDisk(file.Name, file.Data);
-            var data = ExcelReader.ReadPractitioners(
+            var path     = this.fileService.SaveToDisk(file.Name, file.Data);
+            var data     = ExcelReader.ReadPractitioners(
                 path,
                 settings.ImportPractitionerSettings.ValidateAtRow,
                 settings.ImportPractitionerSettings.ValidColumns,
                 out int lastRow,
-                properties.PractitionerImportProperties.SelectedFirstRow.Value,
-                properties.PractitionerImportProperties.SelectedLastRow
+                properties.PractitionerImportProperties.SelectedFirstRow.Value - 1,
+                properties.PractitionerImportProperties.SelectedLastRow - 1
             );
             File.Delete(path);
 
-            model.Id = file.Id;
-            model.Nodes = new List<string>();
-            model.SelectedNodeNames = new List<string>();
-            model.SelectedNodeIds = new List<Guid>();
-            model.Nodes = this.GetNodesFrom(data, settings.ImportPractitionerSettings.ValidColumns.IndexOf(
+            model.Id            = file.Id;
+            model.Taxons        = TaxonomyHelper.CreateItems(user, null, this.taxonomyService.List(TaxonomicSchema.Organization));
+            model.ImportedNodes = new List<string>();
+            model.SelectedNodes = new List<string>();
+            model.ParsedNodes   = new List<KeyValuePair<Guid, string>>();
+            model.ImportedNodes = this.GetNodesFrom(data, settings.ImportPractitionerSettings.ValidColumns.IndexOf(
                 settings.ImportPractitionerSettings.ValidColumns[5])
             );
-            this.ParseNodes(model.Nodes, model.SelectedNodeNames, model.SelectedNodeIds);
+            this.ParseNodes(model.ImportedNodes, model.ParsedNodes);
             return model;
         }
 
@@ -120,12 +154,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private IList<string> GetNodesFrom(DataTable data, int columnIndex)
         {
             var nodes = new List<string>();
+            var hashSet = new HashSet<string>();
 
             for (var i = 1; i < data.Rows.Count; i++)
             {
-                if(nodes.Contains(data.Rows[i][data.Columns[columnIndex]].ToString()) == false)
+                var column = data.Rows[i][data.Columns[columnIndex]].ToString();
+                if (hashSet.Add(column))
                 {
-                    nodes.Add(data.Rows[i][data.Columns[columnIndex]].ToString());
+                    nodes.Add(column);
                 }
             }
 
@@ -135,13 +171,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Attempts to find matching organization nodes from the provided list.
         /// </summary>
-        /// <param name="nodesFromFile">A collection of organization nodes.</param>
-        /// <param name="selectedNodeIds">The selected node names.</param>
-        /// <param name="selectedNodeNames">The selected node ids.</param>
-        private void ParseNodes(IList<string> nodesFromFile, IList<string> selectedNodeNames, IList<Guid> selectedNodeIds)
+        /// <param name="importedNodes">A collection of nodes from the imported file.</param>
+        /// <param name="parsedNodes">The parsed nodes.</param>
+        private void ParseNodes(IList<string> importedNodes, IList<KeyValuePair<Guid, string>> parsedNodes)
         {
             var ids = new List<Guid>();
-            var nodes = this.Split(nodesFromFile, ',');
+            var nodes = this.Split(importedNodes, ',');
             var taxons = this.persistence.QueryOver<Taxon>()
                 .JoinQueryOver(x => x.Taxonomy)
                     .Where(x => x.MachineName == TaxonomicSchema.Organization.Id)
@@ -171,13 +206,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
                 if(taxon != null)
                 {
-                    selectedNodeNames.Add(this.GetPathNameSequenceFrom(taxon.Path, taxons));
-                    selectedNodeIds.Add(taxon.Id);
+                    parsedNodes.Add(new KeyValuePair<Guid, string>(taxon.Id, this.GetPathNameSequenceFrom(taxon.Path, taxons)));
                 }
                 else
                 {
-                    selectedNodeNames.Add("<span class='selected-node node-not-found'>Hittades ej</span>");
-                    selectedNodeIds.Add(Guid.Empty);
+                    parsedNodes.Add(new KeyValuePair<Guid, string>(Guid.Empty, "<span class='previewed-node node-not-found'>Hittades ej</span>"));
                 }
             }
         }
@@ -191,26 +224,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private string GetPathNameSequenceFrom(string taxonPath, IList<Taxon> taxons)
         {
             var pathNameSequence = new List<string>();
-            var pathArray = taxonPath.Split('.');
+            var paths = taxonPath.Split('.');
 
-            foreach (var path in pathArray)
+            foreach (var path in paths)
             {
                 Guid id = Guid.Empty;
                 if(string.IsNullOrWhiteSpace(path) == false && Guid.TryParse(path, out id))
                 {
-                    pathNameSequence.Add(string.Format("<span class='selected-node'>{0}</span>", taxons.Where(x => x.Id == id).First().Name));
+                    pathNameSequence.Add(string.Format("<span class='previewed-node'>{0}</span>", taxons.Where(x => x.Id == id).First().Name));
                 }
             }
 
-            return string.Join(" ", pathNameSequence);
+            return string.Join("", pathNameSequence);
         }
 
         /// <summary>
-        /// Split nodes.
+        /// Split nodes extension.
         /// </summary>
-        /// <param name="nodes">The node list.</param>
+        /// <param name="nodes">The list of nodes.</param>
         /// <param name="separator">The separator.</param>
-        /// <returns>A collection of string arrays.</returns>
+        /// <returns>A <see cref="IList{string[]}"/>.</returns>
         private IList<string[]> Split(IList<string> nodes, char separator)
         {
             var list = new List<string[]>();

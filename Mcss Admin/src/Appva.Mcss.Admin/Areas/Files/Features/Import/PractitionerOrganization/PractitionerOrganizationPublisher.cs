@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
@@ -55,6 +56,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 return Guid.Empty;
             }
+
+            var nodes = new List<KeyValuePair<string, Guid>>();
+            for (int i = 0; i < message.SelectedNodes.Count; i++)
+            {
+                var result = Guid.Empty;
+                if (Guid.TryParse(message.SelectedNodes[i], out result) && result != Guid.Empty)
+                {
+                    nodes.Add(new KeyValuePair<string, Guid>(message.ImportedNodes[i], result));
+                }
+            }
+
+            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
+            properties.PractitionerImportProperties.Nodes = nodes;
+            file.Properties = JsonConvert.SerializeObject(properties);
+            this.fileService.Save(file);
 
             return file.Id;
         }

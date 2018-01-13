@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
@@ -114,6 +115,19 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         public ActionResult PractitionerOrganization(PractitionerOrganizationModel request)
         {
             return this.View();
+        }
+
+        /// <summary>
+        /// Ajax call to find child taxons by id.
+        /// </summary>
+        /// <param name="request">The <see cref="FindTaxonModel"/>.</param>
+        /// <returns><see cref="DispatchJsonResult"/>.</returns>
+        [Route("practitioners/findtaxon")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public DispatchJsonResult FindTaxon(FindTaxonModel request)
+        {
+            return this.JsonGet();
         }
 
         #endregion

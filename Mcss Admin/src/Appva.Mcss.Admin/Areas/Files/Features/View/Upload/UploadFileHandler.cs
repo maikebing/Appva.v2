@@ -22,10 +22,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class UploadFileHandler : RequestHandler<Parameterless<UploadFileModel>, UploadFileModel>
     {
-        #region Fields.
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>

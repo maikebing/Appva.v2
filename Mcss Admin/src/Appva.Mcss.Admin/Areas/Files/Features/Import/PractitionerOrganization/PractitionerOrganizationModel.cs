@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using Appva.Cqrs;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
@@ -32,27 +33,36 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// A collection of unique organization nodes from the excel file.
+        /// A collection of unique nodes from the imported file.
         /// </summary>
-        public IList<string> Nodes
+        public IList<string> ImportedNodes
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The selected node names.
+        /// The selected nodes.
         /// </summary>
-        public IList<string> SelectedNodeNames
+        public IList<string> SelectedNodes
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The selected node ids.
+        /// The parsed nodes.
         /// </summary>
-        public IList<Guid> SelectedNodeIds
+        public IList<KeyValuePair<Guid, string>> ParsedNodes
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The taxons.
+        /// </summary>
+        public IList<TaxonViewModel> Taxons
         {
             get;
             set;

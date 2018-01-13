@@ -1541,24 +1541,37 @@ td.rights {
     text-align:left;
     background:#eee;
 }
-#fileimport .fileinfo span {
-    display:block;
-    font-size:10px;
-    color:#888;
-}
-#fileimport .fileinfo .selected-node {
+#fileimport .fileinfo .previewed-node {
     color:#222;
     font-size:1em;
     background:#f1f5ff;
     display:inline-block!important;
     padding:3px 6px!important;
-    border:1px solid #cad9ff!important;
+    margin:4px 6px 4px 0;
+    border:1px solid #afc2f1!important;
     border-radius:3px;
 }
 #fileimport .fileinfo .node-not-found {
-    color:#fff;
-    background:#666;
-    border:1px solid #333!important;
+    color:#888;
+    background:#eee;
+    border:1px solid #bbb!important;
+}
+#fileimport .fileinfo .node-selection-cell {
+    padding:4px 8px;
+}
+#fileimport .fileinfo .node-selection-cell .select {
+    float:left;
+    margin-right:6px;
+}
+#fileimport .fileinfo .node-selection-cell select {
+    margin:4px 0;
+    padding:3px 6px;
+}
+#fileimport .fileinfo .node-id {
+    color:#666;
+    font-family:monospace;
+    font-size:10px;
+    padding:2px 0 0 0;
 }
 #fileimport .emptyrow {
     text-align:center;

@@ -109,6 +109,12 @@ namespace Appva.Files.Excel
 
                 dataTable.Rows.Add(dataRow);
                 lastRow = j;
+
+                if(readToRow.HasValue && j >= readToRow.Value)
+                {
+                    break;
+                }
+
                 j++;
             }
 

@@ -463,6 +463,8 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Files\Features\Import\FindTaxon\FindTaxonHandler.cs" />
+    <Compile Include="Areas\Files\Features\Import\FindTaxon\FindTaxonModel.cs" />
     <Compile Include="Areas\Files\Features\Import\ImportController.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportModel.cs" />

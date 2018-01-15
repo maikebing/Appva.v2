@@ -1,0 +1,87 @@
+﻿@model PractitionerRolesModel
+@{
+    SetTitle("Importera medarbetare");
+}
+<div id="subheader" class="cf">
+    <h1>Importera medarbetare</h1>
+</div>
+<div id="content" class="log cf">
+    <div id="fileimport">
+        @if (Model.Roles.IsNotNull())
+        {
+            <h3 style="padding-bottom:10px">Validera roller</h3>
+            <div id="progress-container">
+                <div style="width:39%" class="progress-bar"></div>
+                <div class="progress-section">
+                    <div class="progress-section-completed">1</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-completed">2</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted progress-section-animation">3</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">4</div>
+                </div>
+            </div>
+
+            using (Html.BeginForm())
+            {
+                <div id="fileinfo">
+                    <table class="device-table fileinfo">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left">Roller från fil</th>
+                                <th>Välj roller</th>
+                                <th>Kräver HSA-id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ 
+                                int i = 0;
+                            }
+                            @foreach (var role in Model.Roles)
+                            {
+                                <tr>
+                                    <td style="width:36%!important">@(string.IsNullOrWhiteSpace(role.Label) ? "[Tomt fält]" : role.Label)</td>
+                                    <td class="node-selection-cell">
+                                        <div class="select">
+                                            @Html.DropDownListFor(x => x.SelectedRoles[i], role.Roles, "Välj...")
+                                        </div>
+                                        <div style="clear:both"></div>
+                                        <div class="node-id">Id: @(string.IsNullOrWhiteSpace(role.Id) ? "null" : role.Id)</div>
+                                    </td>
+                                    <td>@Html.CheckBoxFor(x => x.SelectedHsaRequirements[i])@Html.LabelFor(x => x.SelectedHsaRequirements[i], "Ja")</td>
+                                    @Html.Hidden(string.Format("ImportedRoles[{0}]", i), role.Label)
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top:20px;float:right">
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.AntiForgeryToken()
+                    @Html.ActionLink("Föregående", "PractitionerOrganization", "Import", new { Id = Model.Id, style = "padding-right:8px" })
+                    @Html.Submit("Spara och fortsätt", new { @class = "btn-green" })
+                </div>
+            }
+        }
+        else
+        {
+            <h3>Det gick inte att öppna filen.</h3>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.progress-bar').animate({ width: "59%" }, 600);
+        setTimeout(function () {
+            $('.progress-section-animation').css({ backgroundColor: "#5ac24f", color: "#fff" });
+        }, 400);
+        $('select').bind('change', function () {
+            $(this).parent().next().next().html('Id: ' + $(this).val());
+        });
+    });
+</script>

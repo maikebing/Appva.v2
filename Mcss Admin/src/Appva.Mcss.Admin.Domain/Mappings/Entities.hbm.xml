@@ -646,7 +646,9 @@
     <property name="Title" />
     <property name="Name" />
     <property name="ContentType" />
-    <property name="Properties" />
+    <property name="Properties" type="StringClob">
+      <column name="Properties" sql-type="NVARCHAR(MAX)" />
+    </property>
     <property name="Data" type="BinaryBlob" />
   </class>
 

@@ -68,12 +68,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             var size = this.fileService.GetFileSizeFormat(file.Data.Length);
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
-            int lastRow;
             var data = ExcelReader.ReadPractitioners(
-                path, 
-                settings.ImportPractitionerSettings.ValidateAtRow, 
+                path,
+                settings.ImportPractitionerSettings.ValidateAtRow,
                 settings.ImportPractitionerSettings.ValidColumns,
-                out lastRow,
+                out int lastRow,
                 settings.ImportPractitionerSettings.ReadFromRow,
                 null,
                 settings.ImportPractitionerSettings.PreviewRows,
@@ -89,7 +88,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.Data = data;
             model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
             model.ReadFromRow = settings.ImportPractitionerSettings.ReadFromRow;
-
             return model;
         }
 

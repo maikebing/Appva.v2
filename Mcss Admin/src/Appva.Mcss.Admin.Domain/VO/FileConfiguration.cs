@@ -62,7 +62,6 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <summary>
         /// Creates a new instance of the <see cref="FileConfiguration"/> class.
         /// </summary>
-        /// <param name="importPractitionerSettings">The <see cref="ImportPractitionerSettings"/>.</param>
         /// <returns>A new <see cref="FileConfiguration"/> instance.</returns>
         public static FileConfiguration CreateDefault()
         {
@@ -221,5 +220,19 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Temporary enum.
+    /// </summary>
+    public enum PractitionerColumns
+    {
+        PIN = 0,
+        FirstName,
+        LastName,
+        Email,
+        Roles,
+        Organization,
+        HSA
     }
 }

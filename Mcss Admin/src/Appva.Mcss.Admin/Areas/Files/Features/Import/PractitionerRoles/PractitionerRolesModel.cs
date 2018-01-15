@@ -1,4 +1,4 @@
-﻿// <copyright file="PractitionerImportProperties.cs" company="Appva AB">
+﻿// <copyright file="PractitionerRolesModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,56 +11,58 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PractitionerImportProperties
+    public sealed class PractitionerRolesModel : IRequest<Guid>
     {
         #region Properties.
 
         /// <summary>
-        /// Read practitioner data from the specified row.
+        /// The file id.
         /// </summary>
-        public int? SelectedFirstRow
+        public Guid Id
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Read practitioner data to the specified row.
+        /// The imported roles.
         /// </summary>
-        public int? SelectedLastRow
+        public IList<string> ImportedRoles
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The organization nodes.
+        /// A list of selected roles.
         /// </summary>
-        public IList<KeyValuePair<string, Guid>> Nodes
+        public IList<Guid> SelectedRoles
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The roles.
+        /// A list of <see cref="bool"/> indicating if HSA id is required.
         /// </summary>
-        public IList<KeyValuePair<string, Guid>> Roles
+        public IList<bool> SelectedHsaRequirements
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Indicates if the file has importable practitioners.
+        /// A collection of <see cref="PractitionerRoleViewModel"/>.
         /// </summary>
-        public bool IsImportable
+        public IEnumerable<PractitionerRoleViewModel> Roles
         {
             get;
             set;

@@ -117,31 +117,19 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
-        /// <summary>
-        /// Ajax call to find child taxons by id.
-        /// </summary>
-        /// <param name="request">The <see cref="FindTaxonModel"/>.</param>
-        /// <returns><see cref="DispatchJsonResult"/>.</returns>
-        [Route("practitioners/findtaxon")]
-        [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public DispatchJsonResult FindTaxon(FindTaxonModel request)
-        {
-            return this.JsonGet();
-        }
-
         #endregion
 
         #region Roles.
+
         /// <summary>
-        /// Import practitioners, step 3: validate roles.
+        /// Validate roles.
         /// </summary>
-        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
+        /// <param name="request">The <see cref="PractitionerRolesModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("practitioners/{id:guid}/roles")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult PractitionerRoles(PractitionerImportModel request)
+        public ActionResult PractitionerRoles(Identity<PractitionerRolesModel> request)
         {
             return this.View();
         }

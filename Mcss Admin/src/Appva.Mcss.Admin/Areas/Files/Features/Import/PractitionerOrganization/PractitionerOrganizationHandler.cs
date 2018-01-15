@@ -26,6 +26,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -108,9 +109,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (file == null ||
                 properties.PractitionerImportProperties == null ||
-                properties.PractitionerImportProperties.SelectedFirstRow.HasValue == false ||
-                properties.PractitionerImportProperties.SelectedLastRow.HasValue == false ||
-                properties.PractitionerImportProperties.IsImportable == false)
+                properties.PractitionerImportProperties.SelectedFirstRow.HasValue == false)
             {
                 return model;
             }
@@ -134,9 +133,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.ImportedNodes = new List<string>();
             model.SelectedNodes = new List<string>();
             model.ParsedNodes   = new List<KeyValuePair<Guid, string>>();
-            model.ImportedNodes = this.GetNodesFrom(data, settings.ImportPractitionerSettings.ValidColumns.IndexOf(
-                settings.ImportPractitionerSettings.ValidColumns[5])
-            );
+            model.ImportedNodes = this.GetDistinctDataFrom(data, (int)PractitionerColumns.Organization).ToList();
+            this.SetRolesToFileProperties(this.GetDistinctDataFrom(data, (int)PractitionerColumns.Roles).ToList(), properties, file);
             this.ParseNodes(model.ImportedNodes, model.ParsedNodes);
             return model;
         }
@@ -146,26 +144,40 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private methods.
 
         /// <summary>
-        /// Gets a collection of unique organization nodes.
+        /// Gets unique rows by the specified index.
         /// </summary>
         /// <param name="data">The <see cref="DataTable"/>.</param>
-        /// <param name="columnIndex">The column index.</param>
-        /// <returns>A collection of unique organization nodes.</returns>
-        private IList<string> GetNodesFrom(DataTable data, int columnIndex)
+        /// <param name="index">The column index.</param>
+        /// <returns>A <see cref="IEnumerable{string}"/>.</returns>
+        private IEnumerable<string> GetDistinctDataFrom(DataTable dataTable, int index)
         {
-            var nodes = new List<string>();
             var hashSet = new HashSet<string>();
-
-            for (var i = 1; i < data.Rows.Count; i++)
+            for (int i = 1; i < dataTable.Rows.Count; i++)
             {
-                var column = data.Rows[i][data.Columns[columnIndex]].ToString();
+                var column = dataTable.Rows[i][dataTable.Columns[index]].ToString();
                 if (hashSet.Add(column))
                 {
-                    nodes.Add(column);
+                    yield return column;
                 }
             }
+        }
 
-            return nodes;
+        /// <summary>
+        /// Stores imported roles to file properties.
+        /// </summary>
+        /// <param name="roles">The roles.</param>
+        /// <param name="properties">The <see cref="FileUploadProperties"/>.</param>
+        /// <param name="file">The <see cref="DataFile"/>.</param>
+        private void SetRolesToFileProperties(IList<string> roles, FileUploadProperties properties, DataFile file)
+        {
+            var list = new List<KeyValuePair<string, Guid>>();
+            foreach (var role in roles)
+            {
+                list.Add(new KeyValuePair<string, Guid>(role, Guid.Empty));
+            }
+            properties.PractitionerImportProperties.Roles = list;
+            file.Properties = JsonConvert.SerializeObject(properties);
+            this.fileService.Save(file);
         }
 
         /// <summary>

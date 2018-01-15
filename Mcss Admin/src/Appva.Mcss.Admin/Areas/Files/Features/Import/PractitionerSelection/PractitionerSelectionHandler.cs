@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
+    using Domain.VO;
     using Newtonsoft.Json;
 
     #endregion
@@ -57,8 +58,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override PractitionerSelectionModel Handle(Identity<PractitionerSelectionModel> message)
         {
-            var file = this.fileService.Get(message.Id);
-            var model = new PractitionerSelectionModel();
+            var file       = this.fileService.Get(message.Id);
+            var model      = new PractitionerSelectionModel();
             var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
 
             if (file == null || 
@@ -69,28 +70,43 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
-            var path = this.fileService.SaveToDisk(file.Name, file.Data);
-            int lastRow;
-
-            model.Id = file.Id;
-            model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
-            model.ReadFromRow = settings.ImportPractitionerSettings.ReadFromRow;
-            model.Data = ExcelReader.ReadPractitioners(
-                path, 
-                settings.ImportPractitionerSettings.ValidateAtRow, 
+            var path     = this.fileService.SaveToDisk(file.Name, file.Data);
+            var data     = ExcelReader.ReadPractitioners(
+                path,
+                settings.ImportPractitionerSettings.ValidateAtRow,
                 settings.ImportPractitionerSettings.ValidColumns,
-                out lastRow,
+                out int lastRow,
                 settings.ImportPractitionerSettings.ReadFromRow,
                 null,
                 settings.ImportPractitionerSettings.PreviewRows,
                 true,
                 true
             );
-            model.LastRow = lastRow;
-            model.SkipRows = settings.ImportPractitionerSettings.SkipRows;
-            model.PreviewRows = settings.ImportPractitionerSettings.PreviewRows;
             File.Delete(path);
 
+            model.Id            = file.Id;
+            model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
+            model.ReadFromRow   = settings.ImportPractitionerSettings.ReadFromRow;
+            model.Data          = data;
+            model.LastRow       = lastRow;
+            model.SkipRows      = settings.ImportPractitionerSettings.SkipRows;
+            model.PreviewRows   = settings.ImportPractitionerSettings.PreviewRows;
+            this.SetSelectedRowsTo(model, settings, properties);
+            return model;
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <summary>
+        /// Sets selected rows to the model.
+        /// </summary>
+        /// <param name="model">The <see cref="PractitionerSelectionModel"/>.</param>
+        /// <param name="settings">The <see cref="FileConfiguration"/>.</param>
+        /// <param name="properties">The <see cref="FileUploadProperties"/>.</param>
+        private void SetSelectedRowsTo(PractitionerSelectionModel model, FileConfiguration settings, FileUploadProperties properties)
+        {
             if (properties.PractitionerImportProperties.SelectedFirstRow.HasValue)
             {
                 model.SelectedFirstRow = properties.PractitionerImportProperties.SelectedFirstRow.Value;
@@ -106,10 +122,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             else
             {
-                model.SelectedLastRow = lastRow + model.SkipRows + model.ValidateAtRow;
+                model.SelectedLastRow = model.LastRow + model.SkipRows + model.ValidateAtRow;
             }
-
-            return model;
         }
 
         #endregion

@@ -463,8 +463,6 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
-    <Compile Include="Areas\Files\Features\Import\FindTaxon\FindTaxonHandler.cs" />
-    <Compile Include="Areas\Files\Features\Import\FindTaxon\FindTaxonModel.cs" />
     <Compile Include="Areas\Files\Features\Import\ImportController.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportModel.cs" />
@@ -476,6 +474,10 @@
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerImportValidationTemp.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\InvalidPractitionerData.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewPublisher.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerRoles\PractitionerRolesHandler.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerRoles\PractitionerRolesModel.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerRoles\PractitionerRolesPublisher.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerRoles\PractitionerRoleViewModel.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionModel.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionPublisher.cs" />
@@ -1457,6 +1459,7 @@
     <Content Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImport.cshtml" />
     <Content Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelection.cshtml" />
     <Content Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganization.cshtml" />
+    <Content Include="Areas\Files\Features\Import\PractitionerRoles\PractitionerRoles.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

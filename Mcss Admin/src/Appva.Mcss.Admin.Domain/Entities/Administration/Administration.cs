@@ -5,11 +5,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain;
-    using Newtonsoft.Json;
     using Validation;
 
     #endregion
@@ -27,48 +27,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="Administration"/> class.
         /// </summary>
-        /// <param name="sequence">The <see cref="Sequence"/>. Required.</param>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>. Required.</param>
-        /// <param name="maxValue">The maximum value. Must be greater than or equal the minmum value.</param>
-        /// <param name="minValue">The minimum value, default 0. Must be lesser than or equal to the mimum value.</param>
-        /// <param name="step">The step, incrementation, default 1</param>
-        /// <param name="fractions">The amount of fractions, default 0.</param>
-        protected internal Administration(string name, Sequence sequence, UnitOfMeasurement unit, double maxValue, double minValue = 0, double step = 1, int fractions = 0)
+        /// <param name="name"></param>
+        /// <param name="sequence"><see cref="Sequence"/></param>
+        /// <param name="valueModel"><see cref="AdministrationValueModel"/></param>
+        protected Administration(Sequence sequence, AdministrationValueModel valueModel)
         {
-            Requires.NotNullOrWhiteSpace(name, "name");
-            Requires.NotNull(sequence, "sequence");
-            Requires.NotNull(unit, "unit");
-            Requires.ValidState(maxValue >= minValue, "maxValue");
-            Requires.ValidState(minValue <= maxValue, "minValue");
-            Requires.ValidState(step > 0.00, "step");
-            Requires.ValidState((fractions == 0 || fractions == 1 || fractions == 2), "fractions");
-            this.Name = name;
-            this.Patient = sequence.Patient;
+            Requires.NotNull(valueModel, "valueModel");
             this.Sequence = sequence;
-            this.Unit = unit;
-            this.MaxValue = maxValue;
-            this.MinValue = minValue;
-            this.Step = step;
-            this.Fractions = fractions;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Administration"/> class.
-        /// </summary>
-        /// <param name="sequence">The <see cref="Sequence"/>.</param>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
-        /// <param name="specificValues">The specific list of values.</param>
-        protected internal Administration(string name, Sequence sequence, UnitOfMeasurement unit, IEnumerable<double> specificValues)
-        {
-            Requires.NotNullOrWhiteSpace(name, "name");
-            Requires.NotNull(sequence, "sequence");
-            Requires.NotNull(unit, "unit");
-            Requires.NotNullOrEmpty(specificValues, "specificValues");
-            this.Name = name;
             this.Patient = sequence.Patient;
-            this.Sequence = sequence;
-            this.Unit = unit;
-            this.SpecificValues = JsonConvert.SerializeObject(specificValues);
+            this.Name = valueModel.Name;
+            this.CustomValues = valueModel.CustomValues;
+            this.CustomValues.ValueId = valueModel.Id;
         }
 
         /// <summary>
@@ -116,59 +85,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The unit.
+        /// The <see cref="AdministrationValues"/>.
         /// </summary>
-        /// <value>The <see cref="UnitOfMeasurement"/>.</value>
-        public virtual UnitOfMeasurement Unit
+        public virtual AdministrationValues CustomValues
         {
             get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the maximum value.
-        /// </summary>
-        public virtual double MaxValue
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the minimum value.
-        /// </summary>
-        public virtual double MinValue
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the step.
-        /// </summary>
-        public virtual double Step
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the fractions.
-        /// </summary>
-        public virtual int Fractions
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the custom values.
-        /// </summary>
-        /// <value>The custom values.</value>
-        public virtual string SpecificValues
-        {
-            get;
-            set;
+            protected internal set;
         }
 
         /// <summary>
@@ -211,15 +133,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Get a custom values list
-        /// </summary>
-        /// <returns>A list of double</returns>
-        public virtual IList<double> GetCustomValues()
-        {
-            return JsonConvert.DeserializeObject<List<double>>(this.SpecificValues);
-        }
-
-        /// <summary>
         /// Adds the <see cref="AdministeredItem"/>.
         /// </summary>
         /// <param name="who">The <see cref="Account"/>.</param>
@@ -238,25 +151,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Updates the administration with a unit and a specified list of values.
-        /// </summary>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
-        /// <param name="customValues">The list of custom values.</param>
-        /// <returns><see cref="Administration"/>.</returns>
-        public abstract Administration Update(UnitOfMeasurement unit, IList<double> customValues);
-
-        /// <summary>
-        /// Updates the administration with a unit and a formula for building the values.
-        /// </summary>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="step">The step/increment.</param>
-        /// <param name="fractions">The fractions.</param>
-        /// <returns>Administration.</returns>
-        public abstract Administration Update(UnitOfMeasurement unit, double max, double min = 0, double step = 1, int fractions = 0);
-
-        /// <summary>
         /// News the value.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -266,4 +160,5 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
     }
+
 }

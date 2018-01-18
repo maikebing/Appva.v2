@@ -6,17 +6,27 @@
 // </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    using System;
     #region Imports.
 
     using System.Collections.Generic;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
+
     public static class AdministrationFactory
     {
-        public static Administration CreateNew(string name, Sequence sequence, UnitOfMeasurement unit, IList<double> customValues = null)
+        /// <summary>
+        /// Builds a new Administration from a model.
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <param name="model"></param>
+        /// <returns>A <see cref="MedicationAdministration"/>.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public static Administration CreateNew(Sequence sequence, AdministrationValueModel model)
         {
-            return new MedicationAdministration(name, sequence, unit, customValues);
+            return new MedicationAdministration(sequence, model);
         }
     }
 }

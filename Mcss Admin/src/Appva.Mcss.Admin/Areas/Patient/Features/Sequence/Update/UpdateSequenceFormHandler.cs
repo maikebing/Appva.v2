@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -61,11 +62,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ISettingsService settingsService;
 
         /// <summary>
-        /// The dosage service <see cref="IDosageObservationService"/>.
-        /// </summary>
-        private readonly IDosageObservationService dosageService;
-
-        /// <summary>
         /// The <see cref="IAdministrationService"/>.
         /// </summary>
         private readonly IAdministrationService administrationService;
@@ -77,14 +73,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IDosageObservationService dosageService, IAdministrationService administrationService)
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IAdministrationService administrationService)
         {
             this.context               = context;
             this.roleService           = roleService;
             this.sequenceService       = sequenceService;
             this.inventoryService      = inventoryService;
             this.settingsService       = settingsService;
-            this.dosageService         = dosageService;
             this.administrationService = administrationService;
         }
 
@@ -102,17 +97,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-
-            this.CreateOrUpdate(message, sequence, schedule, delegation, null);
-
-            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage && MedicationAdministration.Units.Any(x => x.Code == message.SelectedDosageScale))
+            this.CreateOrUpdate(message, sequence, schedule, delegation, null);            
+            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && ! string.IsNullOrWhiteSpace(message.SelectedDosageScale))
             {
-                var unit = MedicationAdministration.Units.Where(x => x.Code == message.SelectedDosageScale).FirstOrDefault();
-                this.CreateOrUpdateDosageObservation(sequence, unit);
+                var valueModel = this.settingsService.Find(ApplicationSettings.AdministrationUnitsWithAmounts)
+                    .Where(x => x.Id.ToString() == message.SelectedDosageScale).FirstOrDefault();
+                this.CreateOrUpdateDosageObservation(sequence, valueModel);
             }
-
-            this.sequenceService.Update(sequence);
-            
+            this.sequenceService.Update(sequence);            
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
             return new DetailsSchedule
@@ -123,23 +115,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         /// <summary>
-        /// Updates the dosage observation.
+        /// Updates the Sequence with a MedicationAdministration or updates existing MedicationAdministration with a new set of values.
         /// </summary>
-        /// <param name="sequence">The sequence<see cref="Sequence" />.</param>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
-        /// <param name="customValues">A list of custom values (optional).</param>
-        private void CreateOrUpdateDosageObservation(Sequence sequence, UnitOfMeasurement unit, IList<double> customValues = null)
+        /// <param name="sequence">The <see cref="Sequence" />.</param>
+        /// <param name="valueModel">The <see cref="AdministrationValueModel"/>.</param>
+        private void CreateOrUpdateDosageObservation(Sequence sequence, AdministrationValueModel valueModel)
         {
             if (sequence.Administration == null)
             {
-                //// UNRESOLVED: Figure out a better way to handle customValues.
-                var administration = AdministrationFactory.CreateNew("get name from template in settings.", sequence, unit, customValues);
+                var administration = AdministrationFactory.CreateNew(sequence, valueModel);
                 this.administrationService.Save(administration);
                 sequence.Administration = administration;
                 return;
             }
-            //// UNRESOLVED: Not the best way to solve this, make it look better
-            this.administrationService.Update(((MedicationAdministration)sequence.Administration.Unproxied).Update(unit, customValues));
+            sequence.Administration.CustomValues.Update(valueModel);
+            this.administrationService.Save(sequence.Administration);
         }
 
         #endregion

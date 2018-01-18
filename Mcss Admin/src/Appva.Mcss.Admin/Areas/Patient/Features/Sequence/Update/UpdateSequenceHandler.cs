@@ -123,8 +123,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
             if (updateSequenceForm.IsCollectingGivenDosage == true)
             {
-                updateSequenceForm.DosageScales = MedicationAdministration.Units.Select(x => new SelectListItem { Text = string.Format("{0} ({1})", CultureInfo.CurrentCulture.TextInfo.ToTitleCase(x.Name), x.Code) , Value = x.Code });
-                updateSequenceForm.SelectedDosageScale = sequence.Administration != null ? sequence.Administration.Unit.Code : string.Empty;
+                var selectedDosageScale = sequence.Administration != null ? sequence.Administration.CustomValues.ValueId.ToString() : null;
+                var administrationValues = this.settingsService.Find(ApplicationSettings.AdministrationUnitsWithAmounts).Select(x => new SelectListItem { Text = x.ToLongString(), Value = x.Id.ToString(), Selected = x.Id.ToString() == selectedDosageScale });
+                updateSequenceForm.DosageScales = administrationValues;
+                updateSequenceForm.SelectedDosageScale = selectedDosageScale;
             }
             return updateSequenceForm;
         }

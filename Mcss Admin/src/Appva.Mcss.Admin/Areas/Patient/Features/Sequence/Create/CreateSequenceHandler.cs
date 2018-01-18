@@ -60,11 +60,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
+        /// <param name="context"></param>
+        /// <param name="delegations"></param>
+        /// <param name="inventories"></param>
+        /// <param name="settingsService"></param>
+        /// <param name="roleService"></param>
         public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, ISettingsService settingsService, IRoleService roleService)
         {
             this.context = context;
@@ -132,10 +137,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
         }
 
+        /// <summary>
+        /// Builds a select list,
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<SelectListItem> GetDosageSelectList()
         {
-            var defaultAdministrations = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
-            return defaultAdministrations.Select(x => new SelectListItem { Text = x.ToLongString(), Value = x.Id.ToString() }).ToList();
+            return this.settingsService.Find(ApplicationSettings.AdministrationUnitsWithAmounts)
+                .Select(x => new SelectListItem { Text = x.ToLongString(), Value = x.Id.ToString() })
+                .ToList();
         }
 
         #endregion

@@ -101,20 +101,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
-
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && message.SelectedDosageScale.IsNotEmpty())
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && ! string.IsNullOrWhiteSpace(message.SelectedDosageScale))
             {
-                var medic = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts).Where(x => x.Id.ToString() == message.SelectedDosageScale).FirstOrDefault();
-                //// UNRESOLVED: Build a new factory that can handle both lists and formula.
-                var administration = AdministrationFactory.CreateNew(sequence, medic);
+                var amountModel = this.settingsService.Find(ApplicationSettings.AdministrationUnitsWithAmounts)
+                    .Where(x => x.Id.ToString() == message.SelectedDosageScale)
+                    .FirstOrDefault();
+                var administration = AdministrationFactory.CreateNew(sequence, amountModel);
                 this.administrationService.Save(administration);
                 sequence.Administration = administration;
             }
-
             this.context.Save(sequence);
-
             this.auditing.Create(
                 sequence.Patient,
                 "skapade {0} (REF: {1}) i {2} (REF: {3}).",

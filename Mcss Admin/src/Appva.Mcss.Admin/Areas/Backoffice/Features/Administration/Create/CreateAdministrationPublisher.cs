@@ -42,21 +42,21 @@
         /// <inheritdoc />
         public override Parameterless<ListInventoriesModel> Handle(CreateAdministrationModel message)
         {
-            var units = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
+            var units = this.settingsService.Find<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
             if (string.IsNullOrWhiteSpace(message.SpecificValues) && message.Max != null)
             {
                 var max = message.Max;
                 var min = message.Min.HasValue ? message.Min.Value : 0;
                 var step = message.Step.HasValue ? message.Step.Value : 1;
                 var fractions = message.Fractions.HasValue ? message.Fractions.Value : 0;
-                units.Add(new AdministrationAmountModel(message.Name, UnitOfMeasurement.Parse(message.SelectedUnit), max.Value, min, fractions, step));
+                units.Add(new AdministrationValueModel(message.Name, UnitOfMeasurement.Parse(message.SelectedUnit), max.Value, min, step, fractions));
             }
             if (!string.IsNullOrWhiteSpace(message.SpecificValues) && message.Max == null)
             {
                 var specificValues = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.SpecificValues.Replace(" ", "")));
-                units.Add(new AdministrationAmountModel(message.Name, UnitOfMeasurement.Parse(message.SelectedUnit), specificValues));
+                units.Add(new AdministrationValueModel(message.Name, UnitOfMeasurement.Parse(message.SelectedUnit), specificValues));
             }
-            this.settingsService.Upsert<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, units);
+            this.settingsService.Upsert<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, units);
             return new Parameterless<ListInventoriesModel>();
         }
 

@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public IList<AdministrationAmountModel> AdministrationUnits
+        public IList<AdministrationValueModel> AdministrationUnits
         {
             get;
             set;

@@ -17,18 +17,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     {
         #region Constructors.
 
-        public UpdateAdministrationModel(AdministrationAmountModel model)
-        {
-            this.Id = model.Id;
-            this.Name = model.Name;
-            this.Unit = model.Unit;
-            this.Max = model.Max;
-            this.Min = model.Min;
-            this.Step = model.Step;
-            this.Fractions = model.Fractions;            
-            this.SpecificValues = (model.SpecificValues.IsNotNull() || model.SpecificValues.IsNotEmpty()) ? JsonConvert.SerializeObject(model.SpecificValues).Replace("[", "").Replace("]", "") : string.Empty;
-        }
-
         public UpdateAdministrationModel()
         {
         }
@@ -81,6 +69,27 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         {
             get;
             set;
+        }
+
+        public static UpdateAdministrationModel New(AdministrationValueModel model)
+        {
+            var retval = new UpdateAdministrationModel();
+            retval.Id = model.Id;
+            retval.Name = model.Name;
+            retval.Unit = model.CustomValues.Unit;
+
+            if (model.CustomValues.SpecificValues != null)
+            {
+                retval.SpecificValues = JsonConvert.SerializeObject(model.CustomValues.SpecificValues.Values).Replace("[", "").Replace("]", "");
+            }
+            else
+            {
+                retval.Max = model.CustomValues.CustomFormula.Max;
+                retval.Min = model.CustomValues.CustomFormula.Min;
+                retval.Step = model.CustomValues.CustomFormula.Step;
+                retval.Fractions = model.CustomValues.CustomFormula.Fractions;
+            }
+            return retval;
         }
     }
 }

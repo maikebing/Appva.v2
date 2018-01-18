@@ -47,11 +47,9 @@
 
         public override UpdateAdministrationModel Handle(UpdateAdministration message)
         {
-            var administration = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts)
+            var administration = this.settingsService.Find<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts)
                 .SingleOrDefault(x => x.Id == message.Id);
-            var model = new UpdateAdministrationModel(administration);
-
-            return model;
+            return UpdateAdministrationModel.New(administration);
         }
 
         #endregion

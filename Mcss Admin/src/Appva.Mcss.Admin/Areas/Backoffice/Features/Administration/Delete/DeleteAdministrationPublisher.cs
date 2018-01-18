@@ -22,12 +22,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Administration.Delete
 
         public override Parameterless<ListInventoriesModel> Handle(DeleteAdministrationModel message)
         {
-            var settings = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
+            var settings = this.settingsService.Find<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
             var administration = settings.Where(x => x.Id == message.Id).FirstOrDefault();
 
             settings.Remove(administration);
 
-            this.settingsService.Upsert<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, settings);
+            this.settingsService.Upsert<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, settings);
 
             return new Parameterless<ListInventoriesModel>();
         }

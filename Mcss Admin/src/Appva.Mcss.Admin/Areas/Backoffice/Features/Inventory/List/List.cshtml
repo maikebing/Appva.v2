@@ -48,15 +48,15 @@
                             </td>
                             <td>@unit.Name</td>
                             <td>MedicationAdministration</td>
-                            <td>@unit.Unit.Code</td>
+                            <td>@unit.CustomValues.Unit.Code</td>
                             <td>
-                                @if (unit.SpecificValues == null || unit.SpecificValues.Count() == 0)
+                                @if (unit.CustomValues.SpecificValues != null)
                                 {
-                                    <span>Max: @unit.Max, Min: @unit.Min, Step: @unit.Step, Fractions: @unit.Fractions</span>
+                                    @Html.Serialize(unit.CustomValues.SpecificValues.Values).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")                                    
                                 }
                                 else
                                 {
-                                    @Html.Serialize(unit.SpecificValues).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")
+                                    <span>Max: @unit.CustomValues.CustomFormula.Max, Min: @unit.CustomValues.CustomFormula.Min, Step: @unit.CustomValues.CustomFormula.Step, Fractions: @unit.CustomValues.CustomFormula.Fractions</span>
                                 }
                             </td>
                         </tr>

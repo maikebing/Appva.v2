@@ -1,0 +1,25 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Areas.Backoffice.Models.UpdateAdministrationModel
+@{
+    SetTitle(string.Format("Updatera enhet {0}", Model.Name));
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="UpdateAdministration">
+    @using (Html.Post(new { Model.Id }))
+    {
+
+        <h3 class="section-title">Updatera enhet</h3>
+        @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
+        <span>Använder enhet: @Model.Unit.Code</span>
+        @Html.FormGroup(x => x.Max, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Min, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Step, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Fractions, "text large").Label().TextBox().Validate().Build()
+
+        <p><br /><b>OBS!</b>Lämna nedastående ruta om inte specifika värden skall användas.</p>
+        @Html.FormGroup(x => x.SpecificValues, "text large").Label().TextArea().Validate().Build()
+        <p><b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','</p>
+        <div class="submit">
+            @Html.Submit("Spara")
+        </div>
+    }
+</div>

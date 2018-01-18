@@ -1,0 +1,34 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateAdministrationModel
+@{
+    SetTitle("Ny enhet");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="CreateAdministration">
+    @using (Html.Post())
+    {
+        <h3 class="section-title">Ny enhet</h3>
+        @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
+        @Html.DropDownListFor(x => x.SelectedUnit, Model.UnitSelectList, Model.SelectedUnit)
+
+        <p>
+            <b>OBS!</b> Lämna dessa tomma om ruta med värden skall fyllas i.
+        </p>
+        
+        @Html.FormGroup(x => x.Max, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Min, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Step, "text large").Label().TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Fractions, "text large").Label().TextBox().Validate().Build()
+
+
+        <p>
+            <b>OBS!</b> Lämnas tom om ovantående är ifyllt.
+        </p>
+        @Html.FormGroup(x => x.SpecificValues, "text large").Label().TextArea().Validate().Build()
+
+        <p>
+            <b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','
+        </p>
+        <div class="submit">
+            @Html.Submit("Spara")
+        </div>
+    }
+</div>

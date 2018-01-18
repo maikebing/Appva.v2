@@ -380,6 +380,17 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\AdministrationController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Create\CreateAdministration.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Create\CreateAdministrationHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Create\CreateAdministrationModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Create\CreateAdministrationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Delete\DeleteAdministrationModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Delete\DeleteAdministrationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Update\UpdateAdministration.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Update\UpdateAdministrationHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Update\UpdateAdministrationModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Administration\Update\UpdateAdministrationPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsModel.cs" />
@@ -1261,6 +1272,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Area51\Features\Test\Index\" />
+    <Folder Include="Areas\Backoffice\Features\Administration\List\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
@@ -1618,6 +1630,8 @@
     <Content Include="Areas\Patient\Features\Observation\AddValue\AddValue.cshtml" />
     <Content Include="Areas\Backoffice\Features\Scale\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Scale\View\View.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Administration\Create\Create.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Administration\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

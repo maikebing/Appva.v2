@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Category("non-units")]
-    internal static class NonUnits
+    public static class NonUnits
     {
         /// <summary>
         /// The non unit for classification (consistency) of human feces.

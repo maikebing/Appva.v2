@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// The kind of quality for mass unit of measurement.
     /// </summary>
     [Category("mass")]
-    internal static class MassUnits
+    public static class MassUnits
     {
         /// <summary>
         /// The SI mass base unit kilogram.
@@ -25,6 +25,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// UCUM uses gram as the mass base value.
         /// </remarks>
         public static readonly UnitOfMeasurement Kilogram = UnitOfMeasurement.New("kilogram", "kg", "kg");
+
+        /// <summary>
+        /// The mass unit for hektogram
+        /// </summary>
+        /// <remarks>
+        /// UCUM uses gram as the mass base value.
+        /// </remarks>
+        public static readonly UnitOfMeasurement Hektogram = UnitOfMeasurement.New("hektogram", "hg", "hg");
 
         /// <summary>
         /// The UCUM mass base unit gram.

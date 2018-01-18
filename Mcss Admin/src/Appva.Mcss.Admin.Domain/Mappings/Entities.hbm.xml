@@ -767,15 +767,18 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
+    
     <property name="Name" />
-    <property name="Route" />
-    <property name="Method" />
     <property name="Unit" type="UnitOfMeasurement">
       <column name="Unit" />
     </property>
+    <property name="MaxValue" />
+    <property name="MinValue" />
+    <property name="Step" />
+    <property name="Fractions" />
+    <property name="SpecificValues" column="CustomValues" type="StringClob" />
     <many-to-one name="Patient" class="Patient" />
-    <many-to-one name="Sequence" class="Sequence" />
-    <property name="CustomValues" type="StringClob" />
+    <many-to-one name="Sequence" class="Sequence" />    
     <subclass name="MedicationAdministration" discriminator-value="MedicationAdministration"></subclass>
   </class>
   

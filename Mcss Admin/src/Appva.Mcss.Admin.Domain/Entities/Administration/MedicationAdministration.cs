@@ -7,6 +7,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
     using System.Collections.Generic;
     using System.Linq;
+    using Newtonsoft.Json;
     using Validation;
 
     #endregion
@@ -32,10 +33,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="sequence">The <see cref="Sequence" />.</param>
         /// <param name="unit">The <see cref="UnitOfMeasurement" />.</param>
         /// <param name="customValues">The custom values.</param>
-        public MedicationAdministration(Sequence sequence, UnitOfMeasurement unit, IList<double> customValues)
-            : base(sequence, unit, customValues)
+        public MedicationAdministration(string name, Sequence sequence, UnitOfMeasurement unit, IList<double> customValues)
+            : base(name, sequence, unit, customValues)
         {
             Requires.ValidState(this.Validate(unit), "unit");
+        }
+
+        public MedicationAdministration(string name, Sequence sequence, UnitOfMeasurement unit, double max, double min, double step, int fractions)
+            : base(name, sequence, unit, max, min, step, fractions)
+        {
         }
 
         /// <summary>
@@ -52,29 +58,47 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Administration Overrides.
 
-        /// <summary>
-        /// News the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="unit">The unit.</param>
-        /// <returns>ArbitraryValue.</returns>
-        protected override ArbitraryValue NewValue(double value, UnitOfMeasurement unit = null)
+        /// <inheritdoc />
+        protected override ArbitraryValue NewValue(double value)
         {
             Requires.ValidState(this.Validate(value), "value"); //// TODO: Insert validation.
             return ArbitraryValue.New(value, LevelOfMeasurement.Quantitative, this.Unit);
         }
 
-        /// <summary>
-        /// Updates the specified unit.
-        /// </summary>
-        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
-        /// <param name="customValues">The custom values.</param>
-        /// <returns>Administration.</returns>
-        public override Administration Update(UnitOfMeasurement unit, IList<double> customValues = null)
+        /// <inheritdoc />
+        public override Administration Update(UnitOfMeasurement unit, IList<double> customValues)
         {
             Requires.ValidState(Validate(unit), "unit");
+            Requires.NotNullOrEmpty(customValues, "customValues");
             this.Unit = unit;
-            this.CustomValues = ComposeCustomValues(customValues);
+            this.SpecificValues = JsonConvert.SerializeObject(customValues);
+
+            //// TODO: Toggle between list or formula. Handle this in another way, a class for this functionality.
+            this.MaxValue = 0;
+            this.MinValue = 0;
+            this.Step = 0;
+            this.Fractions = 0;
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override Administration Update(UnitOfMeasurement unit, double max, double min = 0, double step = 1, int fractions = 0)
+        {
+            Requires.NotNull(unit, "unit");
+            Requires.ValidState((max >= min && max > 0), "max");
+            Requires.ValidState((min <= max && min >= 0), "min");
+            Requires.ValidState(step > 0, "step");
+            Requires.ValidState((fractions == 0 || fractions == 1 || fractions == 2), "fractions");
+            this.Unit = unit;
+            this.MaxValue = max;
+            this.MinValue = min;
+            this.Step = step;
+            this.Fractions = fractions;
+
+            //// TODO: Toggle between list or formula. Handle this in another way, a class for this functionality.
+            this.SpecificValues = string.Empty;
+
             return this;
         }
 
@@ -87,6 +111,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool Validate(double value)
         {
+            //// TODO: Inside Range or In CustomValuesList
             return this.GetCustomValues().Any(x => x == value);
         }
 

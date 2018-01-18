@@ -171,6 +171,7 @@
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Auditing\HttpContextBaseExtensions.cs" />
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
+    <Compile Include="Common\AdministrationDefaults.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\Color.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
@@ -186,6 +187,7 @@
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Exception\NotUniqueException.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
+    <Compile Include="Models\AdministrationValueModel.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />

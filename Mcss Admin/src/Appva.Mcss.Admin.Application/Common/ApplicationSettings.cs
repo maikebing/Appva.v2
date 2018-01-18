@@ -257,6 +257,22 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region Administration
+
+        /// <summary>
+        /// The administration units with amounts/
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<List<AdministrationAmountModel>> AdministrationUnitsWithAmounts = ApplicationSettingIdentity<List<AdministrationAmountModel>>.CreateNew(
+            "MCSS.Core.Administration.Units",
+            "The units available for an administration",
+            "MCSS.Core.Administration",
+            "The units and default values available for an administration",
+            AdministrationDefaults.Units()
+            );
+
+        #endregion
+
+
         #region LDAP.
 
         /// <summary>

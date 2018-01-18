@@ -139,6 +139,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <returns>List of <see cref="InventoryAmountListModel"/></returns>
         IList<InventoryAmountListModel> GetIventoryAmountLists();
+
+        /// <summary>
+        /// Gets the default amount lists for administration.
+        /// </summary>
+        /// <returns>List of <see cref="AdministrationAmountModel"/>.</returns>
+        IList<AdministrationAmountModel> GetAdministrationAmountModelList();
     }
 
     /// <summary>
@@ -623,6 +629,27 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 }
             }
             this.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, units);
+            return units;
+        }
+
+        /// <inheritdoc />
+        public IList<AdministrationAmountModel> GetAdministrationAmountModelList()
+        {
+            var units = this.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
+            var deprecatedUnitSettings = this.repository.FindByNamespace("MCSS.Core.Administration.Units");
+
+            if(deprecatedUnitSettings.Count > 0)
+            {
+                units = deprecatedUnitSettings.Select(x => new AdministrationAmountModel("Tabletter", NonUnits.Tablets, 10)).ToList();
+                //// Deactivates deprecated setting
+                //// TODO: Remove in comming releases
+                foreach (var d in deprecatedUnitSettings)
+                {
+                    d.IsActive = false;
+                    this.repository.Save(d);
+                }
+            }
+            this.Upsert<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, units);
             return units;
         }
 

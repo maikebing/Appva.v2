@@ -14,9 +14,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #endregion
     public static class AdministrationFactory
     {
-        public static Administration CreateNew(Sequence sequence, UnitOfMeasurement unit, IList<double> customValues = null)
+        public static Administration CreateNew(string name, Sequence sequence, UnitOfMeasurement unit, IList<double> customValues = null)
         {
-            return new MedicationAdministration(sequence, unit, customValues);
+            return new MedicationAdministration(name, sequence, unit, customValues);
         }
     }
 }

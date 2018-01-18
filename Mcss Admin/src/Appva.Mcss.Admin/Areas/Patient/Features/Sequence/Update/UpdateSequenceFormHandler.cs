@@ -133,7 +133,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (sequence.Administration == null)
             {
                 //// UNRESOLVED: Figure out a better way to handle customValues.
-                var administration = AdministrationFactory.CreateNew(sequence, unit, customValues);
+                var administration = AdministrationFactory.CreateNew("get name from template in settings.", sequence, unit, customValues);
                 this.administrationService.Save(administration);
                 sequence.Administration = administration;
                 return;

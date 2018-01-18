@@ -93,12 +93,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
+
             return new CreateSequenceForm
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
                 IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage,
-                DosageScales = schedule.ScheduleSettings.IsCollectingGivenDosage? MedicationAdministration.Units.Select(x => new SelectListItem { Text = string.Format("{0} ({1})", CultureInfo.CurrentCulture.TextInfo.ToTitleCase(x.Name), x.Code), Value = x.Code }) : null,
+                DosageScales = schedule.ScheduleSettings.IsCollectingGivenDosage? this.GetDosageSelectList() : null,
                 Delegations = schedule.ScheduleSettings.DelegationTaxon != null? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,
@@ -129,6 +130,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5
             };
+        }
+
+        private IEnumerable<SelectListItem> GetDosageSelectList()
+        {
+            var defaultAdministrations = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
+            return defaultAdministrations.Select(x => new SelectListItem { Text = x.ToLongString(), Value = x.Id.ToString() }).ToList();
         }
 
         #endregion

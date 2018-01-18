@@ -16,14 +16,6 @@
                         TODO: Lägg till CSS klass för att snygga matcha andra listors design
                         TODO: if (Model.IsUsingTypes == true)
                     *@
-                    
-                    @if (Model.IsCollectingGivenDosage == true)
-                    {
-                        <div class="select">
-                            @Html.LabelFor(m => m.DosageScales)
-                            @Html.DropDownListFor(m => m.SelectedDosageScale, new SelectList(Model.DosageScales, "Value", "Text", Model.SelectedDosageScale), "Välj enhet ...", new { @class = "scale" })
-                        </div>
-                    }
 
                     @if (Model.Delegations.Count() > 0)
                     {
@@ -37,7 +29,15 @@
                         )
                         @Html.ValidationMessageFor(m => m.Delegation)
 	                </div>
-                }
+                    }
+
+                    @if (Model.IsCollectingGivenDosage == true)
+                    {
+                        <div class="select">
+                            @Html.LabelFor(m => m.DosageScales)
+                            @Html.DropDownListFor(m => m.SelectedDosageScale, new SelectList(Model.DosageScales, "Value", "Text", Model.SelectedDosageScale), "Välj enhet ...", new { @class = "scale" })
+                        </div>
+                    }
 
                     @if (Model.Inventories != null)
                     {

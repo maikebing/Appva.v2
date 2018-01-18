@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -85,13 +86,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>Appva.Mcss.Admin.Models.DetailsSchedule.</returns>
         /// <inheritdoc />
         public override DetailsSchedule Handle(CreateSequenceForm message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             Requires.NotNull(schedule, "schedule");
             Taxon delegation = null;
-            if (message.Delegation.HasValue && ! message.Nurse)
+            if (message.Delegation.HasValue && !message.Nurse)
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
@@ -100,10 +106,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && message.SelectedDosageScale.IsNotEmpty())
             {
-                //// UNRESOLVED: Temporary solution
-                var unit = MedicationAdministration.Units.Where(x => x.Code == message.SelectedDosageScale).FirstOrDefault();
-                var customValues = new List<double>();
-                var administration = AdministrationFactory.CreateNew(sequence, unit, customValues);
+                var medic = this.settingsService.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts).Where(x => x.Id.ToString() == message.SelectedDosageScale).FirstOrDefault();
+                //// UNRESOLVED: Build a new factory that can handle both lists and formula.
+                var administration = AdministrationFactory.CreateNew(sequence, medic);
                 this.administrationService.Save(administration);
                 sequence.Administration = administration;
             }
@@ -113,17 +118,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.auditing.Create(
                 sequence.Patient,
                 "skapade {0} (REF: {1}) i {2} (REF: {3}).",
-                sequence.Name, 
-                sequence.Id, 
-                schedule.ScheduleSettings.Name, 
+                sequence.Name,
+                sequence.Id,
+                schedule.ScheduleSettings.Name,
                 sequence.Schedule.Id);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
             return new DetailsSchedule
-                {
-                    Id = message.Id,
-                    ScheduleId = message.ScheduleId
-                };
+            {
+                Id = message.Id,
+                ScheduleId = message.ScheduleId
+            };
         }
 
         #endregion

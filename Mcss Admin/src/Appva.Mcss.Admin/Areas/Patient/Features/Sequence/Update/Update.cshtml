@@ -11,14 +11,6 @@
                 @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
                 @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
 
-                @if (Model.IsCollectingGivenDosage == true)
-                {
-                    <div class="select">
-                        @Html.LabelFor(m => m.DosageScales)
-                        @Html.DropDownListFor(m => m.SelectedDosageScale, new SelectList(Model.DosageScales, "Value", "Text", Model.SelectedDosageScale), "Välj enhet ...", new { @class = "dosage" })
-                    </div>
-                }
-
                 @if (Model.Delegations.Count() > 0) { 
                     <div class="select">
                         @Html.LabelFor(m => m.Delegation)
@@ -31,6 +23,15 @@
                         @Html.ValidationMessageFor(m => m.Delegation)
 	                </div>
                 }
+
+                @if (Model.IsCollectingGivenDosage == true)
+                {
+                    <div class="select">
+                        @Html.LabelFor(m => m.DosageScales)
+                        @Html.DropDownListFor(m => m.SelectedDosageScale, new SelectList(Model.DosageScales, "Value", "Text", Model.SelectedDosageScale), "Välj enhet ...", new { @class = "dosage" })
+                    </div>
+                }
+
                 @if (Model.Inventories != null)
                 {
                     <div class="sequence-inventory">

@@ -20,18 +20,17 @@ namespace Appva.Mcss.Admin.Application.Common
             DoubleDecimal
         }
 
-        public static List<AdministrationAmountModel> Units()
+        public static List<AdministrationValueModel> Units()
         {
-            var grek = new List<AdministrationAmountModel>
+            return new List<AdministrationValueModel>
             {
-                new AdministrationAmountModel("Tabletter",  NonUnits.Tablets,        10, 0, 2, 0.25),
-                new AdministrationAmountModel("Deciliter",  VolumeUnits.Deciliter,   10, 0, 1, 0.5),
-                new AdministrationAmountModel("Centiliter", VolumeUnits.Centiliter,  50, 0, 1, 0.5),
-                new AdministrationAmountModel("Milliliter", VolumeUnits.Milliliter,  50, 0, 0, 1),
-                new AdministrationAmountModel("Gram",       MassUnits.Gram,          10, 0, 2, 0.25),
-                new AdministrationAmountModel("Milligram",  MassUnits.Milligram,    100, 0, 0, 5)
+                new AdministrationValueModel("Tabletter",     NonUnits.Tablets,    10, 0, 0.25, 2),
+                new AdministrationValueModel("Deciliter",  VolumeUnits.Deciliter,  10, 0, 0.50, 1),
+                new AdministrationValueModel("Centiliter", VolumeUnits.Centiliter, 50, 0, 0.50, 1),
+                new AdministrationValueModel("Milliliter", VolumeUnits.Milliliter, 50, 0, 1.00, 0),
+                new AdministrationValueModel("Gram",         MassUnits.Gram,       10, 0, 0.25, 2),
+                new AdministrationValueModel("Milligram",    MassUnits.Milligram, 100, 0, 5.00, 0)
             };
-            return grek;
         }
 
         public static double GetStepFromValueType(AdministrationAmountType customValueType)
@@ -39,7 +38,7 @@ namespace Appva.Mcss.Admin.Application.Common
             switch (customValueType)
             {
                 case AdministrationAmountType.Integer: return 1.00;
-                case AdministrationAmountType.Half: return 0.50;
+                case AdministrationAmountType.Half:    return 0.50;
                 case AdministrationAmountType.Quarter: return 0.25;
                 case AdministrationAmountType.Decimal: return 0.10;
                 case AdministrationAmountType.DoubleDecimal: return 0.01;
@@ -52,7 +51,7 @@ namespace Appva.Mcss.Admin.Application.Common
             switch (customValueType)
             {
                 case AdministrationAmountType.Integer: return 0;
-                case AdministrationAmountType.Half: return 1;
+                case AdministrationAmountType.Half:    return 1;
                 case AdministrationAmountType.Quarter: return 2;
                 case AdministrationAmountType.Decimal: return 1;
                 case AdministrationAmountType.DoubleDecimal: return 2;

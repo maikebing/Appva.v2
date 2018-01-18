@@ -262,7 +262,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <summary>
         /// The administration units with amounts/
         /// </summary>
-        public static readonly ApplicationSettingIdentity<List<AdministrationAmountModel>> AdministrationUnitsWithAmounts = ApplicationSettingIdentity<List<AdministrationAmountModel>>.CreateNew(
+        public static readonly ApplicationSettingIdentity<List<AdministrationValueModel>> AdministrationUnitsWithAmounts = ApplicationSettingIdentity<List<AdministrationValueModel>>.CreateNew(
             "MCSS.Core.Administration.Units",
             "The units available for an administration",
             "MCSS.Core.Administration",

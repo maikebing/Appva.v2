@@ -187,7 +187,6 @@
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Exception\NotUniqueException.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
-    <Compile Include="Models\AdministrationValueModel.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
@@ -248,7 +247,6 @@
     <Compile Include="Services\AdministrationService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
-    <Compile Include="Services\DosageObservationService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />

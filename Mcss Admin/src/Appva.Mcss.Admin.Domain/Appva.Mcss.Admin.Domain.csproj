@@ -135,6 +135,7 @@
     <Compile Include="Entities\Administration\AdministeredItem.cs" />
     <Compile Include="Entities\Administration\Administration.cs" />
     <Compile Include="Entities\Administration\AdministrationFactory.cs" />
+    <Compile Include="Entities\Administration\AdministrationValues.cs" />
     <Compile Include="Entities\Administration\MedicationAdministration.cs" />
     <Compile Include="Entities\Change.cs" />
     <Compile Include="Entities\ChangeSet.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="Entities\DashboardNotification.cs" />
     <Compile Include="Entities\Delegation.cs" />
     <Compile Include="Entities\Device.cs" />
-    <Compile Include="Entities\Observation\Dosage\DosageObservation.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
     <Compile Include="Entities\Inventory.cs" />
@@ -179,6 +179,7 @@
     <Compile Include="Entities\Signature\SignedData.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
     <Compile Include="Entities\Observation\TenaObservation.cs" />
+    <Compile Include="Models\AdministrationValueModel.cs" />
     <Compile Include="Models\DosageScaleModel.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />
@@ -187,7 +188,6 @@
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AdministrationRepository.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
-    <Compile Include="Repositories\DosageObservationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\ISignatureRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />

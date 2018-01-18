@@ -143,8 +143,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <summary>
         /// Gets the default amount lists for administration.
         /// </summary>
-        /// <returns>List of <see cref="AdministrationAmountModel"/>.</returns>
-        IList<AdministrationAmountModel> GetAdministrationAmountModelList();
+        /// <returns>List of <see cref="AdministrationValueModel"/>.</returns>
+        IList<AdministrationValueModel> GetAdministrationAmountModelList();
     }
 
     /// <summary>
@@ -633,14 +633,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         }
 
         /// <inheritdoc />
-        public IList<AdministrationAmountModel> GetAdministrationAmountModelList()
+        public IList<AdministrationValueModel> GetAdministrationAmountModelList()
         {
-            var units = this.Find<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts);
+            var units = this.Find(ApplicationSettings.AdministrationUnitsWithAmounts);
             var deprecatedUnitSettings = this.repository.FindByNamespace("MCSS.Core.Administration.Units");
 
             if(deprecatedUnitSettings.Count > 0)
             {
-                units = deprecatedUnitSettings.Select(x => new AdministrationAmountModel("Tabletter", NonUnits.Tablets, 10)).ToList();
+                units = deprecatedUnitSettings.Select(x => new AdministrationValueModel("Tabletter", NonUnits.Tablets, 10)).ToList();
                 //// Deactivates deprecated setting
                 //// TODO: Remove in comming releases
                 foreach (var d in deprecatedUnitSettings)
@@ -649,7 +649,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     this.repository.Save(d);
                 }
             }
-            this.Upsert<List<AdministrationAmountModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, units);
+            this.Upsert<List<AdministrationValueModel>>(ApplicationSettings.AdministrationUnitsWithAmounts, units);
             return units;
         }
 

@@ -23,7 +23,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The units.
         /// </summary>
-        public IList<InventoryAmountListModel> Units
+        public IList<InventoryAmountListModel> InventoryUnits
+        {
+            get;
+            set;
+        }
+
+        public IList<AdministrationAmountModel> AdministrationUnits
         {
             get;
             set;

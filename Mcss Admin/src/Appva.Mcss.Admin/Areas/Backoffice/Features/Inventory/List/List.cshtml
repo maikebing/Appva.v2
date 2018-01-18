@@ -7,6 +7,7 @@
 <div id="subheader" class="cf">
 	<h1>Enheter och Värden</h1>
     @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    @Html.ActionLink("Lägg till enhet", "Create", "Administration", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
@@ -23,21 +24,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var unit in Model.Units)
+                    @foreach (var unit in Model.InventoryUnits)
                     {
                         <tr>
                             <td class="edit">
                                 @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                @if (@unit.Feature != InventoryDefaults.Feature.measurement)
-                                {
-                                    @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
-                                }
+                                @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
                             <td>@unit.Name</td>
-                            <td>@unit.Feature</td>
+                            <td>@(unit.Feature != InventoryDefaults.Feature.none ? Html.Raw(unit.Feature.ToString()) : Html.Raw("&mdash;"))</td>
                             <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
+                            <td>@Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")</td>
+                        </tr>
+                    }
+
+                    @foreach (var unit in Model.AdministrationUnits)
+                    {
+                        <tr>
+                            <td class="edit">
+                                @Html.ActionLink("Ändra", "Update", "Administration", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                                @Html.ActionLink("Ta bort", "Delete", "Administration", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+
+                            </td>
+                            <td>@unit.Name</td>
+                            <td>MedicationAdministration</td>
+                            <td>@unit.Unit.Code</td>
                             <td>
-                                @Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")
+                                @if (unit.SpecificValues == null || unit.SpecificValues.Count() == 0)
+                                {
+                                    <span>Max: @unit.Max, Min: @unit.Min, Step: @unit.Step, Fractions: @unit.Fractions</span>
+                                }
+                                else
+                                {
+                                    @Html.Serialize(unit.SpecificValues).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")
+                                }
                             </td>
                         </tr>
                     }
@@ -46,3 +66,13 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+

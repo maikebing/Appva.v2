@@ -65,21 +65,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
-
-            var dosageQuery = this.persistence.QueryOver<DosageObservation>()
-                   .Where(x => x.IsActive == true)
-                     .And(x => x.Scale != null) // string.IsNullOrEmpty(x.Scale)
-                    .List();
-
-            foreach (var row in dosageQuery)
-            {
-                var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.Scale);
-                if (setting.Id == scale.Id)
-                {
-                    row.Update(JsonConvert.SerializeObject(setting));
-                    this.persistence.Save<DosageObservation>(row);
-                }
-            }
             return new Parameterless<ListInventoriesModel>();
         }
 

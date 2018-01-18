@@ -45,7 +45,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             return new ListInventoriesModel
             {
-                Units = this.settings.GetIventoryAmountLists()
+                InventoryUnits = this.settings.GetIventoryAmountLists(),
+                AdministrationUnits = this.settings.GetAdministrationAmountModelList()
             };
         }
     }

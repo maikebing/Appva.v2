@@ -528,7 +528,6 @@
     <many-to-one name="Inventory"  class="Inventory" />
     <many-to-one name="Observation"  class="Observation" />
     <many-to-one name="Administration" class="Administration" />
-
     <component name="RefillInfo" class="RefillModel">
       <property name="Refill" />
       <property name="RefillOrderedDate" />
@@ -551,7 +550,6 @@
     <property name="UpdatedAt"     column="Modified"                />
     <property name="Name"                                           />
     <property name="Description"                                    />
-    <property name="Scale"         column="scale" type="StringClob" />
     <many-to-one name="Patient"    class="Patient"                  />
     <many-to-one name="Delegation" class="Taxon"                    />
     <bag name="Items" cascade="save-update" inverse="true">
@@ -565,7 +563,6 @@
     <subclass name="BodyWeightObservation"        discriminator-value="WeightObservation">      </subclass>
     <subclass name="BristolStoolScaleObservation" discriminator-value="BristolObservation">     </subclass>
     <subclass name="FecesObservation"             discriminator-value="FecesObservation">       </subclass>
-    <subclass name="DosageObservation"            discriminator-value="DosageObservation">      </subclass>
     <subclass name="TenaObservation"              discriminator-value="TenaObservationPeriod">
       <property name="StartDate" />
       <property name="EndDate" />
@@ -766,22 +763,30 @@
     <property name="Version" />
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
-    <property name="UpdatedAt" column="Modified" />
-    
+    <property name="UpdatedAt" column="Modified" />    
     <property name="Name" />
-    <property name="Unit" type="UnitOfMeasurement">
-      <column name="Unit" />
-    </property>
-    <property name="MaxValue" />
-    <property name="MinValue" />
-    <property name="Step" />
-    <property name="Fractions" />
-    <property name="SpecificValues" column="CustomValues" type="StringClob" />
+    <component name="CustomValues" class="AdministrationValues">
+      <property name="ValueId" />
+      <property name="Unit" type="UnitOfMeasurement">
+        <column name="Unit" />
+      </property>
+      <component name ="SpecificValues" class="CustomList">
+        <property name ="Values" type="StringClob">
+          <column name="CustomValues" sql-type="NVARCHAR(MAX)" />
+        </property>          
+      </component>
+      <component name="CustomFormula" class="CustomFormula">
+        <property name="Max" column="MaxValue" />
+        <property name="Min" column="MinValue" />
+        <property name="Step" />
+        <property name="Fractions" />
+      </component>
+    </component>
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Sequence" class="Sequence" />    
     <subclass name="MedicationAdministration" discriminator-value="MedicationAdministration"></subclass>
   </class>
-  
+
   <!-- Administered Item -->
   <class name="AdministeredItem">
     <id name="Id">
@@ -803,3 +808,5 @@
     <many-to-one name="Comment"   class="Comment"                         />
   </class>
 </hibernate-mapping>
+
+

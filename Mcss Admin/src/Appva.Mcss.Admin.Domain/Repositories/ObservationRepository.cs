@@ -58,7 +58,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             return this.Context.QueryOver<Observation>()
                 .Where(x => x.IsActive)
                   .And(x => x.Patient.Id == patientId)
-                  .And(Restrictions.Not(Restrictions.Eq("class", typeof(DosageObservation))))
                   .And(Restrictions.Not(Restrictions.Eq("class", typeof(TenaObservation))))
                 .List();
         }

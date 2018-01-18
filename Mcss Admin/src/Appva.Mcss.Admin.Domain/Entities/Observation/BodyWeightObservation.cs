@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The description.</param>
         /// <param name="delegation">The delegation.</param>
         public BodyWeightObservation(Patient patient, string name, string description, Taxon delegation = null)
-            : base(patient, name, description, null, delegation)
+            : base(patient, name, description, delegation)
         {
         }
 

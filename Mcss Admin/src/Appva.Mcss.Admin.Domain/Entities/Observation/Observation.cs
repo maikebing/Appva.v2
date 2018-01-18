@@ -26,9 +26,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="patient">The patient which the observation is made for.</param>
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
-        /// <param name="scale">The scale used in the observation.</param>
         /// <param name="delegation">Optional delegation.</param>
-        protected internal Observation(Patient patient, string name, string description, object scale, Taxon delegation = null) 
+        protected internal Observation(Patient patient, string name, string description, Taxon delegation = null) 
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
@@ -37,11 +36,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Name        = name;
             this.Description = description;
             this.Delegation  = delegation;
-            this.Scale       = scale == null ? null : JsonConvert.SerializeObject(scale);
-            //// UNRESOLVED: custom scale only used by DosageObservation
-            //// rename scale to something like valid values, overridden scale of values etc. <-- 
-            //// add unit (a list of ok units) to observation
-            //// create an nhibernate type for above list.
         }
 
         /// <summary>
@@ -89,16 +83,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// The delegation.
         /// </summary>
         public virtual Taxon Delegation
-        {
-            get;
-            protected internal set;
-        }
-
-        /// <summary>
-        /// The scale
-        /// TODO: Break out to a new entity : IUnit
-        /// </summary>
-        public virtual string Scale
         {
             get;
             protected internal set;

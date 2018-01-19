@@ -1,41 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Application.Services.Settings;
-using Appva.Mcss.Admin.Domain.Entities;
-
+﻿// <copyright file="CreateAdministrationHandler.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
+    using System.Linq;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
+    /// <summary>
+    /// The create administration handler.
+    /// </summary>
     internal sealed class CreateAdministrationHandler : RequestHandler<CreateAdministration, CreateAdministrationModel>
     {
-        #region Variables.
-
-        private readonly IReadOnlyList<UnitOfMeasurement> Units = new List<UnitOfMeasurement>
-        {
-            MassUnits.Kilogram,
-            MassUnits.Hektogram,
-            MassUnits.Gram,
-            MassUnits.Milligram,
-            VolumeUnits.Liter,
-            VolumeUnits.Deciliter,
-            VolumeUnits.Centiliter,
-            VolumeUnits.Milliliter,
-            NonUnits.Tablets
-        };
-
-        #endregion
-
         #region Constructors.
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateAdministrationHandler"/> class.
+        /// </summary>
         public CreateAdministrationHandler()
         {
         }
@@ -44,10 +33,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <inheritdoc />
         public override CreateAdministrationModel Handle(CreateAdministration message)
         {
-            var model = new CreateAdministrationModel();
-            return model;
+            return new CreateAdministrationModel
+            {
+                UnitSelectList = AdministrationValueModel.Units.Select(x => new SelectListItem { Text = x.Name, Value = x.Code }).ToList()
+            };
         }
 
         #endregion

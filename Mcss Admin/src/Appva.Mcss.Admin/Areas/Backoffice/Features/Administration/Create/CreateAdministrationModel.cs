@@ -1,37 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Infrastructure.Models;
-
-namespace Appva.Mcss.Admin.Areas.Backoffice.Models
+﻿namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
+    #region Imports.
+
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+
+    #endregion
+
     public class CreateAdministrationModel : IRequest<Parameterless<ListInventoriesModel>>
     {
-        #region Variables.
-
-        private readonly IReadOnlyList<UnitOfMeasurement> Units = new List<UnitOfMeasurement>
-        {
-            MassUnits.Kilogram,
-            MassUnits.Hektogram,
-            MassUnits.Gram,
-            MassUnits.Milligram,
-            VolumeUnits.Liter,
-            VolumeUnits.Deciliter,
-            VolumeUnits.Centiliter,
-            VolumeUnits.Milliliter,
-            NonUnits.Tablets
-        };
-
-        #endregion
-
         public CreateAdministrationModel()
         {
-            this.UnitSelectList = Units.Select(x => new SelectListItem { Text = x.Name, Value = x.Code }).ToList();
         }
 
         public string Name
@@ -77,6 +58,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         public int? Fractions
+        {
+            get;
+            set;
+        }
+
+        public bool IsCustomList
         {
             get;
             set;

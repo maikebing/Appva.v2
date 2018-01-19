@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Appva.Core.Extensions;
 using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
 using Appva.Mcss.Admin.Application.Models;
 using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mcss.Admin.Infrastructure.Models;
@@ -71,24 +68,42 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public IEnumerable<SelectListItem> UnitSelectList
+        {
+            get;
+            set;
+        }
+
+        public string SelectedUnit
+        {
+            get;
+            set;
+        }
+
+        public bool IsCustomList
+        {
+            get;
+            set;
+        }
+
         public static UpdateAdministrationModel New(AdministrationValueModel model)
         {
             var retval = new UpdateAdministrationModel();
             retval.Id = model.Id;
             retval.Name = model.Name;
             retval.Unit = model.CustomValues.Unit;
-
+            retval.UnitSelectList = AdministrationValueModel.Units.Select(x => new SelectListItem { Text = x.Name, Value = x.Code, Selected = x.Code == model.CustomValues.Unit.Code });
             if (model.CustomValues.SpecificValues != null)
             {
+                retval.IsCustomList = true;
                 retval.SpecificValues = JsonConvert.SerializeObject(model.CustomValues.SpecificValues.Values).Replace("[", "").Replace("]", "");
+                return retval;
             }
-            else
-            {
-                retval.Max = model.CustomValues.CustomFormula.Max;
-                retval.Min = model.CustomValues.CustomFormula.Min;
-                retval.Step = model.CustomValues.CustomFormula.Step;
-                retval.Fractions = model.CustomValues.CustomFormula.Fractions;
-            }
+            retval.IsCustomList = false;
+            retval.Max = model.CustomValues.CustomFormula.Max;
+            retval.Min = model.CustomValues.CustomFormula.Min;
+            retval.Step = model.CustomValues.CustomFormula.Step;
+            retval.Fractions = model.CustomValues.CustomFormula.Fractions;
             return retval;
         }
     }

@@ -1,13 +1,15 @@
 ﻿// <copyright file="Administration.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain;
     using Validation;
@@ -37,7 +39,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Patient = sequence.Patient;
             this.Name = valueModel.Name;
             this.CustomValues = valueModel.CustomValues;
-            this.CustomValues.ValueId = valueModel.Id;
+            this.ValueId = valueModel.Id;
         }
 
         /// <summary>
@@ -75,13 +77,22 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Gets or sets the sequence.
+        /// The <see cref="Sequence"/>.
         /// </summary>
-        /// <value>The sequence.</value>
         public virtual Sequence Sequence
         {
             get;
             protected internal set;
+        }
+
+        /// <summary>
+        /// The value identifier.
+        /// </summary>
+        /// <remarks>The value identifier refers to the Id of AdministrationValueModel.</remarks>
+        public virtual Guid ValueId
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -94,9 +105,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Gets or sets the administered items.
+        /// The administered items.
         /// </summary>
-        /// <value>The administered items.</value>
         public virtual IList<AdministeredItem> AdministeredItems
         {
             get;
@@ -120,6 +130,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Public Methods.
 
         /// <summary>
+        /// Updates the administration with a new value model.
+        /// </summary>
+        /// <param name="model">The <see cref="AdministrationValueModel"/>.</param>
+        public virtual void Update(AdministrationValueModel model)
+        {
+            Requires.NotNull(model, "model");
+            this.Name = model.Name;
+            this.ValueId = model.Id;
+            this.CustomValues = model.CustomValues;
+        }
+
+        /// <summary>
         /// Administers the specified Administration.
         /// </summary>
         /// <param name="who">The <see cref="Account"/>.</param>
@@ -139,7 +161,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="task">The <see cref="Task"/>.</param>
         /// <param name="value">The <see cref="ArbitraryValue"/>.</param>
         /// <returns><see cref="AdministeredItem"/>.</returns>
-        protected virtual AdministeredItem AddItem(Account who, Task task, ArbitraryValue value)
+        public virtual AdministeredItem AddItem(Account who, Task task, ArbitraryValue value)
         {
             Requires.NotNull(who, "who");
             Requires.NotNull(task, "task");

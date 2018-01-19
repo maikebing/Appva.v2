@@ -1,27 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Appva.Core.Extensions;
-using Appva.Mcss.Admin.Domain.Entities;
-using Newtonsoft.Json;
-using Validation;
-
+﻿// <copyright file="AdministrationValueModel.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    #region Imports.
+
+    using System;
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Newtonsoft.Json;
+    using Validation;
+
+    #endregion
+
     [JsonObject]
     public sealed class AdministrationValueModel
     {
+        #region Variables.
+
+        /// <summary>
+        /// The list of units available.
+        /// </summary>
+        public static readonly IReadOnlyList<UnitOfMeasurement> Units = new List<UnitOfMeasurement>
+        {
+            MassUnits.Kilogram,
+            MassUnits.Hektogram,
+            MassUnits.Gram,
+            MassUnits.Milligram,
+            VolumeUnits.Liter,
+            VolumeUnits.Deciliter,
+            VolumeUnits.Centiliter,
+            VolumeUnits.Milliliter,
+            NonUnits.Tablets
+        };
+
+        #endregion
+
         #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdministrationValueModel"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="unit"></param>
-        /// <param name="max"></param>
-        /// <param name="min"></param>
-        /// <param name="step"></param>
-        /// <param name="fractions"></param>
+        /// <param name="name">The name.</param>
+        /// <param name="unit">The <see cref="UnitOfMeasurement"/>.</param>
+        /// <param name="max">The maximum value.</param>
+        /// <param name="min">The minimum value.</param>
+        /// <param name="step">The step/increment.</param>
+        /// <param name="fractions">The number of fractions.</param>
         public AdministrationValueModel(string name, UnitOfMeasurement unit, double max, double min = 0, double step = 1, int fractions = 0)
         {
             Requires.NotNullOrWhiteSpace(name, "name");
@@ -29,7 +57,7 @@ namespace Appva.Mcss.Admin.Application.Models
             Requires.ValidState(max >= 0, "max");
             Requires.ValidState(min >= 0 && min <= max, "min");
             Requires.ValidState(fractions <= 2, "decimals");
-            Requires.ValidState(step >= 0.01, "step");
+            Requires.ValidState(Math.Round(step,2) >= 0.01, "step");
             this.Id = Guid.NewGuid();
             this.Name = name;
             this.CustomValues = new AdministrationValues(unit, max, min, step, fractions);
@@ -66,6 +94,9 @@ namespace Appva.Mcss.Admin.Application.Models
 
         #region Properties.
 
+        /// <summary>
+        /// The identifier
+        /// </summary>
         [JsonProperty("Id")]
         public Guid Id
         {
@@ -73,6 +104,9 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
+        /// <summary>
+        /// The visible name
+        /// </summary>
         [JsonProperty("Name")]
         public string Name
         {
@@ -97,35 +131,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// Updates the AdministrationValueModel.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="max"></param>
-        /// <param name="min"></param>
-        /// <param name="step"></param>
-        /// <param name="fractions"></param>
-        /// <param name="unit"></param>
-        public void Update(string name, double max, double min = 0, double step = 1, int fractions = 0, UnitOfMeasurement unit = null)
-        {
-            this.Name = name;
-            this.CustomValues.Update(max, min, step, fractions, unit);
-        }
-
-        /// <summary>
-        /// Updates the AdministrationValueModel.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="specificValues"></param>
-        /// <param name="unit"></param>
-        public void Update(string name, IList<double> specificValues, UnitOfMeasurement unit = null)
-        {
-            this.Name = name;
-            this.CustomValues.Update(specificValues, unit);
-        }
-
-        /// <summary>
-        /// Updates the AdministrationValueModel.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="customValues"></param>
+        /// <param name="name">The name.</param>
+        /// <param name="customValues">The <see cref="AdministrationValues"/>.</param>
         public void Update(string name, AdministrationValues customValues)
         {
             this.Name = name;

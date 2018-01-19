@@ -696,11 +696,8 @@
       <key column="Task" />
       <one-to-many class="InventoryTransactionItem" />
     </bag>
-    <bag name="TaskObservationItems" cascade="save-update">
       <key column="Task" />
-      <one-to-many class="ObservationItem" />
     </bag>
-
   </class>
 
   <!-- Inventory -->
@@ -765,8 +762,8 @@
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />    
     <property name="Name" />
-    <component name="CustomValues" class="AdministrationValues">
-      <property name="ValueId" />
+    <property name="ValueId" />
+    <component name="CustomValues" class="AdministrationValues">      
       <property name="Unit" type="UnitOfMeasurement">
         <column name="Unit" />
       </property>

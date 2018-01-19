@@ -6,13 +6,16 @@
 @Html.Partial("_BackofficeMenuPartial")
 <div id="subheader" class="cf">
 	<h1>Enheter och Värden</h1>
-    @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
-    @Html.ActionLink("Lägg till enhet", "Create", "Administration", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist">
-            @Html.Alert()
+            <div class="h cf">
+                <h2 class="list-header">Inventory</h2>
+                @Html.Alert()
+                @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+            </div>
+
             <table id="signed-events">
                 <thead class="head">
                     <tr>
@@ -36,8 +39,25 @@
                             <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
                             <td>@Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")</td>
                         </tr>
-                    }
-
+                     }
+                </tbody>
+            </table>
+        </div>
+        <div id="signlist">
+            <div class="h cf">
+                <h2 class="list-header">Administration</h2>
+                @Html.ActionLink("Lägg till enhet", "Create", "Administration", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+            </div>            
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Namn</th>
+                        <th>Enhet</th>
+                        <th>Värden</th>
+                    </tr>
+                </thead>
+                <tbody>                    
                     @foreach (var unit in Model.AdministrationUnits)
                     {
                         <tr>
@@ -47,7 +67,6 @@
 
                             </td>
                             <td>@unit.Name</td>
-                            <td>MedicationAdministration</td>
                             <td>@unit.CustomValues.Unit.Code</td>
                             <td>
                                 @if (unit.CustomValues.SpecificValues != null)
@@ -64,8 +83,12 @@
                 </tbody>
             </table>
         </div>
+
+
+
     </div>
 </div>
+
 
 
 

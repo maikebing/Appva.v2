@@ -2,31 +2,37 @@
 @{
     SetTitle("Ny enhet");
 }
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="CreateAdministration">
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AdministrationValueCreate">
     @using (Html.Post())
     {
         <h3 class="section-title">Ny enhet</h3>
         @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
-        @Html.DropDownListFor(x => x.SelectedUnit, Model.UnitSelectList, Model.SelectedUnit)
-
-        <p>
-            <b>OBS!</b> Lämna dessa tomma om ruta med värden skall fyllas i.
-        </p>
-        
-        @Html.FormGroup(x => x.Max, "text large").Label().TextBox().Validate().Build()
-        @Html.FormGroup(x => x.Min, "text large").Label().TextBox().Validate().Build()
-        @Html.FormGroup(x => x.Step, "text large").Label().TextBox().Validate().Build()
-        @Html.FormGroup(x => x.Fractions, "text large").Label().TextBox().Validate().Build()
-
-
-        <p>
-            <b>OBS!</b> Lämnas tom om ovantående är ifyllt.
-        </p>
-        @Html.FormGroup(x => x.SpecificValues, "text large").Label().TextArea().Validate().Build()
-
-        <p>
-            <b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','
-        </p>
+        <div class="select">
+            @Html.DropDownListFor(x => x.SelectedUnit, Model.UnitSelectList, Model.SelectedUnit)
+        </div>
+        <div class="form-section wide-section col">
+            <h2 class="section-title">Ange typ av värde.</h2>
+            <div class="toggle-group row cf">
+                <div class="radio col">
+                    @Html.RadioButtonFor(m => m.IsCustomList, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
+                    <label for="activity-type-1">Formula</label>
+                </div>
+                <div class="radio col">
+                    @Html.RadioButtonFor(m => m.IsCustomList, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
+                    <label for="activity-type-2">Lista</label>
+                </div>
+            </div>
+            <div class="toggle-target toggle-target-1 toggle-in-need-based">
+                @Html.FormGroup(x => x.Max, "text large").Label().TextBox().Validate().Build()
+                @Html.FormGroup(x => x.Min, "text large").Label().TextBox().Validate().Build()
+                @Html.FormGroup(x => x.Step, "text large").Label().TextBox().Validate().Build()
+                @Html.FormGroup(x => x.Fractions, "text large").Label().TextBox().Validate().Build()
+            </div>
+            <div class="toggle-target toggle-target-2 toggle-in-need-based">
+                @Html.FormGroup(x => x.SpecificValues, "text large").Label().TextArea("0.5, 1, 1.5, 2", new { @style = "resize: none; width: 100%", @rows = "5" }).Validate().Build()
+                <p><b>OBS!</b> Decimaler skrivs med punkt '.' och tal separeras med komma-tecken ','</p>
+            </div>
+        </div>
         <div class="submit">
             @Html.Submit("Spara")
         </div>

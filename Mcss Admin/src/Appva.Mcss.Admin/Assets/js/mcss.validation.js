@@ -163,7 +163,139 @@ mcss.validation = {
 	            form.submit();
             }
         });
-	},
+    },
+
+    AdministrationValueCreate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required',
+                'Max': {
+                    'min': 0.01,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Min': {
+                    'min': 0,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Step': {
+                    'min': 0.01,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Fractions': {
+                    'min': 0,
+                    'max': 2,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'SpecificValues': {
+                    'required': function () {
+                        return $('#activity-type-2:checked').length > 0;
+                    }
+                }
+            },
+            'messages': {
+                'Name': 'Namn måste fyllas i.',
+                'SelectedUnit': 'En enhet måste vara vald.',
+                'Max': {
+                    'min': 'Måste vara ett värde större än 0.01.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Max värde måste fyllas i.',
+                },
+                'Min': {
+                    'min': 'Måste vara ett värde större än 0.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Min värde måste fyllas i.',
+                },
+                'Step': {
+                    'min': 'Måste vara ett värde större än 0.01.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Step värde måste fyllas i.',
+                },
+                'Fractions': {
+                    'min': 'Måste vara ett värde större än 0.',
+                    'max': 'Får inte vara ett värde större än 2.',
+                    'required': 'Fractions värde måste fyllas i.',
+                },
+                'SpecificValues': 'Kan inte vara tom och får enbart innehålla tal med punkt som decimal och separerade med kommatecken.'
+            }
+        });
+    },
+    AdministrationValueUpdate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required',
+                'Max': {
+                    'min': 0.01,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Min': {
+                    'min': 0,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Step': {
+                    'min': 0.01,
+                    'max': 99999,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'Fractions': {
+                    'min': 0,
+                    'max': 2,
+                    'required': function () {
+                        return $('#activity-type-1:checked').length > 0;
+                    }
+                },
+                'SpecificValues': {
+                    'required': function () {
+                        return $('#activity-type-2:checked').length > 0;
+                    }
+                }
+            },
+            'messages': {
+                'Name': 'Namn måste fyllas i.',
+                'SelectedUnit': 'En enhet måste vara vald.',
+                'Max': {
+                    'min': 'Måste vara ett värde större än 0.01.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Max värde måste fyllas i.',
+                },                
+                'Min': {
+                    'min': 'Måste vara ett värde större än 0.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Min värde måste fyllas i.',
+                }, 
+                'Step': {
+                    'min': 'Måste vara ett värde större än 0.01.',
+                    'max': 'Får inte vara ett värde större än 99999.',
+                    'required': 'Step värde måste fyllas i.',
+                }, 
+                'Fractions': {
+                    'min': 'Måste vara ett värde större än 0.',
+                    'max': 'Får inte vara ett värde större än 2.',
+                    'required': 'Fractions värde måste fyllas i.',
+                }, 
+                'SpecificValues': 'Kan inte vara tom och får enbart innehålla tal med punkt som decimal och separerade med kommatecken.'
+            }
+        });
+    },
+
 	SequenceCreate : function(params) {
         $('.checkbox > input[type="checkbox"]').click(function () {
             $('#TestTimes').valid();

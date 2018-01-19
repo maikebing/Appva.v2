@@ -123,7 +123,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
             if (updateSequenceForm.IsCollectingGivenDosage == true)
             {
-                var selectedDosageScale = sequence.Administration != null ? sequence.Administration.CustomValues.ValueId.ToString() : null;
+                var selectedDosageScale = sequence.Administration != null ? sequence.Administration.ValueId.ToString() : null;
                 var administrationValues = this.settingsService.Find(ApplicationSettings.AdministrationUnitsWithAmounts).Select(x => new SelectListItem { Text = x.ToLongString(), Value = x.Id.ToString(), Selected = x.Id.ToString() == selectedDosageScale });
                 updateSequenceForm.DosageScales = administrationValues;
                 updateSequenceForm.SelectedDosageScale = selectedDosageScale;

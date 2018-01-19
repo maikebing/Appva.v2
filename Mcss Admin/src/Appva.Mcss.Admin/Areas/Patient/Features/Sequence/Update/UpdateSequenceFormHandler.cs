@@ -128,7 +128,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 sequence.Administration = administration;
                 return;
             }
-            sequence.Administration.CustomValues.Update(valueModel);
+            sequence.Administration.Update(valueModel);
             this.administrationService.Save(sequence.Administration);
         }
 

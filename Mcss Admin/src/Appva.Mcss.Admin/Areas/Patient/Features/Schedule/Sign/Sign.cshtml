@@ -314,25 +314,11 @@
                                     @if  (Model.Schedule.IsCollectingGivenDosage == true)
                                     {
                                         <td>
-                                            @if (task.IsCompleted && task.StatusTaxon.IsNotNull() && task.TaskObservationItems.Count > 0)
+                                            @if (task.IsCompleted && task.StatusTaxon.IsNotNull() && task.AdministeredItems != null && task.AdministeredItems.IsNotEmpty())
                                             {
                                                 if (task.StatusTaxon.Description.Equals("1") || task.StatusTaxon.Description.Equals("2") || task.StatusTaxon.Description.Equals("5"))
                                                 {
-                                                    @String.Format("{0} {1}", task.TaskObservationItems.FirstOrDefault().Measurement.Value, Json.Decode<DosageScaleModel>(task.TaskObservationItems.FirstOrDefault().Observation.Scale).Unit)
-                                                }
-                                            }
-                                        </td>
-                                    }
-
-                                    <!-- Temporary statement for display purposes only, using mocked data -->
-                                    @if (Model.Schedule.IsCollectingGivenDosage == false)
-                                    {
-                                        <td>
-                                            @if (task.IsCompleted && task.StatusTaxon.IsNotNull())
-                                            {
-                                                if (task.StatusTaxon.Description.Equals("1") || task.StatusTaxon.Description.Equals("2") || task.StatusTaxon.Description.Equals("5"))
-                                                {
-                                                    @String.Format("{0} {1}", "2", "st")
+                                                    @String.Format("{0} {1}", task.AdministeredItems.FirstOrDefault().Value.Value, task.AdministeredItems.FirstOrDefault().Value.Unit.Code)
                                                 }
                                             }
                                         </td>

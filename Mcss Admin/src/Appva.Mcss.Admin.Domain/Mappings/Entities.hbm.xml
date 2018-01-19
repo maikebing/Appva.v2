@@ -696,7 +696,9 @@
       <key column="Task" />
       <one-to-many class="InventoryTransactionItem" />
     </bag>
+    <bag name="AdministeredItems" cascade="save-update">
       <key column="Task" />
+      <one-to-many class="AdministeredItem" />
     </bag>
   </class>
 

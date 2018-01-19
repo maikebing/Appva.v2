@@ -39,29 +39,37 @@ namespace Appva.Mcss.Admin.Domain.Entities
             return new Sequence();
         }
 
-        public Sequence(Schedule schedule, string name, string description, Repeat repeat, 
-            Taxon taxon = null, Role role = null, Inventory inventory = null, Refillable refillModel = null,
-            bool overview = false, bool canRaiseAlert = false, bool pauseAnyAlerts = false, bool absent = false, 
+        public Sequence(
+            Schedule schedule, 
+            string name, 
+            string description, 
+            Repeat repeat, 
+            Taxon taxon = null, 
+            Role role = null, 
+            Inventory inventory = null, 
+            Refillable refillable = null,
+            bool overview = false, 
+            bool canRaiseAlert = false, 
+            bool pauseAnyAlerts = false, 
+            bool absent = false, 
             bool reminder = false)
         {
-            Requires.NotNull(schedule, "schedule");
-            Requires.NotNullOrEmpty(name, "name");
-            Requires.NotNull(repeat, "repeat");
-
-            this.Schedule = schedule;
-            this.Patient  = schedule.Patient;
-            this.Name = name;
-            this.Description = description;
-            this.Repeat = repeat;
-            this.Taxon = taxon;
-            this.Role = role;
-            this.Inventory = inventory;
-            this.RefillInfo = refillModel;
-            this.Overview = overview;
-            this.CanRaiseAlert = canRaiseAlert;
+            Requires.NotNull(schedule,   "schedule");
+            Requires.NotNull(repeat,       "repeat");
+            Requires.NotNullOrEmpty(name,    "name");
+            this.Schedule       = schedule;
+            this.Patient        = schedule.Patient;
+            this.Name           = name;
+            this.Description    = description;
+            this.Repeat         = repeat;
+            this.Taxon          = taxon;
+            this.Role           = role;
+            this.Inventory      = inventory;
+            this.RefillInfo     = refillable;
+            this.Overview       = overview;
+            this.CanRaiseAlert  = canRaiseAlert;
             this.PauseAnyAlerts = pauseAnyAlerts;
-            this.Absent = absent;
-            ///this.Reminder = reminder;
+            this.Absent         = absent;
             if (Log.IsTraceEnabled())
             {
                 Log.Trace("Initialized a new instance of sequence with id: {0}, name: {1}", this.Id, this.Name);
@@ -222,43 +230,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        ///// <summary>
-        ///// If a reminder should be e.g. e-mailed to the <see cref="ReminderRecipient"/>.
-        ///// </summary>
-        //public virtual bool Reminder
-        //{
-        //    get;
-        //    set;
-        //}
-
-        ///// <summary>
-        ///// Minutes before <see cref="RangeInMinutesBefore"/> a reminder will be sent.
-        ///// </summary>
-        //public virtual int ReminderInMinutesBefore
-        //{
-        //    get;
-        //    set;
-        //}
-
-        ///// <summary>
-        ///// Recipient of a reminder.
-        ///// </summary>
-        //public virtual Account ReminderRecipient // Questions raised around this property
-        //{
-        //    get;
-        //    set;
-        //}
-
-        ///// <summary>
-        ///// When the last reminder was sent out.
-        ///// </summary>
-        ///// <remarks>The sequence scheduled date</remarks>
-        //private DateTime? LastReminderSent // No references
-        //{
-        //    get;
-        //    set;
-        //}
-        
         #endregion
 
         #region ILifecycle Members.

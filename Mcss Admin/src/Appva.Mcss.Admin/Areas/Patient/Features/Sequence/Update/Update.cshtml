@@ -17,6 +17,7 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div class="section section--hspace section--vspace section--bluetone">
     <h2>Lägg till insats</h2>
+    @Html.ValidationSummary()
 	<div>
         @(Html.Post<SequenceController>("Update").Autocomplete(false).Content(
             @<text>
@@ -167,21 +168,22 @@
                             <div class="grid grid--align-bottom">
 	                            <div data-size="xs:24 s:10 m:8 l:12 xl:8">
 		                            <div class="form-controls date-picker">
-                                        @(Html.Text(x => x.Dates)
-                                              .Label(Html.Label(x => x.Dates, "Datum att lägga till"))
-                                              .Class("datepicker")
-                                              .Data("datepicker-limit", "future")
-                                              .Data("datepicker-selected-dates", "["+ string.Join(",", Model.Dates) +"]") /* the array of selected dates, ['2025-01-01'] */
-                                              .Data("input-value-list", "id-choose-date-value-list-panel")
-                                              .Data("input-value-list-button", "id-chosen-date-button")
-                                              .Autocomplete(false)
-                                        )
-                                        @Html.Hidden().Data("soft-post", "Dates")
+                                        <label for="AddNewDate">Datum att lägga till</label>
+                                        <input id ="AddNewDate" 
+                                               name="AddNewDate"
+                                               type="text" 
+                                               class="datepicker" 
+                                               data-datepicker-limit="future" 
+                                               data-datepicker-selected-dates='["@string.Join("\",\"", Model.Dates ?? new List<Appva.Domain.Date>())"]' 
+                                               data-input-value-list="id-choose-date-value-list-panel" 
+                                               data-input-value-list-button="id-chosen-date-button" 
+                                               autocomplete="off" />
+                                        @Html.Hidden().Data("soft-post", "AddNewDate")
 		                            </div>
 	                            </div>
 	                            <div data-size="xs:24 s:10 m:8 l:10 xl:8">
 		                            <div class="form-controls">
-                                        <button id="id-chosen-date-button" class="button" type="submit" data-soft-post="Dates">
+                                        <button id="id-chosen-date-button" class="button" type="submit" data-soft-post="AddNewDate">
 				                            <svg class="icon icon--mr" aria-hidden="true">
                                                 <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
                                             </svg>Lägg till

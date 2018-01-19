@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Application.Pdf.Prescriptions
         /// <param name="time">The scheduled time</param>
         /// <param name="days">The scheduled days</param>
         /// <param name="symbols">The symbols</param>
-        public Prescription(string name, References reference, DateTimeOffset? time, IList<int> days = null, IDictionary<int, string> symbols = null)
+        public Prescription(string name, References reference, Appva.Domain.TimeOfDay? time, IList<int> days = null, IDictionary<int, string> symbols = null)
         {
             this.Name      = name;
             this.Reference = reference;
@@ -62,7 +62,7 @@ namespace Appva.Mcss.Admin.Application.Pdf.Prescriptions
         /// <summary>
         /// Returns the date time offset.
         /// </summary>
-        public DateTimeOffset? Time
+        public Appva.Domain.TimeOfDay? Time
         {
             get;
             private set;
@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Application.Pdf.Prescriptions
         /// <param name="days">The scheduled days</param>
         /// <param name="symbols">The symbols</param>
         /// <returns>A new <see cref="Prescription"/> instance</returns>
-        public static Prescription CreateNew(string name, References reference, DateTimeOffset? time, IList<int> days = null, IDictionary<int, string> symbols = null)
+        public static Prescription CreateNew(string name, References reference, Appva.Domain.TimeOfDay? time, IList<int> days = null, IDictionary<int, string> symbols = null)
         {
             return new Prescription(name, reference, time, days, symbols);
         }

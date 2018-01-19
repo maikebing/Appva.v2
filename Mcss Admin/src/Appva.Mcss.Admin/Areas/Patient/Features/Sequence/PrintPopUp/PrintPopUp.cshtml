@@ -1,10 +1,12 @@
 ﻿@model Appva.Mcss.Admin.Models.PrintSequenceSettingsForm
+@using Appva.Html.Elements
+@using Appva.Mcss.Admin.Areas.Patient.Features
 @{
     ViewBag.Title = "Skriv ut PDF";
 }
-
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="SchedulePrint" data-valparams="startdate=@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
-    @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleId })) {
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="SchedulePrint" data-valparams="startdate=@Appva.Domain.Date.Today.AddYears(-10).ToShortString()">
+    
+    @using (Html.BeginForm(new { PatientId = Model.PatientId, scheduleId = Model.ScheduleId })) {
         <h3 class="section-title">Skriv ut pappersverion</h3>
         <div class="text medium">
             @Html.LabelFor(m => m.StartDate)

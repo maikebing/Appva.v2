@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
             //// HACK: remove this when duration is nullable
             var duration = endDate.HasValue ? (endDate.Value - startDate).Minutes : 0;
 
-            var repeat = new Repeat(
+            /*var repeat = new Repeat(
                 (Date) startDate,
                 (Date) endDate,
                 null,
@@ -102,15 +102,15 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
                 null, 
                 null, 
                 null                
-            );
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+            );*/
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, null, taxon, role, inventory));
         }
 
         /// <inheritdoc />
         public void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
-            var repeat = new Repeat(
+            /*var repeat = new Repeat(
                 startDate,
                 endDate,
                 interval,
@@ -122,15 +122,15 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
                 false,
                 false,
                 false
-            );
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+            );*/
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, null, taxon, role, inventory));
         }
 
         /// <inheritdoc />
         public void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
             Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
-            var repeat = new Repeat(
+            /*var repeat = new Repeat(
                 (Date) startDate,
                 (Date) endDate,
                 null,
@@ -144,8 +144,8 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
                 null,
                 null,
                 dates.Split(',').Select(x => Date.Parse(x)).ToList()
-            );
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+            );*/
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, null, taxon, role, inventory));
         }
 
         /// <inheritdoc />
@@ -178,7 +178,7 @@ namespace Appva.Mcss.Admin.Application.Services.Implementations
                 taxon: null,
                 role: null,
                 inventory: null,
-                refillModel: null,
+                refillable: null,
                 overview: overview,
                 canRaiseAlert: canRaiseAlert,
                 pauseAnyAlerts: false,

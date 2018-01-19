@@ -1,4 +1,6 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
+@using Appva.Html.Elements
+@using Appva.Mcss.Admin.Areas.Patient.Features
 @model Appva.Mcss.Admin.Models.ViewTestCalendarModel
 @{ ViewBag.Title = "Kalender"; }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
@@ -6,23 +8,50 @@
 @section JavaScript {
     <script type="text/javascript" src="/Assets/js/mcss.calendar.lb.js"></script>
 }
+@functions 
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string BackgroundColor(object value)
+    {
+        var hash = value.GetHashCode();
+        return string.Format("{0:X2}{1:X2}{2:X2}", (hash & 0xFF0000) >> 16, (hash & 0x00FF00) >> 8, hash & 0x0000FF);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string ForegroundColor(object value)
+    {
+        var color = BackgroundColor(value);
+        var r     = Convert.ToInt32(color.Substring(0, 2), 16);
+        var g     = Convert.ToInt32(color.Substring(2, 2), 16);
+        var b     = Convert.ToInt32(color.Substring(4, 2), 16);
+        var yiq   = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return yiq >= 128 ? "000000" : "ffffff";
+    }
+    
+}
 <div id="subheader" class="cf">
-    <h1>Kalender Sekvens (TEST)</h1>
+    <h1>Kalender för @Html.ActionLink(Model.Name, "Details", "Schedule", new { Id = Model.Patient.Id, ScheduleId = Model.ScheduleId }, new { })</h1>
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
         <div class="cal-wrap cf">
-
-            @using (Html.BeginForm("view", "testcalendar", FormMethod.Get, new { }))
-            {
-                <div class="h cal-h cf" style="margin-left:0;">
-                    <h2>@String.Format("{0:MMMM yyyy}", Model.Current).FirstToUpper()</h2>
-                    <input type="hidden" name="date" value="@Model.Current" />
-                    <input type="submit" name="prev" value="@String.Format("{1} {0}", Model.Previous.ToString("MMMM").FirstToUpper(), WebUtility.HtmlDecode("&larr;"))" class="prev" />
-                    <input type="submit" name="next" value="@String.Format("{0:MMMM} {1}", Model.Next, WebUtility.HtmlDecode("&rarr;")).FirstToUpper()" class="next" />
-                </div>
-            }
-
+            @(Html.Get<TestCalendarController>().Content(
+                @<text>
+                    <div class="h cal-h cf" style="margin-left:0;">
+                        <h2>@Model.Current.ToString("MMMM yyyy").FirstToUpper()</h2>
+                        @Html.Button(Model.Previous.ToString("MMMM").FirstToUpper() + " " + WebUtility.HtmlDecode("&larr;")).Type(ButtonType.Submit).Name("Date").Class("prev").Value(Model.Previous.ToString())
+                        @Html.Button(Model.Next.ToString("MMMM").FirstToUpper()     + " " + WebUtility.HtmlDecode("&rarr;")).Type(ButtonType.Submit).Name("Date").Class("next").Value(Model.Next.ToString())
+                    </div>
+                </text>
+            ))
             <div id="calendar" style="width:100%;">
                 <table>
                     <thead>
@@ -50,81 +79,69 @@
                         </table>
                         <table class="evt-grid">
                             @{
-                                var events = week.AllEvents;
-                                var date = week.Days.First().Date;
+                                var date   = week.Days.First().Date;
                             }
-                            @while (events.IsNotEmpty())
+                            @while (week.AllEvents.IsNotEmpty())
                             {
                                 <tr>
                                     <td class="week-number">&nbsp;</td>
                                     @for (var i = 0; i < 7; )
                                     {
-                                        var e = events.Where(x => x.StartTime.Date.Equals(date.AddDays(i))).FirstOrDefault();
-                                        if (week.Days.First().Date == date.AddDays(i))
-                                        {
-                                            e = events.Where(x => x.StartTime.Date <= date.AddDays(i)).FirstOrDefault();
-                                        }
-                                        if (e != null)
-                                        {
-                                            var colspan = (e.EndTime.Date - date.AddDays(i)).Days + 1;
-                                            var classes = string.Format(
-                                                "act {0} {1} {2} {3}",
-                                                e.CategoryId,
-                                                date.AddDays(i).Date > e.StartTime.Date ? "c-from-last-week" : "",
-                                                colspan > 7 - i ? "c-next-week" : "",
-                                                e.Id);
-
-                                            <td colspan="@(colspan > 7-i ? 7-i :colspan)">
-                                                <a class="lb-link" href="@Url.Action("Details", "Calendar", new { TaskId = e.TaskId, SequenceId = e.SequenceId, StartTime = e.StartTime, EndTime = e.EndTime})">
-                                                    <span style="background-color:@e.Color;" class="@classes" id="@e.Id">
-                                                        <span class="time">
-                                                            <span class="start">
-                                                                @e.StartTime.ToShortDateString()
-                                                            </span>
-                                                            <span class="end">
-                                                                @e.EndTime.ToShortDateString()
-                                                            </span>
-                                                        </span>
-                                                        @e.CategoryName
-                                                        <span class="act-info">
-                                                            <strong>Från:</strong>
-                                                            <span>
-                                                                @e.StartTime
-                                                            </span>
-                                                            <strong>Till:</strong>
-                                                            <span>
-                                                                @e.EndTime
-                                                            </span>
-                                                            <strong>Anteckningar/instruktion:</strong>
-                                                            <span>
-                                                                @e.Description
-                                                            </span>
-                                                            <strong>Upprepning:</strong>
-                                                            <span>
-                                                                @e.RepetionText
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </a>
-                                            </td>
-                                            events.Remove(e);
-                                            i = i + colspan;
-                                        }
-                                        else
+                                        var calendarEvent = week.AllEvents.Where(x => x.Start.Date.Equals(date.AddDays(i))).FirstOrDefault();
+                                        if (calendarEvent == null)
                                         {
                                             <td></td>
                                             i++;
+                                            continue;
                                         }
+                                        var colspan = (calendarEvent.End.Date - date.AddDays(i)).Days + 1;
+                                        var classes = string.Format(
+                                            "act {0} {1} {2}",
+                                            date.AddDays(i) > calendarEvent.Start.Date ? "c-from-last-week" : "",
+                                            colspan > 7 - i ? "c-next-week" : "",
+                                            calendarEvent.SequenceId);
+                                        <td colspan="@(colspan > (7 - i) ? (7 - i) : colspan)">
+                                            <a href="#">
+                                                <span style="background-color:#@BackgroundColor(calendarEvent.SequenceId); color:#@ForegroundColor(calendarEvent.SequenceId)" class="@classes" id="@calendarEvent.SequenceId">
+                                                    <span class="time">
+                                                        <span class="start">
+                                                            @calendarEvent.Start.ToShortTimeString()
+                                                        </span>
+                                                        <span class="end">
+                                                            @calendarEvent.End.ToShortTimeString()
+                                                        </span>
+                                                    </span>
+                                                    @calendarEvent.Name
+                                                    <span class="act-info">
+                                                        <strong>Från:</strong>
+                                                        <span>
+                                                            @calendarEvent.Start.ToShortDateString() kl. @calendarEvent.Start.ToShortTimeString()
+                                                        </span>
+                                                        <strong>Till:</strong>
+                                                        <span>
+                                                            @calendarEvent.End.ToShortDateString() kl. @calendarEvent.End.ToShortTimeString()
+                                                        </span>
+                                                        <strong>Anteckningar/instruktion:</strong>
+                                                        <span>
+                                                            @calendarEvent.Description
+                                                        </span>
+                                                        <strong>Upprepning:</strong>
+                                                        <span>
+                                                            @calendarEvent.Repeat.ToString().FirstToUpper()
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        week.AllEvents.Remove(calendarEvent);
+                                        i = i + colspan;
                                     }
                                 </tr>
                             }
                         </table>
-                    </div>
-                   
+                    </div> 
                 }
             </div>
-
         </div>
-
     </div>
 </div>

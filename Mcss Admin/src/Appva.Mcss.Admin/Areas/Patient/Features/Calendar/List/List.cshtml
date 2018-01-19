@@ -64,13 +64,13 @@
                             @{
                                 var firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
                                 var daysOfWeek = new List<string>() {
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Måndag" : "Söndag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Tisdag" : "Måndag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Onsdag" : "Tisdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Torsdag" : "Onsdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Fredag" : "Torsdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Lördag" : "Fredag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Söndag" : "Lördag"
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Måndag" : "Söndag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Tisdag" : "Måndag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Onsdag" : "Tisdag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Torsdag" : "Onsdag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Fredag" : "Torsdag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Lördag" : "Fredag",
+                                    System.DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Söndag" : "Lördag"
                                 };
                             }
                             @foreach (var day in daysOfWeek)

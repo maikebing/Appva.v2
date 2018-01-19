@@ -86,12 +86,18 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// The patient ID.
+        /// </summary>
         public Guid PatientId
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The shedule ID.
+        /// </summary>
         public Guid ScheduleId
         {
             get;
@@ -331,6 +337,10 @@ namespace Appva.Mcss.Admin.Models
 
         public Frequency GetSelectedFrequency()
         {
+            if (this.Type == SequenceType.NeedBased)
+            {
+                return null;
+            }
             return Frequency.New(
                 this.Repetition == Models.Repetition.Daily ? this.EverydayFrequency.GetValueOrDefault(0) : this.WeeklyFrequency.GetValueOrDefault(0), 
                 this.Repetition == Models.Repetition.Daily ? UnitOfTime.Day : UnitOfTime.Week);
@@ -351,15 +361,23 @@ namespace Appva.Mcss.Admin.Models
 
         public List<Date> GetSelectedDates()
         {
+            if (this.Type != SequenceType.DateRange)
+            {
+                return new List<Date>();
+            }
             return this.Collection
                     .AllKeys
                     .Where (x => x.StartsWith("id-choose-date-value-list-panel"))
-                    .Select(x => Date.Parse(x))
+                    .Select(x => Date.Parse(this.Collection[x]))
                     .ToList();
         }
 
         public List<TimeOfDay> GetSelectedTimesOfDay()
         {
+            if (this.Type == SequenceType.NeedBased)
+            {
+                return new List<TimeOfDay>();
+            }
             return this.Times
                 .Where (x => x.IsChecked == true)
                 .Select(x => new TimeOfDay(x.Hour, x.Minute))
@@ -368,6 +386,10 @@ namespace Appva.Mcss.Admin.Models
 
         public List<Appva.Domain.DayOfWeek> GetSelectedDaysOfWeek()
         {
+            if (this.Repetition == Repetition.Daily)
+            {
+                return new List<Appva.Domain.DayOfWeek>();
+            }
             return this.DaysOfWeek
                 .Where(x => x.IsChecked == true)
                 .Select(x => new Appva.Domain.DayOfWeek(x.Code))
@@ -379,13 +401,13 @@ namespace Appva.Mcss.Admin.Models
             return Offset.New(this.RangeInMinutesBefore, this.RangeInMinutesAfter);
         }
 
-        public TimingSchedule GetTypeOfSchedule()
+        public IRepeatableEvent GetTypeOfSchedule()
         {
             switch (this.Type)
             {
-                case SequenceType.Scheduled: return TimingSchedule.New(this.GetSelectedPeriod(), this.GetSelectedFrequency(), this.GetSelectedTimesOfDay(), this.GetSelectedDaysOfWeek(), this.GetSelectedOffset());
+                case SequenceType.Scheduled: return TimingSchedule.New(this.GetSelectedPeriod(), this.GetSelectedFrequency(), this.GetSelectedTimesOfDay(), this.GetSelectedDaysOfWeek(), null, this.GetSelectedOffset());
                 case SequenceType.DateRange: return TimingSchedule.New(this.GetSelectedDates(), this.GetSelectedTimesOfDay(), this.GetSelectedOffset());
-                case SequenceType.NeedBased: return TimingSchedule.New(this.GetSelectedPeriod(), this.GetSelectedFrequency(), this.GetSelectedTimesOfDay(), this.GetSelectedDaysOfWeek(), this.GetSelectedOffset(), true);
+                case SequenceType.NeedBased: return NeedsBasedActivity.New(this.GetSelectedPeriod(), this.GetSelectedOffset());
             }
             throw new ValidationException("Type is not one of scheduled, date-range or need-based");
         }

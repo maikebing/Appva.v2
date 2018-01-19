@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 if (precriptions.Item1.Count > 0)
                 {
                     //// Sort so need based (with null date time) is at the end, and the rest in time order.
-                    precriptions.Item1.Sort((x, y) => DateTimeOffset.Compare(x.Time ?? DateTime.MaxValue, y.Time ?? DateTime.MaxValue));
+                    precriptions.Item1.Sort((x, y) => Appva.Domain.TimeOfDay.Compare(x.Time ?? Appva.Domain.TimeOfDay.MaxValue, y.Time ?? Appva.Domain.TimeOfDay.MaxValue));
                     result.Add(new PrescriptionList(
                         title,
                         period,
@@ -89,7 +89,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 if (precriptions.Item1.Count > 0)
                 {
                     //// Sort so need based (with null date time) is at the end, and the rest in time order.
-                    precriptions.Item1.Sort((x, y) => DateTimeOffset.Compare(x.Time ?? DateTime.MaxValue, y.Time ?? DateTime.MaxValue));
+                    precriptions.Item1.Sort((x, y) => Appva.Domain.TimeOfDay.Compare(x.Time ?? Appva.Domain.TimeOfDay.MaxValue, y.Time ?? Appva.Domain.TimeOfDay.MaxValue));
                     result.Add(new PrescriptionList(
                         title,
                         period,
@@ -133,14 +133,15 @@ namespace Appva.Mcss.Admin.Application.Services
                     for (var i = 0; i < daysInMonth; i++)
                     {
                         var current = period.Start.LocalDateTime.AddDays(i);
-                        if (DateTimeUtils.IsDateOccurringWithinSpan(
+                        /*if (DateTimeUtils.IsDateOccurringWithinSpan(
                             current,
                             sequence.Repeat.StartAt.Date,
                             sequence.Repeat.EndAt,
                             sequence.Repeat.Interval,
                             sequence.Repeat.IntervalFactor,
                             sequence.Repeat.BoundsRange.Select(x => (DateTime)x).ToList())
-                        )
+                        )*/
+                        if (sequence.Repeat.OccurAt((Appva.Domain.Date)current) && current > sequence.Repeat.StartAt && current < (sequence.Repeat.EndAt ?? DateTime.MaxValue))
                         {
                             days.Add(current.Day);
                         }
@@ -150,13 +151,13 @@ namespace Appva.Mcss.Admin.Application.Services
                         continue;
                     }
                     //// Calculate the times only for the sequence.
-                    foreach (var executing in ExecutingTimes(period.Start.LocalDateTime, sequence))
+                    foreach (var timeOfDay in this.ExecutingTimes(period.Start.LocalDateTime, sequence))
                     {
-                        var dateTime = sequence.Repeat.IsNeedBased ? (DateTime?) null : executing;
+                        var time = sequence.Repeat.IsNeedBased ? (Appva.Domain.TimeOfDay?) null : timeOfDay;
                         References reference = null;
                         if (showInstructionsOnSeparatePage)
                         {
-                            if (!string.IsNullOrWhiteSpace(sequence.Description))
+                            if (! string.IsNullOrWhiteSpace(sequence.Description))
                             {
                                 if (references != null && ! references.ContainsKey(sequence.Id))
                                 {
@@ -165,13 +166,13 @@ namespace Appva.Mcss.Admin.Application.Services
                                 reference = references[sequence.Id];
                             }
                         }
-                        items.Add(Prescription.CreateNew(sequence.Name, reference, dateTime, days));
+                        items.Add(Prescription.CreateNew(sequence.Name, reference, time, days));
                     }
                 }
                 if (items.Count > 0)
                 {
                     //// Sort so need based (with null date time) is at the end, and the rest in time order.
-                    items.Sort((x, y) => DateTimeOffset.Compare(x.Time ?? DateTime.MaxValue, y.Time ?? DateTime.MaxValue));
+                    items.Sort((x, y) => Appva.Domain.TimeOfDay.Compare(x.Time ?? Appva.Domain.TimeOfDay.MaxValue, y.Time ?? Appva.Domain.TimeOfDay.MaxValue));
                     result.Add(new PrescriptionList(
                         title,
                         period,
@@ -193,43 +194,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="date"></param>
         /// <param name="sequence"></param>
-        protected IList<DateTime> ExecutingTimes(DateTime date, Sequence sequence)
+        protected IEnumerable<Appva.Domain.TimeOfDay> ExecutingTimes(DateTime date, Sequence sequence)
         {
             if (sequence.Repeat.IsNeedBased)
             {
-                return new List<DateTime> { date };
+                return new List<Appva.Domain.TimeOfDay> { new Appva.Domain.TimeOfDay(date.Hour, date.Minute) };
             }
-            var result = new List<DateTime>();
-
-            foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
-            {
-                result.Add(new DateTime(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, 0));
-            }
-
-            return result;
-            /*
-            int hour, minute;
-            
-            if (!string.IsNullOrEmpty(sequence.Times))
-            {
-                foreach (var hourString in sequence.Times.Split(','))
-                {
-                    if (int.TryParse(hourString, out hour))
-                    {
-                        hour = (hour == 24) ? 0 : hour;
-                        result.Add(date.Date.AddHours(hour));
-                    }
-                }
-            }
-            if (!string.IsNullOrEmpty(sequence.Hour) && !string.IsNullOrEmpty(sequence.Minute))
-            {
-                if (int.TryParse(sequence.Hour, out hour) && int.TryParse(sequence.Minute, out minute))
-                {
-                    result.Add(date.Date.AddHours(hour).AddMinutes(minute));
-                }
-            }
-            return result;
-            */
+            return sequence.Repeat.TimesOfDay;
         }
 
         #endregion
@@ -287,7 +258,7 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var task in tasks)
             {
                 var key = string.Format("{0:HH:mm}:{1}", task.Scheduled, task.Sequence.Id);
-                var time = task.OnNeedBasis ? (DateTime?)null : new DateTime(task.Scheduled.Year, task.Scheduled.Month,  1, task.Scheduled.Hour, task.Scheduled.Minute, task.Scheduled.Second, 0, DateTimeKind.Local);
+                var time = task.OnNeedBasis ? (Appva.Domain.TimeOfDay?) null : new Appva.Domain.TimeOfDay(task.Scheduled.Hour, task.Scheduled.Minute);
                 if (!temp.ContainsKey(key))
                 {
                     temp.Add(key, Prescription.CreateNew(task.Name, null, time));
@@ -351,7 +322,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 var key = string.Format("{0:HH:mm}:{1}", task.Date, task.PreparedSequence.Id);
                 if (!temp.ContainsKey(key))
                 {
-                    temp.Add(key, Prescription.CreateNew(task.PreparedSequence.Name, null, task.Date));
+                    temp.Add(key, Prescription.CreateNew(task.PreparedSequence.Name, null, new Appva.Domain.TimeOfDay(task.Date.Hour, task.Date.Minute)));
                 }
                 var precription = temp[key];
                 precription.Days.Add(task.Date.Day);

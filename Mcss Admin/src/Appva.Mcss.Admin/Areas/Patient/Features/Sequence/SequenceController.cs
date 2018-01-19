@@ -8,17 +8,16 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 {
     #region Imports.
 
-    using System.Web.Mvc;
     using System.Linq;
+    using System.Web.Mvc;
     using Appva.Core.Environment;
     using Appva.Core.Logging;
     using Appva.Cqrs;
+    using Appva.Domain;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -69,8 +68,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The create sequence request</param>
         /// <returns>A create form</returns>
-        [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/create")]
         [HttpGet, Hydrate]
+        [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/create")]
         [Permissions(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequence request)
         {
@@ -82,12 +81,27 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// Saves a sequence if valid.
         /// </summary>
         /// <param name="request">The create sequence request</param>
+        /// <param name="collection">The post collection.</param>
         /// <returns>A redirect to schedule details if successful</returns>
-        [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/create")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
+        [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/create")]
         [Permissions(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequencePostRequest request, FormCollection collection)
         {
+            //// FIXME: Move validation to model.
+            if (request.Type == SequenceType.Scheduled && request.Repetition == Repetition.Weekly)
+            {
+                var start = request.StartDate ?? Date.Today;
+                var dows  = request.GetSelectedDaysOfWeek();
+                if (dows.Count == 0)
+                {
+                    ModelState.AddModelError("DaysOfWeek", "");
+                }
+                if (! dows.Contains(start.DayOfWeek))
+                {
+                    ModelState.AddModelError("StartDate", "");
+                }
+            }
             //// HACK: Temporary add the form collection to the request :'(
             request.Collection = collection;
             var response = this.mediator.Send(request);
@@ -103,21 +117,23 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The update sequence request</param>
         /// <returns>A sequence edit form</returns>
+        [HttpGet, Hydrate]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/{id:guid}/update")]
-        [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
         public ActionResult Update(UpdateSequence request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            return this.View(response);
         }
 
         /// <summary>
         /// Updates the sequence if valid.
         /// </summary>
         /// <param name="request">The update sequence request</param>
+        /// <param name="collection">The post collection.</param>
         /// <returns>A redirect to schedule details if successful</returns>
+        [HttpPost, Validate, ValidateAntiForgeryToken]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/{id:guid}/update")]
-        [HttpPost, /*Validate, ValidateAntiForgeryToken*/]
         [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
         public ActionResult Update(UpdateSequenceForm request, FormCollection collection)
         {
@@ -136,12 +152,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The inactivate sequence request</param>
         /// <returns>A redirect to schedule details if successful</returns>
+        [HttpGet]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/{id:guid}/inactivate")]
-        [HttpGet, Dispatch("Details", "Schedule")]
         [PermissionsAttribute(Permissions.Sequence.InactivateValue)]
         public ActionResult Inactivate(InactivateSequence request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            return this.RedirectToAction("Details", "Schedule", response);
         }
 
         #endregion
@@ -153,32 +170,32 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The print schedule request</param>
         /// <returns>A pdf file</returns>
-        
-        [HttpGet, Dispatch]
+        [HttpGet]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/print")]
         [PermissionsAttribute(Permissions.Sequence.PrintValue)]
-        public PdfFileResult PrintSchema(PrintSequence request)
+        public FileContentResult PrintSchema(PrintSequence request)
         {
-            return this.PdfFile();
+            var response = this.mediator.Send(request);
+            return response;
         }
-        /**/
+
         #endregion
 
         #region Print Date Popup View.
 
-        
         /// <summary>
         /// Returns the print pop up view.
         /// TODO: Rename to PrintSetup.
         /// </summary>
         /// <param name="request">The print sequence request</param>
         /// <returns>The print schedule pop up selection view</returns>
-        [HttpGet, Hydrate, Dispatch]
+        [HttpGet, Hydrate]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/setup/print")]
         [PermissionsAttribute(Permissions.Sequence.PrintValue)]
         public ActionResult PrintPopUp(PrintSequenceSettings request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            return this.View(response);
         }
 
         /// <summary>
@@ -186,15 +203,15 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="request">The print sequence request</param>
         /// <returns>Redirects to print if successful</returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PrintSchema", "Sequence")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
         [Route("~/{patientId:guid}/schedules/{scheduleId:guid}/sequences/setup/print")]
         [PermissionsAttribute(Permissions.Sequence.PrintValue)]
         public ActionResult PrintPopUp(PrintSequenceSettingsForm request)
         {
-            return this.View();
+            var response = this.mediator.Send(request);
+            return this.RedirectToAction("PrintSchema", "Sequence", response);
         }
         
         #endregion
-         
     }
 }

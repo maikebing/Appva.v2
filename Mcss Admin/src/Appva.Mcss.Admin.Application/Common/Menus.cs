@@ -181,7 +181,8 @@ namespace Appva.Mcss.Admin.Application.Common
                     this.schedule = new List<IMenuItem>()
                     {
                         MenuItem.CreateNew("Signeringslista objekt (Dummy)", "Details", "Schedule", "Patient", null, null, Permissions.Schedule.Read, null),
-                        MenuItem.CreateNew("Iordningsställande (Dummy)", "Schema", "Prepare", "Patient", null, null, Permissions.Prepare.Read, null)
+                        MenuItem.CreateNew("Iordningsställande (Dummy)", "Schema", "Prepare", "Patient", null, null, Permissions.Prepare.Read, null),
+                        MenuItem.CreateNew("Iordningsställande (Dummy)", "View", "TestCalendar", "Patient", null, null, Permissions.Prepare.Read, null)
                     };
                 }
                 return this.schedule;

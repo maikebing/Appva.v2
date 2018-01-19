@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Appva.Mcss.Admin.Areas.Patient.Features.TestCalendar.Models;
+using Appva.Mcss.Admin.Areas.Patient.Features.TestCalender.Models;
 
 namespace Appva.Mcss.Admin.Application.Models
 {
@@ -21,13 +23,13 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// The days within the week
         /// </summary>
-        public IList<CalendarDay> Days
+        public IList<TestCalendarDay> Days
         {
             get;
             set;
         }
 
-        public List<CalendarTask> AllEvents
+        public List<TestCalendarTask> AllEvents
         {
             get;
             set;

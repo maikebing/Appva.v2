@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Infrastructure
 
     public class OnModelBinder : IModelBinder
     {
-        private static readonly IList<string> ValuesOfTruthness = new List<string> { "on",  "true",  "1" };
+        private static readonly IList<string> ValuesOfTruthness = new List<string> { "on", "true", "1", "true,false" /* mvc when true */ };
 
         #region IModelBinder Members.
 
@@ -73,10 +73,15 @@ namespace Appva.Mcss.Admin.Infrastructure
             {
                 Value = result
             });
-            if (string.IsNullOrWhiteSpace(result.AttemptedValue) == false && ValuesOfTruthness.Contains(result.AttemptedValue.ToLowerInvariant()))
+            if (string.IsNullOrWhiteSpace(result.AttemptedValue))
+            {
+                return false;
+            }
+            if (ValuesOfTruthness.Contains(result.AttemptedValue.ToLowerInvariant()))
             {
                 return true;
             }
+            
             return false;
         }
 

@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new PrintSequenceSettingsForm
             {
-                PatientId = message.Id,
+                PatientId = message.PatientId,
                 ScheduleId = message.ScheduleId,
                 StartDate = DateTime.Now.FirstOfMonth(),
                 EndDate = DateTime.Now.LastOfMonth()

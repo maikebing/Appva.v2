@@ -179,7 +179,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 }
                 if (this.isTimeVisible)
                 {
-                    itemRow.Cells[1].AddParagraph(prescription.Time.HasValue ? string.Format("{0:HH:mm}", prescription.Time.Value.LocalDateTime) : "-");
+                    itemRow.Cells[1].AddParagraph(prescription.Time.HasValue ? prescription.Time.ToString() : "-");
                     itemRow.Cells[1].Format.Alignment = ParagraphAlignment.Center;
                 }
                 for (var j = 1; j <= daysInMonth; j++)

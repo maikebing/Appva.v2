@@ -137,7 +137,8 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             items.Add(new MenuItem("Boende", "List", "Patient", "Patient", null, null, null, new List<IMenuItem> { 
                 new MenuItem("Signeringslistor", "List", "Schedule", "Patient", null, null, null, new List<IMenuItem> {
                     new MenuItem("Dummy endast till för att kunna visa meny för signeringslist objekt", "Details", "Schedule", "Patient", null, null, null, null),
-                    new MenuItem("Dummy endast till för att kunna visa meny för iordningstallande objekt", "Schema", "Prepare", "Patient", null, null, null, null)
+                    new MenuItem("Dummy endast till för att kunna visa meny för iordningstallande objekt", "Schema", "Prepare", "Patient", null, null, null, null),
+                    new MenuItem("Dummy endast till för att kunna visa meny för kalender", "View", "TestCalendar", "Patient", null, null, null, null),
 
                 }),
                 new MenuItem("Signerade händelser", "Sign", "Schedule", "Patient", null, null, null, null),

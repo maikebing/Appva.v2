@@ -1,21 +1,66 @@
-﻿using Appva.Mcss.Admin.Application.Models;
-using Appva.Mcss.Web.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Appva.Mcss.Admin.Domain.Entities;
-
+﻿// <copyright file="CreateSequence.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.Admin.Models
 {
+    #region Imports.
+
+    using System;
+    using System.Collections.Generic;
+    using Appva.Domain;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Web.ViewModels;
+
+    #endregion
+
     public class ViewTestCalendarModel
     {
-        public PatientViewModel Patient { get; set; }
-        public DateTime Current { get; set; }
-        public DateTime Next { get; set; }
-        public DateTime Previous { get; set; }
-        public IList<CalendarWeek> Calendar { get; set; }
-        // public Dictionary<int, ScheduleSettings> Categories { get; set; }
-        public IList<ScheduleSettings> CategorySettings { get; set; }
+        /// <summary>
+        /// The schedule ID.
+        /// </summary>
+        public Guid ScheduleId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The schedule name.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public PatientViewModel Patient
+        {
+            get;
+            set;
+        }
+        public Date Current
+        {
+            get;
+            set;
+        }
+        public Date Next
+        {
+            get;
+            set;
+        }
+        public Date Previous
+        {
+            get;
+            set;
+        }
+
+        public IList<TestCalendarWeek> Calendar
+        {
+            get;
+            set;
+        }
     }
 }

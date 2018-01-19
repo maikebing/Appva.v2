@@ -14,20 +14,18 @@ using Appva.Domain;
 
 namespace Appva.Mcss.Admin.Application.Services
 {
-    public interface ICalendarService : IService
-    {
-        #region Fields
+    //public interface ICalendarService : IService
+    //{
+        //IList<ScheduleSettings> GetCategories();
+        //Patient GetPatient(Guid id);
+        //IList<CalendarTask> FindWithinMonth(Patient pat, DateTime date);
+        //void AuditRead(Patient patient, string format, Guid patientId);
+        //Schedule GetSchedule(Guid scheduleId);
+        //IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
+        //IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date);
+    //}
 
-        #endregion
-        IList<ScheduleSettings> GetCategories();
-        Patient GetPatient(Guid id);
-        IList<CalendarTask> FindWithinMonth(Patient pat, DateTime date);
-        void AuditRead(Patient patient, string format, Guid patientId);
-        Schedule GetSchedule(Guid scheduleId);
-        IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
-        IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date);
-    }
-
+    /*
     public class CalendarService : ICalendarService
     {
         #region Variables
@@ -122,7 +120,6 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 if (sequence.Repeat.IsNeedBased == true)
                 {
-                    /* hur skall vi presentera IsNeedBased sequences? */
                     retval.Add(this.SequenceToEvent(sequence, sequence.Repeat.StartAt, sequence.Repeat.EndAt));
                     continue;
                 }
@@ -244,5 +241,5 @@ namespace Appva.Mcss.Admin.Application.Services
             };
         }
 
-    }
+    }*/
 }

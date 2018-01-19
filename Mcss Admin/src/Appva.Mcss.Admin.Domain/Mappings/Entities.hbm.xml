@@ -559,23 +559,17 @@
       <property name="IsAllDay"        column="AllDay"               access="nosetter.camelcase" /> <!-- See Duration.  -->
       <property name="Compatibility"   column="Compatibility"        access="nosetter.camelcase" not-null="false" />
     </component>
-   <!-- 
-    <property name="Reminder" />
-    <property name="ReminderInMinutesBefore" />
-    <many-to-one name="ReminderRecipient" class="Account" />
-    <property name="LastReminderSent" />
-    -->
-    <property name="Overview" />
-    <property name="CanRaiseAlert" />
-    <property name="PauseAnyAlerts" />
-    <property name="Absent" />
-    <many-to-one name="Patient" class="Patient" />
-    <many-to-one name="Schedule" class="Schedule" />
-    <many-to-one name="Taxon" class="Taxon" />
-    <many-to-one name="Role"  class="Role" />
-    <many-to-one name="Inventory"  class="Inventory" />
-    <many-to-one name="Article" class="Article" />
-    <component name="RefillInfo" class="Refillable">
+    <property name="Overview"       column="Overview" />
+    <property name="CanRaiseAlert"  column="CanRaiseAlert" />
+    <property name="PauseAnyAlerts" column="PauseAnyAlerts" />
+    <property name="Absent"         column="Absent" />
+    <many-to-one name="Patient"     class="Patient" />
+    <many-to-one name="Schedule"    class="Schedule" />
+    <many-to-one name="Taxon"       class="Taxon" />
+    <many-to-one name="Role"        class="Role" />
+    <many-to-one name="Inventory"   class="Inventory" />
+    <many-to-one name="Article"     class="Article" />
+    <component name="RefillInfo"    class="Refillable">
       <property name="Refill" />
       <property name="RefillOrderedDate" />
       <many-to-one name="RefillOrderedBy"  class="Account" />
@@ -587,27 +581,6 @@
       <key column="SequenceId" />
       <many-to-many column="MedicationId" class="Medication" />
     </bag>
-
-    <!--<property name="StartDate" />
-    <property name="EndDate" />
-    <property name="RangeInMinutesBefore" />
-    <property name="RangeInMinutesAfter" />
-    <property name="Times" />
-    <property name="Dates" type="StringClob">
-      <column name="Dates" sql-type="NVARCHAR(MAX)"/>
-    </property>
-    <property name="Minute" />
-    <property name="Hour" />
-    <property name="Interval" />
-    <property name="IntervalFactor" />
-    <property name="IntervalIsDate" />
-    <property name="OnNeedBasis" />
-    <property name="AllDay" />
-
-    <property name="StockAmount" />
-    <property name="LastStockAmountCalculation" />
-    -->
-    
   </class>
   
   <!-- Observation -->

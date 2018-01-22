@@ -133,18 +133,10 @@ namespace Appva.Mcss.Admin.Application.Services
                     for (var i = 0; i < daysInMonth; i++)
                     {
                         var current = period.Start.LocalDateTime.AddDays(i);
-                        /*if (DateTimeUtils.IsDateOccurringWithinSpan(
-                            current,
-                            sequence.Repeat.StartAt.Date,
-                            sequence.Repeat.EndAt,
-                            sequence.Repeat.Interval,
-                            sequence.Repeat.IntervalFactor,
-                            sequence.Repeat.BoundsRange.Select(x => (DateTime)x).ToList())
-                        )*/
-                        if (sequence.Repeat.OccurAt((Appva.Domain.Date)current) && current > sequence.Repeat.StartAt && current < (sequence.Repeat.EndAt ?? DateTime.MaxValue))
+                        sequence.Repeat.OccurAt((Appva.Domain.Date) current, null, x =>
                         {
                             days.Add(current.Day);
-                        }
+                        });
                     }
                     if (days.Count == 0)
                     {

@@ -163,7 +163,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 patient.Id);
             var lookAndFeel = this.settingsService.PdfLookAndFeelConfiguration();
             var showInstructionsOnSeparatePage = this.settingsService.Find(ApplicationSettings.PdfShowInstructionsOnSeparatePage);
-            var result = this.FindSequencesWithinTimeSpan(schedule.ScheduleSettings.Name, start, end, patient, sequences, statusTaxons, showInstructionsOnSeparatePage);
+            var result = this.FindSequencesWithinTimeSpan(schedule.ScheduleSettings.Name, start, end.LastInstantOfDay(), patient, sequences, statusTaxons, showInstructionsOnSeparatePage);
             return PdfScheduleDocument.CreateNew(title, lookAndFeel).Process(result.Item1, result.Item2).Save();
         }
 

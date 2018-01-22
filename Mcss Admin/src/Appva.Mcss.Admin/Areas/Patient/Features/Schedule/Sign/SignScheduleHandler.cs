@@ -228,7 +228,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (scheduleSetting.IsCollectingGivenDosage == true)
             {
-                //// TODO: Verify that tasks are displayed correctly in the view.
+                //// UNRESOLVED: Verify that tasks are displayed correctly in the view.
                 query.JoinQueryOver<AdministeredItem>(x => x.AdministeredItems)
                     .Where(x => x.IsActive)
                     .Where(x => x.Task != null);

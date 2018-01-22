@@ -60,26 +60,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Date nextAt = firstOfMonth;
                 while (nextAt < nextMonth)
                 {
-                    if (! sequence.Repeat.OccurAt(nextAt))
+                    sequence.Repeat.OccurAt(nextAt, null, (timesOfDay) =>
                     {
-                        nextAt = nextAt.AddDays(1);
-                        continue;
-                    }
-                    /*if (sequence.Repeat.TimesOfDay.Count() == 0)
-                    {
-                        retval.Add(this.CreateEvent(nextAt, sequence));
-                    }*/
-                    foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
-                    {
-                        //// Ignore any time slots which has passed (if the start time is greater)
-                        //// Ignore any offsets in this case as well.
-                        var time = nextAt.ToDateTime(timeOfDay);
-                        if (sequence.Repeat.StartAt > time || (sequence.Repeat.EndAt ?? DateTime.MaxValue) < time)
+                        if (timesOfDay.Count() == 0)
                         {
-                            continue;
+                            return; /* need based and all day events are not shown. */
                         }
-                        retval.Add(this.CreateEvent(time, sequence));
-                    }
+                        foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
+                        {
+                            retval.Add(this.CreateEvent(nextAt.ToDateTime(timeOfDay), sequence));
+                        }
+                    });
                     nextAt = nextAt.AddDays(1);
                 }
             }
